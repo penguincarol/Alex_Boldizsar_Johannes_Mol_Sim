@@ -1,0 +1,16 @@
+\frametitle{Input parsing- Definition of Body}
+\vspace{0.7cm}
+
+\begin{lstlisting}[language=C++]
+enum Shape {cuboid, sphere};
+
+struct Body {
+	Shape shape;
+	Eigen::Vector3d fixpoint;
+	Eigen::Vector3d dimensions;
+	double distance;
+	double mass;
+	Eigen::Vector3d start_velocity;
+} ;
+\end{lstlisting}
+	

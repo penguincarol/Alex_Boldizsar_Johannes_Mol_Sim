@@ -1,0 +1,15 @@
+\frametitle{Generic IO}
+\vspace{0.7cm}
+\begin{lstlisting}[language=C++]
+template <typename LOCATOR, void (*LOAD)(LOCATOR, std::list<Particle>&)>
+class InputLoader {
+	private:
+	std::list<Particle> buffer;
+	LOCATOR locator;
+	public:
+	explicit InputLoader(LOCATOR loc) : locator(loc) {}
+	InputLoader(const InputLoader& i) = delete;
+	void reload() { LOAD(locator, buffer); }
+	void getParticles(std::vector<Particle>&buf) {...}
+};
+\end{lstlisting}

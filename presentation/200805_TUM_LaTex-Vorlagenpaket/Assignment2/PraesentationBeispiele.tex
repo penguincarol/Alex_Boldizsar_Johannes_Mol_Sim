@@ -1,0 +1,56 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% TUM-Vorlage: Präsentation - Beispiele
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\begin{frame}[fragile]
+\frametitle{Example of new input file}
+
+ \begin{Verbatim}
+#Random comments
+# xyz-coord      velocity        mass       shape       dimensions      distance  
+2
+0.0 0.0 0.0      0.0 0.0 0.0     1.0
+7.0 7.0 7.0      1.0 1.0 1.0     2.0e-8     CuboiD      4	5	6         3.0
+# epsilon    sigma
+0.1         0.2
+ \end{Verbatim}
+
+\vspace{-0.5cm}
+\large
+Structure:
+\vspace{-0.7cm}
+\begin{itemize}
+	\item<1-> Comments
+	\item<1-> Number of bodies
+	\item<2-> Bodies (with Shape, Dimensions and distance as optional)
+	\item<3-> Comments
+	\item<4- > Definition of epsilon and sigma (optional)
+\end{itemize}
+
+\end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{Input parsing - Definition of Body}
+\vspace{0.7cm}
+
+\begin{lstlisting}[language=C++]
+enum Shape {cuboid, sphere};
+
+struct Body {
+	Shape shape;   
+	Eigen::Vector3d fixpoint; 
+	Eigen::Vector3d dimensions; 
+	double distance;
+	double mass;
+	Eigen::Vector3d start_velocity;
+} ;
+\end{lstlisting}
+	
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Folie: Gültigkeit der Masterfolien              %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

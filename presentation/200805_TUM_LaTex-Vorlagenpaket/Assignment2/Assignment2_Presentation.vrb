@@ -1,4 +1,4 @@
-\frametitle{Input parsing- Definition of Body}
+\frametitle{Input parsing - Definition of Body}
 \vspace{0.7cm}
 
 \begin{lstlisting}[language=C++]

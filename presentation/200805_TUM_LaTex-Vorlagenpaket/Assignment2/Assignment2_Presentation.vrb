@@ -13,4 +13,3 @@ struct Body {
 	Eigen::Vector3d start_velocity;
 } ;
 \end{lstlisting}
-	

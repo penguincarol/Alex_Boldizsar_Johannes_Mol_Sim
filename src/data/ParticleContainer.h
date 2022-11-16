@@ -7,6 +7,7 @@
 #include <array>
 #include <string>
 #include <iterator>
+#include <Eigen>
 
 /**
  * @brief wrapper class that stores and manages access to the particles
@@ -70,6 +71,23 @@ public:
      * @param function
      */
     void forAllPairs(void (function)(Particle &p1, Particle &p2));
+
+    /***
+    *   @brief calculates the forces between particlePairs in the given range and stores the intermediate results in acc
+    *   range is defined by the smaller index of the two interacting particles,
+    *   range includes start, excludes end
+    */
+    static void forceInIndexSpan(size_t start, size_t end, std::vector<Eigen::Vector3d>& acc, 
+            Eigen::Vector3d (function)(Particle &p1, Particle &p2), std::vector<Particle> & particles);
+
+    /***
+    *   @brief uses the given force function to compute the forces at play
+    *   uses F_ij = -F_ji 
+    *   multithreading
+    *   
+    */
+    void addUpForces(Eigen::Vector3d (function)(Particle &p1, Particle &p2));
+
 
     /**
      * @brief Get the Particles object

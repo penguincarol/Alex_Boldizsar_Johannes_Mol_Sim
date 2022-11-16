@@ -1,0 +1,87 @@
+\hypertarget{structtesting_1_1internal_1_1Function_3_01R_07Args_8_8_8_08_4}{}\doxysection{testing\+::internal\+::Function$<$ R(Args...)$>$ Struct Template Reference}
+\label{structtesting_1_1internal_1_1Function_3_01R_07Args_8_8_8_08_4}\index{testing::internal::Function$<$ R(Args...)$>$@{testing::internal::Function$<$ R(Args...)$>$}}
+
+
+{\ttfamily \#include $<$gmock-\/internal-\/utils.\+h$>$}
+
+\doxysubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+using \mbox{\hyperlink{structtesting_1_1internal_1_1Function_3_01R_07Args_8_8_8_08_4_a71efbc408f9ce64e36e2cc41df0da194}{Result}} = R
+\item 
+{\footnotesize template$<$size\+\_\+t I$>$ }\\using \mbox{\hyperlink{structtesting_1_1internal_1_1Function_3_01R_07Args_8_8_8_08_4_aacb86abf5791077bc9f3774fa0240ba2}{Arg}} = \mbox{\hyperlink{structtesting_1_1internal_1_1ElemFromList}{Elem\+From\+List}}$<$ I, Args... $>$
+\item 
+using \mbox{\hyperlink{structtesting_1_1internal_1_1Function_3_01R_07Args_8_8_8_08_4_afc6bddfcfc78f9308c268123ebc2a99b}{Argument\+Tuple}} = std\+::tuple$<$ Args... $>$
+\item 
+using \mbox{\hyperlink{structtesting_1_1internal_1_1Function_3_01R_07Args_8_8_8_08_4_aa1b4dca988b45fea2307518af5ac8a09}{Argument\+Matcher\+Tuple}} = std\+::tuple$<$ \mbox{\hyperlink{classtesting_1_1Matcher}{Matcher}}$<$ Args $>$... $>$
+\item 
+using \mbox{\hyperlink{structtesting_1_1internal_1_1Function_3_01R_07Args_8_8_8_08_4_a763920d3647641e1100bc4ade26d1d0c}{Make\+Result\+Void}} = void(Args...)
+\item 
+using \mbox{\hyperlink{structtesting_1_1internal_1_1Function_3_01R_07Args_8_8_8_08_4_a23361a5e5eb49aad2e1dfe784e60b5da}{Make\+Result\+Ignored\+Value}} = \mbox{\hyperlink{classtesting_1_1internal_1_1IgnoredValue}{Ignored\+Value}}(Args...)
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static constexpr size\+\_\+t \mbox{\hyperlink{structtesting_1_1internal_1_1Function_3_01R_07Args_8_8_8_08_4_a9fbf56d693d099df9f23ad175ccef781}{Argument\+Count}} = sizeof...(Args)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Typedef Documentation}
+\mbox{\Hypertarget{structtesting_1_1internal_1_1Function_3_01R_07Args_8_8_8_08_4_aacb86abf5791077bc9f3774fa0240ba2}\label{structtesting_1_1internal_1_1Function_3_01R_07Args_8_8_8_08_4_aacb86abf5791077bc9f3774fa0240ba2}} 
+\index{testing::internal::Function$<$ R(Args...)$>$@{testing::internal::Function$<$ R(Args...)$>$}!Arg@{Arg}}
+\index{Arg@{Arg}!testing::internal::Function$<$ R(Args...)$>$@{testing::internal::Function$<$ R(Args...)$>$}}
+\doxysubsubsection{\texorpdfstring{Arg}{Arg}}
+{\footnotesize\ttfamily template$<$typename R , typename... Args$>$ \\
+template$<$size\+\_\+t I$>$ \\
+using \mbox{\hyperlink{structtesting_1_1internal_1_1Function}{testing\+::internal\+::\+Function}}$<$ R(Args...)$>$\+::\mbox{\hyperlink{structtesting_1_1internal_1_1Function_3_01R_07Args_8_8_8_08_4_aacb86abf5791077bc9f3774fa0240ba2}{Arg}} =  \mbox{\hyperlink{structtesting_1_1internal_1_1ElemFromList}{Elem\+From\+List}}$<$I, Args...$>$}
+
+\mbox{\Hypertarget{structtesting_1_1internal_1_1Function_3_01R_07Args_8_8_8_08_4_aa1b4dca988b45fea2307518af5ac8a09}\label{structtesting_1_1internal_1_1Function_3_01R_07Args_8_8_8_08_4_aa1b4dca988b45fea2307518af5ac8a09}} 
+\index{testing::internal::Function$<$ R(Args...)$>$@{testing::internal::Function$<$ R(Args...)$>$}!ArgumentMatcherTuple@{ArgumentMatcherTuple}}
+\index{ArgumentMatcherTuple@{ArgumentMatcherTuple}!testing::internal::Function$<$ R(Args...)$>$@{testing::internal::Function$<$ R(Args...)$>$}}
+\doxysubsubsection{\texorpdfstring{ArgumentMatcherTuple}{ArgumentMatcherTuple}}
+{\footnotesize\ttfamily template$<$typename R , typename... Args$>$ \\
+using \mbox{\hyperlink{structtesting_1_1internal_1_1Function}{testing\+::internal\+::\+Function}}$<$ R(Args...)$>$\+::\mbox{\hyperlink{structtesting_1_1internal_1_1Function_3_01R_07Args_8_8_8_08_4_aa1b4dca988b45fea2307518af5ac8a09}{Argument\+Matcher\+Tuple}} =  std\+::tuple$<$\mbox{\hyperlink{classtesting_1_1Matcher}{Matcher}}$<$Args$>$...$>$}
+
+\mbox{\Hypertarget{structtesting_1_1internal_1_1Function_3_01R_07Args_8_8_8_08_4_afc6bddfcfc78f9308c268123ebc2a99b}\label{structtesting_1_1internal_1_1Function_3_01R_07Args_8_8_8_08_4_afc6bddfcfc78f9308c268123ebc2a99b}} 
+\index{testing::internal::Function$<$ R(Args...)$>$@{testing::internal::Function$<$ R(Args...)$>$}!ArgumentTuple@{ArgumentTuple}}
+\index{ArgumentTuple@{ArgumentTuple}!testing::internal::Function$<$ R(Args...)$>$@{testing::internal::Function$<$ R(Args...)$>$}}
+\doxysubsubsection{\texorpdfstring{ArgumentTuple}{ArgumentTuple}}
+{\footnotesize\ttfamily template$<$typename R , typename... Args$>$ \\
+using \mbox{\hyperlink{structtesting_1_1internal_1_1Function}{testing\+::internal\+::\+Function}}$<$ R(Args...)$>$\+::\mbox{\hyperlink{structtesting_1_1internal_1_1Function_3_01R_07Args_8_8_8_08_4_afc6bddfcfc78f9308c268123ebc2a99b}{Argument\+Tuple}} =  std\+::tuple$<$Args...$>$}
+
+\mbox{\Hypertarget{structtesting_1_1internal_1_1Function_3_01R_07Args_8_8_8_08_4_a23361a5e5eb49aad2e1dfe784e60b5da}\label{structtesting_1_1internal_1_1Function_3_01R_07Args_8_8_8_08_4_a23361a5e5eb49aad2e1dfe784e60b5da}} 
+\index{testing::internal::Function$<$ R(Args...)$>$@{testing::internal::Function$<$ R(Args...)$>$}!MakeResultIgnoredValue@{MakeResultIgnoredValue}}
+\index{MakeResultIgnoredValue@{MakeResultIgnoredValue}!testing::internal::Function$<$ R(Args...)$>$@{testing::internal::Function$<$ R(Args...)$>$}}
+\doxysubsubsection{\texorpdfstring{MakeResultIgnoredValue}{MakeResultIgnoredValue}}
+{\footnotesize\ttfamily template$<$typename R , typename... Args$>$ \\
+using \mbox{\hyperlink{structtesting_1_1internal_1_1Function}{testing\+::internal\+::\+Function}}$<$ R(Args...)$>$\+::\mbox{\hyperlink{structtesting_1_1internal_1_1Function_3_01R_07Args_8_8_8_08_4_a23361a5e5eb49aad2e1dfe784e60b5da}{Make\+Result\+Ignored\+Value}} =  \mbox{\hyperlink{classtesting_1_1internal_1_1IgnoredValue}{Ignored\+Value}}(Args...)}
+
+\mbox{\Hypertarget{structtesting_1_1internal_1_1Function_3_01R_07Args_8_8_8_08_4_a763920d3647641e1100bc4ade26d1d0c}\label{structtesting_1_1internal_1_1Function_3_01R_07Args_8_8_8_08_4_a763920d3647641e1100bc4ade26d1d0c}} 
+\index{testing::internal::Function$<$ R(Args...)$>$@{testing::internal::Function$<$ R(Args...)$>$}!MakeResultVoid@{MakeResultVoid}}
+\index{MakeResultVoid@{MakeResultVoid}!testing::internal::Function$<$ R(Args...)$>$@{testing::internal::Function$<$ R(Args...)$>$}}
+\doxysubsubsection{\texorpdfstring{MakeResultVoid}{MakeResultVoid}}
+{\footnotesize\ttfamily template$<$typename R , typename... Args$>$ \\
+using \mbox{\hyperlink{structtesting_1_1internal_1_1Function}{testing\+::internal\+::\+Function}}$<$ R(Args...)$>$\+::\mbox{\hyperlink{structtesting_1_1internal_1_1Function_3_01R_07Args_8_8_8_08_4_a763920d3647641e1100bc4ade26d1d0c}{Make\+Result\+Void}} =  void(Args...)}
+
+\mbox{\Hypertarget{structtesting_1_1internal_1_1Function_3_01R_07Args_8_8_8_08_4_a71efbc408f9ce64e36e2cc41df0da194}\label{structtesting_1_1internal_1_1Function_3_01R_07Args_8_8_8_08_4_a71efbc408f9ce64e36e2cc41df0da194}} 
+\index{testing::internal::Function$<$ R(Args...)$>$@{testing::internal::Function$<$ R(Args...)$>$}!Result@{Result}}
+\index{Result@{Result}!testing::internal::Function$<$ R(Args...)$>$@{testing::internal::Function$<$ R(Args...)$>$}}
+\doxysubsubsection{\texorpdfstring{Result}{Result}}
+{\footnotesize\ttfamily template$<$typename R , typename... Args$>$ \\
+using \mbox{\hyperlink{structtesting_1_1internal_1_1Function}{testing\+::internal\+::\+Function}}$<$ R(Args...)$>$\+::\mbox{\hyperlink{structtesting_1_1internal_1_1Function_3_01R_07Args_8_8_8_08_4_a71efbc408f9ce64e36e2cc41df0da194}{Result}} =  R}
+
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{structtesting_1_1internal_1_1Function_3_01R_07Args_8_8_8_08_4_a9fbf56d693d099df9f23ad175ccef781}\label{structtesting_1_1internal_1_1Function_3_01R_07Args_8_8_8_08_4_a9fbf56d693d099df9f23ad175ccef781}} 
+\index{testing::internal::Function$<$ R(Args...)$>$@{testing::internal::Function$<$ R(Args...)$>$}!ArgumentCount@{ArgumentCount}}
+\index{ArgumentCount@{ArgumentCount}!testing::internal::Function$<$ R(Args...)$>$@{testing::internal::Function$<$ R(Args...)$>$}}
+\doxysubsubsection{\texorpdfstring{ArgumentCount}{ArgumentCount}}
+{\footnotesize\ttfamily template$<$typename R , typename... Args$>$ \\
+constexpr size\+\_\+t \mbox{\hyperlink{structtesting_1_1internal_1_1Function}{testing\+::internal\+::\+Function}}$<$ R(Args...)$>$\+::Argument\+Count = sizeof...(Args)\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [constexpr]}}
+
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\+\_\+deps/googletest-\/src/googlemock/include/gmock/internal/\mbox{\hyperlink{gmock-internal-utils_8h}{gmock-\/internal-\/utils.\+h}}\end{DoxyCompactItemize}

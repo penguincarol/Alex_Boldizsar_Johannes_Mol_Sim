@@ -1,0 +1,101 @@
+\hypertarget{classtesting_1_1internal_1_1DoAllAction_3_01InitialAction_00_01OtherActions_8_8_8_01_4}{}\doxysection{testing\+::internal\+::Do\+All\+Action$<$ Initial\+Action, Other\+Actions... $>$ Class Template Reference}
+\label{classtesting_1_1internal_1_1DoAllAction_3_01InitialAction_00_01OtherActions_8_8_8_01_4}\index{testing::internal::DoAllAction$<$ InitialAction, OtherActions... $>$@{testing::internal::DoAllAction$<$ InitialAction, OtherActions... $>$}}
+
+
+{\ttfamily \#include $<$gmock-\/actions.\+h$>$}
+
+Inheritance diagram for testing\+::internal\+::Do\+All\+Action$<$ Initial\+Action, Other\+Actions... $>$\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classtesting_1_1internal_1_1DoAllAction_3_01InitialAction_00_01OtherActions_8_8_8_01_4}
+\end{center}
+\end{figure}
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structtesting_1_1internal_1_1DoAllAction_3_01InitialAction_00_01OtherActions_8_8_8_01_4_1_1UserConstructorTag}{User\+Constructor\+Tag}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$typename T , typename... U$>$ }\\\mbox{\hyperlink{classtesting_1_1internal_1_1DoAllAction_3_01InitialAction_00_01OtherActions_8_8_8_01_4_a726288a771d93b49da88125f2499d067}{Do\+All\+Action}} (User\+Constructor\+Tag, T \&\&initial\+\_\+action, U \&\&... other\+\_\+actions)
+\item 
+{\footnotesize template$<$typename R , typename... Args, typename std\+::enable\+\_\+if$<$ conjunction$<$ std\+::is\+\_\+convertible$<$ Initial\+Action, Once\+Action$<$ void(\+Initial\+Action\+Arg\+Type$<$ Args $>$...)$>$$>$, std\+::is\+\_\+convertible$<$ Base, Once\+Action$<$ R(\+Args...)$>$$>$$>$\+::value , int , \+::type  = 0$>$ }\\\mbox{\hyperlink{classtesting_1_1internal_1_1DoAllAction_3_01InitialAction_00_01OtherActions_8_8_8_01_4_a38629b382b845e636276b41c6df8c2e1}{operator Once\+Action$<$ R}} (Args...)$>$() \&\&
+\item 
+{\footnotesize template$<$typename R , typename... Args, typename std\+::enable\+\_\+if$<$ conjunction$<$ std\+::is\+\_\+convertible$<$ const Initial\+Action \&, Action$<$ void(\+Initial\+Action\+Arg\+Type$<$ Args $>$...)$>$$>$, std\+::is\+\_\+convertible$<$ const Base \&, Action$<$ R(\+Args...)$>$$>$$>$\+::value , int , \+::type  = 0$>$ }\\\mbox{\hyperlink{classtesting_1_1internal_1_1DoAllAction_3_01InitialAction_00_01OtherActions_8_8_8_01_4_a04f8b373d07f4319cc99d35a4c7ec4a1}{operator Action$<$ R}} (Args...)$>$() const
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Types}
+\begin{DoxyCompactItemize}
+\item 
+using \mbox{\hyperlink{classtesting_1_1internal_1_1DoAllAction_3_01InitialAction_00_01OtherActions_8_8_8_01_4_a7964daeb499005a4e0851f81e4d1d655}{Base}} = \mbox{\hyperlink{classtesting_1_1internal_1_1DoAllAction}{Do\+All\+Action}}$<$ Other\+Actions... $>$
+\item 
+{\footnotesize template$<$typename T $>$ }\\using \mbox{\hyperlink{classtesting_1_1internal_1_1DoAllAction_3_01InitialAction_00_01OtherActions_8_8_8_01_4_a987755f76db9360758588df764634311}{Initial\+Action\+Arg\+Type}} = typename std\+::conditional$<$ std\+::is\+\_\+scalar$<$ T $>$\+::value, T, const T \& $>$\+::type
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+Initial\+Action \mbox{\hyperlink{classtesting_1_1internal_1_1DoAllAction_3_01InitialAction_00_01OtherActions_8_8_8_01_4_a522fb52e0a16a4207c59fad201aea332}{initial\+\_\+action\+\_\+}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Typedef Documentation}
+\mbox{\Hypertarget{classtesting_1_1internal_1_1DoAllAction_3_01InitialAction_00_01OtherActions_8_8_8_01_4_a7964daeb499005a4e0851f81e4d1d655}\label{classtesting_1_1internal_1_1DoAllAction_3_01InitialAction_00_01OtherActions_8_8_8_01_4_a7964daeb499005a4e0851f81e4d1d655}} 
+\index{testing::internal::DoAllAction$<$ InitialAction, OtherActions... $>$@{testing::internal::DoAllAction$<$ InitialAction, OtherActions... $>$}!Base@{Base}}
+\index{Base@{Base}!testing::internal::DoAllAction$<$ InitialAction, OtherActions... $>$@{testing::internal::DoAllAction$<$ InitialAction, OtherActions... $>$}}
+\doxysubsubsection{\texorpdfstring{Base}{Base}}
+{\footnotesize\ttfamily template$<$typename Initial\+Action , typename... Other\+Actions$>$ \\
+using \mbox{\hyperlink{classtesting_1_1internal_1_1DoAllAction}{testing\+::internal\+::\+Do\+All\+Action}}$<$ Initial\+Action, Other\+Actions... $>$\+::\mbox{\hyperlink{classtesting_1_1internal_1_1DoAllAction_3_01InitialAction_00_01OtherActions_8_8_8_01_4_a7964daeb499005a4e0851f81e4d1d655}{Base}} =  \mbox{\hyperlink{classtesting_1_1internal_1_1DoAllAction}{Do\+All\+Action}}$<$Other\+Actions...$>$\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classtesting_1_1internal_1_1DoAllAction_3_01InitialAction_00_01OtherActions_8_8_8_01_4_a987755f76db9360758588df764634311}\label{classtesting_1_1internal_1_1DoAllAction_3_01InitialAction_00_01OtherActions_8_8_8_01_4_a987755f76db9360758588df764634311}} 
+\index{testing::internal::DoAllAction$<$ InitialAction, OtherActions... $>$@{testing::internal::DoAllAction$<$ InitialAction, OtherActions... $>$}!InitialActionArgType@{InitialActionArgType}}
+\index{InitialActionArgType@{InitialActionArgType}!testing::internal::DoAllAction$<$ InitialAction, OtherActions... $>$@{testing::internal::DoAllAction$<$ InitialAction, OtherActions... $>$}}
+\doxysubsubsection{\texorpdfstring{InitialActionArgType}{InitialActionArgType}}
+{\footnotesize\ttfamily template$<$typename Initial\+Action , typename... Other\+Actions$>$ \\
+template$<$typename T $>$ \\
+using \mbox{\hyperlink{classtesting_1_1internal_1_1DoAllAction}{testing\+::internal\+::\+Do\+All\+Action}}$<$ Initial\+Action, Other\+Actions... $>$\+::\mbox{\hyperlink{classtesting_1_1internal_1_1DoAllAction_3_01InitialAction_00_01OtherActions_8_8_8_01_4_a987755f76db9360758588df764634311}{Initial\+Action\+Arg\+Type}} =  typename std\+::conditional$<$std\+::is\+\_\+scalar$<$T$>$\+::value, T, const T\&$>$\+::type\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classtesting_1_1internal_1_1DoAllAction_3_01InitialAction_00_01OtherActions_8_8_8_01_4_a726288a771d93b49da88125f2499d067}\label{classtesting_1_1internal_1_1DoAllAction_3_01InitialAction_00_01OtherActions_8_8_8_01_4_a726288a771d93b49da88125f2499d067}} 
+\index{testing::internal::DoAllAction$<$ InitialAction, OtherActions... $>$@{testing::internal::DoAllAction$<$ InitialAction, OtherActions... $>$}!DoAllAction@{DoAllAction}}
+\index{DoAllAction@{DoAllAction}!testing::internal::DoAllAction$<$ InitialAction, OtherActions... $>$@{testing::internal::DoAllAction$<$ InitialAction, OtherActions... $>$}}
+\doxysubsubsection{\texorpdfstring{DoAllAction()}{DoAllAction()}}
+{\footnotesize\ttfamily template$<$typename Initial\+Action , typename... Other\+Actions$>$ \\
+template$<$typename T , typename... U$>$ \\
+\mbox{\hyperlink{classtesting_1_1internal_1_1DoAllAction}{testing\+::internal\+::\+Do\+All\+Action}}$<$ Initial\+Action, Other\+Actions... $>$\+::\mbox{\hyperlink{classtesting_1_1internal_1_1DoAllAction}{Do\+All\+Action}} (\begin{DoxyParamCaption}\item[{User\+Constructor\+Tag}]{,  }\item[{T \&\&}]{initial\+\_\+action,  }\item[{U \&\&...}]{other\+\_\+actions }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [explicit]}}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classtesting_1_1internal_1_1DoAllAction_3_01InitialAction_00_01OtherActions_8_8_8_01_4_a04f8b373d07f4319cc99d35a4c7ec4a1}\label{classtesting_1_1internal_1_1DoAllAction_3_01InitialAction_00_01OtherActions_8_8_8_01_4_a04f8b373d07f4319cc99d35a4c7ec4a1}} 
+\index{testing::internal::DoAllAction$<$ InitialAction, OtherActions... $>$@{testing::internal::DoAllAction$<$ InitialAction, OtherActions... $>$}!operator Action$<$ R@{operator Action$<$ R}}
+\index{operator Action$<$ R@{operator Action$<$ R}!testing::internal::DoAllAction$<$ InitialAction, OtherActions... $>$@{testing::internal::DoAllAction$<$ InitialAction, OtherActions... $>$}}
+\doxysubsubsection{\texorpdfstring{operator Action$<$ R()}{operator Action< R()}}
+{\footnotesize\ttfamily template$<$typename Initial\+Action , typename... Other\+Actions$>$ \\
+template$<$typename R , typename... Args, typename std\+::enable\+\_\+if$<$ conjunction$<$ std\+::is\+\_\+convertible$<$ const Initial\+Action \&, Action$<$ void(\+Initial\+Action\+Arg\+Type$<$ Args $>$...)$>$$>$, std\+::is\+\_\+convertible$<$ const Base \&, Action$<$ R(\+Args...)$>$$>$$>$\+::value , int , \+::type  = 0$>$ \\
+\mbox{\hyperlink{classtesting_1_1internal_1_1DoAllAction}{testing\+::internal\+::\+Do\+All\+Action}}$<$ Initial\+Action, Other\+Actions... $>$\+::operator \mbox{\hyperlink{classtesting_1_1Action}{Action}}$<$ R (\begin{DoxyParamCaption}\item[{Args...}]{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classtesting_1_1internal_1_1DoAllAction_3_01InitialAction_00_01OtherActions_8_8_8_01_4_a38629b382b845e636276b41c6df8c2e1}\label{classtesting_1_1internal_1_1DoAllAction_3_01InitialAction_00_01OtherActions_8_8_8_01_4_a38629b382b845e636276b41c6df8c2e1}} 
+\index{testing::internal::DoAllAction$<$ InitialAction, OtherActions... $>$@{testing::internal::DoAllAction$<$ InitialAction, OtherActions... $>$}!operator OnceAction$<$ R@{operator OnceAction$<$ R}}
+\index{operator OnceAction$<$ R@{operator OnceAction$<$ R}!testing::internal::DoAllAction$<$ InitialAction, OtherActions... $>$@{testing::internal::DoAllAction$<$ InitialAction, OtherActions... $>$}}
+\doxysubsubsection{\texorpdfstring{operator OnceAction$<$ R()}{operator OnceAction< R()}}
+{\footnotesize\ttfamily template$<$typename Initial\+Action , typename... Other\+Actions$>$ \\
+template$<$typename R , typename... Args, typename std\+::enable\+\_\+if$<$ conjunction$<$ std\+::is\+\_\+convertible$<$ Initial\+Action, Once\+Action$<$ void(\+Initial\+Action\+Arg\+Type$<$ Args $>$...)$>$$>$, std\+::is\+\_\+convertible$<$ Base, Once\+Action$<$ R(\+Args...)$>$$>$$>$\+::value , int , \+::type  = 0$>$ \\
+\mbox{\hyperlink{classtesting_1_1internal_1_1DoAllAction}{testing\+::internal\+::\+Do\+All\+Action}}$<$ Initial\+Action, Other\+Actions... $>$\+::operator \mbox{\hyperlink{classtesting_1_1OnceAction}{Once\+Action}}$<$ R (\begin{DoxyParamCaption}\item[{Args...}]{ }\end{DoxyParamCaption}) \&\&\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classtesting_1_1internal_1_1DoAllAction_3_01InitialAction_00_01OtherActions_8_8_8_01_4_a522fb52e0a16a4207c59fad201aea332}\label{classtesting_1_1internal_1_1DoAllAction_3_01InitialAction_00_01OtherActions_8_8_8_01_4_a522fb52e0a16a4207c59fad201aea332}} 
+\index{testing::internal::DoAllAction$<$ InitialAction, OtherActions... $>$@{testing::internal::DoAllAction$<$ InitialAction, OtherActions... $>$}!initial\_action\_@{initial\_action\_}}
+\index{initial\_action\_@{initial\_action\_}!testing::internal::DoAllAction$<$ InitialAction, OtherActions... $>$@{testing::internal::DoAllAction$<$ InitialAction, OtherActions... $>$}}
+\doxysubsubsection{\texorpdfstring{initial\_action\_}{initial\_action\_}}
+{\footnotesize\ttfamily template$<$typename Initial\+Action , typename... Other\+Actions$>$ \\
+Initial\+Action \mbox{\hyperlink{classtesting_1_1internal_1_1DoAllAction}{testing\+::internal\+::\+Do\+All\+Action}}$<$ Initial\+Action, Other\+Actions... $>$\+::initial\+\_\+action\+\_\+\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\+\_\+deps/googletest-\/src/googlemock/include/gmock/\mbox{\hyperlink{gmock-actions_8h}{gmock-\/actions.\+h}}\end{DoxyCompactItemize}

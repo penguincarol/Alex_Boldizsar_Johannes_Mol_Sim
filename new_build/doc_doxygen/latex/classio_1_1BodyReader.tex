@@ -1,0 +1,85 @@
+\hypertarget{classio_1_1BodyReader}{}\doxysection{io\+::Body\+Reader Class Reference}
+\label{classio_1_1BodyReader}\index{io::BodyReader@{io::BodyReader}}
+
+
+{\ttfamily \#include $<$Body\+Reader.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classio_1_1BodyReader_a03521d016a7abd43859084686ee138f1}{Body\+Reader}} ()
+\item 
+virtual \mbox{\hyperlink{classio_1_1BodyReader_a53b5065b4c616aa6d31771c02857be37}{$\sim$\+Body\+Reader}} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static void \mbox{\hyperlink{classio_1_1BodyReader_a6dfe4a6a58351caf42979b1bebc54903}{read\+File}} (const char $\ast$filename, std\+::list$<$ \mbox{\hyperlink{classParticle}{Particle}} $>$ \&buffer, double \&eps, double \&sig)
+\begin{DoxyCompactList}\small\item\em Reads bodies from given input file and calls the particle\+Generator to create the right Particles. \end{DoxyCompactList}\item 
+static enum \mbox{\hyperlink{Body_8h_a55b506070847a13554f8b879c1bfb37c}{Shape}} \mbox{\hyperlink{classio_1_1BodyReader_afc00a03c233d545990211ab3c4d4e371}{shape\+From\+String}} (std\+::string \&shape)
+\begin{DoxyCompactList}\small\item\em Converts the String describing a shape to the according shape not case sensitive helper function. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classio_1_1BodyReader_a03521d016a7abd43859084686ee138f1}\label{classio_1_1BodyReader_a03521d016a7abd43859084686ee138f1}} 
+\index{io::BodyReader@{io::BodyReader}!BodyReader@{BodyReader}}
+\index{BodyReader@{BodyReader}!io::BodyReader@{io::BodyReader}}
+\doxysubsubsection{\texorpdfstring{BodyReader()}{BodyReader()}}
+{\footnotesize\ttfamily io\+::\+Body\+Reader\+::\+Body\+Reader (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [default]}}
+
+\mbox{\Hypertarget{classio_1_1BodyReader_a53b5065b4c616aa6d31771c02857be37}\label{classio_1_1BodyReader_a53b5065b4c616aa6d31771c02857be37}} 
+\index{io::BodyReader@{io::BodyReader}!````~BodyReader@{$\sim$BodyReader}}
+\index{````~BodyReader@{$\sim$BodyReader}!io::BodyReader@{io::BodyReader}}
+\doxysubsubsection{\texorpdfstring{$\sim$BodyReader()}{~BodyReader()}}
+{\footnotesize\ttfamily io\+::\+Body\+Reader\+::$\sim$\+Body\+Reader (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}, {\ttfamily [default]}}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classio_1_1BodyReader_a6dfe4a6a58351caf42979b1bebc54903}\label{classio_1_1BodyReader_a6dfe4a6a58351caf42979b1bebc54903}} 
+\index{io::BodyReader@{io::BodyReader}!readFile@{readFile}}
+\index{readFile@{readFile}!io::BodyReader@{io::BodyReader}}
+\doxysubsubsection{\texorpdfstring{readFile()}{readFile()}}
+{\footnotesize\ttfamily void io\+::\+Body\+Reader\+::read\+File (\begin{DoxyParamCaption}\item[{const char $\ast$}]{filename,  }\item[{std\+::list$<$ \mbox{\hyperlink{classParticle}{Particle}} $>$ \&}]{buffer,  }\item[{double \&}]{eps,  }\item[{double \&}]{sig }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Reads bodies from given input file and calls the particle\+Generator to create the right Particles. 
+
+\hypertarget{classio_1_1BodyReader_autotoc_md0}{}\doxysubsection{lines at the beginning are comments}\label{classio_1_1BodyReader_autotoc_md0}
+in a single line there are the amount of shapes (lines) coming (referred to as n) After that the lines next n lines have follow one of the following pattern\+: \mbox{[}fixpoint (vector)\mbox{]} \mbox{[}velocity (vector)\mbox{]} \mbox{[}mass\mbox{]} \mbox{[}fixpoint (vector)\mbox{]} \mbox{[}velocity (vector)\mbox{]} \mbox{[}mass\mbox{]} \mbox{[}Shape\mbox{]} \mbox{[}dimensions (vector)\mbox{]} distance After that comments are allowed again (starting with a \#) the next non-\/comment line contains epsilon and sigma example\+: 0.\+0 0.\+0 0.\+0 0.\+0 0.\+0 0.\+0 1.\+0 0.\+0 0.\+0 0.\+0 0.\+0 0.\+0 0.\+0 1.\+0 Cuboid 4 5 6 1.\+0 \hypertarget{classio_1_1BodyReader_autotoc_md1}{}\doxysubsection{epsilon    sigma}\label{classio_1_1BodyReader_autotoc_md1}
+0.\+1 0.\+2 
+\begin{DoxyParams}{Parameters}
+{\em filename} & is the path to the input file \\
+\hline
+{\em buffer} & is where all generated particles will be stored in \\
+\hline
+{\em eps,location} & for epsilon \\
+\hline
+{\em sig,location} & for sigma \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classio_1_1BodyReader_afc00a03c233d545990211ab3c4d4e371}\label{classio_1_1BodyReader_afc00a03c233d545990211ab3c4d4e371}} 
+\index{io::BodyReader@{io::BodyReader}!shapeFromString@{shapeFromString}}
+\index{shapeFromString@{shapeFromString}!io::BodyReader@{io::BodyReader}}
+\doxysubsubsection{\texorpdfstring{shapeFromString()}{shapeFromString()}}
+{\footnotesize\ttfamily enum \mbox{\hyperlink{Body_8h_a55b506070847a13554f8b879c1bfb37c}{Shape}} io\+::\+Body\+Reader\+::shape\+From\+String (\begin{DoxyParamCaption}\item[{std\+::string \&}]{shape }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Converts the String describing a shape to the according shape not case sensitive helper function. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em shape} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+enum Shape 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/johnny/git/\+Alex\+\_\+\+Jan\+\_\+\+Johannes\+\_\+\+Mol\+\_\+\+Sim/src/io/\mbox{\hyperlink{BodyReader_8h}{Body\+Reader.\+h}}\item 
+/home/johnny/git/\+Alex\+\_\+\+Jan\+\_\+\+Johannes\+\_\+\+Mol\+\_\+\+Sim/src/io/\mbox{\hyperlink{BodyReader_8cpp}{Body\+Reader.\+cpp}}\end{DoxyCompactItemize}

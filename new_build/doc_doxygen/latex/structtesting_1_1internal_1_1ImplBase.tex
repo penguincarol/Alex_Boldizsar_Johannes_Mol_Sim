@@ -1,0 +1,31 @@
+\hypertarget{structtesting_1_1internal_1_1ImplBase}{}\doxysection{testing\+::internal\+::Impl\+Base$<$ Impl $>$ Struct Template Reference}
+\label{structtesting_1_1internal_1_1ImplBase}\index{testing::internal::ImplBase$<$ Impl $>$@{testing::internal::ImplBase$<$ Impl $>$}}
+
+
+{\ttfamily \#include $<$gmock-\/actions.\+h$>$}
+
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structtesting_1_1internal_1_1ImplBase_1_1Holder}{Holder}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+using \mbox{\hyperlink{structtesting_1_1internal_1_1ImplBase_a7c9f35d6b67639c1be1d422b58ba53d4}{type}} = typename std\+::conditional$<$ std\+::is\+\_\+constructible$<$ Impl $>$\+::value, Impl, \mbox{\hyperlink{structtesting_1_1internal_1_1ImplBase_1_1Holder}{Holder}} $>$\+::\mbox{\hyperlink{structtesting_1_1internal_1_1ImplBase_a7c9f35d6b67639c1be1d422b58ba53d4}{type}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Typedef Documentation}
+\mbox{\Hypertarget{structtesting_1_1internal_1_1ImplBase_a7c9f35d6b67639c1be1d422b58ba53d4}\label{structtesting_1_1internal_1_1ImplBase_a7c9f35d6b67639c1be1d422b58ba53d4}} 
+\index{testing::internal::ImplBase$<$ Impl $>$@{testing::internal::ImplBase$<$ Impl $>$}!type@{type}}
+\index{type@{type}!testing::internal::ImplBase$<$ Impl $>$@{testing::internal::ImplBase$<$ Impl $>$}}
+\doxysubsubsection{\texorpdfstring{type}{type}}
+{\footnotesize\ttfamily template$<$typename Impl $>$ \\
+using \mbox{\hyperlink{structtesting_1_1internal_1_1ImplBase}{testing\+::internal\+::\+Impl\+Base}}$<$ Impl $>$\+::\mbox{\hyperlink{structtesting_1_1internal_1_1ImplBase_a7c9f35d6b67639c1be1d422b58ba53d4}{type}} =  typename std\+::conditional$<$std\+::is\+\_\+constructible$<$Impl$>$\+::value, Impl, \mbox{\hyperlink{structtesting_1_1internal_1_1ImplBase_1_1Holder}{Holder}}$>$\+::\mbox{\hyperlink{structtesting_1_1internal_1_1ImplBase_a7c9f35d6b67639c1be1d422b58ba53d4}{type}}}
+
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\+\_\+deps/googletest-\/src/googlemock/include/gmock/\mbox{\hyperlink{gmock-actions_8h}{gmock-\/actions.\+h}}\end{DoxyCompactItemize}

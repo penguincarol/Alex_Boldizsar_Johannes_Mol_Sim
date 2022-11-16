@@ -1,0 +1,59 @@
+\hypertarget{classtesting_1_1OnceAction_3_01Result_07Args_8_8_8_08_4_1_1StdFunctionAdaptor}{}\doxysection{testing\+::Once\+Action$<$ Result(Args...)$>$\+::Std\+Function\+Adaptor$<$ Callable $>$ Class Template Reference}
+\label{classtesting_1_1OnceAction_3_01Result_07Args_8_8_8_08_4_1_1StdFunctionAdaptor}\index{testing::OnceAction$<$ Result(Args...)$>$::StdFunctionAdaptor$<$ Callable $>$@{testing::OnceAction$<$ Result(Args...)$>$::StdFunctionAdaptor$<$ Callable $>$}}
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structtesting_1_1OnceAction_3_01Result_07Args_8_8_8_08_4_1_1StdFunctionAdaptor_1_1CallableTag}{Callable\+Tag}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$typename F $>$ }\\\mbox{\hyperlink{classtesting_1_1OnceAction_3_01Result_07Args_8_8_8_08_4_1_1StdFunctionAdaptor_a7cb3027672e28834bb37159351fc99ec}{Std\+Function\+Adaptor}} (Callable\+Tag, F \&\&callable)
+\item 
+{\footnotesize template$<$typename... Arg\+Refs$>$ }\\\mbox{\hyperlink{namespacetesting_1_1internal_a0a61862facc8ddb769accc344d495bd3}{internal\+::call\+\_\+result\+\_\+t}}$<$ Callable, Arg\+Refs... $>$ \mbox{\hyperlink{classtesting_1_1OnceAction_3_01Result_07Args_8_8_8_08_4_1_1StdFunctionAdaptor_a23beafff598c0f9b4c6721ed190c135a}{operator()}} (Arg\+Refs \&\&... args) const
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\+::shared\+\_\+ptr$<$ Callable $>$ \mbox{\hyperlink{classtesting_1_1OnceAction_3_01Result_07Args_8_8_8_08_4_1_1StdFunctionAdaptor_aaf1e734f73e2f9497cf4fba8960daa49}{callable\+\_\+}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classtesting_1_1OnceAction_3_01Result_07Args_8_8_8_08_4_1_1StdFunctionAdaptor_a7cb3027672e28834bb37159351fc99ec}\label{classtesting_1_1OnceAction_3_01Result_07Args_8_8_8_08_4_1_1StdFunctionAdaptor_a7cb3027672e28834bb37159351fc99ec}} 
+\index{testing::OnceAction$<$ Result(Args...)$>$::StdFunctionAdaptor$<$ Callable $>$@{testing::OnceAction$<$ Result(Args...)$>$::StdFunctionAdaptor$<$ Callable $>$}!StdFunctionAdaptor@{StdFunctionAdaptor}}
+\index{StdFunctionAdaptor@{StdFunctionAdaptor}!testing::OnceAction$<$ Result(Args...)$>$::StdFunctionAdaptor$<$ Callable $>$@{testing::OnceAction$<$ Result(Args...)$>$::StdFunctionAdaptor$<$ Callable $>$}}
+\doxysubsubsection{\texorpdfstring{StdFunctionAdaptor()}{StdFunctionAdaptor()}}
+{\footnotesize\ttfamily template$<$typename Result , typename... Args$>$ \\
+template$<$typename Callable $>$ \\
+template$<$typename F $>$ \\
+\mbox{\hyperlink{classtesting_1_1OnceAction}{testing\+::\+Once\+Action}}$<$ Result(Args...)$>$\+::Std\+Function\+Adaptor$<$ Callable $>$\+::Std\+Function\+Adaptor (\begin{DoxyParamCaption}\item[{Callable\+Tag}]{,  }\item[{F \&\&}]{callable }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [explicit]}}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classtesting_1_1OnceAction_3_01Result_07Args_8_8_8_08_4_1_1StdFunctionAdaptor_a23beafff598c0f9b4c6721ed190c135a}\label{classtesting_1_1OnceAction_3_01Result_07Args_8_8_8_08_4_1_1StdFunctionAdaptor_a23beafff598c0f9b4c6721ed190c135a}} 
+\index{testing::OnceAction$<$ Result(Args...)$>$::StdFunctionAdaptor$<$ Callable $>$@{testing::OnceAction$<$ Result(Args...)$>$::StdFunctionAdaptor$<$ Callable $>$}!operator()@{operator()}}
+\index{operator()@{operator()}!testing::OnceAction$<$ Result(Args...)$>$::StdFunctionAdaptor$<$ Callable $>$@{testing::OnceAction$<$ Result(Args...)$>$::StdFunctionAdaptor$<$ Callable $>$}}
+\doxysubsubsection{\texorpdfstring{operator()()}{operator()()}}
+{\footnotesize\ttfamily template$<$typename Result , typename... Args$>$ \\
+template$<$typename Callable $>$ \\
+template$<$typename... Arg\+Refs$>$ \\
+\mbox{\hyperlink{namespacetesting_1_1internal_a0a61862facc8ddb769accc344d495bd3}{internal\+::call\+\_\+result\+\_\+t}}$<$Callable, Arg\+Refs...$>$ \mbox{\hyperlink{classtesting_1_1OnceAction}{testing\+::\+Once\+Action}}$<$ Result(Args...)$>$\+::\mbox{\hyperlink{classtesting_1_1OnceAction_3_01Result_07Args_8_8_8_08_4_1_1StdFunctionAdaptor_a7cb3027672e28834bb37159351fc99ec}{Std\+Function\+Adaptor}}$<$ Callable $>$\+::operator() (\begin{DoxyParamCaption}\item[{Arg\+Refs \&\&...}]{args }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classtesting_1_1OnceAction_3_01Result_07Args_8_8_8_08_4_1_1StdFunctionAdaptor_aaf1e734f73e2f9497cf4fba8960daa49}\label{classtesting_1_1OnceAction_3_01Result_07Args_8_8_8_08_4_1_1StdFunctionAdaptor_aaf1e734f73e2f9497cf4fba8960daa49}} 
+\index{testing::OnceAction$<$ Result(Args...)$>$::StdFunctionAdaptor$<$ Callable $>$@{testing::OnceAction$<$ Result(Args...)$>$::StdFunctionAdaptor$<$ Callable $>$}!callable\_@{callable\_}}
+\index{callable\_@{callable\_}!testing::OnceAction$<$ Result(Args...)$>$::StdFunctionAdaptor$<$ Callable $>$@{testing::OnceAction$<$ Result(Args...)$>$::StdFunctionAdaptor$<$ Callable $>$}}
+\doxysubsubsection{\texorpdfstring{callable\_}{callable\_}}
+{\footnotesize\ttfamily template$<$typename Result , typename... Args$>$ \\
+template$<$typename Callable $>$ \\
+std\+::shared\+\_\+ptr$<$Callable$>$ \mbox{\hyperlink{classtesting_1_1OnceAction}{testing\+::\+Once\+Action}}$<$ Result(Args...)$>$\+::\mbox{\hyperlink{classtesting_1_1OnceAction_3_01Result_07Args_8_8_8_08_4_1_1StdFunctionAdaptor_a7cb3027672e28834bb37159351fc99ec}{Std\+Function\+Adaptor}}$<$ Callable $>$\+::callable\+\_\+\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\+\_\+deps/googletest-\/src/googlemock/include/gmock/\mbox{\hyperlink{gmock-actions_8h}{gmock-\/actions.\+h}}\end{DoxyCompactItemize}

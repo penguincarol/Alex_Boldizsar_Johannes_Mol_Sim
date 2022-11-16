@@ -1,0 +1,70 @@
+\hypertarget{classtesting_1_1internal_1_1DoAllAction_3_01FinalAction_01_4}{}\doxysection{testing\+::internal\+::Do\+All\+Action$<$ Final\+Action $>$ Class Template Reference}
+\label{classtesting_1_1internal_1_1DoAllAction_3_01FinalAction_01_4}\index{testing::internal::DoAllAction$<$ FinalAction $>$@{testing::internal::DoAllAction$<$ FinalAction $>$}}
+
+
+{\ttfamily \#include $<$gmock-\/actions.\+h$>$}
+
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structtesting_1_1internal_1_1DoAllAction_3_01FinalAction_01_4_1_1UserConstructorTag}{User\+Constructor\+Tag}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$typename T $>$ }\\\mbox{\hyperlink{classtesting_1_1internal_1_1DoAllAction_3_01FinalAction_01_4_a3b684657848bea3f1b498a1c9b65a346}{Do\+All\+Action}} (User\+Constructor\+Tag, T \&\&action)
+\item 
+{\footnotesize template$<$typename R , typename... Args, typename std\+::enable\+\_\+if$<$ std\+::is\+\_\+convertible$<$ Final\+Action, Once\+Action$<$ R(\+Args...)$>$$>$\+::value, int $>$\+::type  = 0$>$ }\\\mbox{\hyperlink{classtesting_1_1internal_1_1DoAllAction_3_01FinalAction_01_4_a15c6ce41453fb2668717ca2f69a0ef06}{operator Once\+Action$<$ R}} (Args...)$>$() \&\&
+\item 
+{\footnotesize template$<$typename R , typename... Args, typename std\+::enable\+\_\+if$<$ std\+::is\+\_\+convertible$<$ const Final\+Action \&, Action$<$ R(\+Args...)$>$$>$\+::value, int $>$\+::type  = 0$>$ }\\\mbox{\hyperlink{classtesting_1_1internal_1_1DoAllAction_3_01FinalAction_01_4_acc23595cbb083c3d6f2af3a13ca4d948}{operator Action$<$ R}} (Args...)$>$() const
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+Final\+Action \mbox{\hyperlink{classtesting_1_1internal_1_1DoAllAction_3_01FinalAction_01_4_a5f86fd2d99070888882b7da6cb219832}{final\+\_\+action\+\_\+}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classtesting_1_1internal_1_1DoAllAction_3_01FinalAction_01_4_a3b684657848bea3f1b498a1c9b65a346}\label{classtesting_1_1internal_1_1DoAllAction_3_01FinalAction_01_4_a3b684657848bea3f1b498a1c9b65a346}} 
+\index{testing::internal::DoAllAction$<$ FinalAction $>$@{testing::internal::DoAllAction$<$ FinalAction $>$}!DoAllAction@{DoAllAction}}
+\index{DoAllAction@{DoAllAction}!testing::internal::DoAllAction$<$ FinalAction $>$@{testing::internal::DoAllAction$<$ FinalAction $>$}}
+\doxysubsubsection{\texorpdfstring{DoAllAction()}{DoAllAction()}}
+{\footnotesize\ttfamily template$<$typename Final\+Action $>$ \\
+template$<$typename T $>$ \\
+\mbox{\hyperlink{classtesting_1_1internal_1_1DoAllAction}{testing\+::internal\+::\+Do\+All\+Action}}$<$ Final\+Action $>$\+::\mbox{\hyperlink{classtesting_1_1internal_1_1DoAllAction}{Do\+All\+Action}} (\begin{DoxyParamCaption}\item[{User\+Constructor\+Tag}]{,  }\item[{T \&\&}]{action }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [explicit]}}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classtesting_1_1internal_1_1DoAllAction_3_01FinalAction_01_4_acc23595cbb083c3d6f2af3a13ca4d948}\label{classtesting_1_1internal_1_1DoAllAction_3_01FinalAction_01_4_acc23595cbb083c3d6f2af3a13ca4d948}} 
+\index{testing::internal::DoAllAction$<$ FinalAction $>$@{testing::internal::DoAllAction$<$ FinalAction $>$}!operator Action$<$ R@{operator Action$<$ R}}
+\index{operator Action$<$ R@{operator Action$<$ R}!testing::internal::DoAllAction$<$ FinalAction $>$@{testing::internal::DoAllAction$<$ FinalAction $>$}}
+\doxysubsubsection{\texorpdfstring{operator Action$<$ R()}{operator Action< R()}}
+{\footnotesize\ttfamily template$<$typename Final\+Action $>$ \\
+template$<$typename R , typename... Args, typename std\+::enable\+\_\+if$<$ std\+::is\+\_\+convertible$<$ const Final\+Action \&, Action$<$ R(\+Args...)$>$$>$\+::value, int $>$\+::type  = 0$>$ \\
+\mbox{\hyperlink{classtesting_1_1internal_1_1DoAllAction}{testing\+::internal\+::\+Do\+All\+Action}}$<$ Final\+Action $>$\+::operator \mbox{\hyperlink{classtesting_1_1Action}{Action}}$<$ R (\begin{DoxyParamCaption}\item[{Args...}]{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classtesting_1_1internal_1_1DoAllAction_3_01FinalAction_01_4_a15c6ce41453fb2668717ca2f69a0ef06}\label{classtesting_1_1internal_1_1DoAllAction_3_01FinalAction_01_4_a15c6ce41453fb2668717ca2f69a0ef06}} 
+\index{testing::internal::DoAllAction$<$ FinalAction $>$@{testing::internal::DoAllAction$<$ FinalAction $>$}!operator OnceAction$<$ R@{operator OnceAction$<$ R}}
+\index{operator OnceAction$<$ R@{operator OnceAction$<$ R}!testing::internal::DoAllAction$<$ FinalAction $>$@{testing::internal::DoAllAction$<$ FinalAction $>$}}
+\doxysubsubsection{\texorpdfstring{operator OnceAction$<$ R()}{operator OnceAction< R()}}
+{\footnotesize\ttfamily template$<$typename Final\+Action $>$ \\
+template$<$typename R , typename... Args, typename std\+::enable\+\_\+if$<$ std\+::is\+\_\+convertible$<$ Final\+Action, Once\+Action$<$ R(\+Args...)$>$$>$\+::value, int $>$\+::type  = 0$>$ \\
+\mbox{\hyperlink{classtesting_1_1internal_1_1DoAllAction}{testing\+::internal\+::\+Do\+All\+Action}}$<$ Final\+Action $>$\+::operator \mbox{\hyperlink{classtesting_1_1OnceAction}{Once\+Action}}$<$ R (\begin{DoxyParamCaption}\item[{Args...}]{ }\end{DoxyParamCaption}) \&\&\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classtesting_1_1internal_1_1DoAllAction_3_01FinalAction_01_4_a5f86fd2d99070888882b7da6cb219832}\label{classtesting_1_1internal_1_1DoAllAction_3_01FinalAction_01_4_a5f86fd2d99070888882b7da6cb219832}} 
+\index{testing::internal::DoAllAction$<$ FinalAction $>$@{testing::internal::DoAllAction$<$ FinalAction $>$}!final\_action\_@{final\_action\_}}
+\index{final\_action\_@{final\_action\_}!testing::internal::DoAllAction$<$ FinalAction $>$@{testing::internal::DoAllAction$<$ FinalAction $>$}}
+\doxysubsubsection{\texorpdfstring{final\_action\_}{final\_action\_}}
+{\footnotesize\ttfamily template$<$typename Final\+Action $>$ \\
+Final\+Action \mbox{\hyperlink{classtesting_1_1internal_1_1DoAllAction}{testing\+::internal\+::\+Do\+All\+Action}}$<$ Final\+Action $>$\+::final\+\_\+action\+\_\+\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\+\_\+deps/googletest-\/src/googlemock/include/gmock/\mbox{\hyperlink{gmock-actions_8h}{gmock-\/actions.\+h}}\end{DoxyCompactItemize}

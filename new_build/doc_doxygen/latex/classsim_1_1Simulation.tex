@@ -1,0 +1,62 @@
+\hypertarget{classsim_1_1Simulation}{}\doxysection{sim\+::Simulation$<$ calcF, calcX, calcV $>$ Class Template Reference}
+\label{classsim_1_1Simulation}\index{sim::Simulation$<$ calcF, calcX, calcV $>$@{sim::Simulation$<$ calcF, calcX, calcV $>$}}
+
+
+{\ttfamily \#include $<$Simulation.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classsim_1_1Simulation_a067e356712432bb9d3209b3ca83722b7}{Simulation}} (double st=\mbox{\hyperlink{defaults_8h_aff268e00b977ca8ea85fb9dfe699c605}{default\+\_\+start\+\_\+time}}, double et=\mbox{\hyperlink{defaults_8h_a4e706216f5058c24e7126883c65d86e5}{default\+\_\+end\+\_\+time}}, double dt=\mbox{\hyperlink{defaults_8h_a981e38dff49299a04c6d281424363373}{default\+\_\+delta\+\_\+t}}, double eps=\mbox{\hyperlink{defaults_8h_a2450109631c6b3b1bb08cbef55691713}{default\+\_\+epsilon}}, double sig=\mbox{\hyperlink{defaults_8h_a5bb889163ad1bf80733ceb2356962704}{default\+\_\+sigma}}, const std\+::string \&of=std\+::string\{\mbox{\hyperlink{defaults_8h_ae86c184e1b7a454f4446606471cb36ed}{default\+\_\+output\+\_\+folder}}\}, const std\+::string \&on=std\+::string\{\mbox{\hyperlink{defaults_8h_a117b812d83405194b7379923a6eab5f5}{default\+\_\+output\+\_\+base\+\_\+name}}\})
+\item 
+void \mbox{\hyperlink{classsim_1_1Simulation_a580ffbb38baadb8a6a45b78fa21cd468}{run}} ()
+\item 
+void \mbox{\hyperlink{classsim_1_1Simulation_ab67e16148f210f96f68623a74b11d79d}{run\+Benchmark}} (const int sim\+Iteration, const std\+::string \&input\+Data\+Source, const std\+::vector$<$ \mbox{\hyperlink{classParticle}{Particle}} $>$ \&starting\+Data)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$void  calcF = calculate\+FGravity, void  calcX = calculate\+XStoermer\+Velvet, void  calcV = calculate\+VStoermer\+Velvet$>$\newline
+class sim\+::\+Simulation$<$ calc\+F, calc\+X, calc\+V $>$}
+
+Wrapper for the actually used implementations during the simulation for the different calculation methods. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classsim_1_1Simulation_a067e356712432bb9d3209b3ca83722b7}\label{classsim_1_1Simulation_a067e356712432bb9d3209b3ca83722b7}} 
+\index{sim::Simulation$<$ calcF, calcX, calcV $>$@{sim::Simulation$<$ calcF, calcX, calcV $>$}!Simulation@{Simulation}}
+\index{Simulation@{Simulation}!sim::Simulation$<$ calcF, calcX, calcV $>$@{sim::Simulation$<$ calcF, calcX, calcV $>$}}
+\doxysubsubsection{\texorpdfstring{Simulation()}{Simulation()}}
+{\footnotesize\ttfamily template$<$void  calcF = calculate\+FGravity, void  calcX = calculate\+XStoermer\+Velvet, void  calcV = calculate\+VStoermer\+Velvet$>$ \\
+\mbox{\hyperlink{classsim_1_1Simulation}{sim\+::\+Simulation}}$<$ calcF, calcX, calcV $>$\+::\mbox{\hyperlink{classsim_1_1Simulation}{Simulation}} (\begin{DoxyParamCaption}\item[{double}]{st = {\ttfamily \mbox{\hyperlink{defaults_8h_aff268e00b977ca8ea85fb9dfe699c605}{default\+\_\+start\+\_\+time}}},  }\item[{double}]{et = {\ttfamily \mbox{\hyperlink{defaults_8h_a4e706216f5058c24e7126883c65d86e5}{default\+\_\+end\+\_\+time}}},  }\item[{double}]{dt = {\ttfamily \mbox{\hyperlink{defaults_8h_a981e38dff49299a04c6d281424363373}{default\+\_\+delta\+\_\+t}}},  }\item[{double}]{eps = {\ttfamily \mbox{\hyperlink{defaults_8h_a2450109631c6b3b1bb08cbef55691713}{default\+\_\+epsilon}}},  }\item[{double}]{sig = {\ttfamily \mbox{\hyperlink{defaults_8h_a5bb889163ad1bf80733ceb2356962704}{default\+\_\+sigma}}},  }\item[{const std\+::string \&}]{of = {\ttfamily std\+:\+:string\{\mbox{\hyperlink{defaults_8h_ae86c184e1b7a454f4446606471cb36ed}{default\+\_\+output\+\_\+folder}}\}},  }\item[{const std\+::string \&}]{on = {\ttfamily std\+:\+:string\{\mbox{\hyperlink{defaults_8h_a117b812d83405194b7379923a6eab5f5}{default\+\_\+output\+\_\+base\+\_\+name}}\}} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classsim_1_1Simulation_a580ffbb38baadb8a6a45b78fa21cd468}\label{classsim_1_1Simulation_a580ffbb38baadb8a6a45b78fa21cd468}} 
+\index{sim::Simulation$<$ calcF, calcX, calcV $>$@{sim::Simulation$<$ calcF, calcX, calcV $>$}!run@{run}}
+\index{run@{run}!sim::Simulation$<$ calcF, calcX, calcV $>$@{sim::Simulation$<$ calcF, calcX, calcV $>$}}
+\doxysubsubsection{\texorpdfstring{run()}{run()}}
+{\footnotesize\ttfamily template$<$void  calcF = calculate\+FGravity, void  calcX = calculate\+XStoermer\+Velvet, void  calcV = calculate\+VStoermer\+Velvet$>$ \\
+void \mbox{\hyperlink{classsim_1_1Simulation}{sim\+::\+Simulation}}$<$ calcF, calcX, calcV $>$\+::run (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Runs the simulation loop \mbox{\Hypertarget{classsim_1_1Simulation_ab67e16148f210f96f68623a74b11d79d}\label{classsim_1_1Simulation_ab67e16148f210f96f68623a74b11d79d}} 
+\index{sim::Simulation$<$ calcF, calcX, calcV $>$@{sim::Simulation$<$ calcF, calcX, calcV $>$}!runBenchmark@{runBenchmark}}
+\index{runBenchmark@{runBenchmark}!sim::Simulation$<$ calcF, calcX, calcV $>$@{sim::Simulation$<$ calcF, calcX, calcV $>$}}
+\doxysubsubsection{\texorpdfstring{runBenchmark()}{runBenchmark()}}
+{\footnotesize\ttfamily template$<$void  calcF = calculate\+FGravity, void  calcX = calculate\+XStoermer\+Velvet, void  calcV = calculate\+VStoermer\+Velvet$>$ \\
+void \mbox{\hyperlink{classsim_1_1Simulation}{sim\+::\+Simulation}}$<$ calcF, calcX, calcV $>$\+::run\+Benchmark (\begin{DoxyParamCaption}\item[{const int}]{sim\+Iteration,  }\item[{const std\+::string \&}]{input\+Data\+Source,  }\item[{const std\+::vector$<$ \mbox{\hyperlink{classParticle}{Particle}} $>$ \&}]{starting\+Data }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Runs the simulation and measures elapsed time. No output will be written during execution. 
+\begin{DoxyParams}{Parameters}
+{\em sim\+Iteration} & Amount of iterations the simulation should be performed, until average time is computed. \\
+\hline
+{\em input\+Data\+Source} & Name of where the starting data came from \\
+\hline
+{\em starting\+Data} & Data based on which the simulation should start \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/johnny/git/\+Alex\+\_\+\+Jan\+\_\+\+Johannes\+\_\+\+Mol\+\_\+\+Sim/src/\mbox{\hyperlink{Simulation_8h}{Simulation.\+h}}\end{DoxyCompactItemize}

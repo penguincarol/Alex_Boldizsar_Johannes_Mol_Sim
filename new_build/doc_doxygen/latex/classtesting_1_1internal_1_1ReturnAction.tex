@@ -1,0 +1,69 @@
+\hypertarget{classtesting_1_1internal_1_1ReturnAction}{}\doxysection{testing\+::internal\+::Return\+Action$<$ R $>$ Class Template Reference}
+\label{classtesting_1_1internal_1_1ReturnAction}\index{testing::internal::ReturnAction$<$ R $>$@{testing::internal::ReturnAction$<$ R $>$}}
+
+
+{\ttfamily \#include $<$gmock-\/actions.\+h$>$}
+
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{classtesting_1_1internal_1_1ReturnAction_1_1Impl}{Impl}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classtesting_1_1internal_1_1ReturnAction_af65344e503dae3ab36b4fd6d1ede6fb7}{Return\+Action}} (R value)
+\item 
+{\footnotesize template$<$typename U , typename... Args, typename  = typename std\+::enable\+\_\+if$<$conjunction$<$                                negation$<$std\+::is\+\_\+same$<$void, U$>$$>$,                  negation$<$std\+::is\+\_\+reference$<$\+U$>$$>$,                   std\+::is\+\_\+convertible$<$\+R, U$>$,                        std\+::is\+\_\+move\+\_\+constructible$<$\+U$>$$>$\+::value$>$\+::type$>$ }\\\mbox{\hyperlink{classtesting_1_1internal_1_1ReturnAction_a4739a4229acb1b4b4a741853170a16d4}{operator Once\+Action$<$ U}} (Args...)$>$() \&\&
+\item 
+{\footnotesize template$<$typename U , typename... Args, typename  = typename std\+::enable\+\_\+if$<$conjunction$<$                                negation$<$std\+::is\+\_\+same$<$void, U$>$$>$,                   negation$<$std\+::is\+\_\+reference$<$\+U$>$$>$,                    std\+::is\+\_\+convertible$<$const R\&, U$>$,                  std\+::is\+\_\+copy\+\_\+constructible$<$\+U$>$$>$\+::value$>$\+::type$>$ }\\\mbox{\hyperlink{classtesting_1_1internal_1_1ReturnAction_a9ece9726503ae107ff979396273593e6}{operator Action$<$ U}} (Args...)$>$() const
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+R \mbox{\hyperlink{classtesting_1_1internal_1_1ReturnAction_afddf55af218c9e3aff50a152ce669852}{value\+\_\+}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classtesting_1_1internal_1_1ReturnAction_af65344e503dae3ab36b4fd6d1ede6fb7}\label{classtesting_1_1internal_1_1ReturnAction_af65344e503dae3ab36b4fd6d1ede6fb7}} 
+\index{testing::internal::ReturnAction$<$ R $>$@{testing::internal::ReturnAction$<$ R $>$}!ReturnAction@{ReturnAction}}
+\index{ReturnAction@{ReturnAction}!testing::internal::ReturnAction$<$ R $>$@{testing::internal::ReturnAction$<$ R $>$}}
+\doxysubsubsection{\texorpdfstring{ReturnAction()}{ReturnAction()}}
+{\footnotesize\ttfamily template$<$typename R $>$ \\
+\mbox{\hyperlink{classtesting_1_1internal_1_1ReturnAction}{testing\+::internal\+::\+Return\+Action}}$<$ R $>$\+::\mbox{\hyperlink{classtesting_1_1internal_1_1ReturnAction}{Return\+Action}} (\begin{DoxyParamCaption}\item[{R}]{value }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [explicit]}}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classtesting_1_1internal_1_1ReturnAction_a9ece9726503ae107ff979396273593e6}\label{classtesting_1_1internal_1_1ReturnAction_a9ece9726503ae107ff979396273593e6}} 
+\index{testing::internal::ReturnAction$<$ R $>$@{testing::internal::ReturnAction$<$ R $>$}!operator Action$<$ U@{operator Action$<$ U}}
+\index{operator Action$<$ U@{operator Action$<$ U}!testing::internal::ReturnAction$<$ R $>$@{testing::internal::ReturnAction$<$ R $>$}}
+\doxysubsubsection{\texorpdfstring{operator Action$<$ U()}{operator Action< U()}}
+{\footnotesize\ttfamily template$<$typename R $>$ \\
+template$<$typename U , typename... Args, typename  = typename std\+::enable\+\_\+if$<$conjunction$<$                                negation$<$std\+::is\+\_\+same$<$void, U$>$$>$,                   negation$<$std\+::is\+\_\+reference$<$\+U$>$$>$,                    std\+::is\+\_\+convertible$<$const R\&, U$>$,                  std\+::is\+\_\+copy\+\_\+constructible$<$\+U$>$$>$\+::value$>$\+::type$>$ \\
+\mbox{\hyperlink{classtesting_1_1internal_1_1ReturnAction}{testing\+::internal\+::\+Return\+Action}}$<$ R $>$\+::operator \mbox{\hyperlink{classtesting_1_1Action}{Action}}$<$ U (\begin{DoxyParamCaption}\item[{Args...}]{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classtesting_1_1internal_1_1ReturnAction_a4739a4229acb1b4b4a741853170a16d4}\label{classtesting_1_1internal_1_1ReturnAction_a4739a4229acb1b4b4a741853170a16d4}} 
+\index{testing::internal::ReturnAction$<$ R $>$@{testing::internal::ReturnAction$<$ R $>$}!operator OnceAction$<$ U@{operator OnceAction$<$ U}}
+\index{operator OnceAction$<$ U@{operator OnceAction$<$ U}!testing::internal::ReturnAction$<$ R $>$@{testing::internal::ReturnAction$<$ R $>$}}
+\doxysubsubsection{\texorpdfstring{operator OnceAction$<$ U()}{operator OnceAction< U()}}
+{\footnotesize\ttfamily template$<$typename R $>$ \\
+template$<$typename U , typename... Args, typename  = typename std\+::enable\+\_\+if$<$conjunction$<$                                negation$<$std\+::is\+\_\+same$<$void, U$>$$>$,                  negation$<$std\+::is\+\_\+reference$<$\+U$>$$>$,                   std\+::is\+\_\+convertible$<$\+R, U$>$,                        std\+::is\+\_\+move\+\_\+constructible$<$\+U$>$$>$\+::value$>$\+::type$>$ \\
+\mbox{\hyperlink{classtesting_1_1internal_1_1ReturnAction}{testing\+::internal\+::\+Return\+Action}}$<$ R $>$\+::operator \mbox{\hyperlink{classtesting_1_1OnceAction}{Once\+Action}}$<$ U (\begin{DoxyParamCaption}\item[{Args...}]{ }\end{DoxyParamCaption}) \&\&\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classtesting_1_1internal_1_1ReturnAction_afddf55af218c9e3aff50a152ce669852}\label{classtesting_1_1internal_1_1ReturnAction_afddf55af218c9e3aff50a152ce669852}} 
+\index{testing::internal::ReturnAction$<$ R $>$@{testing::internal::ReturnAction$<$ R $>$}!value\_@{value\_}}
+\index{value\_@{value\_}!testing::internal::ReturnAction$<$ R $>$@{testing::internal::ReturnAction$<$ R $>$}}
+\doxysubsubsection{\texorpdfstring{value\_}{value\_}}
+{\footnotesize\ttfamily template$<$typename R $>$ \\
+R \mbox{\hyperlink{classtesting_1_1internal_1_1ReturnAction}{testing\+::internal\+::\+Return\+Action}}$<$ R $>$\+::value\+\_\+\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\+\_\+deps/googletest-\/src/googlemock/include/gmock/\mbox{\hyperlink{gmock-actions_8h}{gmock-\/actions.\+h}}\end{DoxyCompactItemize}

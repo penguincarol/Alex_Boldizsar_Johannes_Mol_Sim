@@ -1,0 +1,5 @@
+if(EXISTS "/home/johnny/git/Alex_Jan_Johannes_Mol_Sim/new_build/tests/runtest[1]_tests.cmake")
+  include("/home/johnny/git/Alex_Jan_Johannes_Mol_Sim/new_build/tests/runtest[1]_tests.cmake")
+else()
+  add_test(runtest_NOT_BUILT runtest_NOT_BUILT)
+endif()

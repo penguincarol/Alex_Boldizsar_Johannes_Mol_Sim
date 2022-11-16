@@ -1,0 +1,102 @@
+\hypertarget{classtesting_1_1internal_1_1HasDebugStringAndShortDebugString}{}\doxysection{testing\+::internal\+::Has\+Debug\+String\+And\+Short\+Debug\+String$<$ T $>$ Class Template Reference}
+\label{classtesting_1_1internal_1_1HasDebugStringAndShortDebugString}\index{testing::internal::HasDebugStringAndShortDebugString$<$ T $>$@{testing::internal::HasDebugStringAndShortDebugString$<$ T $>$}}
+
+
+{\ttfamily \#include $<$gtest-\/internal.\+h$>$}
+
+\doxysubsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static constexpr bool \mbox{\hyperlink{classtesting_1_1internal_1_1HasDebugStringAndShortDebugString_abb97a0cc14c348c235173472b4d111ad}{value}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Types}
+\begin{DoxyCompactItemize}
+\item 
+using \mbox{\hyperlink{classtesting_1_1internal_1_1HasDebugStringAndShortDebugString_ac7733e0b4342fc094c965b4a6983c5b4}{Has\+Debug\+String\+Type}} = decltype(\mbox{\hyperlink{classtesting_1_1internal_1_1HasDebugStringAndShortDebugString_ab9c2a7a94b05be3a68eb98eb25690778}{Check\+Debug\+String}}$<$ T $>$(nullptr))
+\item 
+using \mbox{\hyperlink{classtesting_1_1internal_1_1HasDebugStringAndShortDebugString_ac527ccdd86abdf767f3f5b61cb25163a}{Has\+Short\+Debug\+String\+Type}} = decltype(\mbox{\hyperlink{classtesting_1_1internal_1_1HasDebugStringAndShortDebugString_a1767b5a677e77c36cb7316f4166851d2}{Check\+Short\+Debug\+String}}$<$ T $>$(nullptr))
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$typename C $>$ }\\static auto \mbox{\hyperlink{classtesting_1_1internal_1_1HasDebugStringAndShortDebugString_ab9c2a7a94b05be3a68eb98eb25690778}{Check\+Debug\+String}} (C $\ast$) -\/$>$ typename std\+::is\+\_\+same$<$ std\+::string, decltype(std\+::declval$<$ const C $>$().Debug\+String())$>$\+::type
+\item 
+{\footnotesize template$<$typename $>$ }\\static std\+::false\+\_\+type \mbox{\hyperlink{classtesting_1_1internal_1_1HasDebugStringAndShortDebugString_a42737cf0a60991ef106fd869a3a98ca1}{Check\+Debug\+String}} (...)
+\item 
+{\footnotesize template$<$typename C $>$ }\\static auto \mbox{\hyperlink{classtesting_1_1internal_1_1HasDebugStringAndShortDebugString_a1767b5a677e77c36cb7316f4166851d2}{Check\+Short\+Debug\+String}} (C $\ast$) -\/$>$ typename std\+::is\+\_\+same$<$ std\+::string, decltype(std\+::declval$<$ const C $>$().Short\+Debug\+String())$>$\+::type
+\item 
+{\footnotesize template$<$typename $>$ }\\static std\+::false\+\_\+type \mbox{\hyperlink{classtesting_1_1internal_1_1HasDebugStringAndShortDebugString_a1f027d2c292e1af1f51c915d7b1c51f2}{Check\+Short\+Debug\+String}} (...)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Typedef Documentation}
+\mbox{\Hypertarget{classtesting_1_1internal_1_1HasDebugStringAndShortDebugString_ac7733e0b4342fc094c965b4a6983c5b4}\label{classtesting_1_1internal_1_1HasDebugStringAndShortDebugString_ac7733e0b4342fc094c965b4a6983c5b4}} 
+\index{testing::internal::HasDebugStringAndShortDebugString$<$ T $>$@{testing::internal::HasDebugStringAndShortDebugString$<$ T $>$}!HasDebugStringType@{HasDebugStringType}}
+\index{HasDebugStringType@{HasDebugStringType}!testing::internal::HasDebugStringAndShortDebugString$<$ T $>$@{testing::internal::HasDebugStringAndShortDebugString$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{HasDebugStringType}{HasDebugStringType}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+using \mbox{\hyperlink{classtesting_1_1internal_1_1HasDebugStringAndShortDebugString}{testing\+::internal\+::\+Has\+Debug\+String\+And\+Short\+Debug\+String}}$<$ T $>$\+::\mbox{\hyperlink{classtesting_1_1internal_1_1HasDebugStringAndShortDebugString_ac7733e0b4342fc094c965b4a6983c5b4}{Has\+Debug\+String\+Type}} =  decltype(\mbox{\hyperlink{classtesting_1_1internal_1_1HasDebugStringAndShortDebugString_ab9c2a7a94b05be3a68eb98eb25690778}{Check\+Debug\+String}}$<$T$>$(nullptr))\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classtesting_1_1internal_1_1HasDebugStringAndShortDebugString_ac527ccdd86abdf767f3f5b61cb25163a}\label{classtesting_1_1internal_1_1HasDebugStringAndShortDebugString_ac527ccdd86abdf767f3f5b61cb25163a}} 
+\index{testing::internal::HasDebugStringAndShortDebugString$<$ T $>$@{testing::internal::HasDebugStringAndShortDebugString$<$ T $>$}!HasShortDebugStringType@{HasShortDebugStringType}}
+\index{HasShortDebugStringType@{HasShortDebugStringType}!testing::internal::HasDebugStringAndShortDebugString$<$ T $>$@{testing::internal::HasDebugStringAndShortDebugString$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{HasShortDebugStringType}{HasShortDebugStringType}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+using \mbox{\hyperlink{classtesting_1_1internal_1_1HasDebugStringAndShortDebugString}{testing\+::internal\+::\+Has\+Debug\+String\+And\+Short\+Debug\+String}}$<$ T $>$\+::\mbox{\hyperlink{classtesting_1_1internal_1_1HasDebugStringAndShortDebugString_ac527ccdd86abdf767f3f5b61cb25163a}{Has\+Short\+Debug\+String\+Type}} =  decltype(\mbox{\hyperlink{classtesting_1_1internal_1_1HasDebugStringAndShortDebugString_a1767b5a677e77c36cb7316f4166851d2}{Check\+Short\+Debug\+String}}$<$T$>$(nullptr))\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classtesting_1_1internal_1_1HasDebugStringAndShortDebugString_a42737cf0a60991ef106fd869a3a98ca1}\label{classtesting_1_1internal_1_1HasDebugStringAndShortDebugString_a42737cf0a60991ef106fd869a3a98ca1}} 
+\index{testing::internal::HasDebugStringAndShortDebugString$<$ T $>$@{testing::internal::HasDebugStringAndShortDebugString$<$ T $>$}!CheckDebugString@{CheckDebugString}}
+\index{CheckDebugString@{CheckDebugString}!testing::internal::HasDebugStringAndShortDebugString$<$ T $>$@{testing::internal::HasDebugStringAndShortDebugString$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{CheckDebugString()}{CheckDebugString()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+template$<$typename $>$ \\
+static std\+::false\+\_\+type \mbox{\hyperlink{classtesting_1_1internal_1_1HasDebugStringAndShortDebugString}{testing\+::internal\+::\+Has\+Debug\+String\+And\+Short\+Debug\+String}}$<$ T $>$\+::Check\+Debug\+String (\begin{DoxyParamCaption}\item[{}]{... }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}
+
+\mbox{\Hypertarget{classtesting_1_1internal_1_1HasDebugStringAndShortDebugString_ab9c2a7a94b05be3a68eb98eb25690778}\label{classtesting_1_1internal_1_1HasDebugStringAndShortDebugString_ab9c2a7a94b05be3a68eb98eb25690778}} 
+\index{testing::internal::HasDebugStringAndShortDebugString$<$ T $>$@{testing::internal::HasDebugStringAndShortDebugString$<$ T $>$}!CheckDebugString@{CheckDebugString}}
+\index{CheckDebugString@{CheckDebugString}!testing::internal::HasDebugStringAndShortDebugString$<$ T $>$@{testing::internal::HasDebugStringAndShortDebugString$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{CheckDebugString()}{CheckDebugString()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+template$<$typename C $>$ \\
+static auto \mbox{\hyperlink{classtesting_1_1internal_1_1HasDebugStringAndShortDebugString}{testing\+::internal\+::\+Has\+Debug\+String\+And\+Short\+Debug\+String}}$<$ T $>$\+::Check\+Debug\+String (\begin{DoxyParamCaption}\item[{C $\ast$}]{ }\end{DoxyParamCaption}) -\/$>$  typename std\+::is\+\_\+same$<$ std\+::string, decltype(std\+::declval$<$ const C $>$().Debug\+String())$>$\+::type\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}
+
+\mbox{\Hypertarget{classtesting_1_1internal_1_1HasDebugStringAndShortDebugString_a1f027d2c292e1af1f51c915d7b1c51f2}\label{classtesting_1_1internal_1_1HasDebugStringAndShortDebugString_a1f027d2c292e1af1f51c915d7b1c51f2}} 
+\index{testing::internal::HasDebugStringAndShortDebugString$<$ T $>$@{testing::internal::HasDebugStringAndShortDebugString$<$ T $>$}!CheckShortDebugString@{CheckShortDebugString}}
+\index{CheckShortDebugString@{CheckShortDebugString}!testing::internal::HasDebugStringAndShortDebugString$<$ T $>$@{testing::internal::HasDebugStringAndShortDebugString$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{CheckShortDebugString()}{CheckShortDebugString()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+template$<$typename $>$ \\
+static std\+::false\+\_\+type \mbox{\hyperlink{classtesting_1_1internal_1_1HasDebugStringAndShortDebugString}{testing\+::internal\+::\+Has\+Debug\+String\+And\+Short\+Debug\+String}}$<$ T $>$\+::Check\+Short\+Debug\+String (\begin{DoxyParamCaption}\item[{}]{... }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}
+
+\mbox{\Hypertarget{classtesting_1_1internal_1_1HasDebugStringAndShortDebugString_a1767b5a677e77c36cb7316f4166851d2}\label{classtesting_1_1internal_1_1HasDebugStringAndShortDebugString_a1767b5a677e77c36cb7316f4166851d2}} 
+\index{testing::internal::HasDebugStringAndShortDebugString$<$ T $>$@{testing::internal::HasDebugStringAndShortDebugString$<$ T $>$}!CheckShortDebugString@{CheckShortDebugString}}
+\index{CheckShortDebugString@{CheckShortDebugString}!testing::internal::HasDebugStringAndShortDebugString$<$ T $>$@{testing::internal::HasDebugStringAndShortDebugString$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{CheckShortDebugString()}{CheckShortDebugString()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+template$<$typename C $>$ \\
+static auto \mbox{\hyperlink{classtesting_1_1internal_1_1HasDebugStringAndShortDebugString}{testing\+::internal\+::\+Has\+Debug\+String\+And\+Short\+Debug\+String}}$<$ T $>$\+::Check\+Short\+Debug\+String (\begin{DoxyParamCaption}\item[{C $\ast$}]{ }\end{DoxyParamCaption}) -\/$>$  typename std\+::is\+\_\+same$<$ std\+::string, decltype(std\+::declval$<$ const C $>$().Short\+Debug\+String())$>$\+::type\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}
+
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classtesting_1_1internal_1_1HasDebugStringAndShortDebugString_abb97a0cc14c348c235173472b4d111ad}\label{classtesting_1_1internal_1_1HasDebugStringAndShortDebugString_abb97a0cc14c348c235173472b4d111ad}} 
+\index{testing::internal::HasDebugStringAndShortDebugString$<$ T $>$@{testing::internal::HasDebugStringAndShortDebugString$<$ T $>$}!value@{value}}
+\index{value@{value}!testing::internal::HasDebugStringAndShortDebugString$<$ T $>$@{testing::internal::HasDebugStringAndShortDebugString$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{value}{value}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+constexpr bool \mbox{\hyperlink{classtesting_1_1internal_1_1HasDebugStringAndShortDebugString}{testing\+::internal\+::\+Has\+Debug\+String\+And\+Short\+Debug\+String}}$<$ T $>$\+::value\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [constexpr]}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{=}
+\DoxyCodeLine{      HasDebugStringType::value \&\& HasShortDebugStringType::value}
+
+\end{DoxyCode}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\+\_\+deps/googletest-\/src/googletest/include/gtest/internal/\mbox{\hyperlink{gtest-internal_8h}{gtest-\/internal.\+h}}\end{DoxyCompactItemize}

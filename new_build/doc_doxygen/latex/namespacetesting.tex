@@ -1,0 +1,752 @@
+\hypertarget{namespacetesting}{}\doxysection{testing Namespace Reference}
+\label{namespacetesting}\index{testing@{testing}}
+\doxysubsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \mbox{\hyperlink{namespacetesting_1_1gmock__matchers__test}{gmock\+\_\+matchers\+\_\+test}}
+\item 
+ \mbox{\hyperlink{namespacetesting_1_1internal}{internal}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{classtesting_1_1OnceAction}{Once\+Action}}
+\item 
+class \mbox{\hyperlink{classtesting_1_1OnceAction_3_01Result_07Args_8_8_8_08_4}{Once\+Action$<$ Result(\+Args...)$>$}}
+\item 
+class \mbox{\hyperlink{classtesting_1_1DefaultValue}{Default\+Value}}
+\item 
+class \mbox{\hyperlink{classtesting_1_1DefaultValue_3_01T_01_6_01_4}{Default\+Value$<$ T \& $>$}}
+\item 
+class \mbox{\hyperlink{classtesting_1_1DefaultValue_3_01void_01_4}{Default\+Value$<$ void $>$}}
+\item 
+class \mbox{\hyperlink{classtesting_1_1ActionInterface}{Action\+Interface}}
+\item 
+class \mbox{\hyperlink{classtesting_1_1Action}{Action}}
+\item 
+class \mbox{\hyperlink{classtesting_1_1Action_3_01R_07Args_8_8_8_08_4}{Action$<$ R(\+Args...)$>$}}
+\item 
+class \mbox{\hyperlink{classtesting_1_1PolymorphicAction}{Polymorphic\+Action}}
+\item 
+class \mbox{\hyperlink{classtesting_1_1NiceMock}{Nice\+Mock}}
+\item 
+class \mbox{\hyperlink{classtesting_1_1NaggyMock}{Naggy\+Mock}}
+\item 
+class \mbox{\hyperlink{classtesting_1_1StrictMock}{Strict\+Mock}}
+\item 
+class \mbox{\hyperlink{classtesting_1_1Matcher}{Matcher}}
+\item 
+class \mbox{\hyperlink{classtesting_1_1Message}{Message}}
+\item 
+class \mbox{\hyperlink{classtesting_1_1Test}{Test}}
+\item 
+class \mbox{\hyperlink{classtesting_1_1TestProperty}{Test\+Property}}
+\item 
+class \mbox{\hyperlink{classtesting_1_1TestResult}{Test\+Result}}
+\item 
+class \mbox{\hyperlink{classtesting_1_1TestInfo}{Test\+Info}}
+\item 
+class \mbox{\hyperlink{classtesting_1_1TestSuite}{Test\+Suite}}
+\item 
+class \mbox{\hyperlink{classtesting_1_1Environment}{Environment}}
+\item 
+class \mbox{\hyperlink{classtesting_1_1TestEventListener}{Test\+Event\+Listener}}
+\item 
+class \mbox{\hyperlink{classtesting_1_1EmptyTestEventListener}{Empty\+Test\+Event\+Listener}}
+\item 
+class \mbox{\hyperlink{classtesting_1_1TestEventListeners}{Test\+Event\+Listeners}}
+\item 
+class \mbox{\hyperlink{classtesting_1_1UnitTest}{Unit\+Test}}
+\item 
+class \mbox{\hyperlink{classtesting_1_1WithParamInterface}{With\+Param\+Interface}}
+\item 
+class \mbox{\hyperlink{classtesting_1_1TestWithParam}{Test\+With\+Param}}
+\item 
+class \mbox{\hyperlink{classtesting_1_1ScopedTrace}{Scoped\+Trace}}
+\item 
+struct \mbox{\hyperlink{structtesting_1_1TestParamInfo}{Test\+Param\+Info}}
+\item 
+struct \mbox{\hyperlink{structtesting_1_1PrintToStringParamName}{Print\+To\+String\+Param\+Name}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef \mbox{\hyperlink{classtesting_1_1internal_1_1IgnoredValue}{internal\+::\+Ignored\+Value}} \mbox{\hyperlink{namespacetesting_a603e329ec0263ebfcf16f712810bd511}{Unused}}
+\item 
+using \mbox{\hyperlink{namespacetesting_a54bf2d7c5c42950cbed8ac510ad43832}{Test\+Case}} = \mbox{\hyperlink{classtesting_1_1TestSuite}{Test\+Suite}}
+\item 
+typedef \mbox{\hyperlink{namespacetesting_1_1internal_ab36b15423002d1cd490f8d9daeb9c816}{internal\+::\+Time\+In\+Millis}} \mbox{\hyperlink{namespacetesting_a992de1d091ce660f451d1e8b3ce30fd6}{Time\+In\+Millis}}
+\item 
+{\footnotesize template$<$typename... Ts$>$ }\\using \mbox{\hyperlink{namespacetesting_a29eec4c1aba59e52881d8eb38cece83c}{Types}} = \mbox{\hyperlink{structtesting_1_1internal_1_1ProxyTypeList}{internal\+::\+Proxy\+Type\+List}}$<$ Ts... $>$
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$typename F $>$ }\\\mbox{\hyperlink{classtesting_1_1Action}{Action}}$<$ F $>$ \mbox{\hyperlink{namespacetesting_ae6b9960db2b2685e043ce5215291f5b8}{Make\+Action}} (\mbox{\hyperlink{classtesting_1_1ActionInterface}{Action\+Interface}}$<$ F $>$ $\ast$impl)
+\item 
+{\footnotesize template$<$typename Impl $>$ }\\\mbox{\hyperlink{classtesting_1_1PolymorphicAction}{Polymorphic\+Action}}$<$ Impl $>$ \mbox{\hyperlink{namespacetesting_a36bd06c5ea972c6df0bd9f40a7a94c65}{Make\+Polymorphic\+Action}} (const Impl \&impl)
+\item 
+{\footnotesize template$<$typename... Action$>$ }\\\mbox{\hyperlink{classtesting_1_1internal_1_1DoAllAction}{internal\+::\+Do\+All\+Action}}$<$ typename std\+::decay$<$ \mbox{\hyperlink{classtesting_1_1Action}{Action}} $>$\+::type... $>$ \mbox{\hyperlink{namespacetesting_acfe4e82c9da6e35503e885cfa57b301c}{Do\+All}} (\mbox{\hyperlink{classtesting_1_1Action}{Action}} \&\&... action)
+\item 
+{\footnotesize template$<$size\+\_\+t k, typename Inner\+Action $>$ }\\\mbox{\hyperlink{structtesting_1_1internal_1_1WithArgsAction}{internal\+::\+With\+Args\+Action}}$<$ typename std\+::decay$<$ Inner\+Action $>$\+::type, k $>$ \mbox{\hyperlink{namespacetesting_a656443dc47855de33c53f0caba4e9e27}{With\+Arg}} (Inner\+Action \&\&action)
+\item 
+{\footnotesize template$<$size\+\_\+t k, size\+\_\+t... ks, typename Inner\+Action $>$ }\\\mbox{\hyperlink{structtesting_1_1internal_1_1WithArgsAction}{internal\+::\+With\+Args\+Action}}$<$ typename std\+::decay$<$ Inner\+Action $>$\+::type, k, ks... $>$ \mbox{\hyperlink{namespacetesting_a1e9887a68807b7fc2ccc63216849f374}{With\+Args}} (Inner\+Action \&\&action)
+\item 
+{\footnotesize template$<$typename Inner\+Action $>$ }\\\mbox{\hyperlink{structtesting_1_1internal_1_1WithArgsAction}{internal\+::\+With\+Args\+Action}}$<$ typename std\+::decay$<$ Inner\+Action $>$\+::type $>$ \mbox{\hyperlink{namespacetesting_a7508ca9a9df00fc662405ed120326d87}{Without\+Args}} (Inner\+Action \&\&action)
+\item 
+{\footnotesize template$<$typename R $>$ }\\\mbox{\hyperlink{classtesting_1_1internal_1_1ReturnAction}{internal\+::\+Return\+Action}}$<$ R $>$ \mbox{\hyperlink{namespacetesting_af6d1c13e9376c77671e37545cd84359c}{Return}} (R value)
+\item 
+\mbox{\hyperlink{classtesting_1_1PolymorphicAction}{Polymorphic\+Action}}$<$ \mbox{\hyperlink{classtesting_1_1internal_1_1ReturnNullAction}{internal\+::\+Return\+Null\+Action}} $>$ \mbox{\hyperlink{namespacetesting_aa0331596e269114da101f810d3a1b88b}{Return\+Null}} ()
+\item 
+\mbox{\hyperlink{classtesting_1_1PolymorphicAction}{Polymorphic\+Action}}$<$ \mbox{\hyperlink{classtesting_1_1internal_1_1ReturnVoidAction}{internal\+::\+Return\+Void\+Action}} $>$ \mbox{\hyperlink{namespacetesting_a8da8e53d2e7bc4e3c531f7435ad04823}{Return}} ()
+\item 
+{\footnotesize template$<$typename R $>$ }\\\mbox{\hyperlink{classtesting_1_1internal_1_1ReturnRefAction}{internal\+::\+Return\+Ref\+Action}}$<$ R $>$ \mbox{\hyperlink{namespacetesting_a18eda8fe9c89ee856c199a2e04ca1641}{Return\+Ref}} (R \&x)
+\item 
+{\footnotesize template$<$typename R , R $\ast$  = nullptr$>$ }\\\mbox{\hyperlink{classtesting_1_1internal_1_1ReturnRefAction}{internal\+::\+Return\+Ref\+Action}}$<$ R $>$ \mbox{\hyperlink{namespacetesting_a564ff8b888cddc78f66f4cc6d134ddc7}{Return\+Ref}} (R \&\&)=delete
+\item 
+{\footnotesize template$<$typename R $>$ }\\\mbox{\hyperlink{classtesting_1_1internal_1_1ReturnRefOfCopyAction}{internal\+::\+Return\+Ref\+Of\+Copy\+Action}}$<$ R $>$ \mbox{\hyperlink{namespacetesting_ac1b75444c89371dc25ebcfcc48336201}{Return\+Ref\+Of\+Copy}} (const R \&x)
+\item 
+{\footnotesize template$<$typename R $>$ }\\\mbox{\hyperlink{structtesting_1_1internal_1_1ByMoveWrapper}{internal\+::\+By\+Move\+Wrapper}}$<$ R $>$ \mbox{\hyperlink{namespacetesting_acaa432211a3aec62e3d0f24b47bd2dae}{By\+Move}} (R x)
+\item 
+{\footnotesize template$<$typename T $>$ }\\\mbox{\hyperlink{classtesting_1_1internal_1_1ReturnRoundRobinAction}{internal\+::\+Return\+Round\+Robin\+Action}}$<$ T $>$ \mbox{\hyperlink{namespacetesting_aec1454fc6581eee01a89cceceda4da31}{Return\+Round\+Robin}} (std\+::vector$<$ T $>$ vals)
+\item 
+{\footnotesize template$<$typename T $>$ }\\\mbox{\hyperlink{classtesting_1_1internal_1_1ReturnRoundRobinAction}{internal\+::\+Return\+Round\+Robin\+Action}}$<$ T $>$ \mbox{\hyperlink{namespacetesting_ac65fab9aed3a50d79a0bcb6bf954cc7c}{Return\+Round\+Robin}} (std\+::initializer\+\_\+list$<$ T $>$ vals)
+\item 
+\mbox{\hyperlink{classtesting_1_1internal_1_1DoDefaultAction}{internal\+::\+Do\+Default\+Action}} \mbox{\hyperlink{namespacetesting_ae041df61ff61ccb9753ba15b4309e1a6}{Do\+Default}} ()
+\item 
+{\footnotesize template$<$size\+\_\+t N, typename T $>$ }\\\mbox{\hyperlink{structtesting_1_1internal_1_1SetArgumentPointeeAction}{internal\+::\+Set\+Argument\+Pointee\+Action}}$<$ N, T $>$ \mbox{\hyperlink{namespacetesting_a35ef7e93b89ad77632b90d1126327e38}{Set\+Arg\+Pointee}} (T value)
+\item 
+{\footnotesize template$<$size\+\_\+t N, typename T $>$ }\\\mbox{\hyperlink{structtesting_1_1internal_1_1SetArgumentPointeeAction}{internal\+::\+Set\+Argument\+Pointee\+Action}}$<$ N, T $>$ \mbox{\hyperlink{namespacetesting_a32edcace29c43034c938dae30a94fe32}{Set\+Argument\+Pointee}} (T value)
+\item 
+{\footnotesize template$<$typename T1 , typename T2 $>$ }\\\mbox{\hyperlink{classtesting_1_1PolymorphicAction}{Polymorphic\+Action}}$<$ \mbox{\hyperlink{classtesting_1_1internal_1_1AssignAction}{internal\+::\+Assign\+Action}}$<$ T1, T2 $>$ $>$ \mbox{\hyperlink{namespacetesting_abfc4121b8708e8b22a096ff8be88a9d0}{Assign}} (T1 $\ast$ptr, T2 val)
+\item 
+{\footnotesize template$<$typename T $>$ }\\\mbox{\hyperlink{classtesting_1_1PolymorphicAction}{Polymorphic\+Action}}$<$ \mbox{\hyperlink{classtesting_1_1internal_1_1SetErrnoAndReturnAction}{internal\+::\+Set\+Errno\+And\+Return\+Action}}$<$ T $>$ $>$ \mbox{\hyperlink{namespacetesting_a31095e421f167fade2e6d4d60df1f4da}{Set\+Errno\+And\+Return}} (int errval, T result)
+\item 
+{\footnotesize template$<$typename Function\+Impl $>$ }\\std\+::decay$<$ Function\+Impl $>$\+::type \mbox{\hyperlink{namespacetesting_a620bba98fc80a3cda99b06b1f9221dc8}{Invoke}} (Function\+Impl \&\&function\+\_\+impl)
+\item 
+{\footnotesize template$<$class Class , typename Method\+Ptr $>$ }\\\mbox{\hyperlink{structtesting_1_1internal_1_1InvokeMethodAction}{internal\+::\+Invoke\+Method\+Action}}$<$ Class, Method\+Ptr $>$ \mbox{\hyperlink{namespacetesting_ad8e6a230597a891226b1f9cc0a1eda36}{Invoke}} (Class $\ast$obj\+\_\+ptr, Method\+Ptr method\+\_\+ptr)
+\item 
+{\footnotesize template$<$typename Function\+Impl $>$ }\\\mbox{\hyperlink{structtesting_1_1internal_1_1InvokeWithoutArgsAction}{internal\+::\+Invoke\+Without\+Args\+Action}}$<$ typename std\+::decay$<$ Function\+Impl $>$\+::type $>$ \mbox{\hyperlink{namespacetesting_ac4012b489848d54bb89a9998d19a1d21}{Invoke\+Without\+Args}} (Function\+Impl function\+\_\+impl)
+\item 
+{\footnotesize template$<$class Class , typename Method\+Ptr $>$ }\\\mbox{\hyperlink{structtesting_1_1internal_1_1InvokeMethodWithoutArgsAction}{internal\+::\+Invoke\+Method\+Without\+Args\+Action}}$<$ Class, Method\+Ptr $>$ \mbox{\hyperlink{namespacetesting_adc0c2f9ce020f829a2b75b1213667040}{Invoke\+Without\+Args}} (Class $\ast$obj\+\_\+ptr, Method\+Ptr method\+\_\+ptr)
+\item 
+{\footnotesize template$<$typename A $>$ }\\\mbox{\hyperlink{classtesting_1_1internal_1_1IgnoreResultAction}{internal\+::\+Ignore\+Result\+Action}}$<$ A $>$ \mbox{\hyperlink{namespacetesting_a50ae42540a31047c7fddd32df8d835f5}{Ignore\+Result}} (const A \&an\+\_\+action)
+\item 
+{\footnotesize template$<$typename T $>$ }\\inline \+::std\+::reference\+\_\+wrapper$<$ T $>$ \mbox{\hyperlink{namespacetesting_a1f94a81e042d7c40c8359c1471fbb61e}{By\+Ref}} (T \&l\+\_\+value)
+\item 
+{\footnotesize template$<$typename T , typename... Params$>$ }\\\mbox{\hyperlink{structtesting_1_1internal_1_1ReturnNewAction}{internal\+::\+Return\+New\+Action}}$<$ T, typename std\+::decay$<$ Params $>$\+::type... $>$ \mbox{\hyperlink{namespacetesting_a84bc5aeb13dd2bb5d75e95373f7b31fb}{Return\+New}} (Params \&\&... params)
+\item 
+{\footnotesize template$<$size\+\_\+t k$>$ }\\\mbox{\hyperlink{structtesting_1_1internal_1_1ReturnArgAction}{internal\+::\+Return\+Arg\+Action}}$<$ k $>$ \mbox{\hyperlink{namespacetesting_a5ca93fb9982f1f5e37bfad6a2f535c7c}{Return\+Arg}} ()
+\item 
+{\footnotesize template$<$size\+\_\+t k, typename Ptr $>$ }\\\mbox{\hyperlink{structtesting_1_1internal_1_1SaveArgAction}{internal\+::\+Save\+Arg\+Action}}$<$ k, Ptr $>$ \mbox{\hyperlink{namespacetesting_acfb3187148173dea40181ee576a27124}{Save\+Arg}} (Ptr pointer)
+\item 
+{\footnotesize template$<$size\+\_\+t k, typename Ptr $>$ }\\\mbox{\hyperlink{structtesting_1_1internal_1_1SaveArgPointeeAction}{internal\+::\+Save\+Arg\+Pointee\+Action}}$<$ k, Ptr $>$ \mbox{\hyperlink{namespacetesting_aa5f7ae7835df1d0d8e8d25222f119f03}{Save\+Arg\+Pointee}} (Ptr pointer)
+\item 
+{\footnotesize template$<$size\+\_\+t k, typename T $>$ }\\\mbox{\hyperlink{structtesting_1_1internal_1_1SetArgRefereeAction}{internal\+::\+Set\+Arg\+Referee\+Action}}$<$ k, typename std\+::decay$<$ T $>$\+::type $>$ \mbox{\hyperlink{namespacetesting_af5537ad697fba571bf2fcad982ab27a5}{Set\+Arg\+Referee}} (T \&\&value)
+\item 
+{\footnotesize template$<$size\+\_\+t k, typename I1 , typename I2 $>$ }\\\mbox{\hyperlink{structtesting_1_1internal_1_1SetArrayArgumentAction}{internal\+::\+Set\+Array\+Argument\+Action}}$<$ k, I1, I2 $>$ \mbox{\hyperlink{namespacetesting_aa9c44a402f7612d920718cc1491cbd97}{Set\+Array\+Argument}} (I1 first, I2 last)
+\item 
+{\footnotesize template$<$size\+\_\+t k$>$ }\\\mbox{\hyperlink{structtesting_1_1internal_1_1DeleteArgAction}{internal\+::\+Delete\+Arg\+Action}}$<$ k $>$ \mbox{\hyperlink{namespacetesting_a111b75b446e561cb9a317c765a185bea}{Delete\+Arg}} ()
+\item 
+{\footnotesize template$<$typename Ptr $>$ }\\\mbox{\hyperlink{structtesting_1_1internal_1_1ReturnPointeeAction}{internal\+::\+Return\+Pointee\+Action}}$<$ Ptr $>$ \mbox{\hyperlink{namespacetesting_ab06f10fbbfbded950bf97bdd2c2e1505}{Return\+Pointee}} (Ptr pointer)
+\item 
+{\footnotesize template$<$std\+::size\+\_\+t index, typename... Params$>$ }\\\mbox{\hyperlink{structtesting_1_1internal_1_1InvokeArgumentAction}{internal\+::\+Invoke\+Argument\+Action}}$<$ index, typename std\+::decay$<$ Params $>$\+::type... $>$ \mbox{\hyperlink{namespacetesting_aea07672ccab38b97d1a7fbf17707e2d2}{Invoke\+Argument}} (Params \&\&... params)
+\item 
+\mbox{\hyperlink{namespacetesting_a4fcb3f407119590471bea5a90a8d2dda}{MATCHER}} (Is\+Empty, negation ? \char`\"{}isn\textquotesingle{}t empty\char`\"{} \+:\char`\"{}is empty\char`\"{})
+\item 
+\mbox{\hyperlink{namespacetesting_ab2b645db6909220993662cf43ed0d9e8}{MATCHER}} (Is\+True, negation ? \char`\"{}is false\char`\"{} \+:\char`\"{}is true\char`\"{})
+\item 
+\mbox{\hyperlink{namespacetesting_a03fb223cceaefc67991ac36286dcbb34}{MATCHER}} (Is\+False, negation ? \char`\"{}is true\char`\"{} \+:\char`\"{}is false\char`\"{})
+\item 
+\mbox{\hyperlink{gtest-port_8h_aa73be6f0ba4a7456180a94904ce17790}{GTEST\+\_\+\+API\+\_\+}} void \mbox{\hyperlink{namespacetesting_a32b1c6db9ba5133ccabfa67616b3c041}{Init\+Google\+Mock}} (int $\ast$argc, char $\ast$$\ast$argv)
+\item 
+\mbox{\hyperlink{gtest-port_8h_aa73be6f0ba4a7456180a94904ce17790}{GTEST\+\_\+\+API\+\_\+}} void \mbox{\hyperlink{namespacetesting_a20fb86152763dddef67bc1dd8b090800}{Init\+Google\+Mock}} (int $\ast$argc, wchar\+\_\+t $\ast$$\ast$argv)
+\item 
+\mbox{\hyperlink{gtest-port_8h_aa73be6f0ba4a7456180a94904ce17790}{GTEST\+\_\+\+API\+\_\+}} void \mbox{\hyperlink{namespacetesting_a9276d4bc746722cb4fe99415c1dc778f}{Init\+Google\+Mock}} ()
+\item 
+std\+::ostream \& \mbox{\hyperlink{namespacetesting_a7b802e532fd68749765cb7dc156130db}{operator$<$$<$}} (std\+::ostream \&os, const \mbox{\hyperlink{classtesting_1_1Message}{Message}} \&sb)
+\item 
+{\footnotesize template$<$typename T , typename IncrementT $>$ }\\\mbox{\hyperlink{classtesting_1_1internal_1_1ParamGenerator}{internal\+::\+Param\+Generator}}$<$ T $>$ \mbox{\hyperlink{namespacetesting_a265ed70a86cf2d6641582c45ad9529e2}{Range}} (T start, T end, IncrementT step)
+\item 
+{\footnotesize template$<$typename T $>$ }\\\mbox{\hyperlink{classtesting_1_1internal_1_1ParamGenerator}{internal\+::\+Param\+Generator}}$<$ T $>$ \mbox{\hyperlink{namespacetesting_a56a45f85a1238dfc92e6fca03eb3a2e4}{Range}} (T start, T end)
+\item 
+{\footnotesize template$<$typename Forward\+Iterator $>$ }\\\mbox{\hyperlink{classtesting_1_1internal_1_1ParamGenerator}{internal\+::\+Param\+Generator}}$<$ typename std\+::iterator\+\_\+traits$<$ Forward\+Iterator $>$\+::value\+\_\+type $>$ \mbox{\hyperlink{namespacetesting_a7980b1be1ffc3b53c9c5ad7ac33080ad}{Values\+In}} (Forward\+Iterator begin, Forward\+Iterator end)
+\item 
+{\footnotesize template$<$typename T , size\+\_\+t N$>$ }\\\mbox{\hyperlink{classtesting_1_1internal_1_1ParamGenerator}{internal\+::\+Param\+Generator}}$<$ T $>$ \mbox{\hyperlink{namespacetesting_a0b9ea6594ac06ad5d9eba2511ffa0fb7}{Values\+In}} (const T(\&array)\mbox{[}N\mbox{]})
+\item 
+{\footnotesize template$<$class Container $>$ }\\\mbox{\hyperlink{classtesting_1_1internal_1_1ParamGenerator}{internal\+::\+Param\+Generator}}$<$ typename Container\+::value\+\_\+type $>$ \mbox{\hyperlink{namespacetesting_aa67d0c8470c5f69fcfcacc9e775fa982}{Values\+In}} (const Container \&container)
+\item 
+{\footnotesize template$<$typename... T$>$ }\\\mbox{\hyperlink{classtesting_1_1internal_1_1ValueArray}{internal\+::\+Value\+Array}}$<$ T... $>$ \mbox{\hyperlink{namespacetesting_a374d4e5fbb4c938058fbe81d4c7ff6a6}{Values}} (T... v)
+\item 
+\mbox{\hyperlink{classtesting_1_1internal_1_1ParamGenerator}{internal\+::\+Param\+Generator}}$<$ bool $>$ \mbox{\hyperlink{namespacetesting_aa9f9150ed43f949c8a6bacf3f04c03ce}{Bool}} ()
+\item 
+{\footnotesize template$<$typename... Generator$>$ }\\\mbox{\hyperlink{classtesting_1_1internal_1_1CartesianProductHolder}{internal\+::\+Cartesian\+Product\+Holder}}$<$ Generator... $>$ \mbox{\hyperlink{namespacetesting_a2cb3b8fe262f59bf150998eb8fd0752d}{Combine}} (const Generator \&... g)
+\item 
+{\footnotesize template$<$typename T $>$ }\\\+::std\+::string \mbox{\hyperlink{namespacetesting_aa5717bb1144edd1d262d310ba70c82ed}{Print\+To\+String}} (const T \&value)
+\item 
+\mbox{\hyperlink{classtesting_1_1Environment}{Environment}} $\ast$ \mbox{\hyperlink{namespacetesting_a460d7b998622e332392c1e00be3a60d5}{Add\+Global\+Test\+Environment}} (\mbox{\hyperlink{classtesting_1_1Environment}{Environment}} $\ast$env)
+\item 
+\mbox{\hyperlink{gtest-port_8h_aa73be6f0ba4a7456180a94904ce17790}{GTEST\+\_\+\+API\+\_\+}} void \mbox{\hyperlink{namespacetesting_aee3f6f99df893f576f705f66c0559482}{Init\+Google\+Test}} (int $\ast$argc, char $\ast$$\ast$argv)
+\item 
+\mbox{\hyperlink{gtest-port_8h_aa73be6f0ba4a7456180a94904ce17790}{GTEST\+\_\+\+API\+\_\+}} void \mbox{\hyperlink{namespacetesting_a6e9d83553f1d10818d698d45689d8adb}{Init\+Google\+Test}} (int $\ast$argc, wchar\+\_\+t $\ast$$\ast$argv)
+\item 
+\mbox{\hyperlink{gtest-port_8h_aa73be6f0ba4a7456180a94904ce17790}{GTEST\+\_\+\+API\+\_\+}} void \mbox{\hyperlink{namespacetesting_a2201e3fba11205a7edc2418fae82523e}{Init\+Google\+Test}} ()
+\item 
+\mbox{\hyperlink{gtest-port_8h_aa73be6f0ba4a7456180a94904ce17790}{GTEST\+\_\+\+API\+\_\+}} Assertion\+Result \mbox{\hyperlink{namespacetesting_a5c90a86562b2470213c07742e0eeb0fe}{Is\+Substring}} (const char $\ast$needle\+\_\+expr, const char $\ast$haystack\+\_\+expr, const char $\ast$needle, const char $\ast$haystack)
+\item 
+\mbox{\hyperlink{gtest-port_8h_aa73be6f0ba4a7456180a94904ce17790}{GTEST\+\_\+\+API\+\_\+}} Assertion\+Result \mbox{\hyperlink{namespacetesting_a08ce65847491b27a38cbac3ac15e3035}{Is\+Substring}} (const char $\ast$needle\+\_\+expr, const char $\ast$haystack\+\_\+expr, const wchar\+\_\+t $\ast$needle, const wchar\+\_\+t $\ast$haystack)
+\item 
+\mbox{\hyperlink{gtest-port_8h_aa73be6f0ba4a7456180a94904ce17790}{GTEST\+\_\+\+API\+\_\+}} Assertion\+Result \mbox{\hyperlink{namespacetesting_ab553b649b06ef2339cbd90f8dfa119f0}{Is\+Not\+Substring}} (const char $\ast$needle\+\_\+expr, const char $\ast$haystack\+\_\+expr, const char $\ast$needle, const char $\ast$haystack)
+\item 
+\mbox{\hyperlink{gtest-port_8h_aa73be6f0ba4a7456180a94904ce17790}{GTEST\+\_\+\+API\+\_\+}} Assertion\+Result \mbox{\hyperlink{namespacetesting_a28868925c50d541c8568a540b6457e54}{Is\+Not\+Substring}} (const char $\ast$needle\+\_\+expr, const char $\ast$haystack\+\_\+expr, const wchar\+\_\+t $\ast$needle, const wchar\+\_\+t $\ast$haystack)
+\item 
+\mbox{\hyperlink{gtest-port_8h_aa73be6f0ba4a7456180a94904ce17790}{GTEST\+\_\+\+API\+\_\+}} Assertion\+Result \mbox{\hyperlink{namespacetesting_a32718fab95b2833ab5ffc9cfc9f5c8b0}{Is\+Substring}} (const char $\ast$needle\+\_\+expr, const char $\ast$haystack\+\_\+expr, const \+::std\+::string \&needle, const \+::std\+::string \&haystack)
+\item 
+\mbox{\hyperlink{gtest-port_8h_aa73be6f0ba4a7456180a94904ce17790}{GTEST\+\_\+\+API\+\_\+}} Assertion\+Result \mbox{\hyperlink{namespacetesting_a645d822e47dc64b9923e78c880807f12}{Is\+Not\+Substring}} (const char $\ast$needle\+\_\+expr, const char $\ast$haystack\+\_\+expr, const \+::std\+::string \&needle, const \+::std\+::string \&haystack)
+\item 
+\mbox{\hyperlink{gtest-port_8h_aa73be6f0ba4a7456180a94904ce17790}{GTEST\+\_\+\+API\+\_\+}} Assertion\+Result \mbox{\hyperlink{namespacetesting_a69106491c2e7f50e50da0ce5e8ae4374}{Float\+LE}} (const char $\ast$expr1, const char $\ast$expr2, float val1, float val2)
+\item 
+\mbox{\hyperlink{gtest-port_8h_aa73be6f0ba4a7456180a94904ce17790}{GTEST\+\_\+\+API\+\_\+}} Assertion\+Result \mbox{\hyperlink{namespacetesting_a84c020b981d0eb4eabfb0feda155aaaf}{Double\+LE}} (const char $\ast$expr1, const char $\ast$expr2, double val1, double val2)
+\item 
+{\footnotesize template$<$typename T1 , typename T2 $>$ }\\constexpr bool \mbox{\hyperlink{namespacetesting_a8318a0c014ef26fc3d5b8b3492198ff7}{Static\+Assert\+Type\+Eq}} () noexcept
+\item 
+\mbox{\hyperlink{gtest-port_8h_aa73be6f0ba4a7456180a94904ce17790}{GTEST\+\_\+\+API\+\_\+}} std\+::string \mbox{\hyperlink{namespacetesting_abcf5181cecc3c07915dceb3de46ab07f}{Temp\+Dir}} ()
+\item 
+{\footnotesize template$<$int \&... Explicit\+Parameter\+Barrier, typename Factory $>$ }\\\mbox{\hyperlink{classtesting_1_1TestInfo}{Test\+Info}} $\ast$ \mbox{\hyperlink{namespacetesting_a302c84bdc88f2138696da2a4756b6466}{Register\+Test}} (const char $\ast$test\+\_\+suite\+\_\+name, const char $\ast$test\+\_\+name, const char $\ast$type\+\_\+param, const char $\ast$value\+\_\+param, const char $\ast$file, int line, Factory factory)
+\item 
+{\footnotesize template$<$typename Pred , typename T1 $>$ }\\Assertion\+Result \mbox{\hyperlink{namespacetesting_a7f73180474723be6e92185d6fa9e7c9f}{Assert\+Pred1\+Helper}} (const char $\ast$pred\+\_\+text, const char $\ast$e1, Pred pred, const T1 \&v1)
+\item 
+{\footnotesize template$<$typename Pred , typename T1 , typename T2 $>$ }\\Assertion\+Result \mbox{\hyperlink{namespacetesting_aa6587938029dd8733ecb885068f08247}{Assert\+Pred2\+Helper}} (const char $\ast$pred\+\_\+text, const char $\ast$e1, const char $\ast$e2, Pred pred, const T1 \&v1, const T2 \&v2)
+\item 
+{\footnotesize template$<$typename Pred , typename T1 , typename T2 , typename T3 $>$ }\\Assertion\+Result \mbox{\hyperlink{namespacetesting_ac92dcbd00a0ffb2913e65d286e321a22}{Assert\+Pred3\+Helper}} (const char $\ast$pred\+\_\+text, const char $\ast$e1, const char $\ast$e2, const char $\ast$e3, Pred pred, const T1 \&v1, const T2 \&v2, const T3 \&v3)
+\item 
+{\footnotesize template$<$typename Pred , typename T1 , typename T2 , typename T3 , typename T4 $>$ }\\Assertion\+Result \mbox{\hyperlink{namespacetesting_ae90c778d69db4682e8fd8baaa0a9f9cd}{Assert\+Pred4\+Helper}} (const char $\ast$pred\+\_\+text, const char $\ast$e1, const char $\ast$e2, const char $\ast$e3, const char $\ast$e4, Pred pred, const T1 \&v1, const T2 \&v2, const T3 \&v3, const T4 \&v4)
+\item 
+{\footnotesize template$<$typename Pred , typename T1 , typename T2 , typename T3 , typename T4 , typename T5 $>$ }\\Assertion\+Result \mbox{\hyperlink{namespacetesting_addcf52b273ce17269cbf4956cfe600a6}{Assert\+Pred5\+Helper}} (const char $\ast$pred\+\_\+text, const char $\ast$e1, const char $\ast$e2, const char $\ast$e3, const char $\ast$e4, const char $\ast$e5, Pred pred, const T1 \&v1, const T2 \&v2, const T3 \&v3, const T4 \&v4, const T5 \&v5)
+\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+const int \mbox{\hyperlink{namespacetesting_ae605f2ccac04616bb7812ca72e517082}{k\+Max\+Stack\+Trace\+Depth}} = 100
+\item 
+class \mbox{\hyperlink{gtest-port_8h_aa73be6f0ba4a7456180a94904ce17790}{GTEST\+\_\+\+API\+\_\+}} \mbox{\hyperlink{classtesting_1_1ScopedTrace}{testing\+::\+Scoped\+Trace}} \mbox{\hyperlink{namespacetesting_ada49f71f486d52155b86702a570f7fcb}{GTEST\+\_\+\+ATTRIBUTE\+\_\+\+UNUSED\+\_\+}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Typedef Documentation}
+\mbox{\Hypertarget{namespacetesting_a54bf2d7c5c42950cbed8ac510ad43832}\label{namespacetesting_a54bf2d7c5c42950cbed8ac510ad43832}} 
+\index{testing@{testing}!TestCase@{TestCase}}
+\index{TestCase@{TestCase}!testing@{testing}}
+\doxysubsubsection{\texorpdfstring{TestCase}{TestCase}}
+{\footnotesize\ttfamily using \mbox{\hyperlink{namespacetesting_a54bf2d7c5c42950cbed8ac510ad43832}{testing\+::\+Test\+Case}} = typedef \mbox{\hyperlink{classtesting_1_1TestSuite}{Test\+Suite}}}
+
+\mbox{\Hypertarget{namespacetesting_a992de1d091ce660f451d1e8b3ce30fd6}\label{namespacetesting_a992de1d091ce660f451d1e8b3ce30fd6}} 
+\index{testing@{testing}!TimeInMillis@{TimeInMillis}}
+\index{TimeInMillis@{TimeInMillis}!testing@{testing}}
+\doxysubsubsection{\texorpdfstring{TimeInMillis}{TimeInMillis}}
+{\footnotesize\ttfamily typedef \mbox{\hyperlink{namespacetesting_1_1internal_ab36b15423002d1cd490f8d9daeb9c816}{internal\+::\+Time\+In\+Millis}} \mbox{\hyperlink{namespacetesting_a992de1d091ce660f451d1e8b3ce30fd6}{testing\+::\+Time\+In\+Millis}}}
+
+\mbox{\Hypertarget{namespacetesting_a29eec4c1aba59e52881d8eb38cece83c}\label{namespacetesting_a29eec4c1aba59e52881d8eb38cece83c}} 
+\index{testing@{testing}!Types@{Types}}
+\index{Types@{Types}!testing@{testing}}
+\doxysubsubsection{\texorpdfstring{Types}{Types}}
+{\footnotesize\ttfamily template$<$typename... Ts$>$ \\
+using \mbox{\hyperlink{namespacetesting_a29eec4c1aba59e52881d8eb38cece83c}{testing\+::\+Types}} = typedef \mbox{\hyperlink{structtesting_1_1internal_1_1ProxyTypeList}{internal\+::\+Proxy\+Type\+List}}$<$Ts...$>$}
+
+\mbox{\Hypertarget{namespacetesting_a603e329ec0263ebfcf16f712810bd511}\label{namespacetesting_a603e329ec0263ebfcf16f712810bd511}} 
+\index{testing@{testing}!Unused@{Unused}}
+\index{Unused@{Unused}!testing@{testing}}
+\doxysubsubsection{\texorpdfstring{Unused}{Unused}}
+{\footnotesize\ttfamily typedef \mbox{\hyperlink{classtesting_1_1internal_1_1IgnoredValue}{internal\+::\+Ignored\+Value}} \mbox{\hyperlink{namespacetesting_a603e329ec0263ebfcf16f712810bd511}{testing\+::\+Unused}}}
+
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{namespacetesting_a460d7b998622e332392c1e00be3a60d5}\label{namespacetesting_a460d7b998622e332392c1e00be3a60d5}} 
+\index{testing@{testing}!AddGlobalTestEnvironment@{AddGlobalTestEnvironment}}
+\index{AddGlobalTestEnvironment@{AddGlobalTestEnvironment}!testing@{testing}}
+\doxysubsubsection{\texorpdfstring{AddGlobalTestEnvironment()}{AddGlobalTestEnvironment()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classtesting_1_1Environment}{Environment}}$\ast$ testing\+::\+Add\+Global\+Test\+Environment (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classtesting_1_1Environment}{Environment}} $\ast$}]{env }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{namespacetesting_a7f73180474723be6e92185d6fa9e7c9f}\label{namespacetesting_a7f73180474723be6e92185d6fa9e7c9f}} 
+\index{testing@{testing}!AssertPred1Helper@{AssertPred1Helper}}
+\index{AssertPred1Helper@{AssertPred1Helper}!testing@{testing}}
+\doxysubsubsection{\texorpdfstring{AssertPred1Helper()}{AssertPred1Helper()}}
+{\footnotesize\ttfamily template$<$typename Pred , typename T1 $>$ \\
+Assertion\+Result testing\+::\+Assert\+Pred1\+Helper (\begin{DoxyParamCaption}\item[{const char $\ast$}]{pred\+\_\+text,  }\item[{const char $\ast$}]{e1,  }\item[{Pred}]{pred,  }\item[{const T1 \&}]{v1 }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespacetesting_aa6587938029dd8733ecb885068f08247}\label{namespacetesting_aa6587938029dd8733ecb885068f08247}} 
+\index{testing@{testing}!AssertPred2Helper@{AssertPred2Helper}}
+\index{AssertPred2Helper@{AssertPred2Helper}!testing@{testing}}
+\doxysubsubsection{\texorpdfstring{AssertPred2Helper()}{AssertPred2Helper()}}
+{\footnotesize\ttfamily template$<$typename Pred , typename T1 , typename T2 $>$ \\
+Assertion\+Result testing\+::\+Assert\+Pred2\+Helper (\begin{DoxyParamCaption}\item[{const char $\ast$}]{pred\+\_\+text,  }\item[{const char $\ast$}]{e1,  }\item[{const char $\ast$}]{e2,  }\item[{Pred}]{pred,  }\item[{const T1 \&}]{v1,  }\item[{const T2 \&}]{v2 }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespacetesting_ac92dcbd00a0ffb2913e65d286e321a22}\label{namespacetesting_ac92dcbd00a0ffb2913e65d286e321a22}} 
+\index{testing@{testing}!AssertPred3Helper@{AssertPred3Helper}}
+\index{AssertPred3Helper@{AssertPred3Helper}!testing@{testing}}
+\doxysubsubsection{\texorpdfstring{AssertPred3Helper()}{AssertPred3Helper()}}
+{\footnotesize\ttfamily template$<$typename Pred , typename T1 , typename T2 , typename T3 $>$ \\
+Assertion\+Result testing\+::\+Assert\+Pred3\+Helper (\begin{DoxyParamCaption}\item[{const char $\ast$}]{pred\+\_\+text,  }\item[{const char $\ast$}]{e1,  }\item[{const char $\ast$}]{e2,  }\item[{const char $\ast$}]{e3,  }\item[{Pred}]{pred,  }\item[{const T1 \&}]{v1,  }\item[{const T2 \&}]{v2,  }\item[{const T3 \&}]{v3 }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespacetesting_ae90c778d69db4682e8fd8baaa0a9f9cd}\label{namespacetesting_ae90c778d69db4682e8fd8baaa0a9f9cd}} 
+\index{testing@{testing}!AssertPred4Helper@{AssertPred4Helper}}
+\index{AssertPred4Helper@{AssertPred4Helper}!testing@{testing}}
+\doxysubsubsection{\texorpdfstring{AssertPred4Helper()}{AssertPred4Helper()}}
+{\footnotesize\ttfamily template$<$typename Pred , typename T1 , typename T2 , typename T3 , typename T4 $>$ \\
+Assertion\+Result testing\+::\+Assert\+Pred4\+Helper (\begin{DoxyParamCaption}\item[{const char $\ast$}]{pred\+\_\+text,  }\item[{const char $\ast$}]{e1,  }\item[{const char $\ast$}]{e2,  }\item[{const char $\ast$}]{e3,  }\item[{const char $\ast$}]{e4,  }\item[{Pred}]{pred,  }\item[{const T1 \&}]{v1,  }\item[{const T2 \&}]{v2,  }\item[{const T3 \&}]{v3,  }\item[{const T4 \&}]{v4 }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespacetesting_addcf52b273ce17269cbf4956cfe600a6}\label{namespacetesting_addcf52b273ce17269cbf4956cfe600a6}} 
+\index{testing@{testing}!AssertPred5Helper@{AssertPred5Helper}}
+\index{AssertPred5Helper@{AssertPred5Helper}!testing@{testing}}
+\doxysubsubsection{\texorpdfstring{AssertPred5Helper()}{AssertPred5Helper()}}
+{\footnotesize\ttfamily template$<$typename Pred , typename T1 , typename T2 , typename T3 , typename T4 , typename T5 $>$ \\
+Assertion\+Result testing\+::\+Assert\+Pred5\+Helper (\begin{DoxyParamCaption}\item[{const char $\ast$}]{pred\+\_\+text,  }\item[{const char $\ast$}]{e1,  }\item[{const char $\ast$}]{e2,  }\item[{const char $\ast$}]{e3,  }\item[{const char $\ast$}]{e4,  }\item[{const char $\ast$}]{e5,  }\item[{Pred}]{pred,  }\item[{const T1 \&}]{v1,  }\item[{const T2 \&}]{v2,  }\item[{const T3 \&}]{v3,  }\item[{const T4 \&}]{v4,  }\item[{const T5 \&}]{v5 }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespacetesting_abfc4121b8708e8b22a096ff8be88a9d0}\label{namespacetesting_abfc4121b8708e8b22a096ff8be88a9d0}} 
+\index{testing@{testing}!Assign@{Assign}}
+\index{Assign@{Assign}!testing@{testing}}
+\doxysubsubsection{\texorpdfstring{Assign()}{Assign()}}
+{\footnotesize\ttfamily template$<$typename T1 , typename T2 $>$ \\
+\mbox{\hyperlink{classtesting_1_1PolymorphicAction}{Polymorphic\+Action}}$<$\mbox{\hyperlink{classtesting_1_1internal_1_1AssignAction}{internal\+::\+Assign\+Action}}$<$T1, T2$>$ $>$ testing\+::\+Assign (\begin{DoxyParamCaption}\item[{T1 $\ast$}]{ptr,  }\item[{T2}]{val }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespacetesting_aa9f9150ed43f949c8a6bacf3f04c03ce}\label{namespacetesting_aa9f9150ed43f949c8a6bacf3f04c03ce}} 
+\index{testing@{testing}!Bool@{Bool}}
+\index{Bool@{Bool}!testing@{testing}}
+\doxysubsubsection{\texorpdfstring{Bool()}{Bool()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classtesting_1_1internal_1_1ParamGenerator}{internal\+::\+Param\+Generator}}$<$bool$>$ testing\+::\+Bool (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{namespacetesting_acaa432211a3aec62e3d0f24b47bd2dae}\label{namespacetesting_acaa432211a3aec62e3d0f24b47bd2dae}} 
+\index{testing@{testing}!ByMove@{ByMove}}
+\index{ByMove@{ByMove}!testing@{testing}}
+\doxysubsubsection{\texorpdfstring{ByMove()}{ByMove()}}
+{\footnotesize\ttfamily template$<$typename R $>$ \\
+\mbox{\hyperlink{structtesting_1_1internal_1_1ByMoveWrapper}{internal\+::\+By\+Move\+Wrapper}}$<$R$>$ testing\+::\+By\+Move (\begin{DoxyParamCaption}\item[{R}]{x }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespacetesting_a1f94a81e042d7c40c8359c1471fbb61e}\label{namespacetesting_a1f94a81e042d7c40c8359c1471fbb61e}} 
+\index{testing@{testing}!ByRef@{ByRef}}
+\index{ByRef@{ByRef}!testing@{testing}}
+\doxysubsubsection{\texorpdfstring{ByRef()}{ByRef()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+inline \+::std\+::reference\+\_\+wrapper$<$T$>$ testing\+::\+By\+Ref (\begin{DoxyParamCaption}\item[{T \&}]{l\+\_\+value }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespacetesting_a2cb3b8fe262f59bf150998eb8fd0752d}\label{namespacetesting_a2cb3b8fe262f59bf150998eb8fd0752d}} 
+\index{testing@{testing}!Combine@{Combine}}
+\index{Combine@{Combine}!testing@{testing}}
+\doxysubsubsection{\texorpdfstring{Combine()}{Combine()}}
+{\footnotesize\ttfamily template$<$typename... Generator$>$ \\
+\mbox{\hyperlink{classtesting_1_1internal_1_1CartesianProductHolder}{internal\+::\+Cartesian\+Product\+Holder}}$<$Generator...$>$ testing\+::\+Combine (\begin{DoxyParamCaption}\item[{const Generator \&...}]{g }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespacetesting_a111b75b446e561cb9a317c765a185bea}\label{namespacetesting_a111b75b446e561cb9a317c765a185bea}} 
+\index{testing@{testing}!DeleteArg@{DeleteArg}}
+\index{DeleteArg@{DeleteArg}!testing@{testing}}
+\doxysubsubsection{\texorpdfstring{DeleteArg()}{DeleteArg()}}
+{\footnotesize\ttfamily template$<$size\+\_\+t k$>$ \\
+\mbox{\hyperlink{structtesting_1_1internal_1_1DeleteArgAction}{internal\+::\+Delete\+Arg\+Action}}$<$k$>$ testing\+::\+Delete\+Arg (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespacetesting_acfe4e82c9da6e35503e885cfa57b301c}\label{namespacetesting_acfe4e82c9da6e35503e885cfa57b301c}} 
+\index{testing@{testing}!DoAll@{DoAll}}
+\index{DoAll@{DoAll}!testing@{testing}}
+\doxysubsubsection{\texorpdfstring{DoAll()}{DoAll()}}
+{\footnotesize\ttfamily template$<$typename... Action$>$ \\
+\mbox{\hyperlink{classtesting_1_1internal_1_1DoAllAction}{internal\+::\+Do\+All\+Action}}$<$typename std\+::decay$<$\mbox{\hyperlink{classtesting_1_1Action}{Action}}$>$\+::type...$>$ testing\+::\+Do\+All (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classtesting_1_1Action}{Action}} \&\&...}]{action }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespacetesting_ae041df61ff61ccb9753ba15b4309e1a6}\label{namespacetesting_ae041df61ff61ccb9753ba15b4309e1a6}} 
+\index{testing@{testing}!DoDefault@{DoDefault}}
+\index{DoDefault@{DoDefault}!testing@{testing}}
+\doxysubsubsection{\texorpdfstring{DoDefault()}{DoDefault()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classtesting_1_1internal_1_1DoDefaultAction}{internal\+::\+Do\+Default\+Action}} testing\+::\+Do\+Default (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{namespacetesting_a84c020b981d0eb4eabfb0feda155aaaf}\label{namespacetesting_a84c020b981d0eb4eabfb0feda155aaaf}} 
+\index{testing@{testing}!DoubleLE@{DoubleLE}}
+\index{DoubleLE@{DoubleLE}!testing@{testing}}
+\doxysubsubsection{\texorpdfstring{DoubleLE()}{DoubleLE()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{gtest-port_8h_aa73be6f0ba4a7456180a94904ce17790}{GTEST\+\_\+\+API\+\_\+}} Assertion\+Result testing\+::\+Double\+LE (\begin{DoxyParamCaption}\item[{const char $\ast$}]{expr1,  }\item[{const char $\ast$}]{expr2,  }\item[{double}]{val1,  }\item[{double}]{val2 }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespacetesting_a69106491c2e7f50e50da0ce5e8ae4374}\label{namespacetesting_a69106491c2e7f50e50da0ce5e8ae4374}} 
+\index{testing@{testing}!FloatLE@{FloatLE}}
+\index{FloatLE@{FloatLE}!testing@{testing}}
+\doxysubsubsection{\texorpdfstring{FloatLE()}{FloatLE()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{gtest-port_8h_aa73be6f0ba4a7456180a94904ce17790}{GTEST\+\_\+\+API\+\_\+}} Assertion\+Result testing\+::\+Float\+LE (\begin{DoxyParamCaption}\item[{const char $\ast$}]{expr1,  }\item[{const char $\ast$}]{expr2,  }\item[{float}]{val1,  }\item[{float}]{val2 }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespacetesting_a50ae42540a31047c7fddd32df8d835f5}\label{namespacetesting_a50ae42540a31047c7fddd32df8d835f5}} 
+\index{testing@{testing}!IgnoreResult@{IgnoreResult}}
+\index{IgnoreResult@{IgnoreResult}!testing@{testing}}
+\doxysubsubsection{\texorpdfstring{IgnoreResult()}{IgnoreResult()}}
+{\footnotesize\ttfamily template$<$typename A $>$ \\
+\mbox{\hyperlink{classtesting_1_1internal_1_1IgnoreResultAction}{internal\+::\+Ignore\+Result\+Action}}$<$A$>$ testing\+::\+Ignore\+Result (\begin{DoxyParamCaption}\item[{const A \&}]{an\+\_\+action }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{namespacetesting_a9276d4bc746722cb4fe99415c1dc778f}\label{namespacetesting_a9276d4bc746722cb4fe99415c1dc778f}} 
+\index{testing@{testing}!InitGoogleMock@{InitGoogleMock}}
+\index{InitGoogleMock@{InitGoogleMock}!testing@{testing}}
+\doxysubsubsection{\texorpdfstring{InitGoogleMock()}{InitGoogleMock()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{gtest-port_8h_aa73be6f0ba4a7456180a94904ce17790}{GTEST\+\_\+\+API\+\_\+}} void testing\+::\+Init\+Google\+Mock (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespacetesting_a32b1c6db9ba5133ccabfa67616b3c041}\label{namespacetesting_a32b1c6db9ba5133ccabfa67616b3c041}} 
+\index{testing@{testing}!InitGoogleMock@{InitGoogleMock}}
+\index{InitGoogleMock@{InitGoogleMock}!testing@{testing}}
+\doxysubsubsection{\texorpdfstring{InitGoogleMock()}{InitGoogleMock()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{gtest-port_8h_aa73be6f0ba4a7456180a94904ce17790}{GTEST\+\_\+\+API\+\_\+}} void testing\+::\+Init\+Google\+Mock (\begin{DoxyParamCaption}\item[{int $\ast$}]{argc,  }\item[{char $\ast$$\ast$}]{argv }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespacetesting_a20fb86152763dddef67bc1dd8b090800}\label{namespacetesting_a20fb86152763dddef67bc1dd8b090800}} 
+\index{testing@{testing}!InitGoogleMock@{InitGoogleMock}}
+\index{InitGoogleMock@{InitGoogleMock}!testing@{testing}}
+\doxysubsubsection{\texorpdfstring{InitGoogleMock()}{InitGoogleMock()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{gtest-port_8h_aa73be6f0ba4a7456180a94904ce17790}{GTEST\+\_\+\+API\+\_\+}} void testing\+::\+Init\+Google\+Mock (\begin{DoxyParamCaption}\item[{int $\ast$}]{argc,  }\item[{wchar\+\_\+t $\ast$$\ast$}]{argv }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespacetesting_a2201e3fba11205a7edc2418fae82523e}\label{namespacetesting_a2201e3fba11205a7edc2418fae82523e}} 
+\index{testing@{testing}!InitGoogleTest@{InitGoogleTest}}
+\index{InitGoogleTest@{InitGoogleTest}!testing@{testing}}
+\doxysubsubsection{\texorpdfstring{InitGoogleTest()}{InitGoogleTest()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{gtest-port_8h_aa73be6f0ba4a7456180a94904ce17790}{GTEST\+\_\+\+API\+\_\+}} void testing\+::\+Init\+Google\+Test (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespacetesting_aee3f6f99df893f576f705f66c0559482}\label{namespacetesting_aee3f6f99df893f576f705f66c0559482}} 
+\index{testing@{testing}!InitGoogleTest@{InitGoogleTest}}
+\index{InitGoogleTest@{InitGoogleTest}!testing@{testing}}
+\doxysubsubsection{\texorpdfstring{InitGoogleTest()}{InitGoogleTest()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{gtest-port_8h_aa73be6f0ba4a7456180a94904ce17790}{GTEST\+\_\+\+API\+\_\+}} void testing\+::\+Init\+Google\+Test (\begin{DoxyParamCaption}\item[{int $\ast$}]{argc,  }\item[{char $\ast$$\ast$}]{argv }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespacetesting_a6e9d83553f1d10818d698d45689d8adb}\label{namespacetesting_a6e9d83553f1d10818d698d45689d8adb}} 
+\index{testing@{testing}!InitGoogleTest@{InitGoogleTest}}
+\index{InitGoogleTest@{InitGoogleTest}!testing@{testing}}
+\doxysubsubsection{\texorpdfstring{InitGoogleTest()}{InitGoogleTest()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{gtest-port_8h_aa73be6f0ba4a7456180a94904ce17790}{GTEST\+\_\+\+API\+\_\+}} void testing\+::\+Init\+Google\+Test (\begin{DoxyParamCaption}\item[{int $\ast$}]{argc,  }\item[{wchar\+\_\+t $\ast$$\ast$}]{argv }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespacetesting_ad8e6a230597a891226b1f9cc0a1eda36}\label{namespacetesting_ad8e6a230597a891226b1f9cc0a1eda36}} 
+\index{testing@{testing}!Invoke@{Invoke}}
+\index{Invoke@{Invoke}!testing@{testing}}
+\doxysubsubsection{\texorpdfstring{Invoke()}{Invoke()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$class Class , typename Method\+Ptr $>$ \\
+\mbox{\hyperlink{structtesting_1_1internal_1_1InvokeMethodAction}{internal\+::\+Invoke\+Method\+Action}}$<$Class, Method\+Ptr$>$ testing\+::\+Invoke (\begin{DoxyParamCaption}\item[{Class $\ast$}]{obj\+\_\+ptr,  }\item[{Method\+Ptr}]{method\+\_\+ptr }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespacetesting_a620bba98fc80a3cda99b06b1f9221dc8}\label{namespacetesting_a620bba98fc80a3cda99b06b1f9221dc8}} 
+\index{testing@{testing}!Invoke@{Invoke}}
+\index{Invoke@{Invoke}!testing@{testing}}
+\doxysubsubsection{\texorpdfstring{Invoke()}{Invoke()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename Function\+Impl $>$ \\
+std\+::decay$<$Function\+Impl$>$\+::type testing\+::\+Invoke (\begin{DoxyParamCaption}\item[{Function\+Impl \&\&}]{function\+\_\+impl }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespacetesting_aea07672ccab38b97d1a7fbf17707e2d2}\label{namespacetesting_aea07672ccab38b97d1a7fbf17707e2d2}} 
+\index{testing@{testing}!InvokeArgument@{InvokeArgument}}
+\index{InvokeArgument@{InvokeArgument}!testing@{testing}}
+\doxysubsubsection{\texorpdfstring{InvokeArgument()}{InvokeArgument()}}
+{\footnotesize\ttfamily template$<$std\+::size\+\_\+t index, typename... Params$>$ \\
+\mbox{\hyperlink{structtesting_1_1internal_1_1InvokeArgumentAction}{internal\+::\+Invoke\+Argument\+Action}}$<$index, typename std\+::decay$<$Params$>$\+::type...$>$ testing\+::\+Invoke\+Argument (\begin{DoxyParamCaption}\item[{Params \&\&...}]{params }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespacetesting_adc0c2f9ce020f829a2b75b1213667040}\label{namespacetesting_adc0c2f9ce020f829a2b75b1213667040}} 
+\index{testing@{testing}!InvokeWithoutArgs@{InvokeWithoutArgs}}
+\index{InvokeWithoutArgs@{InvokeWithoutArgs}!testing@{testing}}
+\doxysubsubsection{\texorpdfstring{InvokeWithoutArgs()}{InvokeWithoutArgs()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$class Class , typename Method\+Ptr $>$ \\
+\mbox{\hyperlink{structtesting_1_1internal_1_1InvokeMethodWithoutArgsAction}{internal\+::\+Invoke\+Method\+Without\+Args\+Action}}$<$Class, Method\+Ptr$>$ testing\+::\+Invoke\+Without\+Args (\begin{DoxyParamCaption}\item[{Class $\ast$}]{obj\+\_\+ptr,  }\item[{Method\+Ptr}]{method\+\_\+ptr }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespacetesting_ac4012b489848d54bb89a9998d19a1d21}\label{namespacetesting_ac4012b489848d54bb89a9998d19a1d21}} 
+\index{testing@{testing}!InvokeWithoutArgs@{InvokeWithoutArgs}}
+\index{InvokeWithoutArgs@{InvokeWithoutArgs}!testing@{testing}}
+\doxysubsubsection{\texorpdfstring{InvokeWithoutArgs()}{InvokeWithoutArgs()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename Function\+Impl $>$ \\
+\mbox{\hyperlink{structtesting_1_1internal_1_1InvokeWithoutArgsAction}{internal\+::\+Invoke\+Without\+Args\+Action}}$<$typename std\+::decay$<$Function\+Impl$>$\+::type$>$ testing\+::\+Invoke\+Without\+Args (\begin{DoxyParamCaption}\item[{Function\+Impl}]{function\+\_\+impl }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespacetesting_a645d822e47dc64b9923e78c880807f12}\label{namespacetesting_a645d822e47dc64b9923e78c880807f12}} 
+\index{testing@{testing}!IsNotSubstring@{IsNotSubstring}}
+\index{IsNotSubstring@{IsNotSubstring}!testing@{testing}}
+\doxysubsubsection{\texorpdfstring{IsNotSubstring()}{IsNotSubstring()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{gtest-port_8h_aa73be6f0ba4a7456180a94904ce17790}{GTEST\+\_\+\+API\+\_\+}} Assertion\+Result testing\+::\+Is\+Not\+Substring (\begin{DoxyParamCaption}\item[{const char $\ast$}]{needle\+\_\+expr,  }\item[{const char $\ast$}]{haystack\+\_\+expr,  }\item[{const \+::std\+::string \&}]{needle,  }\item[{const \+::std\+::string \&}]{haystack }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespacetesting_ab553b649b06ef2339cbd90f8dfa119f0}\label{namespacetesting_ab553b649b06ef2339cbd90f8dfa119f0}} 
+\index{testing@{testing}!IsNotSubstring@{IsNotSubstring}}
+\index{IsNotSubstring@{IsNotSubstring}!testing@{testing}}
+\doxysubsubsection{\texorpdfstring{IsNotSubstring()}{IsNotSubstring()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{gtest-port_8h_aa73be6f0ba4a7456180a94904ce17790}{GTEST\+\_\+\+API\+\_\+}} Assertion\+Result testing\+::\+Is\+Not\+Substring (\begin{DoxyParamCaption}\item[{const char $\ast$}]{needle\+\_\+expr,  }\item[{const char $\ast$}]{haystack\+\_\+expr,  }\item[{const char $\ast$}]{needle,  }\item[{const char $\ast$}]{haystack }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespacetesting_a28868925c50d541c8568a540b6457e54}\label{namespacetesting_a28868925c50d541c8568a540b6457e54}} 
+\index{testing@{testing}!IsNotSubstring@{IsNotSubstring}}
+\index{IsNotSubstring@{IsNotSubstring}!testing@{testing}}
+\doxysubsubsection{\texorpdfstring{IsNotSubstring()}{IsNotSubstring()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{gtest-port_8h_aa73be6f0ba4a7456180a94904ce17790}{GTEST\+\_\+\+API\+\_\+}} Assertion\+Result testing\+::\+Is\+Not\+Substring (\begin{DoxyParamCaption}\item[{const char $\ast$}]{needle\+\_\+expr,  }\item[{const char $\ast$}]{haystack\+\_\+expr,  }\item[{const wchar\+\_\+t $\ast$}]{needle,  }\item[{const wchar\+\_\+t $\ast$}]{haystack }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespacetesting_a32718fab95b2833ab5ffc9cfc9f5c8b0}\label{namespacetesting_a32718fab95b2833ab5ffc9cfc9f5c8b0}} 
+\index{testing@{testing}!IsSubstring@{IsSubstring}}
+\index{IsSubstring@{IsSubstring}!testing@{testing}}
+\doxysubsubsection{\texorpdfstring{IsSubstring()}{IsSubstring()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{gtest-port_8h_aa73be6f0ba4a7456180a94904ce17790}{GTEST\+\_\+\+API\+\_\+}} Assertion\+Result testing\+::\+Is\+Substring (\begin{DoxyParamCaption}\item[{const char $\ast$}]{needle\+\_\+expr,  }\item[{const char $\ast$}]{haystack\+\_\+expr,  }\item[{const \+::std\+::string \&}]{needle,  }\item[{const \+::std\+::string \&}]{haystack }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespacetesting_a5c90a86562b2470213c07742e0eeb0fe}\label{namespacetesting_a5c90a86562b2470213c07742e0eeb0fe}} 
+\index{testing@{testing}!IsSubstring@{IsSubstring}}
+\index{IsSubstring@{IsSubstring}!testing@{testing}}
+\doxysubsubsection{\texorpdfstring{IsSubstring()}{IsSubstring()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{gtest-port_8h_aa73be6f0ba4a7456180a94904ce17790}{GTEST\+\_\+\+API\+\_\+}} Assertion\+Result testing\+::\+Is\+Substring (\begin{DoxyParamCaption}\item[{const char $\ast$}]{needle\+\_\+expr,  }\item[{const char $\ast$}]{haystack\+\_\+expr,  }\item[{const char $\ast$}]{needle,  }\item[{const char $\ast$}]{haystack }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespacetesting_a08ce65847491b27a38cbac3ac15e3035}\label{namespacetesting_a08ce65847491b27a38cbac3ac15e3035}} 
+\index{testing@{testing}!IsSubstring@{IsSubstring}}
+\index{IsSubstring@{IsSubstring}!testing@{testing}}
+\doxysubsubsection{\texorpdfstring{IsSubstring()}{IsSubstring()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{gtest-port_8h_aa73be6f0ba4a7456180a94904ce17790}{GTEST\+\_\+\+API\+\_\+}} Assertion\+Result testing\+::\+Is\+Substring (\begin{DoxyParamCaption}\item[{const char $\ast$}]{needle\+\_\+expr,  }\item[{const char $\ast$}]{haystack\+\_\+expr,  }\item[{const wchar\+\_\+t $\ast$}]{needle,  }\item[{const wchar\+\_\+t $\ast$}]{haystack }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespacetesting_ae6b9960db2b2685e043ce5215291f5b8}\label{namespacetesting_ae6b9960db2b2685e043ce5215291f5b8}} 
+\index{testing@{testing}!MakeAction@{MakeAction}}
+\index{MakeAction@{MakeAction}!testing@{testing}}
+\doxysubsubsection{\texorpdfstring{MakeAction()}{MakeAction()}}
+{\footnotesize\ttfamily template$<$typename F $>$ \\
+\mbox{\hyperlink{classtesting_1_1Action}{Action}}$<$F$>$ testing\+::\+Make\+Action (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classtesting_1_1ActionInterface}{Action\+Interface}}$<$ F $>$ $\ast$}]{impl }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespacetesting_a36bd06c5ea972c6df0bd9f40a7a94c65}\label{namespacetesting_a36bd06c5ea972c6df0bd9f40a7a94c65}} 
+\index{testing@{testing}!MakePolymorphicAction@{MakePolymorphicAction}}
+\index{MakePolymorphicAction@{MakePolymorphicAction}!testing@{testing}}
+\doxysubsubsection{\texorpdfstring{MakePolymorphicAction()}{MakePolymorphicAction()}}
+{\footnotesize\ttfamily template$<$typename Impl $>$ \\
+\mbox{\hyperlink{classtesting_1_1PolymorphicAction}{Polymorphic\+Action}}$<$Impl$>$ testing\+::\+Make\+Polymorphic\+Action (\begin{DoxyParamCaption}\item[{const Impl \&}]{impl }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{namespacetesting_a4fcb3f407119590471bea5a90a8d2dda}\label{namespacetesting_a4fcb3f407119590471bea5a90a8d2dda}} 
+\index{testing@{testing}!MATCHER@{MATCHER}}
+\index{MATCHER@{MATCHER}!testing@{testing}}
+\doxysubsubsection{\texorpdfstring{MATCHER()}{MATCHER()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily testing\+::\+MATCHER (\begin{DoxyParamCaption}\item[{Is\+Empty}]{,  }\item[{negation ? \char`\"{}isn\textquotesingle{}t empty\char`\"{} \+:\char`\"{}is empty\char`\"{}}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespacetesting_a03fb223cceaefc67991ac36286dcbb34}\label{namespacetesting_a03fb223cceaefc67991ac36286dcbb34}} 
+\index{testing@{testing}!MATCHER@{MATCHER}}
+\index{MATCHER@{MATCHER}!testing@{testing}}
+\doxysubsubsection{\texorpdfstring{MATCHER()}{MATCHER()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily testing\+::\+MATCHER (\begin{DoxyParamCaption}\item[{Is\+False}]{,  }\item[{negation ? \char`\"{}is true\char`\"{} \+:\char`\"{}is false\char`\"{}}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespacetesting_ab2b645db6909220993662cf43ed0d9e8}\label{namespacetesting_ab2b645db6909220993662cf43ed0d9e8}} 
+\index{testing@{testing}!MATCHER@{MATCHER}}
+\index{MATCHER@{MATCHER}!testing@{testing}}
+\doxysubsubsection{\texorpdfstring{MATCHER()}{MATCHER()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily testing\+::\+MATCHER (\begin{DoxyParamCaption}\item[{Is\+True}]{,  }\item[{negation ? \char`\"{}is false\char`\"{} \+:\char`\"{}is true\char`\"{}}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespacetesting_a7b802e532fd68749765cb7dc156130db}\label{namespacetesting_a7b802e532fd68749765cb7dc156130db}} 
+\index{testing@{testing}!operator$<$$<$@{operator$<$$<$}}
+\index{operator$<$$<$@{operator$<$$<$}!testing@{testing}}
+\doxysubsubsection{\texorpdfstring{operator$<$$<$()}{operator<<()}}
+{\footnotesize\ttfamily std\+::ostream\& testing\+::operator$<$$<$ (\begin{DoxyParamCaption}\item[{std\+::ostream \&}]{os,  }\item[{const \mbox{\hyperlink{classtesting_1_1Message}{Message}} \&}]{sb }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{namespacetesting_aa5717bb1144edd1d262d310ba70c82ed}\label{namespacetesting_aa5717bb1144edd1d262d310ba70c82ed}} 
+\index{testing@{testing}!PrintToString@{PrintToString}}
+\index{PrintToString@{PrintToString}!testing@{testing}}
+\doxysubsubsection{\texorpdfstring{PrintToString()}{PrintToString()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+\+::std\+::string testing\+::\+Print\+To\+String (\begin{DoxyParamCaption}\item[{const T \&}]{value }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespacetesting_a56a45f85a1238dfc92e6fca03eb3a2e4}\label{namespacetesting_a56a45f85a1238dfc92e6fca03eb3a2e4}} 
+\index{testing@{testing}!Range@{Range}}
+\index{Range@{Range}!testing@{testing}}
+\doxysubsubsection{\texorpdfstring{Range()}{Range()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+\mbox{\hyperlink{classtesting_1_1internal_1_1ParamGenerator}{internal\+::\+Param\+Generator}}$<$T$>$ testing\+::\+Range (\begin{DoxyParamCaption}\item[{T}]{start,  }\item[{T}]{end }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespacetesting_a265ed70a86cf2d6641582c45ad9529e2}\label{namespacetesting_a265ed70a86cf2d6641582c45ad9529e2}} 
+\index{testing@{testing}!Range@{Range}}
+\index{Range@{Range}!testing@{testing}}
+\doxysubsubsection{\texorpdfstring{Range()}{Range()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename T , typename IncrementT $>$ \\
+\mbox{\hyperlink{classtesting_1_1internal_1_1ParamGenerator}{internal\+::\+Param\+Generator}}$<$T$>$ testing\+::\+Range (\begin{DoxyParamCaption}\item[{T}]{start,  }\item[{T}]{end,  }\item[{IncrementT}]{step }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespacetesting_a302c84bdc88f2138696da2a4756b6466}\label{namespacetesting_a302c84bdc88f2138696da2a4756b6466}} 
+\index{testing@{testing}!RegisterTest@{RegisterTest}}
+\index{RegisterTest@{RegisterTest}!testing@{testing}}
+\doxysubsubsection{\texorpdfstring{RegisterTest()}{RegisterTest()}}
+{\footnotesize\ttfamily template$<$int \&... Explicit\+Parameter\+Barrier, typename Factory $>$ \\
+\mbox{\hyperlink{classtesting_1_1TestInfo}{Test\+Info}}$\ast$ testing\+::\+Register\+Test (\begin{DoxyParamCaption}\item[{const char $\ast$}]{test\+\_\+suite\+\_\+name,  }\item[{const char $\ast$}]{test\+\_\+name,  }\item[{const char $\ast$}]{type\+\_\+param,  }\item[{const char $\ast$}]{value\+\_\+param,  }\item[{const char $\ast$}]{file,  }\item[{int}]{line,  }\item[{Factory}]{factory }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespacetesting_a8da8e53d2e7bc4e3c531f7435ad04823}\label{namespacetesting_a8da8e53d2e7bc4e3c531f7435ad04823}} 
+\index{testing@{testing}!Return@{Return}}
+\index{Return@{Return}!testing@{testing}}
+\doxysubsubsection{\texorpdfstring{Return()}{Return()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classtesting_1_1PolymorphicAction}{Polymorphic\+Action}}$<$\mbox{\hyperlink{classtesting_1_1internal_1_1ReturnVoidAction}{internal\+::\+Return\+Void\+Action}}$>$ testing\+::\+Return (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{namespacetesting_af6d1c13e9376c77671e37545cd84359c}\label{namespacetesting_af6d1c13e9376c77671e37545cd84359c}} 
+\index{testing@{testing}!Return@{Return}}
+\index{Return@{Return}!testing@{testing}}
+\doxysubsubsection{\texorpdfstring{Return()}{Return()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename R $>$ \\
+\mbox{\hyperlink{classtesting_1_1internal_1_1ReturnAction}{internal\+::\+Return\+Action}}$<$R$>$ testing\+::\+Return (\begin{DoxyParamCaption}\item[{R}]{value }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespacetesting_a5ca93fb9982f1f5e37bfad6a2f535c7c}\label{namespacetesting_a5ca93fb9982f1f5e37bfad6a2f535c7c}} 
+\index{testing@{testing}!ReturnArg@{ReturnArg}}
+\index{ReturnArg@{ReturnArg}!testing@{testing}}
+\doxysubsubsection{\texorpdfstring{ReturnArg()}{ReturnArg()}}
+{\footnotesize\ttfamily template$<$size\+\_\+t k$>$ \\
+\mbox{\hyperlink{structtesting_1_1internal_1_1ReturnArgAction}{internal\+::\+Return\+Arg\+Action}}$<$k$>$ testing\+::\+Return\+Arg (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespacetesting_a84bc5aeb13dd2bb5d75e95373f7b31fb}\label{namespacetesting_a84bc5aeb13dd2bb5d75e95373f7b31fb}} 
+\index{testing@{testing}!ReturnNew@{ReturnNew}}
+\index{ReturnNew@{ReturnNew}!testing@{testing}}
+\doxysubsubsection{\texorpdfstring{ReturnNew()}{ReturnNew()}}
+{\footnotesize\ttfamily template$<$typename T , typename... Params$>$ \\
+\mbox{\hyperlink{structtesting_1_1internal_1_1ReturnNewAction}{internal\+::\+Return\+New\+Action}}$<$T, typename std\+::decay$<$Params$>$\+::type...$>$ testing\+::\+Return\+New (\begin{DoxyParamCaption}\item[{Params \&\&...}]{params }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespacetesting_aa0331596e269114da101f810d3a1b88b}\label{namespacetesting_aa0331596e269114da101f810d3a1b88b}} 
+\index{testing@{testing}!ReturnNull@{ReturnNull}}
+\index{ReturnNull@{ReturnNull}!testing@{testing}}
+\doxysubsubsection{\texorpdfstring{ReturnNull()}{ReturnNull()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classtesting_1_1PolymorphicAction}{Polymorphic\+Action}}$<$\mbox{\hyperlink{classtesting_1_1internal_1_1ReturnNullAction}{internal\+::\+Return\+Null\+Action}}$>$ testing\+::\+Return\+Null (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{namespacetesting_ab06f10fbbfbded950bf97bdd2c2e1505}\label{namespacetesting_ab06f10fbbfbded950bf97bdd2c2e1505}} 
+\index{testing@{testing}!ReturnPointee@{ReturnPointee}}
+\index{ReturnPointee@{ReturnPointee}!testing@{testing}}
+\doxysubsubsection{\texorpdfstring{ReturnPointee()}{ReturnPointee()}}
+{\footnotesize\ttfamily template$<$typename Ptr $>$ \\
+\mbox{\hyperlink{structtesting_1_1internal_1_1ReturnPointeeAction}{internal\+::\+Return\+Pointee\+Action}}$<$Ptr$>$ testing\+::\+Return\+Pointee (\begin{DoxyParamCaption}\item[{Ptr}]{pointer }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespacetesting_a564ff8b888cddc78f66f4cc6d134ddc7}\label{namespacetesting_a564ff8b888cddc78f66f4cc6d134ddc7}} 
+\index{testing@{testing}!ReturnRef@{ReturnRef}}
+\index{ReturnRef@{ReturnRef}!testing@{testing}}
+\doxysubsubsection{\texorpdfstring{ReturnRef()}{ReturnRef()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename R , R $\ast$  = nullptr$>$ \\
+\mbox{\hyperlink{classtesting_1_1internal_1_1ReturnRefAction}{internal\+::\+Return\+Ref\+Action}}$<$R$>$ testing\+::\+Return\+Ref (\begin{DoxyParamCaption}\item[{R \&\&}]{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [delete]}}
+
+\mbox{\Hypertarget{namespacetesting_a18eda8fe9c89ee856c199a2e04ca1641}\label{namespacetesting_a18eda8fe9c89ee856c199a2e04ca1641}} 
+\index{testing@{testing}!ReturnRef@{ReturnRef}}
+\index{ReturnRef@{ReturnRef}!testing@{testing}}
+\doxysubsubsection{\texorpdfstring{ReturnRef()}{ReturnRef()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename R $>$ \\
+\mbox{\hyperlink{classtesting_1_1internal_1_1ReturnRefAction}{internal\+::\+Return\+Ref\+Action}}$<$R$>$ testing\+::\+Return\+Ref (\begin{DoxyParamCaption}\item[{R \&}]{x }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{namespacetesting_ac1b75444c89371dc25ebcfcc48336201}\label{namespacetesting_ac1b75444c89371dc25ebcfcc48336201}} 
+\index{testing@{testing}!ReturnRefOfCopy@{ReturnRefOfCopy}}
+\index{ReturnRefOfCopy@{ReturnRefOfCopy}!testing@{testing}}
+\doxysubsubsection{\texorpdfstring{ReturnRefOfCopy()}{ReturnRefOfCopy()}}
+{\footnotesize\ttfamily template$<$typename R $>$ \\
+\mbox{\hyperlink{classtesting_1_1internal_1_1ReturnRefOfCopyAction}{internal\+::\+Return\+Ref\+Of\+Copy\+Action}}$<$R$>$ testing\+::\+Return\+Ref\+Of\+Copy (\begin{DoxyParamCaption}\item[{const R \&}]{x }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{namespacetesting_ac65fab9aed3a50d79a0bcb6bf954cc7c}\label{namespacetesting_ac65fab9aed3a50d79a0bcb6bf954cc7c}} 
+\index{testing@{testing}!ReturnRoundRobin@{ReturnRoundRobin}}
+\index{ReturnRoundRobin@{ReturnRoundRobin}!testing@{testing}}
+\doxysubsubsection{\texorpdfstring{ReturnRoundRobin()}{ReturnRoundRobin()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+\mbox{\hyperlink{classtesting_1_1internal_1_1ReturnRoundRobinAction}{internal\+::\+Return\+Round\+Robin\+Action}}$<$T$>$ testing\+::\+Return\+Round\+Robin (\begin{DoxyParamCaption}\item[{std\+::initializer\+\_\+list$<$ T $>$}]{vals }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespacetesting_aec1454fc6581eee01a89cceceda4da31}\label{namespacetesting_aec1454fc6581eee01a89cceceda4da31}} 
+\index{testing@{testing}!ReturnRoundRobin@{ReturnRoundRobin}}
+\index{ReturnRoundRobin@{ReturnRoundRobin}!testing@{testing}}
+\doxysubsubsection{\texorpdfstring{ReturnRoundRobin()}{ReturnRoundRobin()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+\mbox{\hyperlink{classtesting_1_1internal_1_1ReturnRoundRobinAction}{internal\+::\+Return\+Round\+Robin\+Action}}$<$T$>$ testing\+::\+Return\+Round\+Robin (\begin{DoxyParamCaption}\item[{std\+::vector$<$ T $>$}]{vals }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespacetesting_acfb3187148173dea40181ee576a27124}\label{namespacetesting_acfb3187148173dea40181ee576a27124}} 
+\index{testing@{testing}!SaveArg@{SaveArg}}
+\index{SaveArg@{SaveArg}!testing@{testing}}
+\doxysubsubsection{\texorpdfstring{SaveArg()}{SaveArg()}}
+{\footnotesize\ttfamily template$<$size\+\_\+t k, typename Ptr $>$ \\
+\mbox{\hyperlink{structtesting_1_1internal_1_1SaveArgAction}{internal\+::\+Save\+Arg\+Action}}$<$k, Ptr$>$ testing\+::\+Save\+Arg (\begin{DoxyParamCaption}\item[{Ptr}]{pointer }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespacetesting_aa5f7ae7835df1d0d8e8d25222f119f03}\label{namespacetesting_aa5f7ae7835df1d0d8e8d25222f119f03}} 
+\index{testing@{testing}!SaveArgPointee@{SaveArgPointee}}
+\index{SaveArgPointee@{SaveArgPointee}!testing@{testing}}
+\doxysubsubsection{\texorpdfstring{SaveArgPointee()}{SaveArgPointee()}}
+{\footnotesize\ttfamily template$<$size\+\_\+t k, typename Ptr $>$ \\
+\mbox{\hyperlink{structtesting_1_1internal_1_1SaveArgPointeeAction}{internal\+::\+Save\+Arg\+Pointee\+Action}}$<$k, Ptr$>$ testing\+::\+Save\+Arg\+Pointee (\begin{DoxyParamCaption}\item[{Ptr}]{pointer }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespacetesting_a35ef7e93b89ad77632b90d1126327e38}\label{namespacetesting_a35ef7e93b89ad77632b90d1126327e38}} 
+\index{testing@{testing}!SetArgPointee@{SetArgPointee}}
+\index{SetArgPointee@{SetArgPointee}!testing@{testing}}
+\doxysubsubsection{\texorpdfstring{SetArgPointee()}{SetArgPointee()}}
+{\footnotesize\ttfamily template$<$size\+\_\+t N, typename T $>$ \\
+\mbox{\hyperlink{structtesting_1_1internal_1_1SetArgumentPointeeAction}{internal\+::\+Set\+Argument\+Pointee\+Action}}$<$N, T$>$ testing\+::\+Set\+Arg\+Pointee (\begin{DoxyParamCaption}\item[{T}]{value }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespacetesting_af5537ad697fba571bf2fcad982ab27a5}\label{namespacetesting_af5537ad697fba571bf2fcad982ab27a5}} 
+\index{testing@{testing}!SetArgReferee@{SetArgReferee}}
+\index{SetArgReferee@{SetArgReferee}!testing@{testing}}
+\doxysubsubsection{\texorpdfstring{SetArgReferee()}{SetArgReferee()}}
+{\footnotesize\ttfamily template$<$size\+\_\+t k, typename T $>$ \\
+\mbox{\hyperlink{structtesting_1_1internal_1_1SetArgRefereeAction}{internal\+::\+Set\+Arg\+Referee\+Action}}$<$k, typename std\+::decay$<$T$>$\+::type$>$ testing\+::\+Set\+Arg\+Referee (\begin{DoxyParamCaption}\item[{T \&\&}]{value }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespacetesting_a32edcace29c43034c938dae30a94fe32}\label{namespacetesting_a32edcace29c43034c938dae30a94fe32}} 
+\index{testing@{testing}!SetArgumentPointee@{SetArgumentPointee}}
+\index{SetArgumentPointee@{SetArgumentPointee}!testing@{testing}}
+\doxysubsubsection{\texorpdfstring{SetArgumentPointee()}{SetArgumentPointee()}}
+{\footnotesize\ttfamily template$<$size\+\_\+t N, typename T $>$ \\
+\mbox{\hyperlink{structtesting_1_1internal_1_1SetArgumentPointeeAction}{internal\+::\+Set\+Argument\+Pointee\+Action}}$<$N, T$>$ testing\+::\+Set\+Argument\+Pointee (\begin{DoxyParamCaption}\item[{T}]{value }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespacetesting_aa9c44a402f7612d920718cc1491cbd97}\label{namespacetesting_aa9c44a402f7612d920718cc1491cbd97}} 
+\index{testing@{testing}!SetArrayArgument@{SetArrayArgument}}
+\index{SetArrayArgument@{SetArrayArgument}!testing@{testing}}
+\doxysubsubsection{\texorpdfstring{SetArrayArgument()}{SetArrayArgument()}}
+{\footnotesize\ttfamily template$<$size\+\_\+t k, typename I1 , typename I2 $>$ \\
+\mbox{\hyperlink{structtesting_1_1internal_1_1SetArrayArgumentAction}{internal\+::\+Set\+Array\+Argument\+Action}}$<$k, I1, I2$>$ testing\+::\+Set\+Array\+Argument (\begin{DoxyParamCaption}\item[{I1}]{first,  }\item[{I2}]{last }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespacetesting_a31095e421f167fade2e6d4d60df1f4da}\label{namespacetesting_a31095e421f167fade2e6d4d60df1f4da}} 
+\index{testing@{testing}!SetErrnoAndReturn@{SetErrnoAndReturn}}
+\index{SetErrnoAndReturn@{SetErrnoAndReturn}!testing@{testing}}
+\doxysubsubsection{\texorpdfstring{SetErrnoAndReturn()}{SetErrnoAndReturn()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+\mbox{\hyperlink{classtesting_1_1PolymorphicAction}{Polymorphic\+Action}}$<$\mbox{\hyperlink{classtesting_1_1internal_1_1SetErrnoAndReturnAction}{internal\+::\+Set\+Errno\+And\+Return\+Action}}$<$T$>$ $>$ testing\+::\+Set\+Errno\+And\+Return (\begin{DoxyParamCaption}\item[{int}]{errval,  }\item[{T}]{result }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespacetesting_a8318a0c014ef26fc3d5b8b3492198ff7}\label{namespacetesting_a8318a0c014ef26fc3d5b8b3492198ff7}} 
+\index{testing@{testing}!StaticAssertTypeEq@{StaticAssertTypeEq}}
+\index{StaticAssertTypeEq@{StaticAssertTypeEq}!testing@{testing}}
+\doxysubsubsection{\texorpdfstring{StaticAssertTypeEq()}{StaticAssertTypeEq()}}
+{\footnotesize\ttfamily template$<$typename T1 , typename T2 $>$ \\
+constexpr bool testing\+::\+Static\+Assert\+Type\+Eq (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [constexpr]}, {\ttfamily [noexcept]}}
+
+\mbox{\Hypertarget{namespacetesting_abcf5181cecc3c07915dceb3de46ab07f}\label{namespacetesting_abcf5181cecc3c07915dceb3de46ab07f}} 
+\index{testing@{testing}!TempDir@{TempDir}}
+\index{TempDir@{TempDir}!testing@{testing}}
+\doxysubsubsection{\texorpdfstring{TempDir()}{TempDir()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{gtest-port_8h_aa73be6f0ba4a7456180a94904ce17790}{GTEST\+\_\+\+API\+\_\+}} std\+::string testing\+::\+Temp\+Dir (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespacetesting_a374d4e5fbb4c938058fbe81d4c7ff6a6}\label{namespacetesting_a374d4e5fbb4c938058fbe81d4c7ff6a6}} 
+\index{testing@{testing}!Values@{Values}}
+\index{Values@{Values}!testing@{testing}}
+\doxysubsubsection{\texorpdfstring{Values()}{Values()}}
+{\footnotesize\ttfamily template$<$typename... T$>$ \\
+\mbox{\hyperlink{classtesting_1_1internal_1_1ValueArray}{internal\+::\+Value\+Array}}$<$T...$>$ testing\+::\+Values (\begin{DoxyParamCaption}\item[{T...}]{v }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespacetesting_aa67d0c8470c5f69fcfcacc9e775fa982}\label{namespacetesting_aa67d0c8470c5f69fcfcacc9e775fa982}} 
+\index{testing@{testing}!ValuesIn@{ValuesIn}}
+\index{ValuesIn@{ValuesIn}!testing@{testing}}
+\doxysubsubsection{\texorpdfstring{ValuesIn()}{ValuesIn()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily template$<$class Container $>$ \\
+\mbox{\hyperlink{classtesting_1_1internal_1_1ParamGenerator}{internal\+::\+Param\+Generator}}$<$ typename Container\+::value\+\_\+type $>$ testing\+::\+Values\+In (\begin{DoxyParamCaption}\item[{const Container \&}]{container }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespacetesting_a0b9ea6594ac06ad5d9eba2511ffa0fb7}\label{namespacetesting_a0b9ea6594ac06ad5d9eba2511ffa0fb7}} 
+\index{testing@{testing}!ValuesIn@{ValuesIn}}
+\index{ValuesIn@{ValuesIn}!testing@{testing}}
+\doxysubsubsection{\texorpdfstring{ValuesIn()}{ValuesIn()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily template$<$typename T , size\+\_\+t N$>$ \\
+\mbox{\hyperlink{classtesting_1_1internal_1_1ParamGenerator}{internal\+::\+Param\+Generator}}$<$T$>$ testing\+::\+Values\+In (\begin{DoxyParamCaption}\item[{const T(\&)}]{array\mbox{[}\+N\mbox{]} }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespacetesting_a7980b1be1ffc3b53c9c5ad7ac33080ad}\label{namespacetesting_a7980b1be1ffc3b53c9c5ad7ac33080ad}} 
+\index{testing@{testing}!ValuesIn@{ValuesIn}}
+\index{ValuesIn@{ValuesIn}!testing@{testing}}
+\doxysubsubsection{\texorpdfstring{ValuesIn()}{ValuesIn()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily template$<$typename Forward\+Iterator $>$ \\
+\mbox{\hyperlink{classtesting_1_1internal_1_1ParamGenerator}{internal\+::\+Param\+Generator}}$<$ typename std\+::iterator\+\_\+traits$<$Forward\+Iterator$>$\+::value\+\_\+type$>$ testing\+::\+Values\+In (\begin{DoxyParamCaption}\item[{Forward\+Iterator}]{begin,  }\item[{Forward\+Iterator}]{end }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespacetesting_a656443dc47855de33c53f0caba4e9e27}\label{namespacetesting_a656443dc47855de33c53f0caba4e9e27}} 
+\index{testing@{testing}!WithArg@{WithArg}}
+\index{WithArg@{WithArg}!testing@{testing}}
+\doxysubsubsection{\texorpdfstring{WithArg()}{WithArg()}}
+{\footnotesize\ttfamily template$<$size\+\_\+t k, typename Inner\+Action $>$ \\
+\mbox{\hyperlink{structtesting_1_1internal_1_1WithArgsAction}{internal\+::\+With\+Args\+Action}}$<$typename std\+::decay$<$Inner\+Action$>$\+::type, k$>$ testing\+::\+With\+Arg (\begin{DoxyParamCaption}\item[{Inner\+Action \&\&}]{action }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespacetesting_a1e9887a68807b7fc2ccc63216849f374}\label{namespacetesting_a1e9887a68807b7fc2ccc63216849f374}} 
+\index{testing@{testing}!WithArgs@{WithArgs}}
+\index{WithArgs@{WithArgs}!testing@{testing}}
+\doxysubsubsection{\texorpdfstring{WithArgs()}{WithArgs()}}
+{\footnotesize\ttfamily template$<$size\+\_\+t k, size\+\_\+t... ks, typename Inner\+Action $>$ \\
+\mbox{\hyperlink{structtesting_1_1internal_1_1WithArgsAction}{internal\+::\+With\+Args\+Action}}$<$typename std\+::decay$<$Inner\+Action$>$\+::type, k, ks...$>$ testing\+::\+With\+Args (\begin{DoxyParamCaption}\item[{Inner\+Action \&\&}]{action }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespacetesting_a7508ca9a9df00fc662405ed120326d87}\label{namespacetesting_a7508ca9a9df00fc662405ed120326d87}} 
+\index{testing@{testing}!WithoutArgs@{WithoutArgs}}
+\index{WithoutArgs@{WithoutArgs}!testing@{testing}}
+\doxysubsubsection{\texorpdfstring{WithoutArgs()}{WithoutArgs()}}
+{\footnotesize\ttfamily template$<$typename Inner\+Action $>$ \\
+\mbox{\hyperlink{structtesting_1_1internal_1_1WithArgsAction}{internal\+::\+With\+Args\+Action}}$<$typename std\+::decay$<$Inner\+Action$>$\+::type$>$ testing\+::\+Without\+Args (\begin{DoxyParamCaption}\item[{Inner\+Action \&\&}]{action }\end{DoxyParamCaption})}
+
+
+
+\doxysubsection{Variable Documentation}
+\mbox{\Hypertarget{namespacetesting_ada49f71f486d52155b86702a570f7fcb}\label{namespacetesting_ada49f71f486d52155b86702a570f7fcb}} 
+\index{testing@{testing}!GTEST\_ATTRIBUTE\_UNUSED\_@{GTEST\_ATTRIBUTE\_UNUSED\_}}
+\index{GTEST\_ATTRIBUTE\_UNUSED\_@{GTEST\_ATTRIBUTE\_UNUSED\_}!testing@{testing}}
+\doxysubsubsection{\texorpdfstring{GTEST\_ATTRIBUTE\_UNUSED\_}{GTEST\_ATTRIBUTE\_UNUSED\_}}
+{\footnotesize\ttfamily class \mbox{\hyperlink{gtest-port_8h_aa73be6f0ba4a7456180a94904ce17790}{GTEST\+\_\+\+API\+\_\+}} \mbox{\hyperlink{classtesting_1_1ScopedTrace}{testing\+::\+Scoped\+Trace}} testing\+::\+GTEST\+\_\+\+ATTRIBUTE\+\_\+\+UNUSED\+\_\+}
+
+\mbox{\Hypertarget{namespacetesting_ae605f2ccac04616bb7812ca72e517082}\label{namespacetesting_ae605f2ccac04616bb7812ca72e517082}} 
+\index{testing@{testing}!kMaxStackTraceDepth@{kMaxStackTraceDepth}}
+\index{kMaxStackTraceDepth@{kMaxStackTraceDepth}!testing@{testing}}
+\doxysubsubsection{\texorpdfstring{kMaxStackTraceDepth}{kMaxStackTraceDepth}}
+{\footnotesize\ttfamily const int testing\+::k\+Max\+Stack\+Trace\+Depth = 100}
+

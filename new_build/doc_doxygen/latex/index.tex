@@ -1,0 +1,64 @@
+\label{index_md__home_johnny_git_Alex_Jan_Johannes_Mol_Sim_README}%
+\Hypertarget{index_md__home_johnny_git_Alex_Jan_Johannes_Mol_Sim_README}%
+
+
+TUM PSE Molecular Dynamics project by Jan Hampe, Alex Hocks, and Johannes Riemenschneider
+
+\doxysection*{Build }
+
+\doxysubsubsection*{Required tool installation }
+
+Install xerces-\/c\+: {\ttfamily  sudo apt install libxerces-\/c-\/dev} ~\newline
+
+
+Install gcc\+: {\ttfamily  sudo apt install gcc} (at least version 11 is required) ~\newline
+
+
+Install cmake\+: {\ttfamily  sudo apt install cmake} ~\newline
+
+
+Install make\+: {\ttfamily  sudo apt install make}
+
+\doxysubsubsection*{Compilation and Build }
+
+Create build directory\+: {\ttfamily  mkdir build } ~\newline
+
+
+Change directory into build folder\+: {\ttfamily  cd build } ~\newline
+
+
+Run cmake\+: {\ttfamily  cmake .. -\/B .} ~\newline
+
+
+Run make\+: {\ttfamily  make}
+
+\doxysubsection*{Build Doxygen Documentation }
+
+~\newline
+
+
+Build with\+: {\ttfamily  cmake .. -\/B . } ~\newline
+
+
+Create Doxygen Documentation\+: {\ttfamily  make doc\+\_\+doxygen } ~\newline
+
+
+Disable creating Doxygen target\+: {\ttfamily  cmake -\/DBUILD\+\_\+\+DOC=OFF .. -\/B . } ~\newline
+
+
+\doxysection*{Execution }
+
+Run simulation with $<$input-\/file$>$\+: {\ttfamily  ./\+Mol\+Sim $<$input-\/file$>$ \mbox{[}-\/et $<$end-\/time$>$\mbox{]} \mbox{[}-\/dt $<$timeslice length$>$\mbox{]}}
+
+\doxysubsection*{Tests }
+
+If this is the first time building the tests, then the doctest repo has to be cloned. This will be done automatically by make. To do this, follow the regular build instructions. ~\newline
+
+
+After this the tests can be built (also in the build directory) by calling\+: {\ttfamily  make runtest }
+
+To enable the DEBUG flag, use\+: {\ttfamily  make CXX\+\_\+\+FLAGS+=\char`\"{}-\/\+DDEBUG -\/std=c++20\char`\"{} runtest }
+
+\doxysection*{Presentation }
+
+The presentation (and the corresponding .tex-\/files) can be found at presentation/200805\+\_\+\+TUM\+\_\+\+La\+Tex-\/\+Vorlagenpaket/\+Week1\+\_\+\+Presentation.\+pdf 

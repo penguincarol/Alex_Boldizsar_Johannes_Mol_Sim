@@ -1,0 +1,74 @@
+\hypertarget{namespaceParticleGenerator}{}\doxysection{Particle\+Generator Namespace Reference}
+\label{namespaceParticleGenerator}\index{ParticleGenerator@{ParticleGenerator}}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{namespaceParticleGenerator_a74bd5da2653c2ba95c2ceee07fe5c7f7}{generate\+Cuboid}} (struct \mbox{\hyperlink{structBody}{Body}} \&body, double v\+\_\+bolz, std\+::list$<$ \mbox{\hyperlink{classParticle}{Particle}} $>$ \&buffer)
+\begin{DoxyCompactList}\small\item\em generates Cuboid with the parameters defined in the \mbox{\hyperlink{structBody}{Body}} \mbox{\hyperlink{structBody_a4200a506f4b529e88ff3961eaa9c704b}{Body.\+shape}} has to be Cuboid Feeds the generated particles into \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{namespaceParticleGenerator_a6976a62966d9bf871aabbd806a765130}{generate\+Particle}} (std\+::array$<$ double, 3 $>$ \&x, std\+::array$<$ double, 3 $>$ \&v, double m, std\+::list$<$ \mbox{\hyperlink{classParticle}{Particle}} $>$ \&buffer)
+\begin{DoxyCompactList}\small\item\em generates \mbox{\hyperlink{classParticle}{Particle}} at said point \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{namespaceParticleGenerator_a15065f1a0addd15eb6ec19d4f8cc53eb}{get\+Next\+Body\+ID}} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{namespaceParticleGenerator_ab1d541161607e5d29bb0f4d6e79f5299}{body\+ID}} = 1
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{namespaceParticleGenerator_a74bd5da2653c2ba95c2ceee07fe5c7f7}\label{namespaceParticleGenerator_a74bd5da2653c2ba95c2ceee07fe5c7f7}} 
+\index{ParticleGenerator@{ParticleGenerator}!generateCuboid@{generateCuboid}}
+\index{generateCuboid@{generateCuboid}!ParticleGenerator@{ParticleGenerator}}
+\doxysubsubsection{\texorpdfstring{generateCuboid()}{generateCuboid()}}
+{\footnotesize\ttfamily void Particle\+Generator\+::generate\+Cuboid (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structBody}{Body}} \&}]{body,  }\item[{double}]{v\+\_\+bolz,  }\item[{std\+::list$<$ \mbox{\hyperlink{classParticle}{Particle}} $>$ \&}]{buffer }\end{DoxyParamCaption})}
+
+
+
+generates Cuboid with the parameters defined in the \mbox{\hyperlink{structBody}{Body}} \mbox{\hyperlink{structBody_a4200a506f4b529e88ff3961eaa9c704b}{Body.\+shape}} has to be Cuboid Feeds the generated particles into 
+
+
+\begin{DoxyParams}{Parameters}
+{\em buffer} & \\
+\hline
+{\em body} & is the desired body \\
+\hline
+{\em v\+\_\+bolz} & is the thermal friction \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{namespaceParticleGenerator_a6976a62966d9bf871aabbd806a765130}\label{namespaceParticleGenerator_a6976a62966d9bf871aabbd806a765130}} 
+\index{ParticleGenerator@{ParticleGenerator}!generateParticle@{generateParticle}}
+\index{generateParticle@{generateParticle}!ParticleGenerator@{ParticleGenerator}}
+\doxysubsubsection{\texorpdfstring{generateParticle()}{generateParticle()}}
+{\footnotesize\ttfamily void Particle\+Generator\+::generate\+Particle (\begin{DoxyParamCaption}\item[{std\+::array$<$ double, 3 $>$ \&}]{x,  }\item[{std\+::array$<$ double, 3 $>$ \&}]{v,  }\item[{double}]{m,  }\item[{std\+::list$<$ \mbox{\hyperlink{classParticle}{Particle}} $>$ \&}]{buffer }\end{DoxyParamCaption})}
+
+
+
+generates \mbox{\hyperlink{classParticle}{Particle}} at said point 
+
+
+\begin{DoxyParams}{Parameters}
+{\em x} & \\
+\hline
+{\em v} & \\
+\hline
+{\em m} & and stores it in\\
+\hline
+{\em buffer.} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{namespaceParticleGenerator_a15065f1a0addd15eb6ec19d4f8cc53eb}\label{namespaceParticleGenerator_a15065f1a0addd15eb6ec19d4f8cc53eb}} 
+\index{ParticleGenerator@{ParticleGenerator}!getNextBodyID@{getNextBodyID}}
+\index{getNextBodyID@{getNextBodyID}!ParticleGenerator@{ParticleGenerator}}
+\doxysubsubsection{\texorpdfstring{getNextBodyID()}{getNextBodyID()}}
+{\footnotesize\ttfamily int Particle\+Generator\+::get\+Next\+Body\+ID (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Retrieves an global unique ID for a body. ID 0 is reserved for single particles. 
+
+\doxysubsection{Variable Documentation}
+\mbox{\Hypertarget{namespaceParticleGenerator_ab1d541161607e5d29bb0f4d6e79f5299}\label{namespaceParticleGenerator_ab1d541161607e5d29bb0f4d6e79f5299}} 
+\index{ParticleGenerator@{ParticleGenerator}!bodyID@{bodyID}}
+\index{bodyID@{bodyID}!ParticleGenerator@{ParticleGenerator}}
+\doxysubsubsection{\texorpdfstring{bodyID}{bodyID}}
+{\footnotesize\ttfamily int Particle\+Generator\+::body\+ID = 1}
+

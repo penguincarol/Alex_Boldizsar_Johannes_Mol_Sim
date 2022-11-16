@@ -1,0 +1,122 @@
+\hypertarget{classcli_1_1ArgsParser}{}\doxysection{cli\+::Args\+Parser Class Reference}
+\label{classcli_1_1ArgsParser}\index{cli::ArgsParser@{cli::ArgsParser}}
+
+
+{\ttfamily \#include $<$Args\+Parser.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classcli_1_1ArgsParser_adef921976e81662a7cc6a94d55b656fa}{Args\+Parser}} (int argc, char $\ast$argsv\mbox{[}$\,$\mbox{]})
+\item 
+\mbox{\hyperlink{classcli_1_1ArgsParser_a7b6439b9ea0094f2d61166c6155b337b}{$\sim$\+Args\+Parser}} ()=default
+\item 
+bool \mbox{\hyperlink{classcli_1_1ArgsParser_a1a30f6419092759dde3ffd3f27588527}{option\+Exists}} (const std\+::string \&op)
+\item 
+bool \mbox{\hyperlink{classcli_1_1ArgsParser_a0b920c9e6f5440bab5e2be4ac71d2e84}{option\+Arg\+Exists}} (const std\+::string \&op)
+\item 
+std\+::string \mbox{\hyperlink{classcli_1_1ArgsParser_ae07a6d6a9f66953bcfdc8307a5892064}{get\+Option\+Arg}} (const std\+::string \&op)
+\item 
+void \mbox{\hyperlink{classcli_1_1ArgsParser_aa903fd4c49e9d70dac9121acafd2da45}{get\+Input\+Paths}} (std\+::vector$<$ std\+::string $>$ \&buffer)
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\+::vector$<$ std\+::string $>$ \mbox{\hyperlink{classcli_1_1ArgsParser_a48a7ff192cb81956d2c6bc1aabdcf911}{args}} \{\}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Structures CLI args and allows easy access. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classcli_1_1ArgsParser_adef921976e81662a7cc6a94d55b656fa}\label{classcli_1_1ArgsParser_adef921976e81662a7cc6a94d55b656fa}} 
+\index{cli::ArgsParser@{cli::ArgsParser}!ArgsParser@{ArgsParser}}
+\index{ArgsParser@{ArgsParser}!cli::ArgsParser@{cli::ArgsParser}}
+\doxysubsubsection{\texorpdfstring{ArgsParser()}{ArgsParser()}}
+{\footnotesize\ttfamily cli\+::\+Args\+Parser\+::\+Args\+Parser (\begin{DoxyParamCaption}\item[{int}]{argc,  }\item[{char $\ast$}]{argsv\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})}
+
+Will skip argsv\mbox{[}0\mbox{]} and not store it. 
+\begin{DoxyParams}{Parameters}
+{\em argc} & argsv size \\
+\hline
+{\em argsv} & all cli arguments \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classcli_1_1ArgsParser_a7b6439b9ea0094f2d61166c6155b337b}\label{classcli_1_1ArgsParser_a7b6439b9ea0094f2d61166c6155b337b}} 
+\index{cli::ArgsParser@{cli::ArgsParser}!````~ArgsParser@{$\sim$ArgsParser}}
+\index{````~ArgsParser@{$\sim$ArgsParser}!cli::ArgsParser@{cli::ArgsParser}}
+\doxysubsubsection{\texorpdfstring{$\sim$ArgsParser()}{~ArgsParser()}}
+{\footnotesize\ttfamily cli\+::\+Args\+Parser\+::$\sim$\+Args\+Parser (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [default]}}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classcli_1_1ArgsParser_aa903fd4c49e9d70dac9121acafd2da45}\label{classcli_1_1ArgsParser_aa903fd4c49e9d70dac9121acafd2da45}} 
+\index{cli::ArgsParser@{cli::ArgsParser}!getInputPaths@{getInputPaths}}
+\index{getInputPaths@{getInputPaths}!cli::ArgsParser@{cli::ArgsParser}}
+\doxysubsubsection{\texorpdfstring{getInputPaths()}{getInputPaths()}}
+{\footnotesize\ttfamily void cli\+::\+Args\+Parser\+::get\+Input\+Paths (\begin{DoxyParamCaption}\item[{std\+::vector$<$ std\+::string $>$ \&}]{buffer }\end{DoxyParamCaption})}
+
+Places all args that are not prepended by an option specifier with -\/, such as -\/dt or -\/et, into
+\begin{DoxyParams}{Parameters}
+{\em buffer.} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classcli_1_1ArgsParser_ae07a6d6a9f66953bcfdc8307a5892064}\label{classcli_1_1ArgsParser_ae07a6d6a9f66953bcfdc8307a5892064}} 
+\index{cli::ArgsParser@{cli::ArgsParser}!getOptionArg@{getOptionArg}}
+\index{getOptionArg@{getOptionArg}!cli::ArgsParser@{cli::ArgsParser}}
+\doxysubsubsection{\texorpdfstring{getOptionArg()}{getOptionArg()}}
+{\footnotesize\ttfamily std\+::string cli\+::\+Args\+Parser\+::get\+Option\+Arg (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{op }\end{DoxyParamCaption})}
+
+Retrieve the argument of the specified option
+\begin{DoxyParams}{Parameters}
+{\em op} & and \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+is as std\+::string. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classcli_1_1ArgsParser_a0b920c9e6f5440bab5e2be4ac71d2e84}\label{classcli_1_1ArgsParser_a0b920c9e6f5440bab5e2be4ac71d2e84}} 
+\index{cli::ArgsParser@{cli::ArgsParser}!optionArgExists@{optionArgExists}}
+\index{optionArgExists@{optionArgExists}!cli::ArgsParser@{cli::ArgsParser}}
+\doxysubsubsection{\texorpdfstring{optionArgExists()}{optionArgExists()}}
+{\footnotesize\ttfamily bool cli\+::\+Args\+Parser\+::option\+Arg\+Exists (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{op }\end{DoxyParamCaption})}
+
+Checks if the provided option
+\begin{DoxyParams}{Parameters}
+{\em op} & exists by calling \mbox{\hyperlink{classcli_1_1ArgsParser_a1a30f6419092759dde3ffd3f27588527}{Args\+Parser\+::option\+Exists}} and checks if this option has an argument. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true iff both are true. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classcli_1_1ArgsParser_a1a30f6419092759dde3ffd3f27588527}\label{classcli_1_1ArgsParser_a1a30f6419092759dde3ffd3f27588527}} 
+\index{cli::ArgsParser@{cli::ArgsParser}!optionExists@{optionExists}}
+\index{optionExists@{optionExists}!cli::ArgsParser@{cli::ArgsParser}}
+\doxysubsubsection{\texorpdfstring{optionExists()}{optionExists()}}
+{\footnotesize\ttfamily bool cli\+::\+Args\+Parser\+::option\+Exists (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{op }\end{DoxyParamCaption})}
+
+Checks if 
+\begin{DoxyParams}{Parameters}
+{\em op} & exists in the stored arguments and \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true iff that is the case. 
+\end{DoxyReturn}
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classcli_1_1ArgsParser_a48a7ff192cb81956d2c6bc1aabdcf911}\label{classcli_1_1ArgsParser_a48a7ff192cb81956d2c6bc1aabdcf911}} 
+\index{cli::ArgsParser@{cli::ArgsParser}!args@{args}}
+\index{args@{args}!cli::ArgsParser@{cli::ArgsParser}}
+\doxysubsubsection{\texorpdfstring{args}{args}}
+{\footnotesize\ttfamily std\+::vector$<$std\+::string$>$ cli\+::\+Args\+Parser\+::args \{\}\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/johnny/git/\+Alex\+\_\+\+Jan\+\_\+\+Johannes\+\_\+\+Mol\+\_\+\+Sim/src/io/\mbox{\hyperlink{ArgsParser_8h}{Args\+Parser.\+h}}\item 
+/home/johnny/git/\+Alex\+\_\+\+Jan\+\_\+\+Johannes\+\_\+\+Mol\+\_\+\+Sim/src/io/\mbox{\hyperlink{ArgsParser_8cpp}{Args\+Parser.\+cpp}}\end{DoxyCompactItemize}

@@ -1,0 +1,134 @@
+\hypertarget{classio_1_1InputLoader}{}\doxysection{io\+::Input\+Loader$<$ LOCATOR, LOAD $>$ Class Template Reference}
+\label{classio_1_1InputLoader}\index{io::InputLoader$<$ LOCATOR, LOAD $>$@{io::InputLoader$<$ LOCATOR, LOAD $>$}}
+
+
+{\ttfamily \#include $<$Input\+Loader.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classio_1_1InputLoader_a77feb9c898a2cd081b35473382648ca4}{Input\+Loader}} (LOCATOR loc)
+\item 
+\mbox{\hyperlink{classio_1_1InputLoader_a0f1887081e81dd5c812471a2b200402b}{Input\+Loader}} (const \mbox{\hyperlink{classio_1_1InputLoader}{Input\+Loader}} \&i)=delete
+\item 
+void \mbox{\hyperlink{classio_1_1InputLoader_a761e050c76057a839d623ed16a9d8c21}{reload}} ()
+\item 
+void \mbox{\hyperlink{classio_1_1InputLoader_aca48be8b4be06cc78be3021bc78ebd7a}{get\+Particles}} (std\+::vector$<$ \mbox{\hyperlink{classParticle}{Particle}} $>$ \&buf)
+\item 
+double \mbox{\hyperlink{classio_1_1InputLoader_a76115dca17756b8c3a9879f1f159df10}{get\+Epsilon}} ()
+\item 
+double \mbox{\hyperlink{classio_1_1InputLoader_a8a139886a9ec822a0c45bc20178310b7}{get\+Sigma}} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\+::list$<$ \mbox{\hyperlink{classParticle}{Particle}} $>$ \mbox{\hyperlink{classio_1_1InputLoader_a435141f76496734f44a88dc350808712}{buffer}}
+\item 
+double \mbox{\hyperlink{classio_1_1InputLoader_a4ce724b155859c70a1e928c5cd816e8f}{epsilon}}
+\item 
+double \mbox{\hyperlink{classio_1_1InputLoader_a64266900cb1aae3776d4bf8fbd932819}{sigma}}
+\item 
+LOCATOR \mbox{\hyperlink{classio_1_1InputLoader_a28faff3488d088fe902d0bc30a2131a9}{locator}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$typename LOCATOR, void($\ast$)(\+LOCATOR, std\+::list$<$ Particle $>$ \&, double \&, double \&) LOAD$>$\newline
+class io\+::\+Input\+Loader$<$ LOCATOR, LOAD $>$}
+
+Generic Input file loader. Basic interface to load particles. 
+\begin{DoxyParams}{Parameters}
+{\em LOAD} & is a function that loads raw data from\\
+\hline
+{\em LOCATOR} & into the list. \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classio_1_1InputLoader_a77feb9c898a2cd081b35473382648ca4}\label{classio_1_1InputLoader_a77feb9c898a2cd081b35473382648ca4}} 
+\index{io::InputLoader$<$ LOCATOR, LOAD $>$@{io::InputLoader$<$ LOCATOR, LOAD $>$}!InputLoader@{InputLoader}}
+\index{InputLoader@{InputLoader}!io::InputLoader$<$ LOCATOR, LOAD $>$@{io::InputLoader$<$ LOCATOR, LOAD $>$}}
+\doxysubsubsection{\texorpdfstring{InputLoader()}{InputLoader()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename LOCATOR , void($\ast$)(\+LOCATOR, std\+::list$<$ Particle $>$ \&, double \&, double \&) LOAD$>$ \\
+\mbox{\hyperlink{classio_1_1InputLoader}{io\+::\+Input\+Loader}}$<$ LOCATOR, LOAD $>$\+::\mbox{\hyperlink{classio_1_1InputLoader}{Input\+Loader}} (\begin{DoxyParamCaption}\item[{LOCATOR}]{loc }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [explicit]}}
+
+\mbox{\Hypertarget{classio_1_1InputLoader_a0f1887081e81dd5c812471a2b200402b}\label{classio_1_1InputLoader_a0f1887081e81dd5c812471a2b200402b}} 
+\index{io::InputLoader$<$ LOCATOR, LOAD $>$@{io::InputLoader$<$ LOCATOR, LOAD $>$}!InputLoader@{InputLoader}}
+\index{InputLoader@{InputLoader}!io::InputLoader$<$ LOCATOR, LOAD $>$@{io::InputLoader$<$ LOCATOR, LOAD $>$}}
+\doxysubsubsection{\texorpdfstring{InputLoader()}{InputLoader()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename LOCATOR , void($\ast$)(\+LOCATOR, std\+::list$<$ Particle $>$ \&, double \&, double \&) LOAD$>$ \\
+\mbox{\hyperlink{classio_1_1InputLoader}{io\+::\+Input\+Loader}}$<$ LOCATOR, LOAD $>$\+::\mbox{\hyperlink{classio_1_1InputLoader}{Input\+Loader}} (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classio_1_1InputLoader}{Input\+Loader}}$<$ LOCATOR, LOAD $>$ \&}]{i }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [delete]}}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classio_1_1InputLoader_a76115dca17756b8c3a9879f1f159df10}\label{classio_1_1InputLoader_a76115dca17756b8c3a9879f1f159df10}} 
+\index{io::InputLoader$<$ LOCATOR, LOAD $>$@{io::InputLoader$<$ LOCATOR, LOAD $>$}!getEpsilon@{getEpsilon}}
+\index{getEpsilon@{getEpsilon}!io::InputLoader$<$ LOCATOR, LOAD $>$@{io::InputLoader$<$ LOCATOR, LOAD $>$}}
+\doxysubsubsection{\texorpdfstring{getEpsilon()}{getEpsilon()}}
+{\footnotesize\ttfamily template$<$typename LOCATOR , void($\ast$)(\+LOCATOR, std\+::list$<$ Particle $>$ \&, double \&, double \&) LOAD$>$ \\
+double \mbox{\hyperlink{classio_1_1InputLoader}{io\+::\+Input\+Loader}}$<$ LOCATOR, LOAD $>$\+::get\+Epsilon (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Returns the loaded or default epislon value \mbox{\Hypertarget{classio_1_1InputLoader_aca48be8b4be06cc78be3021bc78ebd7a}\label{classio_1_1InputLoader_aca48be8b4be06cc78be3021bc78ebd7a}} 
+\index{io::InputLoader$<$ LOCATOR, LOAD $>$@{io::InputLoader$<$ LOCATOR, LOAD $>$}!getParticles@{getParticles}}
+\index{getParticles@{getParticles}!io::InputLoader$<$ LOCATOR, LOAD $>$@{io::InputLoader$<$ LOCATOR, LOAD $>$}}
+\doxysubsubsection{\texorpdfstring{getParticles()}{getParticles()}}
+{\footnotesize\ttfamily template$<$typename LOCATOR , void($\ast$)(\+LOCATOR, std\+::list$<$ Particle $>$ \&, double \&, double \&) LOAD$>$ \\
+void \mbox{\hyperlink{classio_1_1InputLoader}{io\+::\+Input\+Loader}}$<$ LOCATOR, LOAD $>$\+::get\+Particles (\begin{DoxyParamCaption}\item[{std\+::vector$<$ \mbox{\hyperlink{classParticle}{Particle}} $>$ \&}]{buf }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Populates
+\begin{DoxyParams}{Parameters}
+{\em buf} & with the stored particles and afterwards clears the internal buffer. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classio_1_1InputLoader_a8a139886a9ec822a0c45bc20178310b7}\label{classio_1_1InputLoader_a8a139886a9ec822a0c45bc20178310b7}} 
+\index{io::InputLoader$<$ LOCATOR, LOAD $>$@{io::InputLoader$<$ LOCATOR, LOAD $>$}!getSigma@{getSigma}}
+\index{getSigma@{getSigma}!io::InputLoader$<$ LOCATOR, LOAD $>$@{io::InputLoader$<$ LOCATOR, LOAD $>$}}
+\doxysubsubsection{\texorpdfstring{getSigma()}{getSigma()}}
+{\footnotesize\ttfamily template$<$typename LOCATOR , void($\ast$)(\+LOCATOR, std\+::list$<$ Particle $>$ \&, double \&, double \&) LOAD$>$ \\
+double \mbox{\hyperlink{classio_1_1InputLoader}{io\+::\+Input\+Loader}}$<$ LOCATOR, LOAD $>$\+::get\+Sigma (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Returns the loaded or default sigma value \mbox{\Hypertarget{classio_1_1InputLoader_a761e050c76057a839d623ed16a9d8c21}\label{classio_1_1InputLoader_a761e050c76057a839d623ed16a9d8c21}} 
+\index{io::InputLoader$<$ LOCATOR, LOAD $>$@{io::InputLoader$<$ LOCATOR, LOAD $>$}!reload@{reload}}
+\index{reload@{reload}!io::InputLoader$<$ LOCATOR, LOAD $>$@{io::InputLoader$<$ LOCATOR, LOAD $>$}}
+\doxysubsubsection{\texorpdfstring{reload()}{reload()}}
+{\footnotesize\ttfamily template$<$typename LOCATOR , void($\ast$)(\+LOCATOR, std\+::list$<$ Particle $>$ \&, double \&, double \&) LOAD$>$ \\
+void \mbox{\hyperlink{classio_1_1InputLoader}{io\+::\+Input\+Loader}}$<$ LOCATOR, LOAD $>$\+::reload (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Calls the loader again and stores all particles the internal buffer. 
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classio_1_1InputLoader_a435141f76496734f44a88dc350808712}\label{classio_1_1InputLoader_a435141f76496734f44a88dc350808712}} 
+\index{io::InputLoader$<$ LOCATOR, LOAD $>$@{io::InputLoader$<$ LOCATOR, LOAD $>$}!buffer@{buffer}}
+\index{buffer@{buffer}!io::InputLoader$<$ LOCATOR, LOAD $>$@{io::InputLoader$<$ LOCATOR, LOAD $>$}}
+\doxysubsubsection{\texorpdfstring{buffer}{buffer}}
+{\footnotesize\ttfamily template$<$typename LOCATOR , void($\ast$)(\+LOCATOR, std\+::list$<$ Particle $>$ \&, double \&, double \&) LOAD$>$ \\
+std\+::list$<$\mbox{\hyperlink{classParticle}{Particle}}$>$ \mbox{\hyperlink{classio_1_1InputLoader}{io\+::\+Input\+Loader}}$<$ LOCATOR, LOAD $>$\+::buffer\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classio_1_1InputLoader_a4ce724b155859c70a1e928c5cd816e8f}\label{classio_1_1InputLoader_a4ce724b155859c70a1e928c5cd816e8f}} 
+\index{io::InputLoader$<$ LOCATOR, LOAD $>$@{io::InputLoader$<$ LOCATOR, LOAD $>$}!epsilon@{epsilon}}
+\index{epsilon@{epsilon}!io::InputLoader$<$ LOCATOR, LOAD $>$@{io::InputLoader$<$ LOCATOR, LOAD $>$}}
+\doxysubsubsection{\texorpdfstring{epsilon}{epsilon}}
+{\footnotesize\ttfamily template$<$typename LOCATOR , void($\ast$)(\+LOCATOR, std\+::list$<$ Particle $>$ \&, double \&, double \&) LOAD$>$ \\
+double \mbox{\hyperlink{classio_1_1InputLoader}{io\+::\+Input\+Loader}}$<$ LOCATOR, LOAD $>$\+::epsilon\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classio_1_1InputLoader_a28faff3488d088fe902d0bc30a2131a9}\label{classio_1_1InputLoader_a28faff3488d088fe902d0bc30a2131a9}} 
+\index{io::InputLoader$<$ LOCATOR, LOAD $>$@{io::InputLoader$<$ LOCATOR, LOAD $>$}!locator@{locator}}
+\index{locator@{locator}!io::InputLoader$<$ LOCATOR, LOAD $>$@{io::InputLoader$<$ LOCATOR, LOAD $>$}}
+\doxysubsubsection{\texorpdfstring{locator}{locator}}
+{\footnotesize\ttfamily template$<$typename LOCATOR , void($\ast$)(\+LOCATOR, std\+::list$<$ Particle $>$ \&, double \&, double \&) LOAD$>$ \\
+LOCATOR \mbox{\hyperlink{classio_1_1InputLoader}{io\+::\+Input\+Loader}}$<$ LOCATOR, LOAD $>$\+::locator\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classio_1_1InputLoader_a64266900cb1aae3776d4bf8fbd932819}\label{classio_1_1InputLoader_a64266900cb1aae3776d4bf8fbd932819}} 
+\index{io::InputLoader$<$ LOCATOR, LOAD $>$@{io::InputLoader$<$ LOCATOR, LOAD $>$}!sigma@{sigma}}
+\index{sigma@{sigma}!io::InputLoader$<$ LOCATOR, LOAD $>$@{io::InputLoader$<$ LOCATOR, LOAD $>$}}
+\doxysubsubsection{\texorpdfstring{sigma}{sigma}}
+{\footnotesize\ttfamily template$<$typename LOCATOR , void($\ast$)(\+LOCATOR, std\+::list$<$ Particle $>$ \&, double \&, double \&) LOAD$>$ \\
+double \mbox{\hyperlink{classio_1_1InputLoader}{io\+::\+Input\+Loader}}$<$ LOCATOR, LOAD $>$\+::sigma\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/johnny/git/\+Alex\+\_\+\+Jan\+\_\+\+Johannes\+\_\+\+Mol\+\_\+\+Sim/src/io/\mbox{\hyperlink{InputLoader_8h}{Input\+Loader.\+h}}\end{DoxyCompactItemize}

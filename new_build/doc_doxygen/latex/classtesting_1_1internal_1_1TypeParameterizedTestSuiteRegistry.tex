@@ -1,0 +1,60 @@
+\hypertarget{classtesting_1_1internal_1_1TypeParameterizedTestSuiteRegistry}{}\doxysection{testing\+::internal\+::Type\+Parameterized\+Test\+Suite\+Registry Class Reference}
+\label{classtesting_1_1internal_1_1TypeParameterizedTestSuiteRegistry}\index{testing::internal::TypeParameterizedTestSuiteRegistry@{testing::internal::TypeParameterizedTestSuiteRegistry}}
+
+
+{\ttfamily \#include $<$gtest-\/param-\/util.\+h$>$}
+
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structtesting_1_1internal_1_1TypeParameterizedTestSuiteRegistry_1_1TypeParameterizedTestSuiteInfo}{Type\+Parameterized\+Test\+Suite\+Info}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classtesting_1_1internal_1_1TypeParameterizedTestSuiteRegistry_a8a41503ac32be0f634583a2e7ee1159a}{Register\+Test\+Suite}} (const char $\ast$test\+\_\+suite\+\_\+name, \mbox{\hyperlink{structtesting_1_1internal_1_1CodeLocation}{Code\+Location}} code\+\_\+location)
+\item 
+void \mbox{\hyperlink{classtesting_1_1internal_1_1TypeParameterizedTestSuiteRegistry_ad6413d7c6df0b08e54aa1bbd166fc949}{Register\+Instantiation}} (const char $\ast$test\+\_\+suite\+\_\+name)
+\item 
+void \mbox{\hyperlink{classtesting_1_1internal_1_1TypeParameterizedTestSuiteRegistry_ad3b086596f2a84f3344fe1558126afbb}{Check\+For\+Instantiations}} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\+::map$<$ std\+::string, \mbox{\hyperlink{structtesting_1_1internal_1_1TypeParameterizedTestSuiteRegistry_1_1TypeParameterizedTestSuiteInfo}{Type\+Parameterized\+Test\+Suite\+Info}} $>$ \mbox{\hyperlink{classtesting_1_1internal_1_1TypeParameterizedTestSuiteRegistry_a23da4b4cbd411f4c54e2f2ea0eefe7f3}{suites\+\_\+}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classtesting_1_1internal_1_1TypeParameterizedTestSuiteRegistry_ad3b086596f2a84f3344fe1558126afbb}\label{classtesting_1_1internal_1_1TypeParameterizedTestSuiteRegistry_ad3b086596f2a84f3344fe1558126afbb}} 
+\index{testing::internal::TypeParameterizedTestSuiteRegistry@{testing::internal::TypeParameterizedTestSuiteRegistry}!CheckForInstantiations@{CheckForInstantiations}}
+\index{CheckForInstantiations@{CheckForInstantiations}!testing::internal::TypeParameterizedTestSuiteRegistry@{testing::internal::TypeParameterizedTestSuiteRegistry}}
+\doxysubsubsection{\texorpdfstring{CheckForInstantiations()}{CheckForInstantiations()}}
+{\footnotesize\ttfamily void testing\+::internal\+::\+Type\+Parameterized\+Test\+Suite\+Registry\+::\+Check\+For\+Instantiations (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classtesting_1_1internal_1_1TypeParameterizedTestSuiteRegistry_ad6413d7c6df0b08e54aa1bbd166fc949}\label{classtesting_1_1internal_1_1TypeParameterizedTestSuiteRegistry_ad6413d7c6df0b08e54aa1bbd166fc949}} 
+\index{testing::internal::TypeParameterizedTestSuiteRegistry@{testing::internal::TypeParameterizedTestSuiteRegistry}!RegisterInstantiation@{RegisterInstantiation}}
+\index{RegisterInstantiation@{RegisterInstantiation}!testing::internal::TypeParameterizedTestSuiteRegistry@{testing::internal::TypeParameterizedTestSuiteRegistry}}
+\doxysubsubsection{\texorpdfstring{RegisterInstantiation()}{RegisterInstantiation()}}
+{\footnotesize\ttfamily void testing\+::internal\+::\+Type\+Parameterized\+Test\+Suite\+Registry\+::\+Register\+Instantiation (\begin{DoxyParamCaption}\item[{const char $\ast$}]{test\+\_\+suite\+\_\+name }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classtesting_1_1internal_1_1TypeParameterizedTestSuiteRegistry_a8a41503ac32be0f634583a2e7ee1159a}\label{classtesting_1_1internal_1_1TypeParameterizedTestSuiteRegistry_a8a41503ac32be0f634583a2e7ee1159a}} 
+\index{testing::internal::TypeParameterizedTestSuiteRegistry@{testing::internal::TypeParameterizedTestSuiteRegistry}!RegisterTestSuite@{RegisterTestSuite}}
+\index{RegisterTestSuite@{RegisterTestSuite}!testing::internal::TypeParameterizedTestSuiteRegistry@{testing::internal::TypeParameterizedTestSuiteRegistry}}
+\doxysubsubsection{\texorpdfstring{RegisterTestSuite()}{RegisterTestSuite()}}
+{\footnotesize\ttfamily void testing\+::internal\+::\+Type\+Parameterized\+Test\+Suite\+Registry\+::\+Register\+Test\+Suite (\begin{DoxyParamCaption}\item[{const char $\ast$}]{test\+\_\+suite\+\_\+name,  }\item[{\mbox{\hyperlink{structtesting_1_1internal_1_1CodeLocation}{Code\+Location}}}]{code\+\_\+location }\end{DoxyParamCaption})}
+
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classtesting_1_1internal_1_1TypeParameterizedTestSuiteRegistry_a23da4b4cbd411f4c54e2f2ea0eefe7f3}\label{classtesting_1_1internal_1_1TypeParameterizedTestSuiteRegistry_a23da4b4cbd411f4c54e2f2ea0eefe7f3}} 
+\index{testing::internal::TypeParameterizedTestSuiteRegistry@{testing::internal::TypeParameterizedTestSuiteRegistry}!suites\_@{suites\_}}
+\index{suites\_@{suites\_}!testing::internal::TypeParameterizedTestSuiteRegistry@{testing::internal::TypeParameterizedTestSuiteRegistry}}
+\doxysubsubsection{\texorpdfstring{suites\_}{suites\_}}
+{\footnotesize\ttfamily std\+::map$<$std\+::string, \mbox{\hyperlink{structtesting_1_1internal_1_1TypeParameterizedTestSuiteRegistry_1_1TypeParameterizedTestSuiteInfo}{Type\+Parameterized\+Test\+Suite\+Info}}$>$ testing\+::internal\+::\+Type\+Parameterized\+Test\+Suite\+Registry\+::suites\+\_\+\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\+\_\+deps/googletest-\/src/googletest/include/gtest/internal/\mbox{\hyperlink{gtest-param-util_8h}{gtest-\/param-\/util.\+h}}\end{DoxyCompactItemize}

@@ -1,0 +1,92 @@
+\hypertarget{classoutputWriter_1_1VTKWriter}{}\doxysection{output\+Writer\+::VTKWriter Class Reference}
+\label{classoutputWriter_1_1VTKWriter}\index{outputWriter::VTKWriter@{outputWriter::VTKWriter}}
+
+
+{\ttfamily \#include $<$VTKWriter.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classoutputWriter_1_1VTKWriter_a448311c322544e40c6e0a3c158924583}{VTKWriter}} ()
+\item 
+virtual \mbox{\hyperlink{classoutputWriter_1_1VTKWriter_a196a54bcfa3f93638ef292c386f91b61}{$\sim$\+VTKWriter}} ()
+\item 
+void \mbox{\hyperlink{classoutputWriter_1_1VTKWriter_a41cfcefce4d7eb434f1dd45f5aeb3e8f}{initialize\+Output}} (int num\+Particles)
+\item 
+void \mbox{\hyperlink{classoutputWriter_1_1VTKWriter_a6d3f50ca3ae2390055d3f9cc0ed1eb4d}{plot\+Particle}} (\mbox{\hyperlink{classParticle}{Particle}} \&p)
+\item 
+void \mbox{\hyperlink{classoutputWriter_1_1VTKWriter_ad0d7afb78a2027d05e9a03acde3799dd}{write\+File}} (const std\+::string \&filename, int iteration)
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classVTKFile__t}{VTKFile\+\_\+t}} $\ast$ \mbox{\hyperlink{classoutputWriter_1_1VTKWriter_ab654ea4308b92e5dbdcd9a6833d5ed30}{vtk\+File}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+This class implements the functionality to generate vtk output from particles. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classoutputWriter_1_1VTKWriter_a448311c322544e40c6e0a3c158924583}\label{classoutputWriter_1_1VTKWriter_a448311c322544e40c6e0a3c158924583}} 
+\index{outputWriter::VTKWriter@{outputWriter::VTKWriter}!VTKWriter@{VTKWriter}}
+\index{VTKWriter@{VTKWriter}!outputWriter::VTKWriter@{outputWriter::VTKWriter}}
+\doxysubsubsection{\texorpdfstring{VTKWriter()}{VTKWriter()}}
+{\footnotesize\ttfamily output\+Writer\+::\+VTKWriter\+::\+VTKWriter (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [default]}}
+
+\mbox{\Hypertarget{classoutputWriter_1_1VTKWriter_a196a54bcfa3f93638ef292c386f91b61}\label{classoutputWriter_1_1VTKWriter_a196a54bcfa3f93638ef292c386f91b61}} 
+\index{outputWriter::VTKWriter@{outputWriter::VTKWriter}!````~VTKWriter@{$\sim$VTKWriter}}
+\index{````~VTKWriter@{$\sim$VTKWriter}!outputWriter::VTKWriter@{outputWriter::VTKWriter}}
+\doxysubsubsection{\texorpdfstring{$\sim$VTKWriter()}{~VTKWriter()}}
+{\footnotesize\ttfamily output\+Writer\+::\+VTKWriter\+::$\sim$\+VTKWriter (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}, {\ttfamily [default]}}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classoutputWriter_1_1VTKWriter_a41cfcefce4d7eb434f1dd45f5aeb3e8f}\label{classoutputWriter_1_1VTKWriter_a41cfcefce4d7eb434f1dd45f5aeb3e8f}} 
+\index{outputWriter::VTKWriter@{outputWriter::VTKWriter}!initializeOutput@{initializeOutput}}
+\index{initializeOutput@{initializeOutput}!outputWriter::VTKWriter@{outputWriter::VTKWriter}}
+\doxysubsubsection{\texorpdfstring{initializeOutput()}{initializeOutput()}}
+{\footnotesize\ttfamily void output\+Writer\+::\+VTKWriter\+::initialize\+Output (\begin{DoxyParamCaption}\item[{int}]{num\+Particles }\end{DoxyParamCaption})}
+
+set up internal data structures and prepare to plot a particle. \mbox{\Hypertarget{classoutputWriter_1_1VTKWriter_a6d3f50ca3ae2390055d3f9cc0ed1eb4d}\label{classoutputWriter_1_1VTKWriter_a6d3f50ca3ae2390055d3f9cc0ed1eb4d}} 
+\index{outputWriter::VTKWriter@{outputWriter::VTKWriter}!plotParticle@{plotParticle}}
+\index{plotParticle@{plotParticle}!outputWriter::VTKWriter@{outputWriter::VTKWriter}}
+\doxysubsubsection{\texorpdfstring{plotParticle()}{plotParticle()}}
+{\footnotesize\ttfamily void output\+Writer\+::\+VTKWriter\+::plot\+Particle (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classParticle}{Particle}} \&}]{p }\end{DoxyParamCaption})}
+
+plot type, mass, position, velocity and force of a particle.
+
+\begin{DoxyNote}{Note}
+\+: \mbox{\hyperlink{classoutputWriter_1_1VTKWriter_a41cfcefce4d7eb434f1dd45f5aeb3e8f}{initialize\+Output()}} must have been called before. 
+\end{DoxyNote}
+\mbox{\Hypertarget{classoutputWriter_1_1VTKWriter_ad0d7afb78a2027d05e9a03acde3799dd}\label{classoutputWriter_1_1VTKWriter_ad0d7afb78a2027d05e9a03acde3799dd}} 
+\index{outputWriter::VTKWriter@{outputWriter::VTKWriter}!writeFile@{writeFile}}
+\index{writeFile@{writeFile}!outputWriter::VTKWriter@{outputWriter::VTKWriter}}
+\doxysubsubsection{\texorpdfstring{writeFile()}{writeFile()}}
+{\footnotesize\ttfamily void output\+Writer\+::\+VTKWriter\+::write\+File (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{filename,  }\item[{int}]{iteration }\end{DoxyParamCaption})}
+
+writes the final output file.
+
+
+\begin{DoxyParams}{Parameters}
+{\em filename} & the base name of the file to be written. \\
+\hline
+{\em iteration} & the number of the current iteration, which is used to generate an unique filename \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classoutputWriter_1_1VTKWriter_ab654ea4308b92e5dbdcd9a6833d5ed30}\label{classoutputWriter_1_1VTKWriter_ab654ea4308b92e5dbdcd9a6833d5ed30}} 
+\index{outputWriter::VTKWriter@{outputWriter::VTKWriter}!vtkFile@{vtkFile}}
+\index{vtkFile@{vtkFile}!outputWriter::VTKWriter@{outputWriter::VTKWriter}}
+\doxysubsubsection{\texorpdfstring{vtkFile}{vtkFile}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classVTKFile__t}{VTKFile\+\_\+t}}$\ast$ output\+Writer\+::\+VTKWriter\+::vtk\+File\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/johnny/git/\+Alex\+\_\+\+Jan\+\_\+\+Johannes\+\_\+\+Mol\+\_\+\+Sim/src/io/output\+Writer/\mbox{\hyperlink{VTKWriter_8h}{VTKWriter.\+h}}\item 
+/home/johnny/git/\+Alex\+\_\+\+Jan\+\_\+\+Johannes\+\_\+\+Mol\+\_\+\+Sim/src/io/output\+Writer/\mbox{\hyperlink{VTKWriter_8cpp}{VTKWriter.\+cpp}}\end{DoxyCompactItemize}

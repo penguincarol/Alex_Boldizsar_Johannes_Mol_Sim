@@ -1,0 +1,38 @@
+\hypertarget{structtesting_1_1internal_1_1GenerateTypeList}{}\doxysection{testing\+::internal\+::Generate\+Type\+List$<$ T $>$ Struct Template Reference}
+\label{structtesting_1_1internal_1_1GenerateTypeList}\index{testing::internal::GenerateTypeList$<$ T $>$@{testing::internal::GenerateTypeList$<$ T $>$}}
+
+
+{\ttfamily \#include $<$gtest-\/type-\/util.\+h$>$}
+
+\doxysubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+using \mbox{\hyperlink{structtesting_1_1internal_1_1GenerateTypeList_a576a76a145c45be743f9689146cf3fc5}{type}} = typename proxy\+::type
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Types}
+\begin{DoxyCompactItemize}
+\item 
+using \mbox{\hyperlink{structtesting_1_1internal_1_1GenerateTypeList_ae0475d41924508a0c76cf36c80b2e21b}{proxy}} = typename std\+::conditional$<$ \mbox{\hyperlink{structtesting_1_1internal_1_1is__proxy__type__list}{is\+\_\+proxy\+\_\+type\+\_\+list}}$<$ T $>$\+::value, T, \mbox{\hyperlink{structtesting_1_1internal_1_1ProxyTypeList}{Proxy\+Type\+List}}$<$ T $>$ $>$\+::\mbox{\hyperlink{structtesting_1_1internal_1_1GenerateTypeList_a576a76a145c45be743f9689146cf3fc5}{type}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Typedef Documentation}
+\mbox{\Hypertarget{structtesting_1_1internal_1_1GenerateTypeList_ae0475d41924508a0c76cf36c80b2e21b}\label{structtesting_1_1internal_1_1GenerateTypeList_ae0475d41924508a0c76cf36c80b2e21b}} 
+\index{testing::internal::GenerateTypeList$<$ T $>$@{testing::internal::GenerateTypeList$<$ T $>$}!proxy@{proxy}}
+\index{proxy@{proxy}!testing::internal::GenerateTypeList$<$ T $>$@{testing::internal::GenerateTypeList$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{proxy}{proxy}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+using \mbox{\hyperlink{structtesting_1_1internal_1_1GenerateTypeList}{testing\+::internal\+::\+Generate\+Type\+List}}$<$ T $>$\+::\mbox{\hyperlink{structtesting_1_1internal_1_1GenerateTypeList_ae0475d41924508a0c76cf36c80b2e21b}{proxy}} =  typename std\+::conditional$<$\mbox{\hyperlink{structtesting_1_1internal_1_1is__proxy__type__list}{is\+\_\+proxy\+\_\+type\+\_\+list}}$<$T$>$\+::value, T, \mbox{\hyperlink{structtesting_1_1internal_1_1ProxyTypeList}{Proxy\+Type\+List}}$<$T$>$ $>$\+::\mbox{\hyperlink{structtesting_1_1internal_1_1GenerateTypeList_a576a76a145c45be743f9689146cf3fc5}{type}}\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{structtesting_1_1internal_1_1GenerateTypeList_a576a76a145c45be743f9689146cf3fc5}\label{structtesting_1_1internal_1_1GenerateTypeList_a576a76a145c45be743f9689146cf3fc5}} 
+\index{testing::internal::GenerateTypeList$<$ T $>$@{testing::internal::GenerateTypeList$<$ T $>$}!type@{type}}
+\index{type@{type}!testing::internal::GenerateTypeList$<$ T $>$@{testing::internal::GenerateTypeList$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{type}{type}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+using \mbox{\hyperlink{structtesting_1_1internal_1_1GenerateTypeList}{testing\+::internal\+::\+Generate\+Type\+List}}$<$ T $>$\+::\mbox{\hyperlink{structtesting_1_1internal_1_1GenerateTypeList_a576a76a145c45be743f9689146cf3fc5}{type}} =  typename proxy\+::type}
+
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\+\_\+deps/googletest-\/src/googletest/include/gtest/internal/\mbox{\hyperlink{gtest-type-util_8h}{gtest-\/type-\/util.\+h}}\end{DoxyCompactItemize}

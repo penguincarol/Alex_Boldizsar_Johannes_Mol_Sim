@@ -1,0 +1,109 @@
+\hypertarget{classtesting_1_1internal_1_1ParameterizedTestSuiteRegistry}{}\doxysection{testing\+::internal\+::Parameterized\+Test\+Suite\+Registry Class Reference}
+\label{classtesting_1_1internal_1_1ParameterizedTestSuiteRegistry}\index{testing::internal::ParameterizedTestSuiteRegistry@{testing::internal::ParameterizedTestSuiteRegistry}}
+
+
+{\ttfamily \#include $<$gtest-\/param-\/util.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classtesting_1_1internal_1_1ParameterizedTestSuiteRegistry_ae3827c085ed16faaa9197486513292c0}{Parameterized\+Test\+Suite\+Registry}} ()
+\item 
+\mbox{\hyperlink{classtesting_1_1internal_1_1ParameterizedTestSuiteRegistry_ab29f7a321883945d7f86f3292c100eb5}{$\sim$\+Parameterized\+Test\+Suite\+Registry}} ()
+\item 
+{\footnotesize template$<$class Test\+Suite $>$ }\\\mbox{\hyperlink{classtesting_1_1internal_1_1ParameterizedTestSuiteInfo}{Parameterized\+Test\+Suite\+Info}}$<$ \mbox{\hyperlink{classtesting_1_1TestSuite}{Test\+Suite}} $>$ $\ast$ \mbox{\hyperlink{classtesting_1_1internal_1_1ParameterizedTestSuiteRegistry_a89ef6dd228f4188e1928513e860580d0}{Get\+Test\+Suite\+Pattern\+Holder}} (const char $\ast$test\+\_\+suite\+\_\+name, \mbox{\hyperlink{structtesting_1_1internal_1_1CodeLocation}{Code\+Location}} code\+\_\+location)
+\item 
+void \mbox{\hyperlink{classtesting_1_1internal_1_1ParameterizedTestSuiteRegistry_a44c2ee0296de42dc6ca7abbf48d00495}{Register\+Tests}} ()
+\item 
+{\footnotesize template$<$class Test\+Case $>$ }\\\mbox{\hyperlink{namespacetesting_1_1internal_aac31682b6b41997d6cc610a5787dc8bc}{Parameterized\+Test\+Case\+Info}}$<$ \mbox{\hyperlink{namespacetesting_a54bf2d7c5c42950cbed8ac510ad43832}{Test\+Case}} $>$ $\ast$ \mbox{\hyperlink{classtesting_1_1internal_1_1ParameterizedTestSuiteRegistry_a3fe06fb4e1b4194dae1fbcdf3560fbd3}{Get\+Test\+Case\+Pattern\+Holder}} (const char $\ast$test\+\_\+case\+\_\+name, \mbox{\hyperlink{structtesting_1_1internal_1_1CodeLocation}{Code\+Location}} code\+\_\+location)
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Types}
+\begin{DoxyCompactItemize}
+\item 
+using \mbox{\hyperlink{classtesting_1_1internal_1_1ParameterizedTestSuiteRegistry_a39a8d3dfa91cb48329bfcf0853f0e72b}{Test\+Suite\+Info\+Container}} = \+::std\+::vector$<$ \mbox{\hyperlink{classtesting_1_1internal_1_1ParameterizedTestSuiteInfoBase}{Parameterized\+Test\+Suite\+Info\+Base}} $\ast$ $>$
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classtesting_1_1internal_1_1ParameterizedTestSuiteRegistry_a6735273fcdf148d3c26411c82a79efcf}{Parameterized\+Test\+Suite\+Registry}} (const \mbox{\hyperlink{classtesting_1_1internal_1_1ParameterizedTestSuiteRegistry}{Parameterized\+Test\+Suite\+Registry}} \&)=delete
+\item 
+\mbox{\hyperlink{classtesting_1_1internal_1_1ParameterizedTestSuiteRegistry}{Parameterized\+Test\+Suite\+Registry}} \& \mbox{\hyperlink{classtesting_1_1internal_1_1ParameterizedTestSuiteRegistry_ad35b8b2cddaa98dca18df71a0410d819}{operator=}} (const \mbox{\hyperlink{classtesting_1_1internal_1_1ParameterizedTestSuiteRegistry}{Parameterized\+Test\+Suite\+Registry}} \&)=delete
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classtesting_1_1internal_1_1ParameterizedTestSuiteRegistry_a39a8d3dfa91cb48329bfcf0853f0e72b}{Test\+Suite\+Info\+Container}} \mbox{\hyperlink{classtesting_1_1internal_1_1ParameterizedTestSuiteRegistry_afb0271d017a518724a075986bd16c69c}{test\+\_\+suite\+\_\+infos\+\_\+}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Typedef Documentation}
+\mbox{\Hypertarget{classtesting_1_1internal_1_1ParameterizedTestSuiteRegistry_a39a8d3dfa91cb48329bfcf0853f0e72b}\label{classtesting_1_1internal_1_1ParameterizedTestSuiteRegistry_a39a8d3dfa91cb48329bfcf0853f0e72b}} 
+\index{testing::internal::ParameterizedTestSuiteRegistry@{testing::internal::ParameterizedTestSuiteRegistry}!TestSuiteInfoContainer@{TestSuiteInfoContainer}}
+\index{TestSuiteInfoContainer@{TestSuiteInfoContainer}!testing::internal::ParameterizedTestSuiteRegistry@{testing::internal::ParameterizedTestSuiteRegistry}}
+\doxysubsubsection{\texorpdfstring{TestSuiteInfoContainer}{TestSuiteInfoContainer}}
+{\footnotesize\ttfamily using \mbox{\hyperlink{classtesting_1_1internal_1_1ParameterizedTestSuiteRegistry_a39a8d3dfa91cb48329bfcf0853f0e72b}{testing\+::internal\+::\+Parameterized\+Test\+Suite\+Registry\+::\+Test\+Suite\+Info\+Container}} =  \+::std\+::vector$<$\mbox{\hyperlink{classtesting_1_1internal_1_1ParameterizedTestSuiteInfoBase}{Parameterized\+Test\+Suite\+Info\+Base}}$\ast$$>$\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classtesting_1_1internal_1_1ParameterizedTestSuiteRegistry_ae3827c085ed16faaa9197486513292c0}\label{classtesting_1_1internal_1_1ParameterizedTestSuiteRegistry_ae3827c085ed16faaa9197486513292c0}} 
+\index{testing::internal::ParameterizedTestSuiteRegistry@{testing::internal::ParameterizedTestSuiteRegistry}!ParameterizedTestSuiteRegistry@{ParameterizedTestSuiteRegistry}}
+\index{ParameterizedTestSuiteRegistry@{ParameterizedTestSuiteRegistry}!testing::internal::ParameterizedTestSuiteRegistry@{testing::internal::ParameterizedTestSuiteRegistry}}
+\doxysubsubsection{\texorpdfstring{ParameterizedTestSuiteRegistry()}{ParameterizedTestSuiteRegistry()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily testing\+::internal\+::\+Parameterized\+Test\+Suite\+Registry\+::\+Parameterized\+Test\+Suite\+Registry (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classtesting_1_1internal_1_1ParameterizedTestSuiteRegistry_ab29f7a321883945d7f86f3292c100eb5}\label{classtesting_1_1internal_1_1ParameterizedTestSuiteRegistry_ab29f7a321883945d7f86f3292c100eb5}} 
+\index{testing::internal::ParameterizedTestSuiteRegistry@{testing::internal::ParameterizedTestSuiteRegistry}!````~ParameterizedTestSuiteRegistry@{$\sim$ParameterizedTestSuiteRegistry}}
+\index{````~ParameterizedTestSuiteRegistry@{$\sim$ParameterizedTestSuiteRegistry}!testing::internal::ParameterizedTestSuiteRegistry@{testing::internal::ParameterizedTestSuiteRegistry}}
+\doxysubsubsection{\texorpdfstring{$\sim$ParameterizedTestSuiteRegistry()}{~ParameterizedTestSuiteRegistry()}}
+{\footnotesize\ttfamily testing\+::internal\+::\+Parameterized\+Test\+Suite\+Registry\+::$\sim$\+Parameterized\+Test\+Suite\+Registry (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classtesting_1_1internal_1_1ParameterizedTestSuiteRegistry_a6735273fcdf148d3c26411c82a79efcf}\label{classtesting_1_1internal_1_1ParameterizedTestSuiteRegistry_a6735273fcdf148d3c26411c82a79efcf}} 
+\index{testing::internal::ParameterizedTestSuiteRegistry@{testing::internal::ParameterizedTestSuiteRegistry}!ParameterizedTestSuiteRegistry@{ParameterizedTestSuiteRegistry}}
+\index{ParameterizedTestSuiteRegistry@{ParameterizedTestSuiteRegistry}!testing::internal::ParameterizedTestSuiteRegistry@{testing::internal::ParameterizedTestSuiteRegistry}}
+\doxysubsubsection{\texorpdfstring{ParameterizedTestSuiteRegistry()}{ParameterizedTestSuiteRegistry()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily testing\+::internal\+::\+Parameterized\+Test\+Suite\+Registry\+::\+Parameterized\+Test\+Suite\+Registry (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classtesting_1_1internal_1_1ParameterizedTestSuiteRegistry}{Parameterized\+Test\+Suite\+Registry}} \&}]{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}, {\ttfamily [delete]}}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classtesting_1_1internal_1_1ParameterizedTestSuiteRegistry_a3fe06fb4e1b4194dae1fbcdf3560fbd3}\label{classtesting_1_1internal_1_1ParameterizedTestSuiteRegistry_a3fe06fb4e1b4194dae1fbcdf3560fbd3}} 
+\index{testing::internal::ParameterizedTestSuiteRegistry@{testing::internal::ParameterizedTestSuiteRegistry}!GetTestCasePatternHolder@{GetTestCasePatternHolder}}
+\index{GetTestCasePatternHolder@{GetTestCasePatternHolder}!testing::internal::ParameterizedTestSuiteRegistry@{testing::internal::ParameterizedTestSuiteRegistry}}
+\doxysubsubsection{\texorpdfstring{GetTestCasePatternHolder()}{GetTestCasePatternHolder()}}
+{\footnotesize\ttfamily template$<$class Test\+Case $>$ \\
+\mbox{\hyperlink{namespacetesting_1_1internal_aac31682b6b41997d6cc610a5787dc8bc}{Parameterized\+Test\+Case\+Info}}$<$\mbox{\hyperlink{namespacetesting_a54bf2d7c5c42950cbed8ac510ad43832}{Test\+Case}}$>$$\ast$ testing\+::internal\+::\+Parameterized\+Test\+Suite\+Registry\+::\+Get\+Test\+Case\+Pattern\+Holder (\begin{DoxyParamCaption}\item[{const char $\ast$}]{test\+\_\+case\+\_\+name,  }\item[{\mbox{\hyperlink{structtesting_1_1internal_1_1CodeLocation}{Code\+Location}}}]{code\+\_\+location }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classtesting_1_1internal_1_1ParameterizedTestSuiteRegistry_a89ef6dd228f4188e1928513e860580d0}\label{classtesting_1_1internal_1_1ParameterizedTestSuiteRegistry_a89ef6dd228f4188e1928513e860580d0}} 
+\index{testing::internal::ParameterizedTestSuiteRegistry@{testing::internal::ParameterizedTestSuiteRegistry}!GetTestSuitePatternHolder@{GetTestSuitePatternHolder}}
+\index{GetTestSuitePatternHolder@{GetTestSuitePatternHolder}!testing::internal::ParameterizedTestSuiteRegistry@{testing::internal::ParameterizedTestSuiteRegistry}}
+\doxysubsubsection{\texorpdfstring{GetTestSuitePatternHolder()}{GetTestSuitePatternHolder()}}
+{\footnotesize\ttfamily template$<$class Test\+Suite $>$ \\
+\mbox{\hyperlink{classtesting_1_1internal_1_1ParameterizedTestSuiteInfo}{Parameterized\+Test\+Suite\+Info}}$<$\mbox{\hyperlink{classtesting_1_1TestSuite}{Test\+Suite}}$>$$\ast$ testing\+::internal\+::\+Parameterized\+Test\+Suite\+Registry\+::\+Get\+Test\+Suite\+Pattern\+Holder (\begin{DoxyParamCaption}\item[{const char $\ast$}]{test\+\_\+suite\+\_\+name,  }\item[{\mbox{\hyperlink{structtesting_1_1internal_1_1CodeLocation}{Code\+Location}}}]{code\+\_\+location }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classtesting_1_1internal_1_1ParameterizedTestSuiteRegistry_ad35b8b2cddaa98dca18df71a0410d819}\label{classtesting_1_1internal_1_1ParameterizedTestSuiteRegistry_ad35b8b2cddaa98dca18df71a0410d819}} 
+\index{testing::internal::ParameterizedTestSuiteRegistry@{testing::internal::ParameterizedTestSuiteRegistry}!operator=@{operator=}}
+\index{operator=@{operator=}!testing::internal::ParameterizedTestSuiteRegistry@{testing::internal::ParameterizedTestSuiteRegistry}}
+\doxysubsubsection{\texorpdfstring{operator=()}{operator=()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classtesting_1_1internal_1_1ParameterizedTestSuiteRegistry}{Parameterized\+Test\+Suite\+Registry}}\& testing\+::internal\+::\+Parameterized\+Test\+Suite\+Registry\+::operator= (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classtesting_1_1internal_1_1ParameterizedTestSuiteRegistry}{Parameterized\+Test\+Suite\+Registry}} \&}]{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}, {\ttfamily [delete]}}
+
+\mbox{\Hypertarget{classtesting_1_1internal_1_1ParameterizedTestSuiteRegistry_a44c2ee0296de42dc6ca7abbf48d00495}\label{classtesting_1_1internal_1_1ParameterizedTestSuiteRegistry_a44c2ee0296de42dc6ca7abbf48d00495}} 
+\index{testing::internal::ParameterizedTestSuiteRegistry@{testing::internal::ParameterizedTestSuiteRegistry}!RegisterTests@{RegisterTests}}
+\index{RegisterTests@{RegisterTests}!testing::internal::ParameterizedTestSuiteRegistry@{testing::internal::ParameterizedTestSuiteRegistry}}
+\doxysubsubsection{\texorpdfstring{RegisterTests()}{RegisterTests()}}
+{\footnotesize\ttfamily void testing\+::internal\+::\+Parameterized\+Test\+Suite\+Registry\+::\+Register\+Tests (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classtesting_1_1internal_1_1ParameterizedTestSuiteRegistry_afb0271d017a518724a075986bd16c69c}\label{classtesting_1_1internal_1_1ParameterizedTestSuiteRegistry_afb0271d017a518724a075986bd16c69c}} 
+\index{testing::internal::ParameterizedTestSuiteRegistry@{testing::internal::ParameterizedTestSuiteRegistry}!test\_suite\_infos\_@{test\_suite\_infos\_}}
+\index{test\_suite\_infos\_@{test\_suite\_infos\_}!testing::internal::ParameterizedTestSuiteRegistry@{testing::internal::ParameterizedTestSuiteRegistry}}
+\doxysubsubsection{\texorpdfstring{test\_suite\_infos\_}{test\_suite\_infos\_}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classtesting_1_1internal_1_1ParameterizedTestSuiteRegistry_a39a8d3dfa91cb48329bfcf0853f0e72b}{Test\+Suite\+Info\+Container}} testing\+::internal\+::\+Parameterized\+Test\+Suite\+Registry\+::test\+\_\+suite\+\_\+infos\+\_\+\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\+\_\+deps/googletest-\/src/googletest/include/gtest/internal/\mbox{\hyperlink{gtest-param-util_8h}{gtest-\/param-\/util.\+h}}\end{DoxyCompactItemize}

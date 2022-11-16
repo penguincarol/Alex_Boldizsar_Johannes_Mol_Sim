@@ -1,0 +1,326 @@
+\hypertarget{classtesting_1_1TestInfo}{}\doxysection{testing\+::Test\+Info Class Reference}
+\label{classtesting_1_1TestInfo}\index{testing::TestInfo@{testing::TestInfo}}
+
+
+{\ttfamily \#include $<$gtest.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classtesting_1_1TestInfo_a8d382c1b1b511f0d9112c14684809852}{$\sim$\+Test\+Info}} ()
+\item 
+const char $\ast$ \mbox{\hyperlink{classtesting_1_1TestInfo_a82a84ffd0e4d18eb5a3f97a2077e12cc}{test\+\_\+suite\+\_\+name}} () const
+\item 
+const char $\ast$ \mbox{\hyperlink{classtesting_1_1TestInfo_a036a20710c8c2252889544daba9a8ff9}{test\+\_\+case\+\_\+name}} () const
+\item 
+const char $\ast$ \mbox{\hyperlink{classtesting_1_1TestInfo_ac2581b45eccc9a3b94cb41c4807d0e34}{name}} () const
+\item 
+const char $\ast$ \mbox{\hyperlink{classtesting_1_1TestInfo_a7759bc57f4350ad406cbbb0b3bcea320}{type\+\_\+param}} () const
+\item 
+const char $\ast$ \mbox{\hyperlink{classtesting_1_1TestInfo_abdf2c6cfcf4819e725816c64e1c1fc24}{value\+\_\+param}} () const
+\item 
+const char $\ast$ \mbox{\hyperlink{classtesting_1_1TestInfo_a9b74d79cf618ce5bb0d0b1da75ee8b35}{file}} () const
+\item 
+int \mbox{\hyperlink{classtesting_1_1TestInfo_af5931cfc594b5d660c56b3c61c41ea13}{line}} () const
+\item 
+bool \mbox{\hyperlink{classtesting_1_1TestInfo_a8621f2cf7623fd1609db8e324f0c2fec}{is\+\_\+in\+\_\+another\+\_\+shard}} () const
+\item 
+bool \mbox{\hyperlink{classtesting_1_1TestInfo_a866e33b5bc5ab2a6e5375fc7d3af0f96}{should\+\_\+run}} () const
+\item 
+bool \mbox{\hyperlink{classtesting_1_1TestInfo_a63e7042028b0b846f4b5a1e5bcffc079}{is\+\_\+reportable}} () const
+\item 
+const \mbox{\hyperlink{classtesting_1_1TestResult}{Test\+Result}} $\ast$ \mbox{\hyperlink{classtesting_1_1TestInfo_aee8cb884c95cd446129aba936b4159e0}{result}} () const
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classtesting_1_1TestInfo_aa652b2ec74957083637ece79297b274b}{Test\+Info}} (const std\+::string \&\mbox{\hyperlink{classtesting_1_1TestInfo_a82a84ffd0e4d18eb5a3f97a2077e12cc}{test\+\_\+suite\+\_\+name}}, const std\+::string \&\mbox{\hyperlink{classtesting_1_1TestInfo_ac2581b45eccc9a3b94cb41c4807d0e34}{name}}, const char $\ast$a\+\_\+type\+\_\+param, const char $\ast$a\+\_\+value\+\_\+param, \mbox{\hyperlink{structtesting_1_1internal_1_1CodeLocation}{internal\+::\+Code\+Location}} a\+\_\+code\+\_\+location, \mbox{\hyperlink{namespacetesting_1_1internal_ab1114197d3c657d8b7f8e0c5caa12d00}{internal\+::\+Type\+Id}} fixture\+\_\+class\+\_\+id, \mbox{\hyperlink{classtesting_1_1internal_1_1TestFactoryBase}{internal\+::\+Test\+Factory\+Base}} $\ast$factory)
+\item 
+int \mbox{\hyperlink{classtesting_1_1TestInfo_a70c9509202a6f95fbc26704ce13efb63}{increment\+\_\+death\+\_\+test\+\_\+count}} ()
+\item 
+void \mbox{\hyperlink{classtesting_1_1TestInfo_ade784915e9be3a01e3a6ef509b77d6c9}{Run}} ()
+\item 
+void \mbox{\hyperlink{classtesting_1_1TestInfo_a8aa19b208545db141a1889cf82e64d09}{Skip}} ()
+\item 
+\mbox{\hyperlink{classtesting_1_1TestInfo_addd51296419d33182a836ddc7948d44c}{Test\+Info}} (const \mbox{\hyperlink{classtesting_1_1TestInfo}{Test\+Info}} \&)=delete
+\item 
+\mbox{\hyperlink{classtesting_1_1TestInfo}{Test\+Info}} \& \mbox{\hyperlink{classtesting_1_1TestInfo_ac3d600e439a724348c16553722a16a67}{operator=}} (const \mbox{\hyperlink{classtesting_1_1TestInfo}{Test\+Info}} \&)=delete
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static void \mbox{\hyperlink{classtesting_1_1TestInfo_ac6d80865a3e68478aaf167058e6ca5c2}{Clear\+Test\+Result}} (\mbox{\hyperlink{classtesting_1_1TestInfo}{Test\+Info}} $\ast$test\+\_\+info)
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+const std\+::string \mbox{\hyperlink{classtesting_1_1TestInfo_ac5beda04eb320588955c8954dc6c2eb0}{test\+\_\+suite\+\_\+name\+\_\+}}
+\item 
+const std\+::string \mbox{\hyperlink{classtesting_1_1TestInfo_a6bed52b7c3d66c8c5eac5fa2aaadba55}{name\+\_\+}}
+\item 
+const std\+::unique\+\_\+ptr$<$ const \+::std\+::string $>$ \mbox{\hyperlink{classtesting_1_1TestInfo_a6c6d79e6238f2af5093e2c419480b433}{type\+\_\+param\+\_\+}}
+\item 
+const std\+::unique\+\_\+ptr$<$ const \+::std\+::string $>$ \mbox{\hyperlink{classtesting_1_1TestInfo_adf2e7579cf713f7b2df1d542ca2ab9ff}{value\+\_\+param\+\_\+}}
+\item 
+\mbox{\hyperlink{structtesting_1_1internal_1_1CodeLocation}{internal\+::\+Code\+Location}} \mbox{\hyperlink{classtesting_1_1TestInfo_a749494420174e6cf1949c7b411e8df6f}{location\+\_\+}}
+\item 
+const \mbox{\hyperlink{namespacetesting_1_1internal_ab1114197d3c657d8b7f8e0c5caa12d00}{internal\+::\+Type\+Id}} \mbox{\hyperlink{classtesting_1_1TestInfo_ad3284b7b9ebe61cc31440694091450ae}{fixture\+\_\+class\+\_\+id\+\_\+}}
+\item 
+bool \mbox{\hyperlink{classtesting_1_1TestInfo_a89c3d8fb8b565532c34d3123240fd5cf}{should\+\_\+run\+\_\+}}
+\item 
+bool \mbox{\hyperlink{classtesting_1_1TestInfo_af3765fc4f811296e0699b0a26430a7c7}{is\+\_\+disabled\+\_\+}}
+\item 
+bool \mbox{\hyperlink{classtesting_1_1TestInfo_a397686f82b6dd68a209ab7b50eeb4932}{matches\+\_\+filter\+\_\+}}
+\item 
+bool \mbox{\hyperlink{classtesting_1_1TestInfo_a7db5fe84e625c2d5b60544e15fbb75a3}{is\+\_\+in\+\_\+another\+\_\+shard\+\_\+}}
+\item 
+\mbox{\hyperlink{classtesting_1_1internal_1_1TestFactoryBase}{internal\+::\+Test\+Factory\+Base}} $\ast$const \mbox{\hyperlink{classtesting_1_1TestInfo_a6bf2422602b877c73f6eb169a63cfea8}{factory\+\_\+}}
+\item 
+\mbox{\hyperlink{classtesting_1_1TestResult}{Test\+Result}} \mbox{\hyperlink{classtesting_1_1TestInfo_a108fd469897a8d4e5c4361947a5ed785}{result\+\_\+}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{classtesting_1_1TestInfo_a5b78b1c2e1fa07ffed92da365593eaa4}{Test}}
+\item 
+class \mbox{\hyperlink{classtesting_1_1TestInfo_ab9aaba231fd11196425e75caf709bfc6}{Test\+Suite}}
+\item 
+class \mbox{\hyperlink{classtesting_1_1TestInfo_acc0a5e7573fd6ae7ad1878613bb86853}{internal\+::\+Unit\+Test\+Impl}}
+\item 
+class \mbox{\hyperlink{classtesting_1_1TestInfo_adc037d188dab349a94868991955c9cd4}{internal\+::\+Streaming\+Listener\+Test}}
+\item 
+\mbox{\hyperlink{classtesting_1_1TestInfo}{Test\+Info}} $\ast$ \mbox{\hyperlink{classtesting_1_1TestInfo_a63d61c7ffd0423b1d3615f0ff5f2040e}{internal\+::\+Make\+And\+Register\+Test\+Info}} (const char $\ast$\mbox{\hyperlink{classtesting_1_1TestInfo_a82a84ffd0e4d18eb5a3f97a2077e12cc}{test\+\_\+suite\+\_\+name}}, const char $\ast$\mbox{\hyperlink{classtesting_1_1TestInfo_ac2581b45eccc9a3b94cb41c4807d0e34}{name}}, const char $\ast$\mbox{\hyperlink{classtesting_1_1TestInfo_a7759bc57f4350ad406cbbb0b3bcea320}{type\+\_\+param}}, const char $\ast$\mbox{\hyperlink{classtesting_1_1TestInfo_abdf2c6cfcf4819e725816c64e1c1fc24}{value\+\_\+param}}, \mbox{\hyperlink{structtesting_1_1internal_1_1CodeLocation}{internal\+::\+Code\+Location}} code\+\_\+location, \mbox{\hyperlink{namespacetesting_1_1internal_ab1114197d3c657d8b7f8e0c5caa12d00}{internal\+::\+Type\+Id}} fixture\+\_\+class\+\_\+id, \mbox{\hyperlink{namespacetesting_1_1internal_a83e4e0732ac6a9dcfe6ee299dc1b9fa2}{internal\+::\+Set\+Up\+Test\+Suite\+Func}} set\+\_\+up\+\_\+tc, \mbox{\hyperlink{namespacetesting_1_1internal_a8257a87aa42cebaa54b0c48a6ae657a5}{internal\+::\+Tear\+Down\+Test\+Suite\+Func}} tear\+\_\+down\+\_\+tc, \mbox{\hyperlink{classtesting_1_1internal_1_1TestFactoryBase}{internal\+::\+Test\+Factory\+Base}} $\ast$factory)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classtesting_1_1TestInfo_a8d382c1b1b511f0d9112c14684809852}\label{classtesting_1_1TestInfo_a8d382c1b1b511f0d9112c14684809852}} 
+\index{testing::TestInfo@{testing::TestInfo}!````~TestInfo@{$\sim$TestInfo}}
+\index{````~TestInfo@{$\sim$TestInfo}!testing::TestInfo@{testing::TestInfo}}
+\doxysubsubsection{\texorpdfstring{$\sim$TestInfo()}{~TestInfo()}}
+{\footnotesize\ttfamily testing\+::\+Test\+Info\+::$\sim$\+Test\+Info (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classtesting_1_1TestInfo_aa652b2ec74957083637ece79297b274b}\label{classtesting_1_1TestInfo_aa652b2ec74957083637ece79297b274b}} 
+\index{testing::TestInfo@{testing::TestInfo}!TestInfo@{TestInfo}}
+\index{TestInfo@{TestInfo}!testing::TestInfo@{testing::TestInfo}}
+\doxysubsubsection{\texorpdfstring{TestInfo()}{TestInfo()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily testing\+::\+Test\+Info\+::\+Test\+Info (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{test\+\_\+suite\+\_\+name,  }\item[{const std\+::string \&}]{name,  }\item[{const char $\ast$}]{a\+\_\+type\+\_\+param,  }\item[{const char $\ast$}]{a\+\_\+value\+\_\+param,  }\item[{\mbox{\hyperlink{structtesting_1_1internal_1_1CodeLocation}{internal\+::\+Code\+Location}}}]{a\+\_\+code\+\_\+location,  }\item[{\mbox{\hyperlink{namespacetesting_1_1internal_ab1114197d3c657d8b7f8e0c5caa12d00}{internal\+::\+Type\+Id}}}]{fixture\+\_\+class\+\_\+id,  }\item[{\mbox{\hyperlink{classtesting_1_1internal_1_1TestFactoryBase}{internal\+::\+Test\+Factory\+Base}} $\ast$}]{factory }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classtesting_1_1TestInfo_addd51296419d33182a836ddc7948d44c}\label{classtesting_1_1TestInfo_addd51296419d33182a836ddc7948d44c}} 
+\index{testing::TestInfo@{testing::TestInfo}!TestInfo@{TestInfo}}
+\index{TestInfo@{TestInfo}!testing::TestInfo@{testing::TestInfo}}
+\doxysubsubsection{\texorpdfstring{TestInfo()}{TestInfo()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily testing\+::\+Test\+Info\+::\+Test\+Info (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classtesting_1_1TestInfo}{Test\+Info}} \&}]{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}, {\ttfamily [delete]}}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classtesting_1_1TestInfo_ac6d80865a3e68478aaf167058e6ca5c2}\label{classtesting_1_1TestInfo_ac6d80865a3e68478aaf167058e6ca5c2}} 
+\index{testing::TestInfo@{testing::TestInfo}!ClearTestResult@{ClearTestResult}}
+\index{ClearTestResult@{ClearTestResult}!testing::TestInfo@{testing::TestInfo}}
+\doxysubsubsection{\texorpdfstring{ClearTestResult()}{ClearTestResult()}}
+{\footnotesize\ttfamily static void testing\+::\+Test\+Info\+::\+Clear\+Test\+Result (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classtesting_1_1TestInfo}{Test\+Info}} $\ast$}]{test\+\_\+info }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}, {\ttfamily [private]}}
+
+\mbox{\Hypertarget{classtesting_1_1TestInfo_a9b74d79cf618ce5bb0d0b1da75ee8b35}\label{classtesting_1_1TestInfo_a9b74d79cf618ce5bb0d0b1da75ee8b35}} 
+\index{testing::TestInfo@{testing::TestInfo}!file@{file}}
+\index{file@{file}!testing::TestInfo@{testing::TestInfo}}
+\doxysubsubsection{\texorpdfstring{file()}{file()}}
+{\footnotesize\ttfamily const char$\ast$ testing\+::\+Test\+Info\+::file (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classtesting_1_1TestInfo_a70c9509202a6f95fbc26704ce13efb63}\label{classtesting_1_1TestInfo_a70c9509202a6f95fbc26704ce13efb63}} 
+\index{testing::TestInfo@{testing::TestInfo}!increment\_death\_test\_count@{increment\_death\_test\_count}}
+\index{increment\_death\_test\_count@{increment\_death\_test\_count}!testing::TestInfo@{testing::TestInfo}}
+\doxysubsubsection{\texorpdfstring{increment\_death\_test\_count()}{increment\_death\_test\_count()}}
+{\footnotesize\ttfamily int testing\+::\+Test\+Info\+::increment\+\_\+death\+\_\+test\+\_\+count (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [private]}}
+
+\mbox{\Hypertarget{classtesting_1_1TestInfo_a8621f2cf7623fd1609db8e324f0c2fec}\label{classtesting_1_1TestInfo_a8621f2cf7623fd1609db8e324f0c2fec}} 
+\index{testing::TestInfo@{testing::TestInfo}!is\_in\_another\_shard@{is\_in\_another\_shard}}
+\index{is\_in\_another\_shard@{is\_in\_another\_shard}!testing::TestInfo@{testing::TestInfo}}
+\doxysubsubsection{\texorpdfstring{is\_in\_another\_shard()}{is\_in\_another\_shard()}}
+{\footnotesize\ttfamily bool testing\+::\+Test\+Info\+::is\+\_\+in\+\_\+another\+\_\+shard (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classtesting_1_1TestInfo_a63e7042028b0b846f4b5a1e5bcffc079}\label{classtesting_1_1TestInfo_a63e7042028b0b846f4b5a1e5bcffc079}} 
+\index{testing::TestInfo@{testing::TestInfo}!is\_reportable@{is\_reportable}}
+\index{is\_reportable@{is\_reportable}!testing::TestInfo@{testing::TestInfo}}
+\doxysubsubsection{\texorpdfstring{is\_reportable()}{is\_reportable()}}
+{\footnotesize\ttfamily bool testing\+::\+Test\+Info\+::is\+\_\+reportable (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classtesting_1_1TestInfo_af5931cfc594b5d660c56b3c61c41ea13}\label{classtesting_1_1TestInfo_af5931cfc594b5d660c56b3c61c41ea13}} 
+\index{testing::TestInfo@{testing::TestInfo}!line@{line}}
+\index{line@{line}!testing::TestInfo@{testing::TestInfo}}
+\doxysubsubsection{\texorpdfstring{line()}{line()}}
+{\footnotesize\ttfamily int testing\+::\+Test\+Info\+::line (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classtesting_1_1TestInfo_ac2581b45eccc9a3b94cb41c4807d0e34}\label{classtesting_1_1TestInfo_ac2581b45eccc9a3b94cb41c4807d0e34}} 
+\index{testing::TestInfo@{testing::TestInfo}!name@{name}}
+\index{name@{name}!testing::TestInfo@{testing::TestInfo}}
+\doxysubsubsection{\texorpdfstring{name()}{name()}}
+{\footnotesize\ttfamily const char$\ast$ testing\+::\+Test\+Info\+::name (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classtesting_1_1TestInfo_ac3d600e439a724348c16553722a16a67}\label{classtesting_1_1TestInfo_ac3d600e439a724348c16553722a16a67}} 
+\index{testing::TestInfo@{testing::TestInfo}!operator=@{operator=}}
+\index{operator=@{operator=}!testing::TestInfo@{testing::TestInfo}}
+\doxysubsubsection{\texorpdfstring{operator=()}{operator=()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classtesting_1_1TestInfo}{Test\+Info}}\& testing\+::\+Test\+Info\+::operator= (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classtesting_1_1TestInfo}{Test\+Info}} \&}]{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}, {\ttfamily [delete]}}
+
+\mbox{\Hypertarget{classtesting_1_1TestInfo_aee8cb884c95cd446129aba936b4159e0}\label{classtesting_1_1TestInfo_aee8cb884c95cd446129aba936b4159e0}} 
+\index{testing::TestInfo@{testing::TestInfo}!result@{result}}
+\index{result@{result}!testing::TestInfo@{testing::TestInfo}}
+\doxysubsubsection{\texorpdfstring{result()}{result()}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{classtesting_1_1TestResult}{Test\+Result}}$\ast$ testing\+::\+Test\+Info\+::result (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classtesting_1_1TestInfo_ade784915e9be3a01e3a6ef509b77d6c9}\label{classtesting_1_1TestInfo_ade784915e9be3a01e3a6ef509b77d6c9}} 
+\index{testing::TestInfo@{testing::TestInfo}!Run@{Run}}
+\index{Run@{Run}!testing::TestInfo@{testing::TestInfo}}
+\doxysubsubsection{\texorpdfstring{Run()}{Run()}}
+{\footnotesize\ttfamily void testing\+::\+Test\+Info\+::\+Run (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classtesting_1_1TestInfo_a866e33b5bc5ab2a6e5375fc7d3af0f96}\label{classtesting_1_1TestInfo_a866e33b5bc5ab2a6e5375fc7d3af0f96}} 
+\index{testing::TestInfo@{testing::TestInfo}!should\_run@{should\_run}}
+\index{should\_run@{should\_run}!testing::TestInfo@{testing::TestInfo}}
+\doxysubsubsection{\texorpdfstring{should\_run()}{should\_run()}}
+{\footnotesize\ttfamily bool testing\+::\+Test\+Info\+::should\+\_\+run (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classtesting_1_1TestInfo_a8aa19b208545db141a1889cf82e64d09}\label{classtesting_1_1TestInfo_a8aa19b208545db141a1889cf82e64d09}} 
+\index{testing::TestInfo@{testing::TestInfo}!Skip@{Skip}}
+\index{Skip@{Skip}!testing::TestInfo@{testing::TestInfo}}
+\doxysubsubsection{\texorpdfstring{Skip()}{Skip()}}
+{\footnotesize\ttfamily void testing\+::\+Test\+Info\+::\+Skip (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classtesting_1_1TestInfo_a036a20710c8c2252889544daba9a8ff9}\label{classtesting_1_1TestInfo_a036a20710c8c2252889544daba9a8ff9}} 
+\index{testing::TestInfo@{testing::TestInfo}!test\_case\_name@{test\_case\_name}}
+\index{test\_case\_name@{test\_case\_name}!testing::TestInfo@{testing::TestInfo}}
+\doxysubsubsection{\texorpdfstring{test\_case\_name()}{test\_case\_name()}}
+{\footnotesize\ttfamily const char$\ast$ testing\+::\+Test\+Info\+::test\+\_\+case\+\_\+name (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classtesting_1_1TestInfo_a82a84ffd0e4d18eb5a3f97a2077e12cc}\label{classtesting_1_1TestInfo_a82a84ffd0e4d18eb5a3f97a2077e12cc}} 
+\index{testing::TestInfo@{testing::TestInfo}!test\_suite\_name@{test\_suite\_name}}
+\index{test\_suite\_name@{test\_suite\_name}!testing::TestInfo@{testing::TestInfo}}
+\doxysubsubsection{\texorpdfstring{test\_suite\_name()}{test\_suite\_name()}}
+{\footnotesize\ttfamily const char$\ast$ testing\+::\+Test\+Info\+::test\+\_\+suite\+\_\+name (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classtesting_1_1TestInfo_a7759bc57f4350ad406cbbb0b3bcea320}\label{classtesting_1_1TestInfo_a7759bc57f4350ad406cbbb0b3bcea320}} 
+\index{testing::TestInfo@{testing::TestInfo}!type\_param@{type\_param}}
+\index{type\_param@{type\_param}!testing::TestInfo@{testing::TestInfo}}
+\doxysubsubsection{\texorpdfstring{type\_param()}{type\_param()}}
+{\footnotesize\ttfamily const char$\ast$ testing\+::\+Test\+Info\+::type\+\_\+param (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classtesting_1_1TestInfo_abdf2c6cfcf4819e725816c64e1c1fc24}\label{classtesting_1_1TestInfo_abdf2c6cfcf4819e725816c64e1c1fc24}} 
+\index{testing::TestInfo@{testing::TestInfo}!value\_param@{value\_param}}
+\index{value\_param@{value\_param}!testing::TestInfo@{testing::TestInfo}}
+\doxysubsubsection{\texorpdfstring{value\_param()}{value\_param()}}
+{\footnotesize\ttfamily const char$\ast$ testing\+::\+Test\+Info\+::value\+\_\+param (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+\doxysubsection{Friends And Related Function Documentation}
+\mbox{\Hypertarget{classtesting_1_1TestInfo_a63d61c7ffd0423b1d3615f0ff5f2040e}\label{classtesting_1_1TestInfo_a63d61c7ffd0423b1d3615f0ff5f2040e}} 
+\index{testing::TestInfo@{testing::TestInfo}!internal::MakeAndRegisterTestInfo@{internal::MakeAndRegisterTestInfo}}
+\index{internal::MakeAndRegisterTestInfo@{internal::MakeAndRegisterTestInfo}!testing::TestInfo@{testing::TestInfo}}
+\doxysubsubsection{\texorpdfstring{internal::MakeAndRegisterTestInfo}{internal::MakeAndRegisterTestInfo}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classtesting_1_1TestInfo}{Test\+Info}}$\ast$ \mbox{\hyperlink{namespacetesting_1_1internal_a7ab4072540184e26119ad853f45059f7}{internal\+::\+Make\+And\+Register\+Test\+Info}} (\begin{DoxyParamCaption}\item[{const char $\ast$}]{test\+\_\+suite\+\_\+name,  }\item[{const char $\ast$}]{name,  }\item[{const char $\ast$}]{type\+\_\+param,  }\item[{const char $\ast$}]{value\+\_\+param,  }\item[{\mbox{\hyperlink{structtesting_1_1internal_1_1CodeLocation}{internal\+::\+Code\+Location}}}]{code\+\_\+location,  }\item[{\mbox{\hyperlink{namespacetesting_1_1internal_ab1114197d3c657d8b7f8e0c5caa12d00}{internal\+::\+Type\+Id}}}]{fixture\+\_\+class\+\_\+id,  }\item[{\mbox{\hyperlink{namespacetesting_1_1internal_a83e4e0732ac6a9dcfe6ee299dc1b9fa2}{internal\+::\+Set\+Up\+Test\+Suite\+Func}}}]{set\+\_\+up\+\_\+tc,  }\item[{\mbox{\hyperlink{namespacetesting_1_1internal_a8257a87aa42cebaa54b0c48a6ae657a5}{internal\+::\+Tear\+Down\+Test\+Suite\+Func}}}]{tear\+\_\+down\+\_\+tc,  }\item[{\mbox{\hyperlink{classtesting_1_1internal_1_1TestFactoryBase}{internal\+::\+Test\+Factory\+Base}} $\ast$}]{factory }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [friend]}}
+
+\mbox{\Hypertarget{classtesting_1_1TestInfo_adc037d188dab349a94868991955c9cd4}\label{classtesting_1_1TestInfo_adc037d188dab349a94868991955c9cd4}} 
+\index{testing::TestInfo@{testing::TestInfo}!internal::StreamingListenerTest@{internal::StreamingListenerTest}}
+\index{internal::StreamingListenerTest@{internal::StreamingListenerTest}!testing::TestInfo@{testing::TestInfo}}
+\doxysubsubsection{\texorpdfstring{internal::StreamingListenerTest}{internal::StreamingListenerTest}}
+{\footnotesize\ttfamily friend class internal\+::\+Streaming\+Listener\+Test\hspace{0.3cm}{\ttfamily [friend]}}
+
+\mbox{\Hypertarget{classtesting_1_1TestInfo_acc0a5e7573fd6ae7ad1878613bb86853}\label{classtesting_1_1TestInfo_acc0a5e7573fd6ae7ad1878613bb86853}} 
+\index{testing::TestInfo@{testing::TestInfo}!internal::UnitTestImpl@{internal::UnitTestImpl}}
+\index{internal::UnitTestImpl@{internal::UnitTestImpl}!testing::TestInfo@{testing::TestInfo}}
+\doxysubsubsection{\texorpdfstring{internal::UnitTestImpl}{internal::UnitTestImpl}}
+{\footnotesize\ttfamily friend class \mbox{\hyperlink{classtesting_1_1internal_1_1UnitTestImpl}{internal\+::\+Unit\+Test\+Impl}}\hspace{0.3cm}{\ttfamily [friend]}}
+
+\mbox{\Hypertarget{classtesting_1_1TestInfo_a5b78b1c2e1fa07ffed92da365593eaa4}\label{classtesting_1_1TestInfo_a5b78b1c2e1fa07ffed92da365593eaa4}} 
+\index{testing::TestInfo@{testing::TestInfo}!Test@{Test}}
+\index{Test@{Test}!testing::TestInfo@{testing::TestInfo}}
+\doxysubsubsection{\texorpdfstring{Test}{Test}}
+{\footnotesize\ttfamily friend class \mbox{\hyperlink{classtesting_1_1Test}{Test}}\hspace{0.3cm}{\ttfamily [friend]}}
+
+\mbox{\Hypertarget{classtesting_1_1TestInfo_ab9aaba231fd11196425e75caf709bfc6}\label{classtesting_1_1TestInfo_ab9aaba231fd11196425e75caf709bfc6}} 
+\index{testing::TestInfo@{testing::TestInfo}!TestSuite@{TestSuite}}
+\index{TestSuite@{TestSuite}!testing::TestInfo@{testing::TestInfo}}
+\doxysubsubsection{\texorpdfstring{TestSuite}{TestSuite}}
+{\footnotesize\ttfamily friend class \mbox{\hyperlink{classtesting_1_1TestSuite}{Test\+Suite}}\hspace{0.3cm}{\ttfamily [friend]}}
+
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classtesting_1_1TestInfo_a6bf2422602b877c73f6eb169a63cfea8}\label{classtesting_1_1TestInfo_a6bf2422602b877c73f6eb169a63cfea8}} 
+\index{testing::TestInfo@{testing::TestInfo}!factory\_@{factory\_}}
+\index{factory\_@{factory\_}!testing::TestInfo@{testing::TestInfo}}
+\doxysubsubsection{\texorpdfstring{factory\_}{factory\_}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classtesting_1_1internal_1_1TestFactoryBase}{internal\+::\+Test\+Factory\+Base}}$\ast$ const testing\+::\+Test\+Info\+::factory\+\_\+\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classtesting_1_1TestInfo_ad3284b7b9ebe61cc31440694091450ae}\label{classtesting_1_1TestInfo_ad3284b7b9ebe61cc31440694091450ae}} 
+\index{testing::TestInfo@{testing::TestInfo}!fixture\_class\_id\_@{fixture\_class\_id\_}}
+\index{fixture\_class\_id\_@{fixture\_class\_id\_}!testing::TestInfo@{testing::TestInfo}}
+\doxysubsubsection{\texorpdfstring{fixture\_class\_id\_}{fixture\_class\_id\_}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{namespacetesting_1_1internal_ab1114197d3c657d8b7f8e0c5caa12d00}{internal\+::\+Type\+Id}} testing\+::\+Test\+Info\+::fixture\+\_\+class\+\_\+id\+\_\+\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classtesting_1_1TestInfo_af3765fc4f811296e0699b0a26430a7c7}\label{classtesting_1_1TestInfo_af3765fc4f811296e0699b0a26430a7c7}} 
+\index{testing::TestInfo@{testing::TestInfo}!is\_disabled\_@{is\_disabled\_}}
+\index{is\_disabled\_@{is\_disabled\_}!testing::TestInfo@{testing::TestInfo}}
+\doxysubsubsection{\texorpdfstring{is\_disabled\_}{is\_disabled\_}}
+{\footnotesize\ttfamily bool testing\+::\+Test\+Info\+::is\+\_\+disabled\+\_\+\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classtesting_1_1TestInfo_a7db5fe84e625c2d5b60544e15fbb75a3}\label{classtesting_1_1TestInfo_a7db5fe84e625c2d5b60544e15fbb75a3}} 
+\index{testing::TestInfo@{testing::TestInfo}!is\_in\_another\_shard\_@{is\_in\_another\_shard\_}}
+\index{is\_in\_another\_shard\_@{is\_in\_another\_shard\_}!testing::TestInfo@{testing::TestInfo}}
+\doxysubsubsection{\texorpdfstring{is\_in\_another\_shard\_}{is\_in\_another\_shard\_}}
+{\footnotesize\ttfamily bool testing\+::\+Test\+Info\+::is\+\_\+in\+\_\+another\+\_\+shard\+\_\+\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classtesting_1_1TestInfo_a749494420174e6cf1949c7b411e8df6f}\label{classtesting_1_1TestInfo_a749494420174e6cf1949c7b411e8df6f}} 
+\index{testing::TestInfo@{testing::TestInfo}!location\_@{location\_}}
+\index{location\_@{location\_}!testing::TestInfo@{testing::TestInfo}}
+\doxysubsubsection{\texorpdfstring{location\_}{location\_}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structtesting_1_1internal_1_1CodeLocation}{internal\+::\+Code\+Location}} testing\+::\+Test\+Info\+::location\+\_\+\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classtesting_1_1TestInfo_a397686f82b6dd68a209ab7b50eeb4932}\label{classtesting_1_1TestInfo_a397686f82b6dd68a209ab7b50eeb4932}} 
+\index{testing::TestInfo@{testing::TestInfo}!matches\_filter\_@{matches\_filter\_}}
+\index{matches\_filter\_@{matches\_filter\_}!testing::TestInfo@{testing::TestInfo}}
+\doxysubsubsection{\texorpdfstring{matches\_filter\_}{matches\_filter\_}}
+{\footnotesize\ttfamily bool testing\+::\+Test\+Info\+::matches\+\_\+filter\+\_\+\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classtesting_1_1TestInfo_a6bed52b7c3d66c8c5eac5fa2aaadba55}\label{classtesting_1_1TestInfo_a6bed52b7c3d66c8c5eac5fa2aaadba55}} 
+\index{testing::TestInfo@{testing::TestInfo}!name\_@{name\_}}
+\index{name\_@{name\_}!testing::TestInfo@{testing::TestInfo}}
+\doxysubsubsection{\texorpdfstring{name\_}{name\_}}
+{\footnotesize\ttfamily const std\+::string testing\+::\+Test\+Info\+::name\+\_\+\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classtesting_1_1TestInfo_a108fd469897a8d4e5c4361947a5ed785}\label{classtesting_1_1TestInfo_a108fd469897a8d4e5c4361947a5ed785}} 
+\index{testing::TestInfo@{testing::TestInfo}!result\_@{result\_}}
+\index{result\_@{result\_}!testing::TestInfo@{testing::TestInfo}}
+\doxysubsubsection{\texorpdfstring{result\_}{result\_}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classtesting_1_1TestResult}{Test\+Result}} testing\+::\+Test\+Info\+::result\+\_\+\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classtesting_1_1TestInfo_a89c3d8fb8b565532c34d3123240fd5cf}\label{classtesting_1_1TestInfo_a89c3d8fb8b565532c34d3123240fd5cf}} 
+\index{testing::TestInfo@{testing::TestInfo}!should\_run\_@{should\_run\_}}
+\index{should\_run\_@{should\_run\_}!testing::TestInfo@{testing::TestInfo}}
+\doxysubsubsection{\texorpdfstring{should\_run\_}{should\_run\_}}
+{\footnotesize\ttfamily bool testing\+::\+Test\+Info\+::should\+\_\+run\+\_\+\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classtesting_1_1TestInfo_ac5beda04eb320588955c8954dc6c2eb0}\label{classtesting_1_1TestInfo_ac5beda04eb320588955c8954dc6c2eb0}} 
+\index{testing::TestInfo@{testing::TestInfo}!test\_suite\_name\_@{test\_suite\_name\_}}
+\index{test\_suite\_name\_@{test\_suite\_name\_}!testing::TestInfo@{testing::TestInfo}}
+\doxysubsubsection{\texorpdfstring{test\_suite\_name\_}{test\_suite\_name\_}}
+{\footnotesize\ttfamily const std\+::string testing\+::\+Test\+Info\+::test\+\_\+suite\+\_\+name\+\_\+\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classtesting_1_1TestInfo_a6c6d79e6238f2af5093e2c419480b433}\label{classtesting_1_1TestInfo_a6c6d79e6238f2af5093e2c419480b433}} 
+\index{testing::TestInfo@{testing::TestInfo}!type\_param\_@{type\_param\_}}
+\index{type\_param\_@{type\_param\_}!testing::TestInfo@{testing::TestInfo}}
+\doxysubsubsection{\texorpdfstring{type\_param\_}{type\_param\_}}
+{\footnotesize\ttfamily const std\+::unique\+\_\+ptr$<$const \+::std\+::string$>$ testing\+::\+Test\+Info\+::type\+\_\+param\+\_\+\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classtesting_1_1TestInfo_adf2e7579cf713f7b2df1d542ca2ab9ff}\label{classtesting_1_1TestInfo_adf2e7579cf713f7b2df1d542ca2ab9ff}} 
+\index{testing::TestInfo@{testing::TestInfo}!value\_param\_@{value\_param\_}}
+\index{value\_param\_@{value\_param\_}!testing::TestInfo@{testing::TestInfo}}
+\doxysubsubsection{\texorpdfstring{value\_param\_}{value\_param\_}}
+{\footnotesize\ttfamily const std\+::unique\+\_\+ptr$<$const \+::std\+::string$>$ testing\+::\+Test\+Info\+::value\+\_\+param\+\_\+\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\+\_\+deps/googletest-\/src/googletest/include/gtest/\mbox{\hyperlink{gtest_8h}{gtest.\+h}}\end{DoxyCompactItemize}

@@ -37,7 +37,7 @@ Structure:
 		\item<1-> Protection of master branch
 		\item<2-> Deployment of CI/CD pipeline for \textit{all} branches 
 	\end{itemize}
-	bla
+
 \end{frame}
 
 \begin{frame}
@@ -92,8 +92,28 @@ struct Body {
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}
+\begin{frame}[fragile]
 	\frametitle{Performance optimization}
+	\large
+	Force calculation is the only part relevant to performance
+	\begin{lstlisting}[language=C++]
+    void calculateFLennardJones() {
+	//set all current forces on all particles to 0
+	particleContainer.forAllParticles([](Particle &p) {
+		p.setOldF(p.getF());
+		p.setF({0., 0., 0.});
+	});
+	
+	particleContainer.forAllPairs([](Particle &p1, Particle &p2){
+		calculate force 
+		
+		p1.add_to_F(force);
+		p2.add_to_F(-force);
+	});
+}
+
+	\end{lstlisting}
+
 \end{frame}
 
 \begin{frame}
@@ -121,7 +141,7 @@ struct Body {
 	\end{itemize}
 
 	\Large
-	Other Roadblocker:
+	Other Roadblocker
 	\large
 	\begin{itemize}
 		\item<1->  Missing overview over the already existing functionality and helper functions

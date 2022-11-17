@@ -2,6 +2,7 @@
 #include "Particle.h"
 #include "io/Logging.h"
 
+#include <iostream>
 #include <vector>
 #include <thread>
 #include <Eigen>
@@ -44,6 +45,9 @@ void ParticleContainer::forAllPairs(void (function)(Particle &p1, Particle &p2))
 
 void ParticleContainer::forceInIndexSpan(size_t start, size_t end, std::vector<Eigen::Vector3d>& acc, 
             Eigen::Vector3d (function)(Particle &p1, Particle &p2), std::vector<Particle> & particles){
+
+    //std::cout<<"start: " << start << " end: " << end << '\n';
+    //std::cout << "particles size: " << particles.size() << '\n';
     for (u_int32_t i = start; i < end; i++) {
         for (u_int32_t j = i + 1; j < particles.size(); j++) {
             Particle &p1 = particles[i];
@@ -56,12 +60,12 @@ void ParticleContainer::forceInIndexSpan(size_t start, size_t end, std::vector<E
 }
 
 void ParticleContainer::addUpForces(Eigen::Vector3d (function)(Particle &p1, Particle &p2)){
+    //std::cout<<"Started addUpForces\n";
     int number_of_threads = std::thread::hardware_concurrency();
     loggers::general->debug("Creating {} threads to add up Forces", number_of_threads);
     std::vector<Eigen::Vector3d> force_acc(particles.size(), {0.,0.,0.});
-    std::vector<std::vector<Eigen::Vector3d>> force_accs;
+    std::vector<std::vector<Eigen::Vector3d>> force_accs(number_of_threads, force_acc);
     std::vector<std::thread> threads;
-
     //define ranges that are to be distributed;
     std::vector<size_t> splits;
     for(int i = 0; i < number_of_threads; i++){splits.emplace_back(i* particles.size() / number_of_threads);};
@@ -69,7 +73,7 @@ void ParticleContainer::addUpForces(Eigen::Vector3d (function)(Particle &p1, Par
 
     for(int i = 0; i < number_of_threads; i++){
         threads.emplace_back(std::thread(forceInIndexSpan ,splits[i], splits[i+1], std::ref(force_accs[i]), std::ref(function), std::ref(particles)));};
-
+    //std::cout<<"I'm here\n";
     for(std::thread & t : threads){
         if (t.joinable())
             t.join();

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2022.4.29)  16 NOV 2022 14:48
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2022.11.16)  17 NOV 2022 16:50
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1811,7 +1811,7 @@ n input line 117.
 File: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf Graphic file (type pdf)
 <use ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf>
 Package pdftex.def Info: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf  used o
-n input line 130.
+n input line 126.
 (pdftex.def)             Requested size: 47.80042pt x 25.17415pt.
  [15
 
@@ -1819,7 +1819,7 @@ n input line 130.
 File: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf Graphic file (type pdf)
 <use ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf>
 Package pdftex.def Info: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf  used o
-n input line 130.
+n input line 139.
 (pdftex.def)             Requested size: 47.80042pt x 25.17415pt.
  [16
 
@@ -1827,7 +1827,7 @@ n input line 130.
 File: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf Graphic file (type pdf)
 <use ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf>
 Package pdftex.def Info: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf  used o
-n input line 130.
+n input line 139.
 (pdftex.def)             Requested size: 47.80042pt x 25.17415pt.
  [17
 
@@ -1835,75 +1835,25 @@ n input line 130.
 File: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf Graphic file (type pdf)
 <use ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf>
 Package pdftex.def Info: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf  used o
-n input line 150.
+n input line 139.
 (pdftex.def)             Requested size: 47.80042pt x 25.17415pt.
  [18
 
 ]
-
-! Package media9 Error: Line 63: File `StrobeMediaPlayback.swf' not found.
-
-For immediate help type H <return>.
- ...                                              
-                                                  
-l.63 }
-      
-
-Make sure file `StrobeMediaPlayback.swf' exists and is readable!
-
-
-! Undefined control sequence.
-<argument> \l_mix_file_tl 
-                          
-l.63 }
-      
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> \l_mix_file_tl 
-                          
-l.63 }
-      
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-<<>>
-! Undefined control sequence.
-<argument> \l_mix_file_tl 
-                          
-l.63 }
-      
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<argument> \l_mix_file_tl 
-                          
-l.63 }
-      
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-<<standard-benchmark.mp4>>
 File: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf Graphic file (type pdf)
 <use ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf>
 Package pdftex.def Info: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf  used o
-n input line 63.
+n input line 160.
 (pdftex.def)             Requested size: 47.80042pt x 25.17415pt.
- [7
+ [19
+
+]
+File: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf Graphic file (type pdf)
+<use ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf>
+Package pdftex.def Info: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf  used o
+n input line 160.
+(pdftex.def)             Requested size: 47.80042pt x 25.17415pt.
+ [20
 
 ])
 \tf@nav=\write6
@@ -1922,52 +1872,23 @@ LaTeX Font Warning: Size substitutions with differences
 
  ) 
 Here is how much of TeX's memory you used:
-<<<<<<< HEAD
-<<<<<<< HEAD
- 44551 strings out of 480194
- 1038837 string characters out of 5893741
- 1611874 words of memory out of 5000000
- 61596 multiletter control sequences out of 15000+600000
- 511328 words of font info for 78 fonts, out of 8000000 for 9000
+ 44592 strings out of 480194
+ 1038314 string characters out of 5893741
+ 1618707 words of memory out of 5000000
+ 61603 multiletter control sequences out of 15000+600000
+ 518541 words of font info for 84 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 104i,16n,110p,876b,1327s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 104i,16n,110p,876b,1458s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc} </home/johnny/.te
 xlive2021/texmf-var/fonts/pk/ljfour/jknappen/ec/ectt1200.600pk></usr/share/texl
 ive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/te
 xmf-dist/fonts/type1/urw/helvetic/uhvb8a.pfb></usr/share/texlive/texmf-dist/fon
-ts/type1/urw/helvetic/uhvr8a.pfb>
-Output written on Assignment2_Presentation.pdf (7 pages, 9354950 bytes).
+ts/type1/urw/helvetic/uhvr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw
+/helvetic/uhvro8a.pfb>
+Output written on Assignment2_Presentation.pdf (20 pages, 542618 bytes).
 PDF statistics:
- 256 PDF objects out of 1000 (max. 8388607)
- 174 compressed objects within 2 object streams
- 17 named destinations out of 1000 (max. 500000)
- 131 words of extra memory for PDF output out of 10000 (max. 10000000)
-=======
- 44706 strings out of 478287
- 1042549 string characters out of 5849289
- 1618229 words of memory out of 5000000
- 61952 multiletter control sequences out of 15000+600000
- 515498 words of font info for 81 fonts, out of 8000000 for 9000
-=======
- 44774 strings out of 478287
- 1043544 string characters out of 5849289
- 1626271 words of memory out of 5000000
- 62013 multiletter control sequences out of 15000+600000
- 518541 words of font info for 84 fonts, out of 8000000 for 9000
->>>>>>> 708be62b1c99a3a74630e149c84703013bf19715
- 1141 hyphenation exceptions out of 8191
- 133i,16n,125p,876b,1460s stack positions out of 5000i,500n,10000p,200000b,80000s
-{/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}{/usr/share/texmf/
-fonts/enc/dvips/cm-super/cm-super-t1.enc}</usr/share/texlive/texmf-dist/fonts/t
-ype1/public/amsfonts/cm/cmsy10.pfb></usr/share/texmf/fonts/type1/public/cm-supe
-r/sftt1200.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/helvetic/uhvb8a.p
-fb></usr/share/texlive/texmf-dist/fonts/type1/urw/helvetic/uhvr8a.pfb></usr/sha
-re/texlive/texmf-dist/fonts/type1/urw/helvetic/uhvro8a.pfb>
-Output written on Assignment2_Presentation.pdf (18 pages, 560261 bytes).
-PDF statistics:
- 427 PDF objects out of 1000 (max. 8388607)
- 365 compressed objects within 4 object streams
- 38 named destinations out of 1000 (max. 500000)
+ 498 PDF objects out of 1000 (max. 8388607)
+ 400 compressed objects within 4 object streams
+ 42 named destinations out of 1000 (max. 500000)
  58 words of extra memory for PDF output out of 10000 (max. 10000000)
->>>>>>> d85249fefbfe73048ccc151a861266fbf2340350
 

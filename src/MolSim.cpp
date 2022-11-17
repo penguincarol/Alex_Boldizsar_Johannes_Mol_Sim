@@ -114,7 +114,7 @@ int main(int argc, char *argsv[]) {
             struct Body b1 { Shape::cuboid, { 0.1, 0, 0}, {10, 10, 10}, 0.1, 0.1, {0.001, 0, 0} };
             std::list<Particle> buffer_tmp;
             std::vector<Particle> buffer;
-            for(int bSize { 10 }; bSize <= maxBodySize; bSize *= 10) {
+            for(int bSize { 1 }; bSize <= maxBodySize; bSize *= 2) {
                 b0.dimensions[2] = bSize;
                 b1.dimensions[2] = bSize;
 

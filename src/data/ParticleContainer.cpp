@@ -8,14 +8,16 @@ ParticleContainer::ParticleContainer() {
 
 ParticleContainer::ParticleContainer(const std::vector<Particle>& buffer) {
     count = buffer.size();
-    force.resize(count*3);
-    oldForce.resize(count*3);
-    x.resize(count*3);
-    v.resize(count*3);
-    m.resize(count);
-    type.resize(count);
+    unsigned long delta = count % 4;
+    realSize = count + 4 - delta; //align vectors to multiple of 4 to allow for avx access
+    force.resize(realSize*3);
+    oldForce.resize(realSize*3);
+    x.resize(realSize*3);
+    v.resize(realSize*3);
+    m.resize(realSize);
+    type.resize(realSize);
 
-    for (unsigned long index {0}; index < count; index++) {
+    for (unsigned long index {0}; index < realSize; index++) {
         auto& f = buffer[index].getF();
         force[index*3 + 0] = f[0];
         force[index*3 + 1] = f[1];
@@ -111,6 +113,7 @@ void ParticleContainer::forAllParticles(std::function<void(Particle&)> function)
 
 void ParticleContainer::clear(){
     count = 0;
+    realSize = 0;
     force.clear();
     oldForce.clear();
     x.clear();

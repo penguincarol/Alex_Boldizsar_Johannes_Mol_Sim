@@ -5,6 +5,8 @@ TUM PSE Molecular Dynamics project by Jan Hampe, Alex Hocks, and Johannes Riemen
 
 <h1> Build </h1>
 
+Only build with gcc and g++!
+
 <h3> Required tool installation </h3>
 
 Install xerces-c: <code> sudo apt install libxerces-c-dev</code>  

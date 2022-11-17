@@ -23,6 +23,7 @@ private:
     std::vector<double> m;
     std::vector<int> type;
     unsigned long count;
+    unsigned long realSize; //AVX support
 
     /**
      * Stores a particle from @param p into the internal data at @param index

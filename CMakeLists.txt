@@ -51,6 +51,7 @@ target_compile_options(MolSim
             $<$<CXX_COMPILER_ID:GNU>:-Wall>
             # disable some spam warnings for icpc...
             $<$<CXX_COMPILER_ID:Intel>:-w3 -wd383,981,1418,1572,2259>
+            -march=native
         
 )
 list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake/modules)

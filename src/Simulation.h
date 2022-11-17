@@ -36,6 +36,11 @@ namespace sim {
     void calculateFLennardJones();
 
     /**
+     * calculate the force for all particles using the Lennard-Jones potential, vector, thread
+     * */
+    void calculateFLennardJonesVector();
+
+    /**
      * calculate the force for all particles using the Lennard-Jones potential, fast
      * */
     void calculateFLennardJonesFast();
@@ -77,6 +82,8 @@ namespace sim {
             sim::sigma = sig;
             sim::outputFolder = of;
             sim::outputBaseName = on;
+
+            loggers::simulation->debug("Initialized Simulation with parameters: st:{} et:{} dt:{} eps:{} sig:{} of:{} o:{}", st, et, dt, eps, sig, of, on);
         }
 
         /**
@@ -116,8 +123,8 @@ namespace sim {
         void runBenchmark(const int simIteration, const std::string &inputDataSource,
                           const std::vector<Particle> &startingData) {
             std::chrono::high_resolution_clock::duration duration{std::chrono::high_resolution_clock::duration::zero()};
-            std::chrono::high_resolution_clock::duration minTime{std::chrono::high_resolution_clock::duration::zero()};
-            std::chrono::high_resolution_clock::duration maxTime{std::chrono::high_resolution_clock::duration::zero()};
+            std::chrono::high_resolution_clock::duration minTime{std::chrono::high_resolution_clock::duration::max()};
+            std::chrono::high_resolution_clock::duration maxTime{std::chrono::high_resolution_clock::duration::min()};
 
             for (int pass{0}; pass < simIteration; pass++) {
                 //reset data

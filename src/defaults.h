@@ -12,4 +12,4 @@ constexpr auto default_output_folder{"./output/"};
 constexpr double default_epsilon{1};
 constexpr double default_sigma{1};
 constexpr int default_bench_iterations{1000};
-constexpr int default_bench_maxBody{10000};
+constexpr int default_bench_maxBody{2};

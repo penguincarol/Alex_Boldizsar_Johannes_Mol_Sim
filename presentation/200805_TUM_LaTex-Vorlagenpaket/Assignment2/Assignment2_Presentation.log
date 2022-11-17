@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2022.11.16)  17 NOV 2022 16:50
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2022.11.16)  17 NOV 2022 19:39
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1694,74 +1694,23 @@ n input line 31.
  [5
 
 ]
-LaTeX Font Info:    Font shape `T1/phv/m/it' in size <14.93> not available
-(Font)              Font shape `T1/phv/m/sl' tried instead on input line 41.
-LaTeX Font Info:    Font shape `T1/phv/m/sl' will be
-(Font)              scaled to size 14.18344pt on input line 41.
-File: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf Graphic file (type pdf)
-<use ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf>
-Package pdftex.def Info: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf  used o
-n input line 41.
-(pdftex.def)             Requested size: 47.80042pt x 25.17415pt.
- [6
-
-]
-File: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf Graphic file (type pdf)
-<use ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf>
-Package pdftex.def Info: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf  used o
-n input line 41.
-(pdftex.def)             Requested size: 47.80042pt x 25.17415pt.
- [7
-
-]
-File: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf Graphic file (type pdf)
-<use ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf>
-Package pdftex.def Info: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf  used o
-n input line 59.
-(pdftex.def)             Requested size: 47.80042pt x 25.17415pt.
- [8
-
-]
-File: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf Graphic file (type pdf)
-<use ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf>
-Package pdftex.def Info: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf  used o
-n input line 59.
-(pdftex.def)             Requested size: 47.80042pt x 25.17415pt.
- [9
-
-]
-File: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf Graphic file (type pdf)
-<use ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf>
-Package pdftex.def Info: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf  used o
-n input line 59.
-(pdftex.def)             Requested size: 47.80042pt x 25.17415pt.
- [10
-
-]
-File: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf Graphic file (type pdf)
-<use ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf>
-Package pdftex.def Info: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf  used o
-n input line 59.
-(pdftex.def)             Requested size: 47.80042pt x 25.17415pt.
- [11
-
-]
-<IOWrapper.pdf, id=245, 833.1125pt x 363.3575pt>
+<IOWrapper.pdf, id=134, 993.7125pt x 293.095pt>
 File: IOWrapper.pdf Graphic file (type pdf)
 <use IOWrapper.pdf>
-Package pdftex.def Info: IOWrapper.pdf  used on input line 74.
-(pdftex.def)             Requested size: 470.43571pt x 205.18092pt.
+Package pdftex.def Info: IOWrapper.pdf  used on input line 46.
+(pdftex.def)             Requested size: 470.43571pt x 138.75644pt.
 File: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf Graphic file (type pdf)
 <use ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf>
 Package pdftex.def Info: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf  used o
-n input line 74.
+n input line 46.
 (pdftex.def)             Requested size: 47.80042pt x 25.17415pt.
- [12
+ [6
 
  <./IOWrapper.pdf>]
 \openout4 = `Assignment2_Presentation.vrb'.
 
- (./Assignment2_Presentation.vrb
+
+(./Assignment2_Presentation.vrb
 (/usr/share/texlive/texmf-dist/tex/latex/listings/lstlang1.sty
 File: lstlang1.sty 2020/03/24 1.8d listings language file
 )
@@ -1777,9 +1726,73 @@ LaTeX Font Info:    Font shape `T1/phv/b/n' will be
 File: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf Graphic file (type pdf)
 <use ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf>
 Package pdftex.def Info: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf  used o
-n input line 93.
+n input line 65.
+(pdftex.def)             Requested size: 47.80042pt x 25.17415pt.
+ [7
+
+]
+LaTeX Font Info:    Font shape `T1/phv/m/it' in size <14.93> not available
+(Font)              Font shape `T1/phv/m/sl' tried instead on input line 75.
+LaTeX Font Info:    Font shape `T1/phv/m/sl' will be
+(Font)              scaled to size 14.18344pt on input line 75.
+File: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf Graphic file (type pdf)
+<use ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf>
+Package pdftex.def Info: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf  used o
+n input line 75.
+(pdftex.def)             Requested size: 47.80042pt x 25.17415pt.
+ [8
+
+]
+File: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf Graphic file (type pdf)
+<use ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf>
+Package pdftex.def Info: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf  used o
+n input line 75.
+(pdftex.def)             Requested size: 47.80042pt x 25.17415pt.
+
+[9
+
+]
+File: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf Graphic file (type pdf)
+<use ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf>
+Package pdftex.def Info: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf  used o
+n input line 94.
+(pdftex.def)             Requested size: 47.80042pt x 25.17415pt.
+ [10
+
+]
+File: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf Graphic file (type pdf)
+<use ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf>
+Package pdftex.def Info: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf  used o
+n input line 94.
+(pdftex.def)             Requested size: 47.80042pt x 25.17415pt.
+ [11
+
+]
+File: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf Graphic file (type pdf)
+<use ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf>
+Package pdftex.def Info: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf  used o
+n input line 94.
+(pdftex.def)             Requested size: 47.80042pt x 25.17415pt.
+ [12
+
+]
+File: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf Graphic file (type pdf)
+<use ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf>
+Package pdftex.def Info: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf  used o
+n input line 94.
 (pdftex.def)             Requested size: 47.80042pt x 25.17415pt.
  [13
+
+]
+\openout4 = `Assignment2_Presentation.vrb'.
+
+ (./Assignment2_Presentation.vrb)
+File: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf Graphic file (type pdf)
+<use ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf>
+Package pdftex.def Info: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf  used o
+n input line 111.
+(pdftex.def)             Requested size: 47.80042pt x 25.17415pt.
+ [14
 
 ]
 \openout4 = `Assignment2_Presentation.vrb'.
@@ -1797,29 +1810,63 @@ File: ts1phv.fd 2020/03/25 scalable font definitions for TS1/phv.
 LaTeX Font Info:    Font shape `TS1/phv/m/n' will be
 (Font)              scaled to size 14.18344pt on input line 16.
 )
-Overfull \vbox (7.29427pt too high) detected at line 117
+Overfull \vbox (7.29427pt too high) detected at line 135
  []
 
 File: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf Graphic file (type pdf)
 <use ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf>
 Package pdftex.def Info: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf  used o
-n input line 117.
+n input line 135.
 (pdftex.def)             Requested size: 47.80042pt x 25.17415pt.
-[14
+[15
 
 ]
+LaTeX Font Info:    Calculating math sizes for size <12.44> on input line 161.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <12.44> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 161.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <9.20566> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 161.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <7.46407> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 161.
+LaTeX Font Info:    Font shape `T1/phv/m/n' will be
+(Font)              scaled to size 8.74535pt on input line 161.
+LaTeX Font Info:    Font shape `T1/phv/m/n' will be
+(Font)              scaled to size 7.09084pt on input line 161.
+LaTeX Font Info:    Font shape `T1/phv/m/it' in size <12.44> not available
+(Font)              Font shape `T1/phv/m/sl' tried instead on input line 161.
+LaTeX Font Info:    Font shape `T1/phv/m/sl' will be
+(Font)              scaled to size 11.81796pt on input line 161.
+LaTeX Font Info:    Font shape `T1/phv/m/it' in size <9.20566> not available
+(Font)              Font shape `T1/phv/m/sl' tried instead on input line 161.
+LaTeX Font Info:    Font shape `T1/phv/m/sl' will be
+(Font)              scaled to size 8.74535pt on input line 161.
+LaTeX Font Info:    Font shape `T1/phv/m/it' in size <7.46407> not available
+(Font)              Font shape `T1/phv/m/sl' tried instead on input line 161.
+LaTeX Font Info:    Font shape `T1/phv/m/sl' will be
+(Font)              scaled to size 7.09084pt on input line 161.
+LaTeX Font Info:    Calculating math sizes for size <14.93> on input line 161.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <14.93> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 161.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <11.04826> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 161.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <8.95808> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 161.
+LaTeX Font Info:    Font shape `T1/phv/m/n' will be
+(Font)              scaled to size 10.4958pt on input line 161.
+LaTeX Font Info:    Font shape `T1/phv/m/n' will be
+(Font)              scaled to size 8.51015pt on input line 161.
+LaTeX Font Info:    Font shape `T1/phv/m/it' in size <11.04826> not available
+(Font)              Font shape `T1/phv/m/sl' tried instead on input line 161.
+LaTeX Font Info:    Font shape `T1/phv/m/sl' will be
+(Font)              scaled to size 10.4958pt on input line 161.
+LaTeX Font Info:    Font shape `T1/phv/m/it' in size <8.95808> not available
+(Font)              Font shape `T1/phv/m/sl' tried instead on input line 161.
+LaTeX Font Info:    Font shape `T1/phv/m/sl' will be
+(Font)              scaled to size 8.51015pt on input line 161.
 File: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf Graphic file (type pdf)
 <use ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf>
 Package pdftex.def Info: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf  used o
-n input line 126.
-(pdftex.def)             Requested size: 47.80042pt x 25.17415pt.
- [15
-
-]
-File: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf Graphic file (type pdf)
-<use ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf>
-Package pdftex.def Info: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf  used o
-n input line 139.
+n input line 161.
 (pdftex.def)             Requested size: 47.80042pt x 25.17415pt.
  [16
 
@@ -1827,15 +1874,38 @@ n input line 139.
 File: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf Graphic file (type pdf)
 <use ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf>
 Package pdftex.def Info: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf  used o
-n input line 139.
+n input line 206.
 (pdftex.def)             Requested size: 47.80042pt x 25.17415pt.
  [17
 
 ]
+LaTeX Font Info:    Calculating math sizes for size <17.92> on input line 220.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <17.92> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 220.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <13.2609> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 220.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10.7521> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 220.
+LaTeX Font Info:    Font shape `T1/phv/m/n' will be
+(Font)              scaled to size 12.59781pt on input line 220.
+LaTeX Font Info:    Font shape `T1/phv/m/n' will be
+(Font)              scaled to size 10.21446pt on input line 220.
+LaTeX Font Info:    Font shape `T1/phv/m/it' in size <17.92> not available
+(Font)              Font shape `T1/phv/m/sl' tried instead on input line 220.
+LaTeX Font Info:    Font shape `T1/phv/m/sl' will be
+(Font)              scaled to size 17.02394pt on input line 220.
+LaTeX Font Info:    Font shape `T1/phv/m/it' in size <13.2609> not available
+(Font)              Font shape `T1/phv/m/sl' tried instead on input line 220.
+LaTeX Font Info:    Font shape `T1/phv/m/sl' will be
+(Font)              scaled to size 12.59781pt on input line 220.
+LaTeX Font Info:    Font shape `T1/phv/m/it' in size <10.7521> not available
+(Font)              Font shape `T1/phv/m/sl' tried instead on input line 220.
+LaTeX Font Info:    Font shape `T1/phv/m/sl' will be
+(Font)              scaled to size 10.21446pt on input line 220.
 File: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf Graphic file (type pdf)
 <use ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf>
 Package pdftex.def Info: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf  used o
-n input line 139.
+n input line 220.
 (pdftex.def)             Requested size: 47.80042pt x 25.17415pt.
  [18
 
@@ -1843,7 +1913,7 @@ n input line 139.
 File: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf Graphic file (type pdf)
 <use ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf>
 Package pdftex.def Info: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf  used o
-n input line 160.
+n input line 220.
 (pdftex.def)             Requested size: 47.80042pt x 25.17415pt.
  [19
 
@@ -1851,9 +1921,65 @@ n input line 160.
 File: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf Graphic file (type pdf)
 <use ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf>
 Package pdftex.def Info: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf  used o
-n input line 160.
+n input line 220.
 (pdftex.def)             Requested size: 47.80042pt x 25.17415pt.
  [20
+
+]
+File: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf Graphic file (type pdf)
+<use ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf>
+Package pdftex.def Info: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf  used o
+n input line 226.
+(pdftex.def)             Requested size: 47.80042pt x 25.17415pt.
+ [21
+
+]
+File: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf Graphic file (type pdf)
+<use ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf>
+Package pdftex.def Info: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf  used o
+n input line 239.
+(pdftex.def)             Requested size: 47.80042pt x 25.17415pt.
+ [22
+
+]
+File: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf Graphic file (type pdf)
+<use ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf>
+Package pdftex.def Info: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf  used o
+n input line 239.
+(pdftex.def)             Requested size: 47.80042pt x 25.17415pt.
+ [23
+
+]
+File: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf Graphic file (type pdf)
+<use ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf>
+Package pdftex.def Info: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf  used o
+n input line 239.
+(pdftex.def)             Requested size: 47.80042pt x 25.17415pt.
+ [24
+
+]
+File: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf Graphic file (type pdf)
+<use ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf>
+Package pdftex.def Info: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf  used o
+n input line 261.
+(pdftex.def)             Requested size: 47.80042pt x 25.17415pt.
+ [25
+
+]
+File: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf Graphic file (type pdf)
+<use ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf>
+Package pdftex.def Info: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf  used o
+n input line 261.
+(pdftex.def)             Requested size: 47.80042pt x 25.17415pt.
+ [26
+
+]
+File: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf Graphic file (type pdf)
+<use ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf>
+Package pdftex.def Info: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf  used o
+n input line 261.
+(pdftex.def)             Requested size: 47.80042pt x 25.17415pt.
+ [27
 
 ])
 \tf@nav=\write6
@@ -1865,30 +1991,33 @@ n input line 160.
 \tf@snm=\write8
 \openout8 = `Assignment2_Presentation.snm'.
 
- (./Assignment2_Presentation.aux)
+
+(./Assignment2_Presentation.aux)
 
 LaTeX Font Warning: Size substitutions with differences
 (Font)              up to 0.44pt have occurred.
 
  ) 
 Here is how much of TeX's memory you used:
- 44592 strings out of 480194
- 1038314 string characters out of 5893741
- 1618707 words of memory out of 5000000
- 61603 multiletter control sequences out of 15000+600000
- 518541 words of font info for 84 fonts, out of 8000000 for 9000
+ 44853 strings out of 480194
+ 1043358 string characters out of 5893741
+ 1618755 words of memory out of 5000000
+ 61834 multiletter control sequences out of 15000+600000
+ 575007 words of font info for 181 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 104i,16n,110p,876b,1458s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 104i,16n,110p,876b,1462s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc} </home/johnny/.te
 xlive2021/texmf-var/fonts/pk/ljfour/jknappen/ec/ectt1200.600pk></usr/share/texl
-ive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/te
-xmf-dist/fonts/type1/urw/helvetic/uhvb8a.pfb></usr/share/texlive/texmf-dist/fon
-ts/type1/urw/helvetic/uhvr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw
-/helvetic/uhvro8a.pfb>
-Output written on Assignment2_Presentation.pdf (20 pages, 542618 bytes).
+ive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/te
+xmf-dist/fonts/type1/public/amsfonts/cm/cmss12.pfb></usr/share/texlive/texmf-di
+st/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fon
+ts/type1/urw/helvetic/uhvb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw
+/helvetic/uhvr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/helvetic/uh
+vro8a.pfb>
+Output written on Assignment2_Presentation.pdf (27 pages, 572436 bytes).
 PDF statistics:
- 498 PDF objects out of 1000 (max. 8388607)
- 400 compressed objects within 4 object streams
- 42 named destinations out of 1000 (max. 500000)
+ 640 PDF objects out of 1000 (max. 8388607)
+ 529 compressed objects within 6 object streams
+ 56 named destinations out of 1000 (max. 500000)
  58 words of extra memory for PDF output out of 10000 (max. 10000000)
 

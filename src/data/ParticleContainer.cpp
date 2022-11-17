@@ -57,6 +57,29 @@ void ParticleContainer::forceInIndexSpan(size_t start, size_t end, std::vector<E
             acc[j] += -force;
         }
     }
+
+    for(u_int32_t i = (particles.size()-1)-start; i > (particles.size()-1)-end; i--){
+        for (u_int32_t j = i + 1; j < particles.size(); j++) {
+            Particle &p1 = particles[i];
+            Particle &p2 = particles[j];
+            Eigen::Vector3d force{function(p1, p2)};
+            acc[i] += force;
+            acc[j] += -force;
+        }
+    }
+
+        //if the amount of particles is odd and you are the very last thread you also need to do the "halfrow" that didn't get a 
+    //counterpart when turning the gaussian triangle into a rectangle
+    if(particles.size()%2 == 1 && end == (particles.size()-1)%2){
+         for (u_int32_t j = end+1; j < particles.size(); j++) {
+            Particle &p1 = particles[end];
+            Particle &p2 = particles[j];
+            Eigen::Vector3d force{function(p1, p2)};
+            acc[end] += force;
+            acc[j] += -force;
+        }
+    }
+
 }
 
 void ParticleContainer::addUpForces(Eigen::Vector3d (function)(Particle &p1, Particle &p2)){
@@ -68,8 +91,8 @@ void ParticleContainer::addUpForces(Eigen::Vector3d (function)(Particle &p1, Par
     std::vector<std::thread> threads;
     //define ranges that are to be distributed;
     std::vector<size_t> splits;
-    for(int i = 0; i < number_of_threads; i++){splits.emplace_back(i* particles.size() / number_of_threads);};
-    splits.emplace_back(particles.size());  //we need n+1 splitpoints to define n ranges in between that are to be distributed
+    for(int i = 0; i < number_of_threads; i++){splits.emplace_back(i* particles.size() / (2*number_of_threads));};
+    splits.emplace_back(particles.size()/2);  //we need n+1 splitpoints to define n ranges in between that are to be distributed
 
     for(int i = 0; i < number_of_threads; i++){
         threads.emplace_back(std::thread(forceInIndexSpan ,splits[i], splits[i+1], std::ref(force_accs[i]), std::ref(function), std::ref(particles)));};

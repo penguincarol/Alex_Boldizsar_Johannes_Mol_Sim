@@ -23,7 +23,7 @@ Structure:
 \begin{itemize}
 	\item<1-> Comments
 	\item<1-> Number of bodies
-	\item<2-> Bodies (with Shape, Dimensions and distance as optional)
+	\item<2-> Bodies (optional with Shape, Dimensions and Distance)
 	\item<3-> Comments
 	\item<4- > Definition of epsilon and sigma (optional)
 \end{itemize}
@@ -125,7 +125,8 @@ struct Body {
 		sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
 		sudo apt install -y gcc-11 g++-11
 		- name: Configure CMake
-		run: cmake -D CMAKE_C_COMPILER=gcc-11 -D CMAKE_CXX_COMPILER=g++-11 -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+		run: cmake -D CMAKE_C_COMPILER=gcc-11 -D CMAKE_CXX_COMPILER=g++-11 
+		-B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
 		- name: Build
 		working-directory: ${{github.workspace}}/build
 	\end{lstlisting}
@@ -149,6 +150,8 @@ struct Body {
 	\begin{itemize}
 		\item 6 different log-levels available
 		\item log-level can be chosen via command line input
+		\item use of log functions since we don't log in performance critical areas
+		\item no need to deactivate logging at compile time
 	\end{itemize}
 \end{frame}
 
@@ -203,19 +206,6 @@ struct Body {
 \end{frame}
 
 \begin{frame}
-	\frametitle{The OpenMP-approach}
-	
-	\begin{figure}
-		\centering
-		\includegraphics[width=0.53\linewidth]{alex_code}
-		\label{fig:alexcode}
-	\end{figure}
-	
-\end{frame}
-
-
-
-\begin{frame}
 	\frametitle{Performance optimization - "Gaussian multithreading"}
 		\vspace{1.5cm}
 		\begin{columns}
@@ -249,9 +239,9 @@ struct Body {
 			\vspace{-6.5cm}
 			\large
 			\begin{itemize}
-				\item Create "Gaussian rectangle"' as good as possible and distribute the resulting blocks
+				\item Create "Gaussian rectangle"' as good as possible and redistribute the resulting blocks
 				\item Threads use personal accumulators
-				\item Accumulators get added in the end
+				\item Accumulators get summed up in the end
 			\end{itemize}
 		\vspace{1.5cm}
 		\Large
@@ -261,11 +251,73 @@ struct Body {
 \end{frame}
 
 \begin{frame}
+	\frametitle{The OpenMP-approach}
+
+	\begin{columns}
+		\begin{column}{0.2\textwidth}
+			\Large
+	\hspace{2cm}
+	\begin{table}[width = 1.2\linewidth]
+		\begin{tabular}{l|llll}
+			& 0 & 1 & 2 & 3 \\
+			\hline
+			0 & \color{green}{0}  & \color{green}{1}  & \color{green}{2}  &  \color{green}{3}  \\
+			1 &	\color{green}{4}  & \color{green}{5}  &  \color{green}{6} &   \color{green}{7} \\
+			2 & \color{green}{8}  & \color{green}{9}  &   \color{red}{9} &   \color{red}{8}	\\
+			3 &	  &   &   &    \color{red}{4} \\
+		\end{tabular}
+	\end{table}
+
+		\end{column}
+	
+	\begin{column}{0.78\textwidth}
+		\vspace{-0.3cm}
+		\begin{figure}
+			\centering
+			\includegraphics[width=0.7\linewidth]{alex_code}
+			\label{fig:alexcode}
+		\end{figure}
+		
+	\end{column}
+	
+	\end{columns}
+
+
+\end{frame}
+
+\begin{frame}
+	\frametitle{The OpenMP-approach}
+	
+
+	
+\end{frame}
+
+\begin{frame}[fragile]
+	\frametitle{Benchmarks}
+	\Large
+	Specs:
+	\begin{lstlisting}
+		Ubunutu 20.04 LTS
+		i7-12700KF @5,0GHz
+		64GB RAM @ 3200MHz
+	\end{lstlisting}
+	
+	\Large
+	\begin{itemize}
+		\item Single-threaded: Iterations: 10 | AVG:17758 | MIN:17714 | MAX:17888
+		\item Multi-threaded: Iterations: 1000 | AVG:1361 | MIN:1315 | MAX:2237
+		
+	\end{itemize}
+	
+	
+\end{frame}
+
+\begin{frame}
 	\frametitle{Performance optimization - Refactoring of ParticleContainer and SIMD}
 	\large
 	\vspace{1cm}
 	\begin{itemize}
-	\item<1-> Utilization of seperate vectors for forces, velocities and positions instead of using one struct
+	\item<1-> Utilization of separate vectors for forces, velocities and positions instead of using one struct
 	\item<2-> Flattening of the two-dimensional Vectors: \\
 	std::vector<Eigen::Vector3d> $\rightarrow$ std::vector<double> \\
 	\item<3->[]\Large $\longrightarrow$ Perfect setup for SIMD-Instructions (no working version implemented yet)(with 32 byte alignment)
@@ -284,8 +336,9 @@ struct Body {
 	\item<4->  Get an overview over the already existing functionality and helper functions
 	\item<5->  Communicate on interfaces, project structure, etc.
 	\item<6-> Documentation and Code examples are your friend
-	\end{itemize}
+
 	\item<7-> Don't forget to update your documentation
+	\end{itemize}
 	
 \end{frame}
 

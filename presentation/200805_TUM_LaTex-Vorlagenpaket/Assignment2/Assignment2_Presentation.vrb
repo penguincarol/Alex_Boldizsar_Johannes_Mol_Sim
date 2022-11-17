@@ -1,21 +1,17 @@
-\frametitle{Performance optimization}
-	\large
-	Force calculation is the only part relevant to performance
-	\begin{lstlisting}[language=C++]
-    void calculateFLennardJones() {
-	//set all current forces on all particles to 0
-	particleContainer.forAllParticles([](Particle &p) {
-		p.setOldF(p.getF());
-		p.setF({0., 0., 0.});
-	});
-	
-	particleContainer.forAllPairs([](Particle &p1, Particle &p2){
-		calculate force
-		
-		p1.add_to_F(force);
-		p2.add_to_F(-force);
-	});
-}
-
+\frametitle{Benchmarks}
+	\Large
+	Specs:
+	\begin{lstlisting}
+		Ubunutu 20.04 LTS
+		i7-12700KF @5,0GHz
+		64GB RAM @ 3200MHz
 	\end{lstlisting}
-
+	
+	\Large
+	\begin{itemize}
+		\item Single-threaded: Iterations: 10 | AVG:17758 | MIN:17714 | MAX:17888
+		\item Multi-threaded: Iterations: 1000 | AVG:1361 | MIN:1315 | MAX:2237
+		
+	\end{itemize}
+	
+	

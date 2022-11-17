@@ -94,16 +94,58 @@ struct Body {
 \end{frame}
 
 \begin{frame}[fragile]
+	\frametitle{CI/CD}
+	\begin{lstlisting}
+		name: Build and Gtest
+		on:
+		push:
+		branches:
+		- '**'        # matches every branch
+		pull_request:
+		branches: ["master"]
+		env:
+		#Customize CMake build type here from [Debug;Release;RelWithDebInfo;MinSizeRel]
+		BUILD_TYPE: Release	
+	\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]
+	\frametitle{CI/CD}
+	
+	\begin{lstlisting}
+		jobs:
+		build_and_gtest:
+		runs-on: ubuntu-latest
+		steps:
+		- uses: actions/checkout@v3
+		- name: Install libxerces-c
+		run: sudo apt install libxerces-c-dev
+		- name: Set up GCC
+		run: |
+		sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
+		sudo apt install -y gcc-11 g++-11
+		- name: Configure CMake
+		run: cmake -D CMAKE_C_COMPILER=gcc-11 -D CMAKE_CXX_COMPILER=g++-11 -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+		- name: Build
+		working-directory: ${{github.workspace}}/build
+	\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]
 	\frametitle{Logging}
 	\large
 	format:
-	\hspace{-4cm}
 	\begin{lstlisting}
 		[time][level::context] message
 	\end{lstlisting}
-	\begin{lstlisting}
-		[19:27:28][info::simulation] starting simulation
-	\end{lstlisting}
+	
+	\begin{figure}
+		\centering
+		\includegraphics[width=0.7\linewidth]{logging}
+		\label{fig:logging}
+	\end{figure}
+	
+	
 	\begin{itemize}
 		\item 6 different log-levels available
 		\item log-level can be chosen via command line input
@@ -159,6 +201,19 @@ struct Body {
 		\end{column}
 	\end{columns}	
 \end{frame}
+
+\begin{frame}
+	\frametitle{The OpenMP-approach}
+	
+	\begin{figure}
+		\centering
+		\includegraphics[width=0.53\linewidth]{alex_code}
+		\label{fig:alexcode}
+	\end{figure}
+	
+\end{frame}
+
+
 
 \begin{frame}
 	\frametitle{Performance optimization - "Gaussian multithreading"}
@@ -220,43 +275,17 @@ struct Body {
 \end{frame}
 
 \begin{frame}
-	\frametitle{The OpenMP-approach}
-	
-	
-\end{frame}
-
-\begin{frame}
-	\frametitle{Roadblocks}
-	\Large
-	Spontaneously imploding Laptops and the lessons they teach us
+	\frametitle{Laptops sometimes do explode, and other lessons we had to learn}
 	\large
 	\begin{itemize}
-		\item<1-> Get yourself familiar with alternative options available to not completely disrupt your workflow
-		\item<2-> Create backups!
-		\item<3-> People are nice, ask for help!
+	\item<1-> Get yourself familiar with alternative options available to not completely disrupt your workflow
+	\item<2-> Create backups!
+	\item<3-> People are nice, ask for help
+	\item<4->  Get an overview over the already existing functionality and helper functions
+	\item<5->  Communicate on interfaces, project structure, etc.
+	\item<6-> Documentation and Code examples are your friend
 	\end{itemize}
-	
-\end{frame}
-
-\begin{frame}
-	\frametitle{Roadblocks}
-	\Large
-	Spontaneously imploding Laptops and the lessons they teach us
-	\large
-	\begin{itemize}
-		\item Get yourself familiar with alternative options available to not completely disrupt your workflow
-		\item Create backups!
-		\item People are nice, ask for help!
-	\end{itemize}
-
-	\Large
-	Other Roadblocks
-	\large
-	\begin{itemize}
-		\item<1->  Missing overview over the already existing functionality and helper functions
-		\item<2->  Missing communication on interfaces, project structure, etc.
-		\item<3-> Documentation and Code examples are your friend
-	\end{itemize}
+	\item<7-> Don't forget to update your documentation
 	
 \end{frame}
 

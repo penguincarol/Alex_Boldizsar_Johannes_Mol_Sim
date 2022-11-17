@@ -1,15 +1,21 @@
-\frametitle{Input parsing - Definition of Body}
-\vspace{0.7cm}
+\frametitle{Performance optimization}
+	\large
+	Force calculation is the only part relevant to performance
+	\begin{lstlisting}[language=C++]
+    void calculateFLennardJones() {
+	//set all current forces on all particles to 0
+	particleContainer.forAllParticles([](Particle &p) {
+		p.setOldF(p.getF());
+		p.setF({0., 0., 0.});
+	});
+	
+	particleContainer.forAllPairs([](Particle &p1, Particle &p2){
+		calculate force
+		
+		p1.add_to_F(force);
+		p2.add_to_F(-force);
+	});
+}
 
-\begin{lstlisting}[language=C++]
-enum Shape {cuboid, sphere};
+	\end{lstlisting}
 
-struct Body {
-	Shape shape;
-	Eigen::Vector3d fixpoint;
-	Eigen::Vector3d dimensions;
-	double distance;
-	double mass;
-	Eigen::Vector3d start_velocity;
-} ;
-\end{lstlisting}

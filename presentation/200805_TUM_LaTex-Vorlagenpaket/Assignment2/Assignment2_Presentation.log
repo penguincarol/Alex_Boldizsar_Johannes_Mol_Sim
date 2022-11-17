@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2022.4.29)  16 NOV 2022 13:13
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2022.4.29)  16 NOV 2022 14:48
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1782,27 +1782,44 @@ n input line 93.
  [13
 
 ]
+\openout4 = `Assignment2_Presentation.vrb'.
+
+
+(./Assignment2_Presentation.vrb
+LaTeX Font Info:    Font shape `T1/phv/b/n' will be
+(Font)              scaled to size 14.18344pt on input line 5.
+LaTeX Font Info:    Trying to load font information for TS1+phv on input line 1
+6.
+
+(/usr/share/texlive/texmf-dist/tex/latex/psnfss/ts1phv.fd
+File: ts1phv.fd 2020/03/25 scalable font definitions for TS1/phv.
+)
+LaTeX Font Info:    Font shape `TS1/phv/m/n' will be
+(Font)              scaled to size 14.18344pt on input line 16.
+)
+Overfull \vbox (7.29427pt too high) detected at line 117
+ []
+
 File: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf Graphic file (type pdf)
 <use ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf>
 Package pdftex.def Info: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf  used o
-n input line 97.
+n input line 117.
 (pdftex.def)             Requested size: 47.80042pt x 25.17415pt.
- [14
+[14
 
 ]
 File: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf Graphic file (type pdf)
 <use ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf>
 Package pdftex.def Info: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf  used o
-n input line 110.
+n input line 130.
 (pdftex.def)             Requested size: 47.80042pt x 25.17415pt.
-
-[15
+ [15
 
 ]
 File: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf Graphic file (type pdf)
 <use ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf>
 Package pdftex.def Info: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf  used o
-n input line 110.
+n input line 130.
 (pdftex.def)             Requested size: 47.80042pt x 25.17415pt.
  [16
 
@@ -1810,7 +1827,7 @@ n input line 110.
 File: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf Graphic file (type pdf)
 <use ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf>
 Package pdftex.def Info: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf  used o
-n input line 110.
+n input line 130.
 (pdftex.def)             Requested size: 47.80042pt x 25.17415pt.
  [17
 
@@ -1818,7 +1835,7 @@ n input line 110.
 File: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf Graphic file (type pdf)
 <use ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf>
 Package pdftex.def Info: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf  used o
-n input line 130.
+n input line 150.
 (pdftex.def)             Requested size: 47.80042pt x 25.17415pt.
  [18
 
@@ -1906,6 +1923,7 @@ LaTeX Font Warning: Size substitutions with differences
  ) 
 Here is how much of TeX's memory you used:
 <<<<<<< HEAD
+<<<<<<< HEAD
  44551 strings out of 480194
  1038837 string characters out of 5893741
  1611874 words of memory out of 5000000
@@ -1930,15 +1948,22 @@ PDF statistics:
  1618229 words of memory out of 5000000
  61952 multiletter control sequences out of 15000+600000
  515498 words of font info for 81 fonts, out of 8000000 for 9000
+=======
+ 44774 strings out of 478287
+ 1043544 string characters out of 5849289
+ 1626271 words of memory out of 5000000
+ 62013 multiletter control sequences out of 15000+600000
+ 518541 words of font info for 84 fonts, out of 8000000 for 9000
+>>>>>>> 708be62b1c99a3a74630e149c84703013bf19715
  1141 hyphenation exceptions out of 8191
- 133i,16n,125p,876b,1327s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 133i,16n,125p,876b,1460s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}{/usr/share/texmf/
 fonts/enc/dvips/cm-super/cm-super-t1.enc}</usr/share/texlive/texmf-dist/fonts/t
 ype1/public/amsfonts/cm/cmsy10.pfb></usr/share/texmf/fonts/type1/public/cm-supe
 r/sftt1200.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/helvetic/uhvb8a.p
 fb></usr/share/texlive/texmf-dist/fonts/type1/urw/helvetic/uhvr8a.pfb></usr/sha
 re/texlive/texmf-dist/fonts/type1/urw/helvetic/uhvro8a.pfb>
-Output written on Assignment2_Presentation.pdf (18 pages, 556700 bytes).
+Output written on Assignment2_Presentation.pdf (18 pages, 560261 bytes).
 PDF statistics:
  427 PDF objects out of 1000 (max. 8388607)
  365 compressed objects within 4 object streams

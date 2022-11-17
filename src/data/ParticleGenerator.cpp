@@ -20,7 +20,7 @@ namespace ParticleGenerator {
                 for (size_t z = 0; z < body.dimensions[2]; z++)
                 {
                     Eigen::Vector3d pos = body.fixpoint + (body.distance * Eigen::Vector3d(x,y,z));
-                    auto v_tmp = maxwellBoltzmannDistributedVelocity(v_bolz, 3);
+                    auto v_tmp = maxwellBoltzmannDistributedVelocity(v_bolz, 2);
                     Eigen::Vector3d v { v_tmp[0], v_tmp[1], v_tmp[2] };
                     buffer.emplace_back(pos, (body.start_velocity +  v), body.mass, typeID);
                 }

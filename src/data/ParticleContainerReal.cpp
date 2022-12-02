@@ -51,4 +51,30 @@ ParticleContainerReal::ParticleContainerReal(const std::vector<Particle> &buffer
 
 }
 
-#include "ParticleContainerReal.h"
+ParticleContainerReal::ParticleContainerReal(const std::vector<Particle> &buffer, std::array<double, 2> domainSize,
+                                 double r_cutoff) :
+    ParticleContainerReal::ParticleContainerReal(buffer, {domainSize[0], domainSize[1], r_cutoff}, r_cutoff) {};
+
+unsigned long ParticleContainerReal::size() {
+    return particles.size();
+}
+
+void ParticleContainerReal::clear() {
+    particles.clear();
+    activeParticles.clear();
+    cells.clear();
+}
+
+Particle ParticleContainerReal::getParticle(unsigned long i) {
+    return particles[i];
+}
+
+std::array<unsigned int, 3> ParticleContainerReal::getGridDimensions() {
+    return gridDimensions;
+}
+
+void ParticleContainerReal::runOnData(
+        void (*function)(std::vector<double> &, std::vector<double> &, std::vector<double> &, std::vector<double> &,
+                         std::vector<double> &, std::vector<int> &, unsigned long)) {
+
+}

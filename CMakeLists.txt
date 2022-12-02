@@ -22,7 +22,7 @@ file(GLOB_RECURSE MY_SRC "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp" "${CMAKE_CURREN
 #   Create Executable                                                                                       #
 #############################################################################################################
 find_package(spdlog REQUIRED PATHS ${CMAKE_CURRENT_SOURCE_DIR}/libs/libspdlog)
-add_executable(MolSim ${MY_SRC})
+add_executable(MolSim ${MY_SRC} src/data/ParticleContainerReal.cpp src/data/ParticleContainerReal.h)
 target_compile_features(MolSim PRIVATE cxx_std_20)
 target_include_directories(MolSim
         PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/libs/libxsd
@@ -56,7 +56,7 @@ target_compile_options(MolSim
 list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake/modules)
 
 # create sanitization target
-add_executable(asan-MolSim ${MY_SRC} src/io/input/sim_input/XMLReader.cpp src/io/input/sim_input/XMLReader.h)
+add_executable(asan-MolSim ${MY_SRC} src/io/input/sim_input/XMLReader.cpp src/io/input/sim_input/XMLReader.h src/data/ParticleContainerReal.cpp src/data/ParticleContainerReal.h)
 set_target_properties(asan-MolSim PROPERTIES EXCLUDE_FROM_ALL True)
 target_compile_features(asan-MolSim PRIVATE cxx_std_20)
 target_include_directories(asan-MolSim

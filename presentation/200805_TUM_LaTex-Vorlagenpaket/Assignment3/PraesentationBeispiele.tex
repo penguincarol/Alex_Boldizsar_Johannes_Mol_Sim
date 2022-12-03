@@ -206,6 +206,93 @@ Idea:
 	In the end we decided to implement approach 3.
 ¸\end{frame}
 
+\begin{frame}[fragile]
+	\frametitle{Spheres}
+	\large
+	Expansion of the Body-struct utilized in Assignment 2
+	
+	\begin{columns}
+		
+	\begin{column}{0.48\textwidth}
+	\begin{lstlisting}[language=C++]	
+enum Shape {cuboid, sphere};
+struct Body {
+	Shape shape;   
+	Eigen::Vector3d fixpoint; 
+	Eigen::Vector3d dimensions;
+	double distance;
+	double mass;
+	Eigen::Vector3d start_velocity;
+} ;
+	\end{lstlisting}	
+	\end{column}
+
+	\begin{column}{0.48\textwidth}
+		\vspace{-1.5cm}
+		\begin{equation*}
+			\begin{aligned}
+				\sqrt{x^2 + y^2 + z^2} & <= r\\
+				\iff x^2 + y^2 + z^z   & <= r^2
+			\end{aligned}
+		\end{equation*}
+	
+		\vspace{0.5cm}
+		
+		\begin{center}
+			\begin{tikzpicture}[scale=1.3]
+				\foreach \x in {0,...,4}{
+					\foreach \y in {0,...,4}{
+						\draw (\x, \y) circle[radius=2pt];
+					}
+				}
+				
+				\draw (2,2) circle[radius=2];
+				
+				
+			\end{tikzpicture}
+		\end{center}
+	\end{column}
+
+\end{columns}
+	
+\end{frame}
+
+\begin{frame}[fragile]
+	\frametitle{ParticleContainer's new methods}
+	\vspace{0.4cm}
+	
+	\begin{lstlisting}[language=C++]
+class ParticleContainer{
+	...
+
+	void forAllPairsInSameCell(void (*fun) (Particle& p1, Particle& p1));
+	
+	void forAllPairsInNeighbouringCell(void (*fun) (Particle& p1, Particle& p1));
+	
+	void forAllCells(void (*fun)(...));
+	
+	void forAllDistinctNeighbouringCells(void (*fun) (...));
+		
+	...
+}
+\end{lstlisting}
+
+	\large
+
+\begin{itemize}
+	\item Functionality of first two methods is sufficient but hard to optimize
+	\item Functionality of last two methods results in higher cohesion, but potential for runtime improvement
+\end{itemize}
+	
+\end{frame}
+
+\begin{frame}
+	\frametitle{}
+	
+
+\end{frame}
+
+
 \begin{frame}
 	\frametitle{IO}
 

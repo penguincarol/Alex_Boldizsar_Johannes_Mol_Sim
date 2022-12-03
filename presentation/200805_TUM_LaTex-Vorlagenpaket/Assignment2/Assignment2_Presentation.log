@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2022.11.16)  17 NOV 2022 21:00
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2022.10.22)  3 DEC 2022 19:03
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -491,7 +491,20 @@ Package: amsfonts 2013/01/14 v3.01 Basic AMSFonts support
 LaTeX Font Info:    Redeclaring math symbol \hbar on input line 98.
 LaTeX Font Info:    Overwriting math alphabet `\mathfrak' in version `bold'
 (Font)                  U/euf/m/n --> U/euf/b/n on input line 106.
-)))
+))
+(/usr/share/texlive/texmf-dist/tex/latex/sansmathaccent/sansmathaccent.sty
+Package: sansmathaccent 2020/01/31
+
+(/usr/share/texlive/texmf-dist/tex/latex/koma-script/scrlfile.sty
+Package: scrlfile 2021/11/13 v3.35 KOMA-Script package (file load hooks)
+
+(/usr/share/texlive/texmf-dist/tex/latex/koma-script/scrlfile-hook.sty
+Package: scrlfile-hook 2021/11/13 v3.35 KOMA-Script package (using LaTeX hooks)
+
+
+(/usr/share/texlive/texmf-dist/tex/latex/koma-script/scrlogo.sty
+Package: scrlogo 2021/11/13 v3.35 KOMA-Script package (logo)
+)))))
 (/usr/share/texlive/texmf-dist/tex/latex/beamer/beamerbasetranslator.sty
 (/usr/share/texlive/texmf-dist/tex/latex/translator/translator.sty
 Package: translator 2021-05-31 v1.12d Easy translation of strings in LaTeX
@@ -793,7 +806,7 @@ LaTeX Info: Redefining \addtolength on input line 81.
 Package: babel 2022/01/26 3.70 The Babel package
 \babel@savecnt=\count344
 \U@D=\dimen286
-\l@unhyphenated=\language8
+\l@unhyphenated=\language87
 
 (/usr/share/texlive/texmf-dist/tex/generic/babel/txtbabel.def)
 \bbl@readstream=\read3
@@ -828,7 +841,7 @@ Grid set 16 x 16 = 45.16873pt x 25.40742pt
 TextBlockOrigin set to 0pt x 0pt
 ) (/usr/share/texlive/texmf-dist/tex/latex/hyphenat/hyphenat.sty
 Package: hyphenat 2009/09/02 v2.3c hyphenation utilities
-\langwohyphens=\language9
+\langwohyphens=\language88
 LaTeX Info: Redefining \_ on input line 43.
 )
 (/usr/share/texlive/texmf-dist/tex/latex/eurosym/eurosym.sty
@@ -1824,13 +1837,19 @@ n input line 133.
 
  (./Assignment2_Presentation.vrb
 
-pdfTeX warning: /usr/bin/pdflatex (file ./logging.pdf): PDF inclusion: found PD
-F version <1.7>, but at most version <1.5> allowed
-<logging.pdf, id=338, 366.61969pt x 54.9553pt>
-File: logging.pdf Graphic file (type pdf)
-<use logging.pdf>
-Package pdftex.def Info: logging.pdf  used on input line 10.
-(pdftex.def)             Requested size: 470.43571pt x 70.52113pt.
+! LaTeX Error: File `logging' not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.10 ...ludegraphics[width=0.7\linewidth]{logging}
+                                                  
+I could not locate the file with any of these extensions:
+.pdf,.png,.jpg,.mps,.jpeg,.jbig2,.jb2,.PDF,.PNG,.JPG,.JPEG,.JBIG2,.JB2,.eps
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
 )
 File: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf Graphic file (type pdf)
 <use ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf>
@@ -1839,7 +1858,7 @@ n input line 156.
 (pdftex.def)             Requested size: 47.80042pt x 25.17415pt.
  [16
 
- <./logging.pdf>]
+]
 \openout4 = `Assignment2_Presentation.vrb'.
 
  (./Assignment2_Presentation.vrb
@@ -1942,13 +1961,19 @@ LaTeX Font Info:    Font shape `T1/phv/m/sl' will be
 (Font)              scaled to size 10.21446pt on input line 286.
 
 
-pdfTeX warning: /usr/bin/pdflatex (file ./alex_code.pdf): PDF inclusion: found 
-PDF version <1.7>, but at most version <1.5> allowed
-<alex_code.pdf, id=417, 493.845pt x 376.40625pt>
-File: alex_code.pdf Graphic file (type pdf)
-<use alex_code.pdf>
-Package pdftex.def Info: alex_code.pdf  used on input line 286.
-(pdftex.def)             Requested size: 366.93927pt x 279.67921pt.
+! LaTeX Error: File `alex_code' not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.286 \end{frame}
+                 
+I could not locate the file with any of these extensions:
+.pdf,.png,.jpg,.mps,.jpeg,.jbig2,.jb2,.PDF,.PNG,.JPG,.JPEG,.JBIG2,.JB2,.eps
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
 File: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf Graphic file (type pdf)
 <use ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf>
 Package pdftex.def Info: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf  used o
@@ -1956,7 +1981,7 @@ n input line 286.
 (pdftex.def)             Requested size: 47.80042pt x 25.17415pt.
 [20
 
- <./alex_code.pdf>]
+]
 File: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf Graphic file (type pdf)
 <use ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf>
 Package pdftex.def Info: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf  used o
@@ -2000,8 +2025,7 @@ File: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf Graphic file (type pdf)
 Package pdftex.def Info: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf  used o
 n input line 327.
 (pdftex.def)             Requested size: 47.80042pt x 25.17415pt.
-
-[25
+ [25
 
 ]
 File: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf Graphic file (type pdf)
@@ -2025,7 +2049,8 @@ File: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf Graphic file (type pdf)
 Package pdftex.def Info: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf  used o
 n input line 343.
 (pdftex.def)             Requested size: 47.80042pt x 25.17415pt.
- [28
+
+[28
 
 ]
 File: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf Graphic file (type pdf)
@@ -2076,25 +2101,25 @@ LaTeX Font Warning: Size substitutions with differences
 
  ) 
 Here is how much of TeX's memory you used:
- 45043 strings out of 480194
- 1045616 string characters out of 5893741
- 1627948 words of memory out of 5000000
- 62006 multiletter control sequences out of 15000+600000
+ 45295 strings out of 478287
+ 1051839 string characters out of 5849288
+ 1635552 words of memory out of 5000000
+ 62470 multiletter control sequences out of 15000+600000
  575633 words of font info for 183 fonts, out of 8000000 for 9000
- 14 hyphenation exceptions out of 8191
- 104i,16n,110p,876b,1327s stack positions out of 5000i,500n,10000p,200000b,80000s
-{/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc} </home/johnny/.te
-xlive2021/texmf-var/fonts/pk/ljfour/jknappen/ec/ectt1200.600pk></usr/share/texl
-ive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/te
-xmf-dist/fonts/type1/public/amsfonts/cm/cmss12.pfb></usr/share/texlive/texmf-di
-st/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fon
-ts/type1/urw/helvetic/uhvb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw
-/helvetic/uhvr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/helvetic/uh
-vro8a.pfb>
-Output written on Assignment2_Presentation.pdf (32 pages, 623928 bytes).
+ 1141 hyphenation exceptions out of 8191
+ 133i,16n,125p,876b,1329s stack positions out of 5000i,500n,10000p,200000b,80000s
+{/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}{/usr/share/texmf/
+fonts/enc/dvips/cm-super/cm-super-t1.enc}</usr/share/texlive/texmf-dist/fonts/t
+ype1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/fonts/type1/p
+ublic/amsfonts/cm/cmss12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/
+amsfonts/cm/cmsy10.pfb></usr/share/texmf/fonts/type1/public/cm-super/sftt1200.p
+fb></usr/share/texlive/texmf-dist/fonts/type1/urw/helvetic/uhvb8a.pfb></usr/sha
+re/texlive/texmf-dist/fonts/type1/urw/helvetic/uhvr8a.pfb></usr/share/texlive/t
+exmf-dist/fonts/type1/urw/helvetic/uhvro8a.pfb>
+Output written on Assignment2_Presentation.pdf (32 pages, 602552 bytes).
 PDF statistics:
- 740 PDF objects out of 1000 (max. 8388607)
+ 702 PDF objects out of 1000 (max. 8388607)
  619 compressed objects within 7 object streams
  68 named destinations out of 1000 (max. 500000)
- 68 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 58 words of extra memory for PDF output out of 10000 (max. 10000000)
 

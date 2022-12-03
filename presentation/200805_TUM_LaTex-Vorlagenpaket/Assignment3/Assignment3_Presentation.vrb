@@ -1,0 +1,14 @@
+\frametitle{Logging}
+	\large
+	format:
+	\begin{lstlisting}
+		[time][level::context] message
+	\end{lstlisting}
+	
+	
+	\begin{itemize}
+		\item 6 different log-levels available
+		\item log-level can be chosen via command line input
+		\item use of log functions since we don't log in performance critical areas
+		\item no need to deactivate logging at compile time
+	\end{itemize}

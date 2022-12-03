@@ -429,4 +429,5 @@ s    * right corresponding cell-vector
                                              unsigned long count,
                                              std::vector<unsigned long>& cell0Items,
                                              std::vector<unsigned long>& cell1Items));
+
 };

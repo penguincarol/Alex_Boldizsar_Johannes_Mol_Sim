@@ -385,6 +385,45 @@ s    * right corresponding cell-vector
                                              unsigned long count,
                                              std::vector<unsigned long>& cell0Items,
                                              std::vector<unsigned long>& cell1Items));
+
+    /**
+     * Helper function that translates buffer filled with Particles into the datastructure used by the
+     * alternative ParticleContainer in order to be able to provide its interface
+     *
+     * Be advised not to use all the "runOn*"-methods of this class since they use this helper and are therefore incredibly inefficient
+     * @param oldForce
+     * @param x
+     * @param v
+     * @param m
+     * @param type
+     * @param count
+     */
+    void fillFlattenedVectors(const std::vector<Particle> &buffer,
+                              std::vector<double> &force,
+                              std::vector<double> &oldForce,
+                              std::vector<double> &x,
+                              std::vector<double> &v,
+                              std::vector<double> &m,
+                              std::vector<int> &type,
+                              unsigned long &count);
+
+    /**
+     * Takes updated vectors and writes their data back to particles
+     * @param force
+     * @param oldForce
+     * @param x
+     * @param v
+     * @param m
+     * @param type
+     * @param count
+     */
+    void writeBackFlattenedVectors(std::vector<double> &force,
+                                   std::vector<double> &oldForce,
+                                   std::vector<double> &x,
+                                   std::vector<double> &v,
+                                   std::vector<double> &m,
+                                   std::vector<int> &type,
+                                   unsigned long &count);
 };
 
 

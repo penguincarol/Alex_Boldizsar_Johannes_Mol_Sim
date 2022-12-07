@@ -1,14 +1,26 @@
-\frametitle{Logging}
+\frametitle{ParticleContainer's new methods}
+	\vspace{0.4cm}
+	
+	\begin{lstlisting}[language=C++]
+class ParticleContainer{
+	...
+
+	void forAllPairsInSameCell(void (*fun) (Particle& p1, Particle& p1));
+	
+	void forAllPairsInNeighbouringCell(void (*fun) (Particle& p1, Particle& p1));
+	
+	void forAllCells(void (*fun)(...));
+	
+	void forAllDistinctNeighbouringCells(void (*fun) (...));
+		
+	...
+}
+\end{lstlisting}
+
 	\large
-	format:
-	\begin{lstlisting}
-		[time][level::context] message
-	\end{lstlisting}
+
+\begin{itemize}
+	\item Functionality of first two methods is sufficient but hard to optimize
+	\item Functionality of last two methods results in higher cohesion, but potential for runtime improvement
+\end{itemize}
 	
-	
-	\begin{itemize}
-		\item 6 different log-levels available
-		\item log-level can be chosen via command line input
-		\item use of log functions since we don't log in performance critical areas
-		\item no need to deactivate logging at compile time
-	\end{itemize}

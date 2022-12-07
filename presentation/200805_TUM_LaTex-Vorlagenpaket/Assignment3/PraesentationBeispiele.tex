@@ -287,11 +287,42 @@ class ParticleContainer{
 \end{frame}
 
 \begin{frame}
-	\frametitle{}
-	
-
+	\frametitle{Bounds Handling}
+	\large
+	\begin{figure}
+		\centering
+		\includegraphics[width=0.9\linewidth]{BoundaryMolSim}
+		\label{fig:boundarymolsim}
+	\end{figure}
 \end{frame}
 
+\begin{frame}
+	\frametitle{ForceFunctors}
+	\large
+	\begin{itemize}
+		\item Force function used gets determined on runtime via input parameters
+		\item Force functor defines the algorithm (Linked-Cell algorithm/ All-Pairs algorithm) used
+	\end{itemize}
+	\vspace{-0.4cm}
+	
+	\begin{figure}
+		\centering
+		\includegraphics[width=0.8\linewidth]{ForceFunctorMolSim}
+		\label{fig:forcefunctormolsim}
+	\end{figure}
+	
+\end{frame}
+
+\begin{frame}
+	\frametitle{Runtime Comparison of different algorithms}
+	\vspace{-0.8cm}
+	\begin{figure}
+		\centering
+		\includegraphics[width=0.6\linewidth]{plot}
+		\label{fig:plot}
+	\end{figure}
+	
+\end{frame}
 
 \begin{frame}
 	\frametitle{IO}
@@ -304,164 +335,48 @@ class ParticleContainer{
 	%\end{itemize}
 \end{frame}
 
-
-\begin{frame}[fragile]
-\frametitle{Input parsing - Definition of Body}
-\vspace{0.7cm}
-
-\begin{lstlisting}[language=C++]
-enum Shape {cuboid, sphere};
-
-struct Body {
-	Shape shape;   
-	Eigen::Vector3d fixpoint; 
-	Eigen::Vector3d dimensions; 
-	double distance;
-	double mass;
-	Eigen::Vector3d start_velocity;
-} ;
-\end{lstlisting}
+\begin{frame}{Our Simulation}
+	\begin{figure}[h!]
+		\centering    
+		\movie[label=show3,width=0.7\textwidth,poster
+		,autostart,showcontrols,loop] 
+		{\includegraphics[width=0.7\textwidth]{waterdrop.png}}{drop_dt0-002.mp4}
+		%\caption{caption}
+	\end{figure} 
 \end{frame}
 
-\begin{frame}
-	\frametitle{CI/CD}
-	\large
-	\begin{itemize}
-		\item<1-> Protection of master branch
-		\item<2-> Deployment of CI/CD pipeline for \textit{all} branches 
-	\end{itemize}
+\begin{frame}[plain,c]
+	%\frametitle{A first slide}
+	
+	\begin{center}
+		\Huge We were just kidding
+	\end{center}
 	
 \end{frame}
 
 
 \begin{frame}
-	\frametitle{CI/CD}
-	\large
-	\begin{itemize}
-		\item Protection of master branch
-		\item Deployment of CI/CD pipeline for \textit{all} branches 
-	\end{itemize}
-	\Large
-	The pipeline consist of:
-	\large
-	\begin{itemize}
-		\item<1-> library installation
-		\item<2-> build process
-		\item<3-> sanitizers
-		\item<4-> unit tests for every major component
-	\end{itemize}
+		\vspace{3cm}
+		\begin{center}
+		\Huge Of course we've had a Simulation that actually worked
+		\pause
+		
+		...
+		\pause
+		
+		right?
+		\end{center}
 \end{frame}
 
-\begin{frame}[fragile]
-	\frametitle{CI/CD}
-	\begin{lstlisting}
-		name: Build and Gtest
-		on:
-		push:
-		branches:
-		- '**'        # matches every branch
-		pull_request:
-		branches: ["master"]
-		env:
-		#Customize CMake build type here from [Debug;Release;RelWithDebInfo;MinSizeRel]
-		BUILD_TYPE: Release	
-	\end{lstlisting}
+\begin{frame}{Our actual Simulation}
+	\begin{figure}[h!]
+		\centering    
+		\movie[label=show3,width=0.7\textwidth,poster
+		,autostart,showcontrols,loop] 
+		{\includegraphics[width=0.7\textwidth]{waterdrop.png}}{drop_dt0-001.mp4}
+		%\caption{caption}
+	\end{figure} 
 \end{frame}
-
-\begin{frame}[fragile]
-	\frametitle{Logging}
-	\large
-	format:
-	\begin{lstlisting}
-		[time][level::context] message
-	\end{lstlisting}
-	
-	
-	\begin{itemize}
-		\item 6 different log-levels available
-		\item log-level can be chosen via command line input
-		\item use of log functions since we don't log in performance critical areas
-		\item no need to deactivate logging at compile time
-	\end{itemize}
-\end{frame}
-
-\begin{frame}
-	\frametitle{Performance optimization - "Gaussian multithreading"}
-	\vspace{1.5cm}
-	\begin{columns}
-		\begin{column}{0.48\textwidth}
-	\begin{tikzpicture}
-		\foreach \x in {0,...,5}
-		\foreach \y in {0,...,\x} 
-		\filldraw[draw=black,fill=cyan] (5-\x,\y) rectangle (5-\x+1,\y+1);
-		\foreach \k in {0,...,6} {
-			\node[] at (\k+0.5, -0.5) {$\k$};
-		}	
-	\end{tikzpicture}
-		\end{column}
-		\begin{column}{0.48\textwidth}
-	\vspace{-6.5cm}
-	\large
-	\begin{itemize}
-	\item Idea: Force calculation can be multithreaded quite easily 
-	\item Evenly distribute Particle-pairs among multiple threads \\
-	\item One rectangle represents one necessary force-calculation where $\min(p1,p2)$ is the number displayed below
-	\end{itemize}
-		\end{column}
-	\end{columns}	
-\end{frame}
-
-\begin{frame}
-	\frametitle{Performance optimization - "Gaussian multithreading"}
-		\vspace{1.5cm}
-		\begin{columns}
-		\begin{column}{0.48\textwidth}
-			\begin{tikzpicture}
-	\foreach \x in {0,...,2}
-		\foreach \y in {0,...,2} 
-			\filldraw[draw=black,fill=cyan] (\x,\y) rectangle (\x+1, \y+1);
-	\foreach \k in {0,...,3} {
-		\node[] at (\k+0.5, -0.5) {$\k$};
-	}	
-	\foreach \x in {0,...,2}
-		\foreach \y in {0,...,\x} 
-			\filldraw[draw=black,fill=cyan] (2-\x,\y+2) rectangle (2-\x+1, \y+1+2);
-	\filldraw[draw=black,fill=green] (1,4) rectangle (2,5);
-	\filldraw[draw=black,fill=green] (2,4) rectangle (3,5);
-	\filldraw[draw=black,fill=green] (2,3) rectangle (3,4);
-	\filldraw[draw=black,fill=cyan] (3,0) rectangle (4,1);
-	\filldraw[draw=black,fill=cyan] (3,1) rectangle (4,2);
-	\filldraw[draw=black,fill=cyan] (3,2) rectangle (4,3);
-	\draw [decorate,decoration = {brace}, thick] (1,-1) -- (0,-1);
-	\node[]at (0.5, -1.3){t0};
-	\draw [decorate,decoration = {brace}, thick] (2,-1) -- (1,-1);
-	\node[]at (1.5, -1.3){t1};
-	\draw [decorate,decoration = {brace}, thick] (4,-1) -- (2,-1);
-	\node[]at (3.0, -1.3){thread2};
-	
-	\end{tikzpicture}
-		\end{column}
-		\begin{column}{0.48\textwidth}
-			\vspace{-6.5cm}
-			\large
-			\begin{itemize}
-				\item Create "Gaussian rectangle"' as good as possible and redistribute the resulting blocks
-				\item Threads use personal accumulators
-				\item Accumulators get summed up in the end
-			\end{itemize}
-		\vspace{1.5cm}
-		\Large
-			In the end outsourcing the problem to OpenMP turned out to be much easier
-		\end{column}
-	\end{columns}
-\end{frame}
-
-
-
-
-
-
-
 
 
 %\frame[label=blah]{

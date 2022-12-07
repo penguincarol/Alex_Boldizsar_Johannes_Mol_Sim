@@ -2,6 +2,138 @@
 % TUM-Vorlage: Präsentation - Beispiele
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\begin{frame}
+	\frametitle{XSD- tree-like definition of Datastructures}
+	\begin{figure}
+		\centering
+		\includegraphics[width=\linewidth]{xsdScetch}
+		%\caption{}
+		\label{fig:xsdscetchtbc}
+	\end{figure}
+	
+	
+\end{frame}
+
+\begin{frame}[fragile]
+	\frametitle{XSD- Code Snippet}
+	\large
+	\begin{itemize}
+		\item simulation\_t stores all the necessary parameters
+		\item utilizes defined other tree-like Datastructures
+		\item "'simulation\_t is root"'
+	\end{itemize}
+	
+	\vspace{0.3cm}
+	
+	\begin{lstlisting}
+<xsd:complexType name="simulation_t">
+	<xsd:sequence>
+		<xsd:element name="OutputFile" type="output_t" minOccurs="0"/>
+		...
+		<xsd:element name="ShapeList" type="shapeList_t"/>
+	</xsd:sequence>
+</xsd:complexType>
+	\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]
+	\frametitle{XSD- Code Snippet}
+	\large
+	\vspace{2cm}
+	\begin{lstlisting}
+<xsd:complexType name="shape_t">
+	<xsd:choice>
+		<xsd:element name="Particle" type="particle_t"/>
+		<xsd:element name="Cuboid" type="cuboid_t"/>
+		<xsd:element name="Sphere" type="sphere_t"/>
+	</xsd:choice>
+</xsd:complexType>
+	\end{lstlisting}
+	
+\end{frame}
+
+
+\begin{frame}
+	\frametitle{Bounds Handling}
+	\large
+	\begin{figure}
+		\centering
+		\includegraphics[width=0.9\linewidth]{BoundaryMolSim}
+		\label{fig:boundarymolsim}
+	\end{figure}
+\end{frame}
+
+
+
+\begin{frame}
+	\frametitle{ForceFunctors}
+	\large
+	\begin{itemize}
+		\item Force function used gets determined on runtime via input parameters
+		\item Force functor defines the algorithm (Linked-Cell algorithm/ All-Pairs algorithm) used
+	\end{itemize}
+	\vspace{-0.4cm}
+	
+	\begin{figure}
+		\centering
+		\includegraphics[width=0.8\linewidth]{ForceFunctorMolSim}
+		\label{fig:forcefunctormolsim}
+	\end{figure}
+	
+\end{frame}
+
+\begin{frame}[fragile]
+	\frametitle{Spheres}
+	\large
+	Expansion of the Body-struct utilized in Assignment 2
+	
+	\begin{columns}
+		
+		\begin{column}{0.48\textwidth}
+			\begin{lstlisting}[language=C++]	
+enum Shape {cuboid, sphere};
+struct Body {
+	Shape shape;   
+	Eigen::Vector3d fixpoint; 
+	Eigen::Vector3d dimensions;
+	double distance;
+	double mass;
+	Eigen::Vector3d start_velocity;
+} ;
+			\end{lstlisting}	
+		\end{column}
+		
+		\begin{column}{0.48\textwidth}
+			\vspace{-1.5cm}
+			\begin{equation*}
+				\begin{aligned}
+					\sqrt{x^2 + y^2 + z^2} & <= r\\
+					\iff x^2 + y^2 + z^z   & <= r^2
+				\end{aligned}
+			\end{equation*}
+			
+			\vspace{0.5cm}
+			
+			\begin{center}
+				\begin{tikzpicture}[scale=1.3]
+					\foreach \x in {0,...,4}{
+						\foreach \y in {0,...,4}{
+							\draw (\x, \y) circle[radius=2pt];
+						}
+					}
+					
+					\draw (2,2) circle[radius=2];
+					
+					
+				\end{tikzpicture}
+			\end{center}
+		\end{column}
+		
+	\end{columns}
+	
+\end{frame}
+
+
 
 \begin{frame}
 \frametitle{The Cell Data-Structure - Approach 1}
@@ -204,58 +336,8 @@ Idea:
 	\pause
 	\vspace{0.4cm}
 	In the end we decided to implement approach 3.
-¸\end{frame}
-
-\begin{frame}[fragile]
-	\frametitle{Spheres}
-	\large
-	Expansion of the Body-struct utilized in Assignment 2
-	
-	\begin{columns}
-		
-	\begin{column}{0.48\textwidth}
-	\begin{lstlisting}[language=C++]	
-enum Shape {cuboid, sphere};
-struct Body {
-	Shape shape;   
-	Eigen::Vector3d fixpoint; 
-	Eigen::Vector3d dimensions;
-	double distance;
-	double mass;
-	Eigen::Vector3d start_velocity;
-} ;
-	\end{lstlisting}	
-	\end{column}
-
-	\begin{column}{0.48\textwidth}
-		\vspace{-1.5cm}
-		\begin{equation*}
-			\begin{aligned}
-				\sqrt{x^2 + y^2 + z^2} & <= r\\
-				\iff x^2 + y^2 + z^z   & <= r^2
-			\end{aligned}
-		\end{equation*}
-	
-		\vspace{0.5cm}
-		
-		\begin{center}
-			\begin{tikzpicture}[scale=1.3]
-				\foreach \x in {0,...,4}{
-					\foreach \y in {0,...,4}{
-						\draw (\x, \y) circle[radius=2pt];
-					}
-				}
-				
-				\draw (2,2) circle[radius=2];
-				
-				
-			\end{tikzpicture}
-		\end{center}
-	\end{column}
-
-\end{columns}
-	
 \end{frame}
+
 
 \begin{frame}[fragile]
 	\frametitle{ParticleContainer's new methods}
@@ -287,84 +369,16 @@ class ParticleContainer{
 \end{frame}
 
 \begin{frame}
-	\frametitle{Bounds Handling}
-	\large
-	\begin{figure}
-		\centering
-		\includegraphics[width=0.9\linewidth]{BoundaryMolSim}
-		\label{fig:boundarymolsim}
-	\end{figure}
-\end{frame}
-
-\begin{frame}
-	\frametitle{XSD- tree-like definition of Datastructures}
-	\begin{figure}
-		\centering
-		\includegraphics[width=\linewidth]{xsdScetch}
-		%\caption{}
-		\label{fig:xsdscetchtbc}
-	\end{figure}
-	
-	
-\end{frame}
-
-\begin{frame}[fragile]
-	\frametitle{XSD- Code Snippet}
-	\large
-	\begin{itemize}
-		\item simulation\_t stores all the necessary parameters
-		\item utilizes defined other tree-like Datastructures
-		\item "'simulation\_t is root"'
-	\end{itemize}
-	
-	\vspace{0.3cm}
-	
-	\begin{lstlisting}
-<xsd:complexType name="simulation_t">
-	<xsd:sequence>
-		<xsd:element name="OutputFile" type="output_t" minOccurs="0"/>
-		...
-		<xsd:element name="ShapeList" type="shapeList_t"/>
-	</xsd:sequence>
-</xsd:complexType>
-	\end{lstlisting}
-\end{frame}
-
-\begin{frame}[fragile]
-	\frametitle{XSD- Code Snippet}
-	\large
-	\vspace{2cm}
-	\begin{lstlisting}
-<xsd:complexType name="shape_t">
-	<xsd:choice>
-		<xsd:element name="Particle" type="particle_t"/>
-		<xsd:element name="Cuboid" type="cuboid_t"/>
-		<xsd:element name="Sphere" type="sphere_t"/>
-	</xsd:choice>
-</xsd:complexType>
-	\end{lstlisting}
-	
-\end{frame}
-
-\begin{frame}
-	\frametitle{ForceFunctors}
-	\large
-	\begin{itemize}
-		\item Force function used gets determined on runtime via input parameters
-		\item Force functor defines the algorithm (Linked-Cell algorithm/ All-Pairs algorithm) used
-	\end{itemize}
-	\vspace{-0.4cm}
-	
-	\begin{figure}
-		\centering
-		\includegraphics[width=0.8\linewidth]{ForceFunctorMolSim}
-		\label{fig:forcefunctormolsim}
-	\end{figure}
-	
-\end{frame}
-
-\begin{frame}
-	\frametitle{Benchmark setup}
+	\frametitle{Runtime measurement setup}
+	\vspace{2.3cm}
+		\large
+		\begin{itemize}
+			\setlength\itemsep{1em}
+			\item<1-> Particles initiated in a square with varying dimensions
+			\item<2-> Space between square and domain border kept at 10
+			\item<3-> $r_{cutoff} = $const. (aswell as other variables like eps, sig, brown, etc.)
+			\item<4-> exact commands to recreate the results are in README and at the end of this presentation
+		\end{itemize}
 		
 \end{frame}
 
@@ -380,11 +394,18 @@ class ParticleContainer{
 				\label{fig:plot}
 			\end{figure}
 		\column{0.28\linewidth}
+		\\
+		
+		
+		\large
+		Hardware details:
 		\begin{lstlisting}
 Ubunutu 20.04 LTS
 i7-12700KF @5,0GHz
 64GB RAM @ 3200MHz
 		\end{lstlisting}
+	
+	
 	\end{columns}
 \end{frame}
 
@@ -408,6 +429,59 @@ i7-12700KF @5,0GHz
 	\end{figure} 
 \end{frame}
 
+\begin{frame}
+	\frametitle{Roadblocks and lessons learned}
+	\large
+	\begin{itemize}
+		\item Play the objective!
+		\item Getting together and figuring out an elegant solution for one hour is an hour well spent
+		\item Clearly define Interfaces
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\PraesentationBildUhrenturm
+	%\PraesentationStartseiteFlaggen
+\end{frame}
+
+\begin{frame}
+	\frametitle{Recreating benchmarks}
+	\large
+	Setup and compilation:
+	\vspace{-0.7cm}
+	\begin{enumerate}
+		\item mkdir build output
+		\item cd build
+		\item cmake ..
+		\item make
+	\end{enumerate}
+	\vspace{-0.6cm}
+
+	Example of bechmark commands:\\
+	Linked-Cell algorithm:\\
+	./MolSim ../input/square1.txt -dt 0.0005 -et 0.5 -lc 1 -bbox0 50.0 -bbox1 50.0 -f lennardjonescell -rc 3.0 -bench file -i 10 > ../output/lc\_square1.txt
+	
+	All-Pairs algorithm:\\
+	./MolSim ../input/square1.txt -dt 0.0005 -et 0.5 -lc 0 -bbox0 50.0 -bbox1 50.0 -f lennardjones -rc 3.0 -bench file -i 10 > ../output/ap\_square1.txt\\
+	
+	\large
+
+
+\end{frame}
+
+\begin{frame}
+	\frametitle{Recreating benchmarks}
+	\vspace{2.5cm}
+	\large
+	\begin{itemize}
+	\item Results can be found in output-folder
+	\item New benchmark files can be written and executed easily
+	\item for other testsizes change input file, output file and bbox-size accordingly
+	\end{itemize}
+
+	bbox-sizes needed: (50,50), (64,64), (83,83), (109,109)
+	
+\end{frame}
 
 %\frame[label=blah]{
 %	\begin{center}%

@@ -8,9 +8,16 @@
 				\label{fig:plot}
 			\end{figure}
 		\column{0.28\linewidth}
+		\\
+		
+		
+		\large
+		Hardware details:
 		\begin{lstlisting}
 Ubunutu 20.04 LTS
 i7-12700KF @5,0GHz
 64GB RAM @ 3200MHz
 		\end{lstlisting}
+	
+	
 	\end{columns}

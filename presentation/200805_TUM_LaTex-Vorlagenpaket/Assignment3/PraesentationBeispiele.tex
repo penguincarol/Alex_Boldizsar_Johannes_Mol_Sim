@@ -297,6 +297,56 @@ class ParticleContainer{
 \end{frame}
 
 \begin{frame}
+	\frametitle{XSD- tree-like definition of Datastructures}
+	\begin{figure}
+		\centering
+		\includegraphics[width=\linewidth]{xsdScetch}
+		%\caption{}
+		\label{fig:xsdscetchtbc}
+	\end{figure}
+	
+	
+\end{frame}
+
+\begin{frame}[fragile]
+	\frametitle{XSD- Code Snippet}
+	\large
+	\begin{itemize}
+		\item simulation\_t stores all the necessary parameters
+		\item utilizes defined other tree-like Datastructures
+		\item "'simulation\_t is root"'
+	\end{itemize}
+	
+	\vspace{0.3cm}
+	
+	\begin{lstlisting}
+<xsd:complexType name="simulation_t">
+	<xsd:sequence>
+		<xsd:element name="OutputFile" type="output_t" minOccurs="0"/>
+		...
+		<xsd:element name="ShapeList" type="shapeList_t"/>
+	</xsd:sequence>
+</xsd:complexType>
+	\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]
+	\frametitle{XSD- Code Snippet}
+	\large
+	\vspace{2cm}
+	\begin{lstlisting}
+<xsd:complexType name="shape_t">
+	<xsd:choice>
+		<xsd:element name="Particle" type="particle_t"/>
+		<xsd:element name="Cuboid" type="cuboid_t"/>
+		<xsd:element name="Sphere" type="sphere_t"/>
+	</xsd:choice>
+</xsd:complexType>
+	\end{lstlisting}
+	
+\end{frame}
+
+\begin{frame}
 	\frametitle{ForceFunctors}
 	\large
 	\begin{itemize}
@@ -314,14 +364,28 @@ class ParticleContainer{
 \end{frame}
 
 \begin{frame}
+	\frametitle{Benchmark setup}
+		
+\end{frame}
+
+
+\begin{frame}[fragile]
 	\frametitle{Runtime Comparison of different algorithms}
-	\vspace{-0.8cm}
-	\begin{figure}
-		\centering
-		\includegraphics[width=0.6\linewidth]{plot}
-		\label{fig:plot}
-	\end{figure}
-	
+	\begin{columns}
+		\column{0.6\linewidth}
+			\vspace{-0.9cm}
+			\begin{figure}
+				\centering
+				\includegraphics[width=\linewidth]{plot}
+				\label{fig:plot}
+			\end{figure}
+		\column{0.28\linewidth}
+		\begin{lstlisting}
+Ubunutu 20.04 LTS
+i7-12700KF @5,0GHz
+64GB RAM @ 3200MHz
+		\end{lstlisting}
+	\end{columns}
 \end{frame}
 
 \begin{frame}{Our Simulation}
@@ -329,40 +393,17 @@ class ParticleContainer{
 		\centering    
 		\movie[label=show3,width=0.7\textwidth,poster
 		,autostart,showcontrols,loop] 
-		{\includegraphics[width=0.7\textwidth]{waterdrop.png}}{drop_dt0-002.mp4}
+		{\includegraphics[width=0.7\textwidth]{waterdrop.png}}{drop_dt0-001.mp4}
 		%\caption{caption}
 	\end{figure} 
 \end{frame}
 
-\begin{frame}[plain,c]
-	%\frametitle{A first slide}
-	
-	\begin{center}
-		\Huge We were just kidding
-	\end{center}
-	
-\end{frame}
-
-
-\begin{frame}
-		\vspace{3cm}
-		\begin{center}
-		\Huge Of course we've had a Simulation that actually worked
-		\pause
-		
-		...
-		\pause
-		
-		right?
-		\end{center}
-\end{frame}
-
-\begin{frame}{Our actual Simulation}
+\begin{frame}{Doubling $\Delta t$}
 	\begin{figure}[h!]
 		\centering    
 		\movie[label=show3,width=0.7\textwidth,poster
 		,autostart,showcontrols,loop] 
-		{\includegraphics[width=0.7\textwidth]{waterdrop.png}}{drop_dt0-001.mp4}
+		{\includegraphics[width=0.7\textwidth]{waterdrop.png}}{drop_dt0-002.mp4}
 		%\caption{caption}
 	\end{figure} 
 \end{frame}

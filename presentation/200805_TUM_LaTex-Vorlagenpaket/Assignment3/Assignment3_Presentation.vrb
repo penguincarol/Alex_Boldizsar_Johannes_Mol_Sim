@@ -1,26 +1,16 @@
-\frametitle{ParticleContainer's new methods}
-	\vspace{0.4cm}
-	
-	\begin{lstlisting}[language=C++]
-class ParticleContainer{
-	...
-
-	void forAllPairsInSameCell(void (*fun) (Particle& p1, Particle& p1));
-	
-	void forAllPairsInNeighbouringCell(void (*fun) (Particle& p1, Particle& p1));
-	
-	void forAllCells(void (*fun)(...));
-	
-	void forAllDistinctNeighbouringCells(void (*fun) (...));
-		
-	...
-}
-\end{lstlisting}
-
-	\large
-
-\begin{itemize}
-	\item Functionality of first two methods is sufficient but hard to optimize
-	\item Functionality of last two methods results in higher cohesion, but potential for runtime improvement
-\end{itemize}
-	
+\frametitle{Runtime Comparison of different algorithms}
+	\begin{columns}
+		\column{0.6\linewidth}
+			\vspace{-0.9cm}
+			\begin{figure}
+				\centering
+				\includegraphics[width=\linewidth]{plot}
+				\label{fig:plot}
+			\end{figure}
+		\column{0.28\linewidth}
+		\begin{lstlisting}
+Ubunutu 20.04 LTS
+i7-12700KF @5,0GHz
+64GB RAM @ 3200MHz
+		\end{lstlisting}
+	\end{columns}

@@ -1,0 +1,25 @@
+\frametitle{Adding Gravitational Force}
+	%\begin{columns}
+	%	\begin{column}{0.5\textwidth}
+			\begin{figure}
+				\centering
+				\includegraphics[width=0.6\linewidth]{FGravity_added}
+				\label{fig:fgravityadded}
+			\end{figure}
+	%	\end{column}
+	%\begin{column}{0.5\textwidth}
+			
+\begin{lstlisting}
+		FLennardJonesGravity::operator()(){
+			forceDelegate->operator()();
+			particleContainer.forAllParticles([](auto& p){
+			p.force[1] += p.m * gGrav;
+			});	}
+\end{lstlisting}
+
+	%\end{column}
+		
+	%\end{columns}
+	
+	
+	

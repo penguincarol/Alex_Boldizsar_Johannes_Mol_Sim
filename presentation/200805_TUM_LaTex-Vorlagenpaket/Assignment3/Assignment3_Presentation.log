@@ -1938,6 +1938,55 @@ n input line 422.
 (pdftex.def)             Requested size: 47.80042pt x 25.17415pt.
  [19
 
+ <./cb2.png>]
+<nice_drop.png, id=458, 1796.7125pt x 1004.75375pt>
+File: nice_drop.png Graphic file (type png)
+<use nice_drop.png>
+Package pdftex.def Info: nice_drop.png  used on input line 434.
+(pdftex.def)             Requested size: 470.43571pt x 263.06956pt.
+File: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf Graphic file (type pdf)
+<use ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf>
+Package pdftex.def Info: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf  used o
+n input line 434.
+(pdftex.def)             Requested size: 47.80042pt x 25.17415pt.
+ [20
+
+ <./nice_drop.png>]
+<waterdrop.png, id=481, 1843.88875pt x 1035.87pt>
+File: waterdrop.png Graphic file (type png)
+<use waterdrop.png>
+Package pdftex.def Info: waterdrop.png  used on input line 444.
+(pdftex.def)             Requested size: 470.43571pt x 264.2777pt.
+LaTeX Font Info:    Calculating math sizes for size <25> on input line 444.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <25> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 444.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <18.50014> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 444.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <15.00015> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 444.
+LaTeX Font Info:    Font shape `T1/phv/m/n' will be
+(Font)              scaled to size 17.57507pt on input line 444.
+LaTeX Font Info:    Font shape `T1/phv/m/n' will be
+(Font)              scaled to size 14.25009pt on input line 444.
+LaTeX Font Info:    Font shape `T1/phv/m/it' in size <25> not available
+(Font)              Font shape `T1/phv/m/sl' tried instead on input line 444.
+LaTeX Font Info:    Font shape `T1/phv/m/sl' will be
+(Font)              scaled to size 23.74992pt on input line 444.
+LaTeX Font Info:    Font shape `T1/phv/m/it' in size <18.50014> not available
+(Font)              Font shape `T1/phv/m/sl' tried instead on input line 444.
+LaTeX Font Info:    Font shape `T1/phv/m/sl' will be
+(Font)              scaled to size 17.57507pt on input line 444.
+LaTeX Font Info:    Font shape `T1/phv/m/it' in size <15.00015> not available
+(Font)              Font shape `T1/phv/m/sl' tried instead on input line 444.
+LaTeX Font Info:    Font shape `T1/phv/m/sl' will be
+(Font)              scaled to size 14.25009pt on input line 444.
+File: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf Graphic file (type pdf)
+<use ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf>
+Package pdftex.def Info: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf  used o
+n input line 444.
+(pdftex.def)             Requested size: 47.80042pt x 25.17415pt.
+ [21
+
  <./waterdrop.png>]
 File: waterdrop.png Graphic file (type png)
 <use waterdrop.png>
@@ -2004,12 +2053,34 @@ n input line 472.
  [23
 
 ]
+File: ./Ressourcen/Praesentation/Bilder/TUM_Uhrenturm.png Graphic file (type pn
+g)
+<use ./Ressourcen/Praesentation/Bilder/TUM_Uhrenturm.png>
+Package pdftex.def Info: ./Ressourcen/Praesentation/Bilder/TUM_Uhrenturm.png  u
+sed on input line 469.
+(pdftex.def)             Requested size: 307.38763pt x 408.5654pt.
+File: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf Graphic file (type pdf)
+<use ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf>
+Package pdftex.def Info: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf  used o
+n input line 469.
+(pdftex.def)             Requested size: 47.80042pt x 25.17415pt.
+ [24
+
+]
 File: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf Graphic file (type pdf)
 <use ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf>
 Package pdftex.def Info: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf  used o
 n input line 486.
 (pdftex.def)             Requested size: 47.80042pt x 25.17415pt.
- [24
+ [25
+
+]
+File: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf Graphic file (type pdf)
+<use ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf>
+Package pdftex.def Info: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf  used o
+n input line 508.
+(pdftex.def)             Requested size: 47.80042pt x 25.17415pt.
+ [26
 
 ])
 \tf@nav=\write6
@@ -2021,8 +2092,7 @@ n input line 486.
 \tf@snm=\write8
 \openout8 = `Assignment3_Presentation.snm'.
 
-
-(./Assignment3_Presentation.aux) ) 
+ (./Assignment3_Presentation.aux) ) 
 Here is how much of TeX's memory you used:
  45218 strings out of 478287
  1051786 string characters out of 5849288
@@ -2042,8 +2112,8 @@ st/fonts/type1/urw/helvetic/uhvr8a.pfb></usr/share/texlive/texmf-dist/fonts/typ
 e1/urw/helvetic/uhvro8a.pfb>
 Output written on Assignment3_Presentation.pdf (24 pages, 1179357 bytes).
 PDF statistics:
- 601 PDF objects out of 1000 (max. 8388607)
- 509 compressed objects within 6 object streams
- 53 named destinations out of 1000 (max. 500000)
- 90 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 649 PDF objects out of 1000 (max. 8388607)
+ 551 compressed objects within 6 object streams
+ 57 named destinations out of 1000 (max. 500000)
+ 108 words of extra memory for PDF output out of 10000 (max. 10000000)
 

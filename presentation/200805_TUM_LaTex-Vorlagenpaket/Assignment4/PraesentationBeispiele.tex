@@ -3,6 +3,33 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{frame}
+	\frametitle{CI/CD improvements}
+	\begin{columns}
+		\begin{column}{0.3\textwidth}
+			\begin{figure}
+				\centering
+				\includegraphics[width=0.55\linewidth]{cicd_old}
+				\label{fig:cicdold}
+			\end{figure}
+			
+		\end{column}
+		
+		\begin{column}{0.7\textwidth}
+			\vspace{-1.5cm}
+			\begin{figure}
+				\centering
+				\includegraphics[width=0.8\linewidth]{cicd_new}
+				\label{fig:cicdnew}
+			\end{figure}
+		\hspace{4cm}
+		Reduced CI/CD time from 5m30s to 3m
+			
+		\end{column}
+		
+	\end{columns}
+\end{frame}
+
+\begin{frame}
 	\frametitle{Thermostat}
 	\begin{figure}
 		\centering
@@ -206,31 +233,6 @@ Idea:
 \end{frame}
 
 \begin{frame}
-	\frametitle{CI/CD improvements}
-	\begin{columns}
-		\begin{column}{0.3\textwidth}
-			\begin{figure}
-				\centering
-				\includegraphics[width=0.55\linewidth]{cicd_old}
-				\label{fig:cicdold}
-			\end{figure}
-			
-		\end{column}
-	
-		\begin{column}{0.7\textwidth}
-			\vspace{-1.5cm}
-			\begin{figure}
-				\centering
-				\includegraphics[width=0.8\linewidth]{cicd_new}
-				\label{fig:cicdnew}
-			\end{figure}
-			
-		\end{column}
-		
-	\end{columns}
-\end{frame}
-
-\begin{frame}
 	\frametitle{Adding Periodic bounds}
 	\large
 	This slide should look very familiar to Assignment 3
@@ -265,7 +267,57 @@ Idea:
 		
 	%\end{columns}
 	
+\end{frame}
+
+\begin{frame}[fragile]
+	\frametitle{Optimizations 1}
+	\large
+As mentioned in Assignment 3 our ParticleContainer does not contain Particle-structs anymore.\\
+Keeping the old interface lead to the following method:
+\begin{lstlisting}
+void ParticleContainer::forAllParticles(void(*function)(Particle &)) {
+	for (unsigned long index: activeParticles) {
+		Particle p;
+		loadParticle(p, index);
+		function(p);
+		storeParticle(p, index);
+	}
+}
+\end{lstlisting}
+
+$\implies$ rewriting old code where this method got used was a major improvement
+
+\end{frame}
+
+\begin{frame}
+	\frametitle{Optimizations 2}
+	\large
 	
+	\begin{figure}
+		\centering
+		\includegraphics[width=1\linewidth]{profile_preoptimization_just_relevant_part}
+		\label{fig:profilepreoptimizationjustrelevantpart}
+	\end{figure}
+	
+	\begin{itemize}
+		\item Force calculation takes a significant portion of CPU time
+		\item Force between two particles in Force-Functors got represented as lambda expression
+	\end{itemize}
+	
+	$\implies$ Represent force as static function instead
+	
+\end{frame}
+
+\begin{frame}
+	\frametitle{Small Rayleigh-Taylor instability}
+	
+	\begin{figure}[h!]
+		\centering    
+		\movie[label=show3,width=0.70\textwidth,poster
+		,autostart,showcontrols,loop] 
+		{\includegraphics[width=0.70\textwidth]{small_rti.png}}{small_rti.mp4}
+		%\caption{caption}
+	\end{figure} 
 	
 \end{frame}
 
@@ -292,8 +344,32 @@ Idea:
 \end{frame}
 
 \begin{frame}
+	\frametitle{Roadblocks}
+	\large
+	\begin{itemize}
+		\item Compiling and running jobs on the cluster turned out to be a nightmare
+		\item Intel compiler broke us trying to unbreak him
+		\item Searching for bugs that may or may not be there (bouncy particles in Rayleigh-Taylor)
+		\item Searching for bugs that definitely are there (see Boundary conditions)
+		\item Large time investments in order to get tools to run
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
 	\PraesentationBildUhrenturm
 	%\PraesentationStartseiteFlaggen
+\end{frame}
+
+\begin{frame}
+	\frametitle{Recreating Profiling}
+	\large
+	\begin{enumerate}
+		\item \texttt{mkdir build}
+		\item \texttt{cmake ..}
+		\item \texttt{make ProfileMolSim} or \texttt{make CXX\_FLAGS+="-Dslow -std=c++20" ProfileMolSim}
+		\item  \texttt{./ProfileMolSim ../input/[file\_you\_want\_to\_profile]}
+		\item  \texttt{gprof ProfileMolSim gmon.out > profile-data.txt}
+	\end{enumerate}
 \end{frame}
 
 

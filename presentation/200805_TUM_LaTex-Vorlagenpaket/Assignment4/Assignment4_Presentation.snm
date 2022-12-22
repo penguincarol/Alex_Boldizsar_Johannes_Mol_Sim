@@ -1,6 +1,7 @@
-\beamer@slide {fig:thermocomm}{2}
-\beamer@slide {fig:vectorcoordwrapper}{3}
-\beamer@slide {fig:cicdold}{7}
-\beamer@slide {fig:cicdnew}{7}
+\beamer@slide {fig:cicdold}{2}
+\beamer@slide {fig:cicdnew}{2}
+\beamer@slide {fig:thermocomm}{3}
+\beamer@slide {fig:vectorcoordwrapper}{4}
 \beamer@slide {fig:boundarymolsim}{8}
 \beamer@slide {fig:fgravityadded}{9}
+\beamer@slide {fig:profilepreoptimizationjustrelevantpart}{11}

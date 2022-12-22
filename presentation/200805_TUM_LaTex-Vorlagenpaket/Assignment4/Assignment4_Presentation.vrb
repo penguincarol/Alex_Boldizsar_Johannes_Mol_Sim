@@ -1,25 +1,17 @@
-\frametitle{Adding Gravitational Force}
-	%\begin{columns}
-	%	\begin{column}{0.5\textwidth}
-			\begin{figure}
-				\centering
-				\includegraphics[width=0.6\linewidth]{FGravity_added}
-				\label{fig:fgravityadded}
-			\end{figure}
-	%	\end{column}
-	%\begin{column}{0.5\textwidth}
-			
+\frametitle{Optimizations 1}
+	\large
+As mentioned in Assignment 3 our ParticleContainer does not contain Particle-structs anymore.\\
+Keeping the old interface lead to the following method:
 \begin{lstlisting}
-		FLennardJonesGravity::operator()(){
-			forceDelegate->operator()();
-			particleContainer.forAllParticles([](auto& p){
-			p.force[1] += p.m * gGrav;
-			});	}
+void ParticleContainer::forAllParticles(void(*function)(Particle &)) {
+	for (unsigned long index: activeParticles) {
+		Particle p;
+		loadParticle(p, index);
+		function(p);
+		storeParticle(p, index);
+	}
+}
 \end{lstlisting}
 
-	%\end{column}
-		
-	%\end{columns}
-	
-	
-	
+$\implies$ rewriting old code where this method got used was a major improvement
+

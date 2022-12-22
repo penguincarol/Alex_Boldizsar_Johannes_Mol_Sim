@@ -4,6 +4,5 @@ cmake-build-*
 *.xyz
 *.o
 *.vtu
-*.mp4
 ./doxys_documentation/*
 build/*

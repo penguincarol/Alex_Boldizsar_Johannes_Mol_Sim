@@ -352,12 +352,17 @@ $\implies$ rewriting old code where this method got used was a major improvement
 	\end{itemize}
 	
 	\Large
-	\begin{tabular}{ll}
-		Options & MMU/s \\
-		-slow -O2 & \\
-		-O2 & \\
-		-O0 & \\	
+	\centering
+	\begin{tabular}{lll}
+		Options & MMU/s Cluster & MMU/s Local\\
+		-slow -O2 & 0.0087 & \\
+		-O2 & & 0.036\\
+		-O0 & 0.0087 &\\	
 	\end{tabular}
+
+	\large
+	Since these measurements smaller by orders of magnitude than our "`private test measurements"' and so close together we assume that something went wrong on the cluster.
+
 \end{frame}
 
 \begin{frame}

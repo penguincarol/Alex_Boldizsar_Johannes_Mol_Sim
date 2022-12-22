@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2022.10.22)  22 DEC 2022 21:31
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2022.10.22)  22 DEC 2022 21:39
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1887,44 +1887,75 @@ n input line 344.
  [14
 
  <./falling_drop.png>]
+LaTeX Font Info:    Calculating math sizes for size <17.92> on input line 361.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <17.92> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 361.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <13.2609> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 361.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10.7521> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 361.
+LaTeX Font Info:    Font shape `T1/phv/m/n' will be
+(Font)              scaled to size 12.59781pt on input line 361.
+LaTeX Font Info:    Font shape `T1/phv/m/n' will be
+(Font)              scaled to size 10.21446pt on input line 361.
+LaTeX Font Info:    Font shape `T1/phv/m/it' in size <17.92> not available
+(Font)              Font shape `T1/phv/m/sl' tried instead on input line 361.
+LaTeX Font Info:    Font shape `T1/phv/m/sl' will be
+(Font)              scaled to size 17.02394pt on input line 361.
+LaTeX Font Info:    Font shape `T1/phv/m/it' in size <13.2609> not available
+(Font)              Font shape `T1/phv/m/sl' tried instead on input line 361.
+LaTeX Font Info:    Font shape `T1/phv/m/sl' will be
+(Font)              scaled to size 12.59781pt on input line 361.
+LaTeX Font Info:    Font shape `T1/phv/m/it' in size <10.7521> not available
+(Font)              Font shape `T1/phv/m/sl' tried instead on input line 361.
+LaTeX Font Info:    Font shape `T1/phv/m/sl' will be
+(Font)              scaled to size 10.21446pt on input line 361.
 File: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf Graphic file (type pdf)
 <use ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf>
 Package pdftex.def Info: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf  used o
-n input line 356.
+n input line 361.
 (pdftex.def)             Requested size: 47.80042pt x 25.17415pt.
  [15
+
+]
+File: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf Graphic file (type pdf)
+<use ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf>
+Package pdftex.def Info: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf  used o
+n input line 373.
+(pdftex.def)             Requested size: 47.80042pt x 25.17415pt.
+ [16
 
 ]
 File: ./Ressourcen/Praesentation/Bilder/TUM_Uhrenturm.png Graphic file (type pn
 g)
 <use ./Ressourcen/Praesentation/Bilder/TUM_Uhrenturm.png>
 Package pdftex.def Info: ./Ressourcen/Praesentation/Bilder/TUM_Uhrenturm.png  u
-sed on input line 361.
+sed on input line 378.
 (pdftex.def)             Requested size: 307.38763pt x 408.5654pt.
 File: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf Graphic file (type pdf)
 <use ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf>
 Package pdftex.def Info: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf  used o
-n input line 361.
+n input line 378.
 (pdftex.def)             Requested size: 47.80042pt x 25.17415pt.
- [16
+ [17
 
 ]
 LaTeX Font Info:    Trying to load font information for T1+cmtt on input line 3
-73.
+90.
 
 (/usr/share/texlive/texmf-dist/tex/latex/base/t1cmtt.fd
 File: t1cmtt.fd 2019/12/16 v2.5j Standard LaTeX font definitions
 )
 
 LaTeX Font Warning: Font shape `T1/cmtt/m/n' in size <14.93> not available
-(Font)              size <14.4> substituted on input line 373.
+(Font)              size <14.4> substituted on input line 390.
 
 File: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf Graphic file (type pdf)
 <use ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf>
 Package pdftex.def Info: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf  used o
-n input line 373.
+n input line 390.
 (pdftex.def)             Requested size: 47.80042pt x 25.17415pt.
-[17
+[18
 
 ])
 \tf@nav=\write6
@@ -1943,11 +1974,11 @@ LaTeX Font Warning: Size substitutions with differences
 
  ) 
 Here is how much of TeX's memory you used:
- 44989 strings out of 478287
- 1049919 string characters out of 5849288
+ 45031 strings out of 478287
+ 1050632 string characters out of 5849288
  1444630 words of memory out of 5000000
- 62224 multiletter control sequences out of 15000+600000
- 531066 words of font info for 113 fonts, out of 8000000 for 9000
+ 62262 multiletter control sequences out of 15000+600000
+ 549804 words of font info for 143 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  133i,16n,125p,876b,1330s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texmf/fonts/enc/dvips/cm-super/cm-super-t1.enc}{/usr/share/texliv
@@ -1956,10 +1987,10 @@ ype1/public/amsfonts/cm/cmss12.pfb></usr/share/texlive/texmf-dist/fonts/type1/p
 ublic/amsfonts/cm/cmsy10.pfb></usr/share/texmf/fonts/type1/public/cm-super/sftt
 1440.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/helvetic/uhvr8a.pfb></u
 sr/share/texlive/texmf-dist/fonts/type1/urw/helvetic/uhvro8a.pfb>
-Output written on Assignment4_Presentation.pdf (17 pages, 5072004 bytes).
+Output written on Assignment4_Presentation.pdf (18 pages, 5073360 bytes).
 PDF statistics:
- 498 PDF objects out of 1000 (max. 8388607)
- 408 compressed objects within 5 object streams
- 42 named destinations out of 1000 (max. 500000)
+ 517 PDF objects out of 1000 (max. 8388607)
+ 426 compressed objects within 5 object streams
+ 44 named destinations out of 1000 (max. 500000)
  123 words of extra memory for PDF output out of 10000 (max. 10000000)
 

@@ -344,6 +344,23 @@ $\implies$ rewriting old code where this method got used was a major improvement
 \end{frame}
 
 \begin{frame}
+	\frametitle{Serial Benchmarks}
+	\large
+	\begin{itemize}
+		\item As already mentioned building with the Intel compiled didn't work even with major time investments
+		\item The option "`-slow"' lets the code run in the pre-optimized state
+	\end{itemize}
+	
+	\Large
+	\begin{tabular}{ll}
+		Options & MMU/s \\
+		-slow -O2 & \\
+		-O2 & \\
+		-O0 & \\	
+	\end{tabular}
+\end{frame}
+
+\begin{frame}
 	\frametitle{Roadblocks}
 	\large
 	\begin{itemize}

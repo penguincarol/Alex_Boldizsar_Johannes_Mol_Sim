@@ -761,6 +761,7 @@ public:
                                 - mMajor * (x_2 == gridDimensions[2] - 2) * (static_cast<long>(gridDimensions[2]) - 1)
                                 + mMajor * (x_2 == 0) * static_cast<long>(gridDimensions[2]);
                         cells.store(g0, g1, g2, i);
+                        cells.store(g0, x_1 + 1, x_2 + 1, i);
                     }
                 }
             }
@@ -780,6 +781,7 @@ public:
                                            - mMajor * (x_2 == gridDimensions[2] - 1) * (static_cast<long>(gridDimensions[2]) - 1)
                                            + mMajor * (x_2 == 0) * static_cast<long>(gridDimensions[2]);
                         cells.store(g0, g1, g2, i);
+                        cells.store(g0, x_1 + 1, x_2 + 1, i);
                     }
                 }
             }
@@ -799,6 +801,7 @@ public:
                                            - mMajor * (x_2 == gridDimensions[2] - 2) * (static_cast<long>(gridDimensions[2]) - 1)
                                            + mMajor * (x_2 == 0) * static_cast<long>(gridDimensions[2]);
                         cells.store(g0, g1, g2, i);
+                        cells.store(x_0 + 1, g1, x_2 + 1, i);
                     }
                 }
             }
@@ -818,6 +821,7 @@ public:
                                            - mMajor * (x_2 == gridDimensions[2] - 2) * (static_cast<long>(gridDimensions[2]) - 1)
                                            + mMajor * (x_2 == 0) * static_cast<long>(gridDimensions[2]);
                         cells.store(g0, g1, g2, i);
+                        cells.store(x_0 + 1, g1, x_2 + 1, i);
                     }
                 }
             }
@@ -837,6 +841,7 @@ public:
                                            + mMajor * (x_1 == 0) * static_cast<long>(gridDimensions[1]);
                         unsigned long g2 = gridDimensions[2] + 1;
                         cells.store(g0, g1, g2, i);
+                        cells.store(x_0 + 1, x_1 + 1, g2, i);
                     }
                 }
             }
@@ -856,6 +861,7 @@ public:
                                            + mMajor * (x_1 == 0) * static_cast<long>(gridDimensions[1]);
                         unsigned long g2 = 0;
                         cells.store(g0, g1, g2, i);
+                        cells.store(x_0 + 1, x_1 + 1, g2, i);
                     }
                 }
             }

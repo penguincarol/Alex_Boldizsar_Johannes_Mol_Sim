@@ -11,7 +11,8 @@ namespace io::input {
     XMLReader::~XMLReader() = default;
 
     void XMLReader::readFile(const char *filename, std::list<Particle> &particles,
-                             std::unordered_map<io::input::names, std::string> &arg_map) {
+                             std::unordered_map<io::input::names, std::string> &arg_map,
+                             std::list< Membrane>& membranes) {
         xml_schema::properties properties;
         properties.no_namespace_schema_location("./XMLFormat.xsd");
 

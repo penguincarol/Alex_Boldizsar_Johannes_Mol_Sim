@@ -58,8 +58,8 @@ ParticleContainer::ParticleContainer(const std::vector<Particle> &buffer) {
 }
 
 ParticleContainer::ParticleContainer(const std::vector<Particle> &buffer, std::array<double, 3> domSize,
-                                     double r_cutoff) :
-        ParticleContainer::ParticleContainer(buffer) {
+                                     double r_cutoff, const std::vector<Membrane>& membranesIn) :
+        ParticleContainer::ParticleContainer(buffer){
     domainSize = domSize;
     x_2_max = domainSize[2];
     x_1_max = domainSize[1];
@@ -67,6 +67,7 @@ ParticleContainer::ParticleContainer(const std::vector<Particle> &buffer, std::a
     x_2_min = 0;
     x_1_min = 0;
     x_0_min = 0;
+    membranes = membranesIn;
     //very explicit casts to absolutely make sure, that the rounding is done correctly
     //this implementation uses shorter grids on the side if the numbers are nasty btw
     std::array<double, 3> helperGridDimensions{std::ceil(domSize[0] / r_cutoff), std::ceil(domSize[1] / r_cutoff),
@@ -84,8 +85,8 @@ ParticleContainer::ParticleContainer(const std::vector<Particle> &buffer, std::a
 }
 
 ParticleContainer::ParticleContainer(const std::vector<Particle> &buffer, std::array<double, 2> domainSize,
-                                     double r_cutoff) :
-        ParticleContainer::ParticleContainer(buffer, {domainSize[0], domainSize[1], r_cutoff}, r_cutoff) {};
+                                     double r_cutoff, const std::vector<Membrane>& membranesIn) :
+        ParticleContainer::ParticleContainer(buffer, {domainSize[0], domainSize[1], r_cutoff}, r_cutoff, membranesIn) {};
 #pragma endregion
 
 #pragma region Utils

@@ -7,6 +7,7 @@
 #include "sim/Simulation.h"
 #include "benchmark.h"
 #include "io/input/Configuration.h"
+#include "data/Membrane.h"
 
 #include <string>
 #include <variant>
@@ -35,6 +36,7 @@ int main(int argc, char *argsv[]) {
 
     // load all input files
     std::vector<Particle> buffer;
+    std::vector<Membrane> memBuffer;
     auto ioWrapper = io::IOWrapper(parser.getLoader());
     for (auto& file : inputFiles) {
         ioWrapper.setLocator(file);

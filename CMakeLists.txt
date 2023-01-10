@@ -100,7 +100,7 @@ add_custom_command(TARGET MolSim POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_dir
 list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake/modules)
 
 # create sanitization target
-add_executable(asan-MolSim ${MY_SRC})
+add_executable(asan-MolSim ${MY_SRC} src/sim/physics/force/FMembrane.cpp src/sim/physics/force/FMembrane.h src/data/Membrane.cpp src/data/Membrane.h)
 set_target_properties(asan-MolSim PROPERTIES EXCLUDE_FROM_ALL True)
 target_compile_features(asan-MolSim PRIVATE cxx_std_20)
 target_include_directories(asan-MolSim

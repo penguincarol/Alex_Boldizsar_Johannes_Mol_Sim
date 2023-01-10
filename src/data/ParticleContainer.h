@@ -4,6 +4,7 @@
 #include "Particle.h"
 #include "sim/physics/bounds/types.h"
 #include "io/output/Logging.h"
+#include "Membrane.h"
 
 #include <vector>
 #include <array>
@@ -37,6 +38,7 @@ private:
         unsigned long p_eDimX0;
         unsigned long p_eDimX1;
         unsigned long p_eDimX2;
+
 
     public:
         struct Iterator {
@@ -281,6 +283,7 @@ private:
     VectorCoordWrapper cells;
     std::array<unsigned int, 3> gridDimensions; //stores the number of cells in x- y- and z- direction
     std::array<double, 3> domainSize;
+    std::vector<Membrane> membranes;  //basically a list of edges forming different graphs on the same node-set
     double x_2_max;
     double x_1_max;
     double x_0_max;
@@ -358,7 +361,7 @@ public:
      * @param domainSize
      * @param r_cutoff
      */
-    ParticleContainer(const std::vector<Particle> &buffer, std::array<double, 3> domainSize, double r_cutoff);
+    ParticleContainer(const std::vector<Particle> &buffer, std::array<double, 3> domainSize, double r_cutoff, const std::vector<Membrane>& membranes = {});
 
     /**
      * @brief Constructor of ParticleContainer that also initializes a seemingly two dimensional cell-structure
@@ -367,7 +370,7 @@ public:
      * @param domainSize
      * @param r_cutoff
      */
-    ParticleContainer(const std::vector<Particle> &buffer, std::array<double, 2> domainSize, double r_cutoff);
+    ParticleContainer(const std::vector<Particle> &buffer, std::array<double, 2> domainSize, double r_cutoff, const std::vector<Membrane>& membranes = {});
 
     /**
      * @brief returns the index of the cell in cells corresponding to the coordinates given. Performs NO bounds checks!

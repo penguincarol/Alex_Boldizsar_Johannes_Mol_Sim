@@ -3,7 +3,7 @@
 #include "Eigen"
 
 enum Shape {
-    cuboid, sphere, particle, num_shapes
+    cuboid, sphere, particle, num_shapes, membrane
 };
 const std::array<enum Shape, num_shapes> all_shapes = {cuboid, sphere, particle};
 

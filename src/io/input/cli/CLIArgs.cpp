@@ -246,7 +246,7 @@ namespace io::input {
             {"-lc",
                     ArgEntry<int>(
                             "-lc",
-                            "--linkedCell",
+                            "--enableLinkedCell",
                             "Enables linked cell operation. Linked Cell is on by default. Set <bool> to 0 for false and to 1 for true",
                             "<bool>",
                             true,
@@ -376,7 +376,7 @@ namespace io::input {
             {"-cp",
                     ArgEntry<int>(
                             "-cp",
-                            "--checkpointingEnable",
+                            "--enableCheckpointing",
                             "Enables checkpointing. Values is 0 for false, 1 for true.",
                             "<value>",
                             true,

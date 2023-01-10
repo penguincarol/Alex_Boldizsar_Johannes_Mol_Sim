@@ -95,10 +95,10 @@ namespace io::input {
             double brown_val = std::stod(parseBuffer);
 
             if (simulation->SimulationStrategy().Naive().present()) {
-                setInMapND(linkedCell, "0");
+                setInMapND(enableLinkedCell, "0");
             }
             else if (auto& lc = simulation->SimulationStrategy().LinkedCell(); lc.present()) {
-                setInMapND(linkedCell, "1");
+                setInMapND(enableLinkedCell, "1");
                 setInMapND(rCutoff, std::to_string(lc->CutoffRadius()));
                 setInMapND(boundingBox_X0, std::to_string(lc->BoundaryBox().BoxSize().X()));
                 setInMapND(boundingBox_X1, std::to_string(lc->BoundaryBox().BoxSize().Y()));
@@ -114,7 +114,7 @@ namespace io::input {
             else {
                 output::loggers::general->debug("This really shouldn't happen. No SimulationStrategy was specified despite it being mandatory. Using default...");
 
-                arg_map.emplace(linkedCell, std::to_string(default_linked_cell));
+                arg_map.emplace(enableLinkedCell, std::to_string(default_linked_cell));
 
                 arg_map.emplace(boundingBox_X0, std::to_string(default_bound_x0));
                 arg_map.emplace(boundingBox_X1, std::to_string(default_bound_x1));
@@ -133,20 +133,20 @@ namespace io::input {
             int dims_val = std::stoi(parseBuffer);
 
             if (auto& t = simulation->Thermostat(); t.present()) {
-                setInMapND(thermoEnable, std::to_string(1));
+                setInMapND(enableThermo, std::to_string(1));
                 setInMapND(thermoTInit, std::to_string(t.get().T_Init()));
                 setInMapND(thermoNTerm, std::to_string(t.get().N_Term()));
                 setInMap(thermoTTarget, t.get().T_Target().present(), std::to_string(t.get().T_Init()), [&]()->std::string{return std::to_string(t.get().T_Target().get());});
                 setInMap(thermoDelta_t, t.get().Delta_T().present(), std::to_string(default_delta_temp), [&]()->std::string{return std::to_string(t.get().Delta_T().get());});
             } else {
-                setInMapND(thermoEnable, std::to_string(0));
+                setInMapND(enableThermo, std::to_string(0));
             }
 
 
             // <!-- Misc -->
 
             setInMap(logLevel, simulation->LogLevel().present(), std::to_string(default_log_level), [&]()->std::string{return std::to_string(simulation->LogLevel().get());});
-            setInMap(checkpointingEnable, simulation->EnableCheckpointing().present(), std::to_string(default_checkpointing),[&]()->std::string{return std::to_string(simulation->EnableCheckpointing().get());});
+            setInMap(enableCheckpointing, simulation->EnableCheckpointing().present(), std::to_string(default_checkpointing), [&]()->std::string{return std::to_string(simulation->EnableCheckpointing().get());});
 
             if (simulation->Benchmark().present()) {
                 setInMapND(benchmark, "1");

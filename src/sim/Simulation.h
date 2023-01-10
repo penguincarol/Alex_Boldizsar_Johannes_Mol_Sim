@@ -41,7 +41,7 @@ namespace sim {
         double delta_t;
         /**Globally valid for some functors*/
         double epsilon;
-        /**Globally valid for some functos*/
+        /**Globally valid for some functors*/
         double sigma;
         const std::string outputFolder;
         const std::string outputBaseName;
@@ -134,8 +134,8 @@ namespace sim {
                            config.get<io::input::boundCondFront>(), config.get<io::input::boundCondRear>(),
                            config.get<io::input::forceCalculation>(), config.get<io::input::positionCalculation>(),
                            config.get<io::input::velocityCalculation>(),
-                           config.get<io::input::linkedCell>(), config.get<io::input::checkpointingEnable>(),
-                           config.get<io::input::gGrav>(), config.get<io::input::thermoEnable>(), config.get<io::input::thermoDelta_t>(),
+                           config.get<io::input::enableLinkedCell>(), config.get<io::input::enableCheckpointing>(),
+                           config.get<io::input::gGrav>(), config.get<io::input::enableThermo>(), config.get<io::input::thermoDelta_t>(),
                            config.get<io::input::thermoNTerm>(), config.get<io::input::thermoTTarget>(),
                            config.get<io::input::thermoTInit>(), config.get<io::input::dimensions>()) {
             io::output::loggers::simulation->trace("Sim constructor short used");

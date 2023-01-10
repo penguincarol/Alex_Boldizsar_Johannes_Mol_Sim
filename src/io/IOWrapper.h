@@ -214,7 +214,7 @@ namespace io {
             }
 
             simulationStrategy_t SimulationStrategy;
-            if (config.get<io::input::linkedCell>()) {
+            if (config.get<io::input::enableLinkedCell>()) {
                 std::unordered_map<sim::physics::bounds::type, std::string> bMap = {{sim::physics::bounds::outflow,    "Outflow"},
                                                                                     {sim::physics::bounds::reflecting, "Reflecting"},
                                                                                     {sim::physics::bounds::periodic,   "Periodic"}};
@@ -280,7 +280,7 @@ namespace io {
 
             simulation.AverageBrownianMotion(config.get<io::input::brown>());
             simulation.Dimensions(dimension_t(config.get<io::input::dimensions>()));
-            if(config.get<io::input::thermoEnable>()) {
+            if(config.get<io::input::enableThermo>()) {
                 thermostat_t therm(config.get<io::input::thermoTInit>(), config.get<io::input::thermoNTerm>());
                 therm.T_Target(config.get<io::input::thermoTTarget>());
                 therm.Delta_T(config.get<io::input::thermoDelta_t>());

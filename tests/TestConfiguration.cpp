@@ -91,7 +91,7 @@ TEST(Configuration, loadCLICorrect) {
     EXPECT_EQ(config.get<sigma>(), 1.5);
     EXPECT_EQ(config.get<epsilon>(), 1.8);
     EXPECT_EQ(config.get<brown>(), 1.3);
-    EXPECT_EQ(config.get<linkedCell>(), true);
+    EXPECT_EQ(config.get<enableLinkedCell>(), true);
     EXPECT_EQ(config.get<rCutoff>(), 5.0);
     EXPECT_EQ(config.get<boundingBox_X0>(), 55.0);
     EXPECT_EQ(config.get<boundingBox_X1>(), 53.0);
@@ -108,12 +108,12 @@ TEST(Configuration, loadCLICorrect) {
     EXPECT_EQ(config.get<benchmarkType>(), "file");
     EXPECT_EQ(config.get<benchMaxBodySize>(), 102);
     EXPECT_EQ(config.get<benchIterationCount>(), 16);
-    EXPECT_EQ(config.get<thermoEnable>(), true);
+    EXPECT_EQ(config.get<enableThermo>(), true);
     EXPECT_EQ(config.get<thermoTInit>(), 2.0);
     EXPECT_EQ(config.get<thermoNTerm>(), 200);
     EXPECT_EQ(config.get<thermoTTarget>(), 2.5);
     EXPECT_EQ(config.get<thermoDelta_t>(), 2.6);
-    EXPECT_EQ(config.get<checkpointingEnable>(), true);
+    EXPECT_EQ(config.get<enableCheckpointing>(), true);
     EXPECT_EQ(config.get<gGrav>(), 5.0);
     EXPECT_EQ(config.get<simLastIteration>(), 1000);
 }
@@ -134,7 +134,7 @@ static void setFileMap(std::unordered_map<io::input::names, std::string>& argMap
     argMap[sigma] = "60.0";
     argMap[epsilon] = "92.0";
     argMap[brown] = "1.2";
-    argMap[linkedCell] = "0";
+    argMap[enableLinkedCell] = "0";
     argMap[rCutoff] = "3.2";
     argMap[boundingBox_X0] = "22.0";
     argMap[boundingBox_X1] = "53.2";
@@ -151,12 +151,12 @@ static void setFileMap(std::unordered_map<io::input::names, std::string>& argMap
     argMap[benchmarkType] = "default";
     argMap[benchMaxBodySize] = "30";
     argMap[benchIterationCount] = "42";
-    argMap[thermoEnable] = "0";
+    argMap[enableThermo] = "0";
     argMap[thermoTInit] = "5.0";
     argMap[thermoNTerm] = "233";
     argMap[thermoTTarget] = "3.0";
     argMap[thermoDelta_t] = "1.0";
-    argMap[checkpointingEnable] = "0";
+    argMap[enableCheckpointing] = "0";
     argMap[gGrav] = "0.1";
     argMap[simLastIteration] = "1";
 }
@@ -190,7 +190,7 @@ TEST(Configuration, loadFileSet) {
     EXPECT_EQ(config.get<sigma>(), 60.0);
     EXPECT_EQ(config.get<epsilon>(), 92.0);
     EXPECT_EQ(config.get<brown>(), 1.2);
-    EXPECT_EQ(config.get<linkedCell>(), false);
+    EXPECT_EQ(config.get<enableLinkedCell>(), false);
     EXPECT_EQ(config.get<rCutoff>(), 3.2);
     EXPECT_EQ(config.get<boundingBox_X0>(), 22.0);
     EXPECT_EQ(config.get<boundingBox_X1>(), 53.2);
@@ -207,12 +207,12 @@ TEST(Configuration, loadFileSet) {
     EXPECT_EQ(config.get<benchmarkType>(), "default");
     EXPECT_EQ(config.get<benchMaxBodySize>(), 30);
     EXPECT_EQ(config.get<benchIterationCount>(), 42);
-    EXPECT_EQ(config.get<thermoEnable>(), false);
+    EXPECT_EQ(config.get<enableThermo>(), false);
     EXPECT_EQ(config.get<thermoTInit>(), 5.0);
     EXPECT_EQ(config.get<thermoNTerm>(), 233);
     EXPECT_EQ(config.get<thermoTTarget>(), 3.0);
     EXPECT_EQ(config.get<thermoDelta_t>(), 1.0);
-    EXPECT_EQ(config.get<checkpointingEnable>(), false);
+    EXPECT_EQ(config.get<enableCheckpointing>(), false);
     EXPECT_EQ(config.get<gGrav>(), 0.1);
     EXPECT_EQ(config.get<simLastIteration>(), 1);
 }
@@ -277,7 +277,7 @@ TEST(Configuration, integrationXMLReader) {
     EXPECT_EQ(config.get<positionCalculation>(), sim::physics::position::type::stoermerVelvetOMP);
     EXPECT_EQ(config.get<velocityCalculation>(), sim::physics::velocity::type::stoermerVelvetOMP);
     EXPECT_EQ(config.get<brown>(), 5.0);
-    EXPECT_EQ(config.get<linkedCell>(), true);
+    EXPECT_EQ(config.get<enableLinkedCell>(), true);
     EXPECT_EQ(config.get<boundingBox_X0>(), 120.0);
     EXPECT_EQ(config.get<boundingBox_X1>(), 50.0);
     EXPECT_EQ(config.get<boundingBox_X2>(), 10.0);
@@ -294,12 +294,12 @@ TEST(Configuration, integrationXMLReader) {
     EXPECT_EQ(config.get<benchmarkType>(), "default");
     EXPECT_EQ(config.get<benchMaxBodySize>(), 100);
     EXPECT_EQ(config.get<benchIterationCount>(), 10000);
-    EXPECT_EQ(config.get<thermoEnable>(), true);
+    EXPECT_EQ(config.get<enableThermo>(), true);
     EXPECT_EQ(config.get<thermoTInit>(), 50.0);
     EXPECT_EQ(config.get<thermoNTerm>(), 987);
     EXPECT_EQ(config.get<thermoTTarget>(), 30.0);
     EXPECT_EQ(config.get<thermoDelta_t>(), 576.3);
-    EXPECT_EQ(config.get<checkpointingEnable>(), true);
+    EXPECT_EQ(config.get<enableCheckpointing>(), true);
     EXPECT_EQ(config.get<gGrav>(), 5.0);
     EXPECT_EQ(config.get<simLastIteration>(), 1000);
 }
@@ -339,7 +339,7 @@ TEST(Configuration, testXMLLinkedCell) {
     std::unordered_map<io::input::names, std::string> argMap;
     io::input::XMLReader::readFile("simulationStrategySets.xml", particles, argMap);
 
-    EXPECT_EQ(argMap[linkedCell], "1")<< "SimulationStrategy was set to " << argMap[linkedCell] << " not LinkedCell" ;
+    EXPECT_EQ(argMap[enableLinkedCell], "1") << "SimulationStrategy was set to " << argMap[enableLinkedCell] << " not LinkedCell" ;
 
     EXPECT_EQ(argMap[boundCondFront], "Reflecting")<< "boundCondFront was set to " << argMap[boundCondFront] << " not Reflecting" ;
     EXPECT_EQ(argMap[boundCondLeft], "Reflecting")<< "boundCondFront was set to " << argMap[boundCondLeft] << " not Reflecting" ;

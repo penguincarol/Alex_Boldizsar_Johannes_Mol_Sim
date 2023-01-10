@@ -12,9 +12,6 @@ namespace sim::physics::force {
     enum type {
         gravity,
         lennardJones,
-        lennardJonesOMP,
-        lennardJonesCell,
-        lennardJonesGravity,
         types_count [[maybe_unused]]
     };
 

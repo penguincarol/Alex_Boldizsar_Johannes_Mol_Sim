@@ -217,11 +217,61 @@ namespace io::input {
                     ArgEntry<std::string>(
                             "-f",
                             "--forceType",
-                            "Defines the force calculation method. Options: 'gravity', 'lennardjones', 'lennardjonesOMP', 'lennardjonescell', 'lennardjonesgravity'",
+                            "Defines the force calculation method. Options: 'gravity', 'lennardjones'",
                             "<type>",
                             true,
                             default_force_type,
                             [](std::string &arg) { return arg; }
+                    )},
+            {"-fEGrav",
+                    ArgEntry<int>(
+                            "-fEGrav",
+                            "--forceEnableGravity",
+                            "Enables gravity for force calculation. Set <bool> to 0 for false and to 1 for true",
+                            "<bool>",
+                            true,
+                            default_enable_grav,
+                            [](std::string &arg) { return std::stoi(arg); }
+                    )},
+            {"-fEOMP",
+                    ArgEntry<int>(
+                            "-fEOMP",
+                            "--forceEnableOMP",
+                            "Enables OMP usage for force calculation. Set <bool> to 0 for false and to 1 for true",
+                            "<bool>",
+                            true,
+                            default_enable_omp,
+                            [](std::string &arg) { return std::stoi(arg); }
+                    )},
+            {"-fEMem",
+                    ArgEntry<int>(
+                            "-fEMem",
+                            "--forceEnableMembrane",
+                            "Enables membrane simulation for force calculation. Set <bool> to 0 for false and to 1 for true",
+                            "<bool>",
+                            true,
+                            default_enable_membrane,
+                            [](std::string &arg) { return std::stoi(arg); }
+                    )},
+            {"-fEMemPull",
+                    ArgEntry<int>(
+                            "-fEMemPull",
+                            "--forceEnableMembranePull",
+                            "Enables membrane pull simulation for force calculation. Set <bool> to 0 for false and to 1 for true",
+                            "<bool>",
+                            true,
+                            default_enable_membrane_pull,
+                            [](std::string &arg) { return std::stoi(arg); }
+                    )},
+            {"-fELC",
+                    ArgEntry<int>(
+                            "-fELC",
+                            "--forceEnableLinkedCell",
+                            "Enables linked cell operation. Linked Cell is on by default. Set <bool> to 0 for false and to 1 for true",
+                            "<bool>",
+                            true,
+                            default_linked_cell,
+                            [](std::string &arg) { return std::stoi(arg); }
                     )},
             {"-x",
                     ArgEntry<std::string>(
@@ -243,16 +293,7 @@ namespace io::input {
                             default_vel_type,
                             [](std::string &arg) { return arg; }
                     )},
-            {"-lc",
-                    ArgEntry<int>(
-                            "-lc",
-                            "--enableLinkedCell",
-                            "Enables linked cell operation. Linked Cell is on by default. Set <bool> to 0 for false and to 1 for true",
-                            "<bool>",
-                            true,
-                            default_linked_cell,
-                            [](std::string &arg) { return std::stoi(arg); }
-                    )},
+
             {"-brown",
                     ArgEntry<double>(
                             "-brown",

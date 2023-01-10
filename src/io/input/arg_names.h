@@ -29,6 +29,7 @@ namespace io::input {
         forceCalculation,
         enableGrav,
         enableMembrane,
+        enableMembranePull,
         enableOMP,
         gGrav,
             // LINKED CELL

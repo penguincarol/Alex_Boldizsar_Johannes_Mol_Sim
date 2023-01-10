@@ -40,6 +40,10 @@ constexpr bool default_checkpointing{true};
 constexpr double default_g_grav{1.0};
 constexpr auto default_loader{"xml"};
 constexpr int default_last_iteration{0};
+constexpr bool default_enable_grav{false};
+constexpr bool default_enable_omp{false};
+constexpr bool default_enable_membrane{false};
+constexpr bool default_enable_membrane_pull{false};
 
 using calcF = sim::physics::force::FLennardJonesOMP;
 using calcX = sim::physics::position::XStoermerVelvetOMP;

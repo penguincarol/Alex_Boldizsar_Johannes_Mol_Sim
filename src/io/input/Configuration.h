@@ -88,6 +88,7 @@ namespace io::input {
                 entry<forceCalculation, force_t>,
                 entry<enableGrav, bool>,
                 entry<enableMembrane, bool>,
+                entry<enableMembranePull, bool>,
                 entry<enableOMP, bool>,
                 entry<gGrav, double>,
                 entry<enableLinkedCell, bool>,
@@ -170,7 +171,11 @@ namespace io::input {
             dataStorage[sigma] = std::get<io::input::ArgEntry<double>>(cli_arg_map.at("-sig")).value;
             dataStorage[epsilon] = std::get<io::input::ArgEntry<double>>(cli_arg_map.at("-eps")).value;
             dataStorage[brown] = std::get<io::input::ArgEntry<double>>(cli_arg_map.at("-brown")).value;
-            dataStorage[enableLinkedCell] = std::get<io::input::ArgEntry<int>>(cli_arg_map.at("-lc")).value != 0;
+            dataStorage[enableLinkedCell] = std::get<io::input::ArgEntry<int>>(cli_arg_map.at("-fELC")).value != 0;
+            dataStorage[enableGrav] = std::get<io::input::ArgEntry<int>>(cli_arg_map.at("-fEGrav")).value != 0;
+            dataStorage[enableMembrane] = std::get<io::input::ArgEntry<int>>(cli_arg_map.at("-fEMem")).value != 0;
+            dataStorage[enableMembranePull] = std::get<io::input::ArgEntry<int>>(cli_arg_map.at("-fEMemPull")).value != 0;
+            dataStorage[enableOMP] = std::get<io::input::ArgEntry<int>>(cli_arg_map.at("-fEOMP")).value != 0;
             dataStorage[rCutoff] = std::get<io::input::ArgEntry<double>>(cli_arg_map.at("-rc")).value;
             dataStorage[boundingBox_X0] = std::get<io::input::ArgEntry<double>>(cli_arg_map.at("-bbox0")).value;
             dataStorage[boundingBox_X1] = std::get<io::input::ArgEntry<double>>(cli_arg_map.at("-bbox1")).value;
@@ -208,6 +213,10 @@ namespace io::input {
             valueLock[epsilon] = std::get<io::input::ArgEntry<double>>(cli_arg_map.at("-eps")).isSet;
             valueLock[brown] = std::get<io::input::ArgEntry<double>>(cli_arg_map.at("-brown")).isSet;
             valueLock[enableLinkedCell] = std::get<io::input::ArgEntry<int>>(cli_arg_map.at("-lc")).isSet;
+            valueLock[enableGrav] = std::get<io::input::ArgEntry<int>>(cli_arg_map.at("-fEGrav")).isSet;
+            valueLock[enableMembrane] = std::get<io::input::ArgEntry<int>>(cli_arg_map.at("-fEMem")).isSet;
+            valueLock[enableMembranePull] = std::get<io::input::ArgEntry<int>>(cli_arg_map.at("-fEMemPull")).isSet;
+            valueLock[enableOMP] = std::get<io::input::ArgEntry<int>>(cli_arg_map.at("-fEOMP")).isSet;
             valueLock[rCutoff] = std::get<io::input::ArgEntry<double>>(cli_arg_map.at("-rc")).isSet;
             valueLock[boundingBox_X0] = std::get<io::input::ArgEntry<double>>(cli_arg_map.at("-bbox0")).isSet;
             valueLock[boundingBox_X1] = std::get<io::input::ArgEntry<double>>(cli_arg_map.at("-bbox1")).isSet;
@@ -250,6 +259,10 @@ namespace io::input {
             if (!valueLock[epsilon] && argMap.contains(epsilon)) dataStorage[epsilon] = std::stod(argMap.at(epsilon));
             if (!valueLock[brown] && argMap.contains(brown)) dataStorage[brown] = std::stod(argMap.at(brown));
             if (!valueLock[enableLinkedCell] && argMap.contains(enableLinkedCell))dataStorage[enableLinkedCell] = std::stoi(argMap.at(enableLinkedCell)) != 0;
+            if (!valueLock[enableGrav] && argMap.contains(enableGrav))dataStorage[enableGrav] = std::stoi(argMap.at(enableGrav)) != 0;
+            if (!valueLock[enableMembrane] && argMap.contains(enableMembrane))dataStorage[enableMembrane] = std::stoi(argMap.at(enableMembrane)) != 0;
+            if (!valueLock[enableMembranePull] && argMap.contains(enableMembranePull))dataStorage[enableMembranePull] = std::stoi(argMap.at(enableMembranePull)) != 0;
+            if (!valueLock[enableOMP] && argMap.contains(enableOMP))dataStorage[enableOMP] = std::stoi(argMap.at(enableOMP)) != 0;
             if (!valueLock[rCutoff] && argMap.contains(rCutoff)) dataStorage[rCutoff] = std::stod(argMap.at(rCutoff));
             if (!valueLock[boundingBox_X0] && argMap.contains(boundingBox_X0))dataStorage[boundingBox_X0] = std::stod(argMap.at(boundingBox_X0));
             if (!valueLock[boundingBox_X1] && argMap.contains(boundingBox_X1))dataStorage[boundingBox_X1] = std::stod(argMap.at(boundingBox_X1));

@@ -67,25 +67,42 @@ namespace io::input {
                 setInMap(epsilon, lj->Epsilon().present(), std::to_string(default_epsilon), [&]()->std::string{return std::to_string(lj->Epsilon().get());});
                 setInMap(sigma, lj->Sigma().present(), std::to_string(default_sigma), [&]()->std::string{return std::to_string(lj->Sigma().get());});
             }
-            else if (auto& lj = simulation->ForceCalculation().LennardJonesCell(); lj.present()) {
-                setInMapND(forceCalculation, "lennardjonescell");
-                setInMap(epsilon, lj->Epsilon().present(), std::to_string(default_epsilon), [&]()->std::string{return std::to_string(lj->Epsilon().get());});
-                setInMap(sigma, lj->Sigma().present(), std::to_string(default_sigma), [&]()->std::string{return std::to_string(lj->Sigma().get());});
-            }
-            else if (auto& lj = simulation->ForceCalculation().LennardJonesOMP(); lj.present()) {
-                setInMapND(forceCalculation, "lennardjonesOMP");
-                setInMap(epsilon, lj->Epsilon().present(), std::to_string(default_epsilon), [&]()->std::string{return std::to_string(lj->Epsilon().get());});
-                setInMap(sigma, lj->Sigma().present(), std::to_string(default_sigma), [&]()->std::string{return std::to_string(lj->Sigma().get());});
-            }
-            else if (auto& lj = simulation->ForceCalculation().LennardJonesGravity(); lj.present()) {
-                setInMapND(forceCalculation, "lennardjonesgravity");
-                setInMap(epsilon, lj->Epsilon().present(), std::to_string(default_epsilon), [&]()->std::string{return std::to_string(lj->Epsilon().get());});
-                setInMap(sigma, lj->Sigma().present(), std::to_string(default_sigma), [&]()->std::string{return std::to_string(lj->Sigma().get());});
-                setInMap(gGrav0, lj->Sigma().present(), std::to_string(default_g_grav0), [&]()->std::string{return std::to_string(lj->G_Grav().get());});
-            }
             else {
                 output::loggers::general->debug("This really shouldn't happen. No ForceCalculation was specified despite it being mandatory. Using default...");
                 setInMapND(forceCalculation, default_force_type);
+            }
+
+            if (auto& eGrav = simulation->ForceCalculation().EnableGrav(); eGrav.present()) {
+                setInMapND(enableGrav, "1");
+                setInMapND(gGrav0, std::to_string(eGrav->X()));
+                setInMapND(gGrav1, std::to_string(eGrav->Y()));
+                setInMapND(gGrav2, std::to_string(eGrav->Z()));
+            } else {
+                setInMapND(enableGrav, "0");
+            }
+            if (auto& eLC = simulation->ForceCalculation().EnableLC(); eLC.present()) {
+                setInMapND(enableLinkedCell, "1");
+                setInMapND(rCutoff, std::to_string(eLC->CutoffRadius()));
+                setInMapND(boundingBox_X0, std::to_string(eLC->BoundaryBox().BoxSize().X()));
+                setInMapND(boundingBox_X1, std::to_string(eLC->BoundaryBox().BoxSize().Y()));
+                setInMapND(boundingBox_X2, std::to_string(eLC->BoundaryBox().BoxSize().Z()));
+
+                setInMapND(boundCondFront, eLC->BoundaryBox().Front());
+                setInMapND(boundCondRear, eLC->BoundaryBox().Rear());
+                setInMapND(boundCondLeft, eLC->BoundaryBox().Left());
+                setInMapND(boundCondRight, eLC->BoundaryBox().Right());
+                setInMapND(boundCondTop, eLC->BoundaryBox().Top());
+                setInMapND(boundCondBottom, eLC->BoundaryBox().Bottom());
+            } else {
+                setInMapND(enableLinkedCell, "0");
+            }
+            setInMapND(enableOMP, std::to_string(static_cast<int>(simulation->ForceCalculation().EnableOMP().present())));
+            if (auto& eMem = simulation->ForceCalculation().EnableMem(); eMem.present()) {
+                setInMapND(enableMembrane, "1");
+                setInMapND(enableMembranePull, std::to_string(static_cast<int>(eMem->EnableMemPull().present())));
+            } else {
+                setInMapND(enableMembrane, "0");
+                setInMapND(enableMembranePull, "0");
             }
 
             setInMap(positionCalculation, simulation->PositionCalculation().present(), default_pos_type,[&]()->std::string{return simulation->PositionCalculation().get();});
@@ -93,41 +110,6 @@ namespace io::input {
 
             setInMapVal(brown, simulation->AverageBrownianMotion().present(), std::to_string(default_brown), [&]()->std::string{return std::to_string(simulation->AverageBrownianMotion().get());});
             double brown_val = std::stod(parseBuffer);
-
-            if (simulation->SimulationStrategy().Naive().present()) {
-                setInMapND(enableLinkedCell, "0");
-            }
-            else if (auto& lc = simulation->SimulationStrategy().LinkedCell(); lc.present()) {
-                setInMapND(enableLinkedCell, "1");
-                setInMapND(rCutoff, std::to_string(lc->CutoffRadius()));
-                setInMapND(boundingBox_X0, std::to_string(lc->BoundaryBox().BoxSize().X()));
-                setInMapND(boundingBox_X1, std::to_string(lc->BoundaryBox().BoxSize().Y()));
-                setInMapND(boundingBox_X2, std::to_string(lc->BoundaryBox().BoxSize().Z()));
-
-                setInMapND(boundCondFront, lc->BoundaryBox().Front());
-                setInMapND(boundCondRear, lc->BoundaryBox().Rear());
-                setInMapND(boundCondLeft, lc->BoundaryBox().Left());
-                setInMapND(boundCondRight, lc->BoundaryBox().Right());
-                setInMapND(boundCondTop, lc->BoundaryBox().Top());
-                setInMapND(boundCondBottom, lc->BoundaryBox().Bottom());
-            }
-            else {
-                output::loggers::general->debug("This really shouldn't happen. No SimulationStrategy was specified despite it being mandatory. Using default...");
-
-                arg_map.emplace(enableLinkedCell, std::to_string(default_linked_cell));
-
-                arg_map.emplace(boundingBox_X0, std::to_string(default_bound_x0));
-                arg_map.emplace(boundingBox_X1, std::to_string(default_bound_x1));
-                arg_map.emplace(boundingBox_X2, std::to_string(default_bound_x2));
-
-                arg_map.emplace(boundCondFront, default_boundary_cond_str);
-                arg_map.emplace(boundCondRear, default_boundary_cond_str);
-                arg_map.emplace(boundCondLeft, default_boundary_cond_str);
-                arg_map.emplace(boundCondRight, default_boundary_cond_str);
-                arg_map.emplace(boundCondTop, default_boundary_cond_str);
-                arg_map.emplace(boundCondBottom, default_boundary_cond_str);
-            }
-
 
             setInMapVal(dimensions, simulation->Dimensions().present(), std::to_string(default_dims), [&]()->std::string{return std::to_string(simulation->Dimensions().get());});
             int dims_val = std::stoi(parseBuffer);

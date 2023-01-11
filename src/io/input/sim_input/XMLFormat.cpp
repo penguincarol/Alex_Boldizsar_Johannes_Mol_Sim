@@ -411,201 +411,155 @@ Sigma (::std::unique_ptr< Sigma_type > x)
 }
 
 
-// lennardJonesCell_t
+// enGrav_t
 // 
 
-const lennardJonesCell_t::Epsilon_optional& lennardJonesCell_t::
-Epsilon () const
+const enGrav_t::X_type& enGrav_t::
+X () const
 {
-  return this->Epsilon_;
+  return this->X_.get ();
 }
 
-lennardJonesCell_t::Epsilon_optional& lennardJonesCell_t::
-Epsilon ()
+enGrav_t::X_type& enGrav_t::
+X ()
 {
-  return this->Epsilon_;
+  return this->X_.get ();
 }
 
-void lennardJonesCell_t::
-Epsilon (const Epsilon_type& x)
+void enGrav_t::
+X (const X_type& x)
 {
-  this->Epsilon_.set (x);
+  this->X_.set (x);
 }
 
-void lennardJonesCell_t::
-Epsilon (const Epsilon_optional& x)
+const enGrav_t::Y_type& enGrav_t::
+Y () const
 {
-  this->Epsilon_ = x;
+  return this->Y_.get ();
 }
 
-const lennardJonesCell_t::Sigma_optional& lennardJonesCell_t::
-Sigma () const
+enGrav_t::Y_type& enGrav_t::
+Y ()
 {
-  return this->Sigma_;
+  return this->Y_.get ();
 }
 
-lennardJonesCell_t::Sigma_optional& lennardJonesCell_t::
-Sigma ()
+void enGrav_t::
+Y (const Y_type& x)
 {
-  return this->Sigma_;
+  this->Y_.set (x);
 }
 
-void lennardJonesCell_t::
-Sigma (const Sigma_type& x)
+const enGrav_t::Z_type& enGrav_t::
+Z () const
 {
-  this->Sigma_.set (x);
+  return this->Z_.get ();
 }
 
-void lennardJonesCell_t::
-Sigma (const Sigma_optional& x)
+enGrav_t::Z_type& enGrav_t::
+Z ()
 {
-  this->Sigma_ = x;
+  return this->Z_.get ();
 }
 
-void lennardJonesCell_t::
-Sigma (::std::unique_ptr< Sigma_type > x)
+void enGrav_t::
+Z (const Z_type& x)
 {
-  this->Sigma_.set (std::move (x));
+  this->Z_.set (x);
 }
 
 
-// lennardJonesOMP_t
+// enLC_t
 // 
 
-const lennardJonesOMP_t::Epsilon_optional& lennardJonesOMP_t::
-Epsilon () const
+const enLC_t::BoundaryBox_type& enLC_t::
+BoundaryBox () const
 {
-  return this->Epsilon_;
+  return this->BoundaryBox_.get ();
 }
 
-lennardJonesOMP_t::Epsilon_optional& lennardJonesOMP_t::
-Epsilon ()
+enLC_t::BoundaryBox_type& enLC_t::
+BoundaryBox ()
 {
-  return this->Epsilon_;
+  return this->BoundaryBox_.get ();
 }
 
-void lennardJonesOMP_t::
-Epsilon (const Epsilon_type& x)
+void enLC_t::
+BoundaryBox (const BoundaryBox_type& x)
 {
-  this->Epsilon_.set (x);
+  this->BoundaryBox_.set (x);
 }
 
-void lennardJonesOMP_t::
-Epsilon (const Epsilon_optional& x)
+void enLC_t::
+BoundaryBox (::std::unique_ptr< BoundaryBox_type > x)
 {
-  this->Epsilon_ = x;
+  this->BoundaryBox_.set (std::move (x));
 }
 
-const lennardJonesOMP_t::Sigma_optional& lennardJonesOMP_t::
-Sigma () const
+const enLC_t::CutoffRadius_type& enLC_t::
+CutoffRadius () const
 {
-  return this->Sigma_;
+  return this->CutoffRadius_.get ();
 }
 
-lennardJonesOMP_t::Sigma_optional& lennardJonesOMP_t::
-Sigma ()
+enLC_t::CutoffRadius_type& enLC_t::
+CutoffRadius ()
 {
-  return this->Sigma_;
+  return this->CutoffRadius_.get ();
 }
 
-void lennardJonesOMP_t::
-Sigma (const Sigma_type& x)
+void enLC_t::
+CutoffRadius (const CutoffRadius_type& x)
 {
-  this->Sigma_.set (x);
+  this->CutoffRadius_.set (x);
 }
 
-void lennardJonesOMP_t::
-Sigma (const Sigma_optional& x)
+void enLC_t::
+CutoffRadius (::std::unique_ptr< CutoffRadius_type > x)
 {
-  this->Sigma_ = x;
-}
-
-void lennardJonesOMP_t::
-Sigma (::std::unique_ptr< Sigma_type > x)
-{
-  this->Sigma_.set (std::move (x));
+  this->CutoffRadius_.set (std::move (x));
 }
 
 
-// lennardJonesGravity_t
+// enOMP_t
 // 
 
-const lennardJonesGravity_t::G_Grav_optional& lennardJonesGravity_t::
-G_Grav () const
+
+// enMemPull_t
+// 
+
+
+// enMem_t
+// 
+
+const enMem_t::EnableMemPull_optional& enMem_t::
+EnableMemPull () const
 {
-  return this->G_Grav_;
+  return this->EnableMemPull_;
 }
 
-lennardJonesGravity_t::G_Grav_optional& lennardJonesGravity_t::
-G_Grav ()
+enMem_t::EnableMemPull_optional& enMem_t::
+EnableMemPull ()
 {
-  return this->G_Grav_;
+  return this->EnableMemPull_;
 }
 
-void lennardJonesGravity_t::
-G_Grav (const G_Grav_type& x)
+void enMem_t::
+EnableMemPull (const EnableMemPull_type& x)
 {
-  this->G_Grav_.set (x);
+  this->EnableMemPull_.set (x);
 }
 
-void lennardJonesGravity_t::
-G_Grav (const G_Grav_optional& x)
+void enMem_t::
+EnableMemPull (const EnableMemPull_optional& x)
 {
-  this->G_Grav_ = x;
+  this->EnableMemPull_ = x;
 }
 
-const lennardJonesGravity_t::Epsilon_optional& lennardJonesGravity_t::
-Epsilon () const
+void enMem_t::
+EnableMemPull (::std::unique_ptr< EnableMemPull_type > x)
 {
-  return this->Epsilon_;
-}
-
-lennardJonesGravity_t::Epsilon_optional& lennardJonesGravity_t::
-Epsilon ()
-{
-  return this->Epsilon_;
-}
-
-void lennardJonesGravity_t::
-Epsilon (const Epsilon_type& x)
-{
-  this->Epsilon_.set (x);
-}
-
-void lennardJonesGravity_t::
-Epsilon (const Epsilon_optional& x)
-{
-  this->Epsilon_ = x;
-}
-
-const lennardJonesGravity_t::Sigma_optional& lennardJonesGravity_t::
-Sigma () const
-{
-  return this->Sigma_;
-}
-
-lennardJonesGravity_t::Sigma_optional& lennardJonesGravity_t::
-Sigma ()
-{
-  return this->Sigma_;
-}
-
-void lennardJonesGravity_t::
-Sigma (const Sigma_type& x)
-{
-  this->Sigma_.set (x);
-}
-
-void lennardJonesGravity_t::
-Sigma (const Sigma_optional& x)
-{
-  this->Sigma_ = x;
-}
-
-void lennardJonesGravity_t::
-Sigma (::std::unique_ptr< Sigma_type > x)
-{
-  this->Sigma_.set (std::move (x));
+  this->EnableMemPull_.set (std::move (x));
 }
 
 
@@ -672,94 +626,124 @@ LennardJones (::std::unique_ptr< LennardJones_type > x)
   this->LennardJones_.set (std::move (x));
 }
 
-const forceCalculation_t::LennardJonesCell_optional& forceCalculation_t::
-LennardJonesCell () const
+const forceCalculation_t::EnableGrav_optional& forceCalculation_t::
+EnableGrav () const
 {
-  return this->LennardJonesCell_;
+  return this->EnableGrav_;
 }
 
-forceCalculation_t::LennardJonesCell_optional& forceCalculation_t::
-LennardJonesCell ()
+forceCalculation_t::EnableGrav_optional& forceCalculation_t::
+EnableGrav ()
 {
-  return this->LennardJonesCell_;
-}
-
-void forceCalculation_t::
-LennardJonesCell (const LennardJonesCell_type& x)
-{
-  this->LennardJonesCell_.set (x);
+  return this->EnableGrav_;
 }
 
 void forceCalculation_t::
-LennardJonesCell (const LennardJonesCell_optional& x)
+EnableGrav (const EnableGrav_type& x)
 {
-  this->LennardJonesCell_ = x;
+  this->EnableGrav_.set (x);
 }
 
 void forceCalculation_t::
-LennardJonesCell (::std::unique_ptr< LennardJonesCell_type > x)
+EnableGrav (const EnableGrav_optional& x)
 {
-  this->LennardJonesCell_.set (std::move (x));
-}
-
-const forceCalculation_t::LennardJonesOMP_optional& forceCalculation_t::
-LennardJonesOMP () const
-{
-  return this->LennardJonesOMP_;
-}
-
-forceCalculation_t::LennardJonesOMP_optional& forceCalculation_t::
-LennardJonesOMP ()
-{
-  return this->LennardJonesOMP_;
+  this->EnableGrav_ = x;
 }
 
 void forceCalculation_t::
-LennardJonesOMP (const LennardJonesOMP_type& x)
+EnableGrav (::std::unique_ptr< EnableGrav_type > x)
 {
-  this->LennardJonesOMP_.set (x);
+  this->EnableGrav_.set (std::move (x));
+}
+
+const forceCalculation_t::EnableLC_optional& forceCalculation_t::
+EnableLC () const
+{
+  return this->EnableLC_;
+}
+
+forceCalculation_t::EnableLC_optional& forceCalculation_t::
+EnableLC ()
+{
+  return this->EnableLC_;
 }
 
 void forceCalculation_t::
-LennardJonesOMP (const LennardJonesOMP_optional& x)
+EnableLC (const EnableLC_type& x)
 {
-  this->LennardJonesOMP_ = x;
+  this->EnableLC_.set (x);
 }
 
 void forceCalculation_t::
-LennardJonesOMP (::std::unique_ptr< LennardJonesOMP_type > x)
+EnableLC (const EnableLC_optional& x)
 {
-  this->LennardJonesOMP_.set (std::move (x));
-}
-
-const forceCalculation_t::LennardJonesGravity_optional& forceCalculation_t::
-LennardJonesGravity () const
-{
-  return this->LennardJonesGravity_;
-}
-
-forceCalculation_t::LennardJonesGravity_optional& forceCalculation_t::
-LennardJonesGravity ()
-{
-  return this->LennardJonesGravity_;
+  this->EnableLC_ = x;
 }
 
 void forceCalculation_t::
-LennardJonesGravity (const LennardJonesGravity_type& x)
+EnableLC (::std::unique_ptr< EnableLC_type > x)
 {
-  this->LennardJonesGravity_.set (x);
+  this->EnableLC_.set (std::move (x));
+}
+
+const forceCalculation_t::EnableOMP_optional& forceCalculation_t::
+EnableOMP () const
+{
+  return this->EnableOMP_;
+}
+
+forceCalculation_t::EnableOMP_optional& forceCalculation_t::
+EnableOMP ()
+{
+  return this->EnableOMP_;
 }
 
 void forceCalculation_t::
-LennardJonesGravity (const LennardJonesGravity_optional& x)
+EnableOMP (const EnableOMP_type& x)
 {
-  this->LennardJonesGravity_ = x;
+  this->EnableOMP_.set (x);
 }
 
 void forceCalculation_t::
-LennardJonesGravity (::std::unique_ptr< LennardJonesGravity_type > x)
+EnableOMP (const EnableOMP_optional& x)
 {
-  this->LennardJonesGravity_.set (std::move (x));
+  this->EnableOMP_ = x;
+}
+
+void forceCalculation_t::
+EnableOMP (::std::unique_ptr< EnableOMP_type > x)
+{
+  this->EnableOMP_.set (std::move (x));
+}
+
+const forceCalculation_t::EnableMem_optional& forceCalculation_t::
+EnableMem () const
+{
+  return this->EnableMem_;
+}
+
+forceCalculation_t::EnableMem_optional& forceCalculation_t::
+EnableMem ()
+{
+  return this->EnableMem_;
+}
+
+void forceCalculation_t::
+EnableMem (const EnableMem_type& x)
+{
+  this->EnableMem_.set (x);
+}
+
+void forceCalculation_t::
+EnableMem (const EnableMem_optional& x)
+{
+  this->EnableMem_ = x;
+}
+
+void forceCalculation_t::
+EnableMem (::std::unique_ptr< EnableMem_type > x)
+{
+  this->EnableMem_.set (std::move (x));
 }
 
 
@@ -1067,126 +1051,6 @@ void boundaries_t::
 Bottom (::std::unique_ptr< Bottom_type > x)
 {
   this->Bottom_.set (std::move (x));
-}
-
-
-// linkedCell_t
-// 
-
-const linkedCell_t::BoundaryBox_type& linkedCell_t::
-BoundaryBox () const
-{
-  return this->BoundaryBox_.get ();
-}
-
-linkedCell_t::BoundaryBox_type& linkedCell_t::
-BoundaryBox ()
-{
-  return this->BoundaryBox_.get ();
-}
-
-void linkedCell_t::
-BoundaryBox (const BoundaryBox_type& x)
-{
-  this->BoundaryBox_.set (x);
-}
-
-void linkedCell_t::
-BoundaryBox (::std::unique_ptr< BoundaryBox_type > x)
-{
-  this->BoundaryBox_.set (std::move (x));
-}
-
-const linkedCell_t::CutoffRadius_type& linkedCell_t::
-CutoffRadius () const
-{
-  return this->CutoffRadius_.get ();
-}
-
-linkedCell_t::CutoffRadius_type& linkedCell_t::
-CutoffRadius ()
-{
-  return this->CutoffRadius_.get ();
-}
-
-void linkedCell_t::
-CutoffRadius (const CutoffRadius_type& x)
-{
-  this->CutoffRadius_.set (x);
-}
-
-void linkedCell_t::
-CutoffRadius (::std::unique_ptr< CutoffRadius_type > x)
-{
-  this->CutoffRadius_.set (std::move (x));
-}
-
-
-// naive_t
-// 
-
-
-// simulationStrategy_t
-// 
-
-const simulationStrategy_t::LinkedCell_optional& simulationStrategy_t::
-LinkedCell () const
-{
-  return this->LinkedCell_;
-}
-
-simulationStrategy_t::LinkedCell_optional& simulationStrategy_t::
-LinkedCell ()
-{
-  return this->LinkedCell_;
-}
-
-void simulationStrategy_t::
-LinkedCell (const LinkedCell_type& x)
-{
-  this->LinkedCell_.set (x);
-}
-
-void simulationStrategy_t::
-LinkedCell (const LinkedCell_optional& x)
-{
-  this->LinkedCell_ = x;
-}
-
-void simulationStrategy_t::
-LinkedCell (::std::unique_ptr< LinkedCell_type > x)
-{
-  this->LinkedCell_.set (std::move (x));
-}
-
-const simulationStrategy_t::Naive_optional& simulationStrategy_t::
-Naive () const
-{
-  return this->Naive_;
-}
-
-simulationStrategy_t::Naive_optional& simulationStrategy_t::
-Naive ()
-{
-  return this->Naive_;
-}
-
-void simulationStrategy_t::
-Naive (const Naive_type& x)
-{
-  this->Naive_.set (x);
-}
-
-void simulationStrategy_t::
-Naive (const Naive_optional& x)
-{
-  this->Naive_ = x;
-}
-
-void simulationStrategy_t::
-Naive (::std::unique_ptr< Naive_type > x)
-{
-  this->Naive_.set (std::move (x));
 }
 
 
@@ -2539,30 +2403,6 @@ AverageBrownianMotion (::std::unique_ptr< AverageBrownianMotion_type > x)
   this->AverageBrownianMotion_.set (std::move (x));
 }
 
-const simulation_t::SimulationStrategy_type& simulation_t::
-SimulationStrategy () const
-{
-  return this->SimulationStrategy_.get ();
-}
-
-simulation_t::SimulationStrategy_type& simulation_t::
-SimulationStrategy ()
-{
-  return this->SimulationStrategy_.get ();
-}
-
-void simulation_t::
-SimulationStrategy (const SimulationStrategy_type& x)
-{
-  this->SimulationStrategy_.set (x);
-}
-
-void simulation_t::
-SimulationStrategy (::std::unique_ptr< SimulationStrategy_type > x)
-{
-  this->SimulationStrategy_.set (std::move (x));
-}
-
 const simulation_t::Dimensions_optional& simulation_t::
 Dimensions () const
 {
@@ -3490,34 +3330,39 @@ lennardJones_t::
 {
 }
 
-// lennardJonesCell_t
+// enGrav_t
 //
 
-lennardJonesCell_t::
-lennardJonesCell_t ()
+enGrav_t::
+enGrav_t (const X_type& X,
+          const Y_type& Y,
+          const Z_type& Z)
 : ::xml_schema::type (),
-  Epsilon_ (this),
-  Sigma_ (this)
+  X_ (X, this),
+  Y_ (Y, this),
+  Z_ (Z, this)
 {
 }
 
-lennardJonesCell_t::
-lennardJonesCell_t (const lennardJonesCell_t& x,
-                    ::xml_schema::flags f,
-                    ::xml_schema::container* c)
+enGrav_t::
+enGrav_t (const enGrav_t& x,
+          ::xml_schema::flags f,
+          ::xml_schema::container* c)
 : ::xml_schema::type (x, f, c),
-  Epsilon_ (x.Epsilon_, f, this),
-  Sigma_ (x.Sigma_, f, this)
+  X_ (x.X_, f, this),
+  Y_ (x.Y_, f, this),
+  Z_ (x.Z_, f, this)
 {
 }
 
-lennardJonesCell_t::
-lennardJonesCell_t (const ::xercesc::DOMElement& e,
-                    ::xml_schema::flags f,
-                    ::xml_schema::container* c)
+enGrav_t::
+enGrav_t (const ::xercesc::DOMElement& e,
+          ::xml_schema::flags f,
+          ::xml_schema::container* c)
 : ::xml_schema::type (e, f | ::xml_schema::flags::base, c),
-  Epsilon_ (this),
-  Sigma_ (this)
+  X_ (this),
+  Y_ (this),
+  Z_ (this)
 {
   if ((f & ::xml_schema::flags::base) == 0)
   {
@@ -3526,7 +3371,7 @@ lennardJonesCell_t (const ::xercesc::DOMElement& e,
   }
 }
 
-void lennardJonesCell_t::
+void enGrav_t::
 parse (::xsd::cxx::xml::dom::parser< char >& p,
        ::xml_schema::flags f)
 {
@@ -3536,222 +3381,390 @@ parse (::xsd::cxx::xml::dom::parser< char >& p,
     const ::xsd::cxx::xml::qualified_name< char > n (
       ::xsd::cxx::xml::dom::name< char > (i));
 
-    if (n.name () == "Epsilon" && n.namespace_ ().empty ())
+    if (n.name () == "X" && n.namespace_ ().empty ())
     {
-      this->Epsilon_.set (Epsilon_traits::create (i, f, this));
+      this->X_.set (X_traits::create (i, f, this));
       continue;
     }
 
-    if (n.name () == "Sigma" && n.namespace_ ().empty ())
+    if (n.name () == "Y" && n.namespace_ ().empty ())
     {
-      this->Sigma_.set (Sigma_traits::create (i, f, this));
+      this->Y_.set (Y_traits::create (i, f, this));
+      continue;
+    }
+
+    if (n.name () == "Z" && n.namespace_ ().empty ())
+    {
+      this->Z_.set (Z_traits::create (i, f, this));
       continue;
     }
   }
+
+  if (!X_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_attribute< char > (
+      "X",
+      "");
+  }
+
+  if (!Y_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_attribute< char > (
+      "Y",
+      "");
+  }
+
+  if (!Z_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_attribute< char > (
+      "Z",
+      "");
+  }
 }
 
-lennardJonesCell_t* lennardJonesCell_t::
+enGrav_t* enGrav_t::
 _clone (::xml_schema::flags f,
         ::xml_schema::container* c) const
 {
-  return new class lennardJonesCell_t (*this, f, c);
+  return new class enGrav_t (*this, f, c);
 }
 
-lennardJonesCell_t& lennardJonesCell_t::
-operator= (const lennardJonesCell_t& x)
+enGrav_t& enGrav_t::
+operator= (const enGrav_t& x)
 {
   if (this != &x)
   {
     static_cast< ::xml_schema::type& > (*this) = x;
-    this->Epsilon_ = x.Epsilon_;
-    this->Sigma_ = x.Sigma_;
+    this->X_ = x.X_;
+    this->Y_ = x.Y_;
+    this->Z_ = x.Z_;
   }
 
   return *this;
 }
 
-lennardJonesCell_t::
-~lennardJonesCell_t ()
+enGrav_t::
+~enGrav_t ()
 {
 }
 
-// lennardJonesOMP_t
+// enLC_t
 //
 
-lennardJonesOMP_t::
-lennardJonesOMP_t ()
+enLC_t::
+enLC_t (const BoundaryBox_type& BoundaryBox,
+        const CutoffRadius_type& CutoffRadius)
 : ::xml_schema::type (),
-  Epsilon_ (this),
-  Sigma_ (this)
+  BoundaryBox_ (BoundaryBox, this),
+  CutoffRadius_ (CutoffRadius, this)
 {
 }
 
-lennardJonesOMP_t::
-lennardJonesOMP_t (const lennardJonesOMP_t& x,
-                   ::xml_schema::flags f,
-                   ::xml_schema::container* c)
+enLC_t::
+enLC_t (::std::unique_ptr< BoundaryBox_type > BoundaryBox,
+        const CutoffRadius_type& CutoffRadius)
+: ::xml_schema::type (),
+  BoundaryBox_ (std::move (BoundaryBox), this),
+  CutoffRadius_ (CutoffRadius, this)
+{
+}
+
+enLC_t::
+enLC_t (const enLC_t& x,
+        ::xml_schema::flags f,
+        ::xml_schema::container* c)
 : ::xml_schema::type (x, f, c),
-  Epsilon_ (x.Epsilon_, f, this),
-  Sigma_ (x.Sigma_, f, this)
+  BoundaryBox_ (x.BoundaryBox_, f, this),
+  CutoffRadius_ (x.CutoffRadius_, f, this)
 {
 }
 
-lennardJonesOMP_t::
-lennardJonesOMP_t (const ::xercesc::DOMElement& e,
-                   ::xml_schema::flags f,
-                   ::xml_schema::container* c)
+enLC_t::
+enLC_t (const ::xercesc::DOMElement& e,
+        ::xml_schema::flags f,
+        ::xml_schema::container* c)
 : ::xml_schema::type (e, f | ::xml_schema::flags::base, c),
-  Epsilon_ (this),
-  Sigma_ (this)
+  BoundaryBox_ (this),
+  CutoffRadius_ (this)
 {
   if ((f & ::xml_schema::flags::base) == 0)
   {
-    ::xsd::cxx::xml::dom::parser< char > p (e, false, false, true);
+    ::xsd::cxx::xml::dom::parser< char > p (e, true, false, false);
     this->parse (p, f);
   }
 }
 
-void lennardJonesOMP_t::
+void enLC_t::
 parse (::xsd::cxx::xml::dom::parser< char >& p,
        ::xml_schema::flags f)
 {
-  while (p.more_attributes ())
+  for (; p.more_content (); p.next_content (false))
   {
-    const ::xercesc::DOMAttr& i (p.next_attribute ());
+    const ::xercesc::DOMElement& i (p.cur_element ());
     const ::xsd::cxx::xml::qualified_name< char > n (
       ::xsd::cxx::xml::dom::name< char > (i));
 
-    if (n.name () == "Epsilon" && n.namespace_ ().empty ())
+    // BoundaryBox
+    //
+    if (n.name () == "BoundaryBox" && n.namespace_ ().empty ())
     {
-      this->Epsilon_.set (Epsilon_traits::create (i, f, this));
-      continue;
+      ::std::unique_ptr< BoundaryBox_type > r (
+        BoundaryBox_traits::create (i, f, this));
+
+      if (!BoundaryBox_.present ())
+      {
+        this->BoundaryBox_.set (::std::move (r));
+        continue;
+      }
     }
 
-    if (n.name () == "Sigma" && n.namespace_ ().empty ())
+    // CutoffRadius
+    //
+    if (n.name () == "CutoffRadius" && n.namespace_ ().empty ())
     {
-      this->Sigma_.set (Sigma_traits::create (i, f, this));
-      continue;
+      ::std::unique_ptr< CutoffRadius_type > r (
+        CutoffRadius_traits::create (i, f, this));
+
+      if (!CutoffRadius_.present ())
+      {
+        this->CutoffRadius_.set (::std::move (r));
+        continue;
+      }
     }
+
+    break;
+  }
+
+  if (!BoundaryBox_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_element< char > (
+      "BoundaryBox",
+      "");
+  }
+
+  if (!CutoffRadius_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_element< char > (
+      "CutoffRadius",
+      "");
   }
 }
 
-lennardJonesOMP_t* lennardJonesOMP_t::
+enLC_t* enLC_t::
 _clone (::xml_schema::flags f,
         ::xml_schema::container* c) const
 {
-  return new class lennardJonesOMP_t (*this, f, c);
+  return new class enLC_t (*this, f, c);
 }
 
-lennardJonesOMP_t& lennardJonesOMP_t::
-operator= (const lennardJonesOMP_t& x)
+enLC_t& enLC_t::
+operator= (const enLC_t& x)
 {
   if (this != &x)
   {
     static_cast< ::xml_schema::type& > (*this) = x;
-    this->Epsilon_ = x.Epsilon_;
-    this->Sigma_ = x.Sigma_;
+    this->BoundaryBox_ = x.BoundaryBox_;
+    this->CutoffRadius_ = x.CutoffRadius_;
   }
 
   return *this;
 }
 
-lennardJonesOMP_t::
-~lennardJonesOMP_t ()
+enLC_t::
+~enLC_t ()
 {
 }
 
-// lennardJonesGravity_t
+// enOMP_t
 //
 
-lennardJonesGravity_t::
-lennardJonesGravity_t ()
+enOMP_t::
+enOMP_t ()
+: ::xml_schema::type ()
+{
+}
+
+enOMP_t::
+enOMP_t (const enOMP_t& x,
+         ::xml_schema::flags f,
+         ::xml_schema::container* c)
+: ::xml_schema::type (x, f, c)
+{
+}
+
+enOMP_t::
+enOMP_t (const ::xercesc::DOMElement& e,
+         ::xml_schema::flags f,
+         ::xml_schema::container* c)
+: ::xml_schema::type (e, f, c)
+{
+}
+
+enOMP_t::
+enOMP_t (const ::xercesc::DOMAttr& a,
+         ::xml_schema::flags f,
+         ::xml_schema::container* c)
+: ::xml_schema::type (a, f, c)
+{
+}
+
+enOMP_t::
+enOMP_t (const ::std::string& s,
+         const ::xercesc::DOMElement* e,
+         ::xml_schema::flags f,
+         ::xml_schema::container* c)
+: ::xml_schema::type (s, e, f, c)
+{
+}
+
+enOMP_t* enOMP_t::
+_clone (::xml_schema::flags f,
+        ::xml_schema::container* c) const
+{
+  return new class enOMP_t (*this, f, c);
+}
+
+enOMP_t::
+~enOMP_t ()
+{
+}
+
+// enMemPull_t
+//
+
+enMemPull_t::
+enMemPull_t ()
+: ::xml_schema::type ()
+{
+}
+
+enMemPull_t::
+enMemPull_t (const enMemPull_t& x,
+             ::xml_schema::flags f,
+             ::xml_schema::container* c)
+: ::xml_schema::type (x, f, c)
+{
+}
+
+enMemPull_t::
+enMemPull_t (const ::xercesc::DOMElement& e,
+             ::xml_schema::flags f,
+             ::xml_schema::container* c)
+: ::xml_schema::type (e, f, c)
+{
+}
+
+enMemPull_t::
+enMemPull_t (const ::xercesc::DOMAttr& a,
+             ::xml_schema::flags f,
+             ::xml_schema::container* c)
+: ::xml_schema::type (a, f, c)
+{
+}
+
+enMemPull_t::
+enMemPull_t (const ::std::string& s,
+             const ::xercesc::DOMElement* e,
+             ::xml_schema::flags f,
+             ::xml_schema::container* c)
+: ::xml_schema::type (s, e, f, c)
+{
+}
+
+enMemPull_t* enMemPull_t::
+_clone (::xml_schema::flags f,
+        ::xml_schema::container* c) const
+{
+  return new class enMemPull_t (*this, f, c);
+}
+
+enMemPull_t::
+~enMemPull_t ()
+{
+}
+
+// enMem_t
+//
+
+enMem_t::
+enMem_t ()
 : ::xml_schema::type (),
-  G_Grav_ (this),
-  Epsilon_ (this),
-  Sigma_ (this)
+  EnableMemPull_ (this)
 {
 }
 
-lennardJonesGravity_t::
-lennardJonesGravity_t (const lennardJonesGravity_t& x,
-                       ::xml_schema::flags f,
-                       ::xml_schema::container* c)
+enMem_t::
+enMem_t (const enMem_t& x,
+         ::xml_schema::flags f,
+         ::xml_schema::container* c)
 : ::xml_schema::type (x, f, c),
-  G_Grav_ (x.G_Grav_, f, this),
-  Epsilon_ (x.Epsilon_, f, this),
-  Sigma_ (x.Sigma_, f, this)
+  EnableMemPull_ (x.EnableMemPull_, f, this)
 {
 }
 
-lennardJonesGravity_t::
-lennardJonesGravity_t (const ::xercesc::DOMElement& e,
-                       ::xml_schema::flags f,
-                       ::xml_schema::container* c)
+enMem_t::
+enMem_t (const ::xercesc::DOMElement& e,
+         ::xml_schema::flags f,
+         ::xml_schema::container* c)
 : ::xml_schema::type (e, f | ::xml_schema::flags::base, c),
-  G_Grav_ (this),
-  Epsilon_ (this),
-  Sigma_ (this)
+  EnableMemPull_ (this)
 {
   if ((f & ::xml_schema::flags::base) == 0)
   {
-    ::xsd::cxx::xml::dom::parser< char > p (e, false, false, true);
+    ::xsd::cxx::xml::dom::parser< char > p (e, true, false, false);
     this->parse (p, f);
   }
 }
 
-void lennardJonesGravity_t::
+void enMem_t::
 parse (::xsd::cxx::xml::dom::parser< char >& p,
        ::xml_schema::flags f)
 {
-  while (p.more_attributes ())
+  for (; p.more_content (); p.next_content (false))
   {
-    const ::xercesc::DOMAttr& i (p.next_attribute ());
+    const ::xercesc::DOMElement& i (p.cur_element ());
     const ::xsd::cxx::xml::qualified_name< char > n (
       ::xsd::cxx::xml::dom::name< char > (i));
 
-    if (n.name () == "G_Grav" && n.namespace_ ().empty ())
+    // EnableMemPull
+    //
+    if (n.name () == "EnableMemPull" && n.namespace_ ().empty ())
     {
-      this->G_Grav_.set (G_Grav_traits::create (i, f, this));
-      continue;
+      ::std::unique_ptr< EnableMemPull_type > r (
+        EnableMemPull_traits::create (i, f, this));
+
+      if (!this->EnableMemPull_)
+      {
+        this->EnableMemPull_.set (::std::move (r));
+        continue;
+      }
     }
 
-    if (n.name () == "Epsilon" && n.namespace_ ().empty ())
-    {
-      this->Epsilon_.set (Epsilon_traits::create (i, f, this));
-      continue;
-    }
-
-    if (n.name () == "Sigma" && n.namespace_ ().empty ())
-    {
-      this->Sigma_.set (Sigma_traits::create (i, f, this));
-      continue;
-    }
+    break;
   }
 }
 
-lennardJonesGravity_t* lennardJonesGravity_t::
+enMem_t* enMem_t::
 _clone (::xml_schema::flags f,
         ::xml_schema::container* c) const
 {
-  return new class lennardJonesGravity_t (*this, f, c);
+  return new class enMem_t (*this, f, c);
 }
 
-lennardJonesGravity_t& lennardJonesGravity_t::
-operator= (const lennardJonesGravity_t& x)
+enMem_t& enMem_t::
+operator= (const enMem_t& x)
 {
   if (this != &x)
   {
     static_cast< ::xml_schema::type& > (*this) = x;
-    this->G_Grav_ = x.G_Grav_;
-    this->Epsilon_ = x.Epsilon_;
-    this->Sigma_ = x.Sigma_;
+    this->EnableMemPull_ = x.EnableMemPull_;
   }
 
   return *this;
 }
 
-lennardJonesGravity_t::
-~lennardJonesGravity_t ()
+enMem_t::
+~enMem_t ()
 {
 }
 
@@ -3763,9 +3776,10 @@ forceCalculation_t ()
 : ::xml_schema::type (),
   Gravity_ (this),
   LennardJones_ (this),
-  LennardJonesCell_ (this),
-  LennardJonesOMP_ (this),
-  LennardJonesGravity_ (this)
+  EnableGrav_ (this),
+  EnableLC_ (this),
+  EnableOMP_ (this),
+  EnableMem_ (this)
 {
 }
 
@@ -3776,9 +3790,10 @@ forceCalculation_t (const forceCalculation_t& x,
 : ::xml_schema::type (x, f, c),
   Gravity_ (x.Gravity_, f, this),
   LennardJones_ (x.LennardJones_, f, this),
-  LennardJonesCell_ (x.LennardJonesCell_, f, this),
-  LennardJonesOMP_ (x.LennardJonesOMP_, f, this),
-  LennardJonesGravity_ (x.LennardJonesGravity_, f, this)
+  EnableGrav_ (x.EnableGrav_, f, this),
+  EnableLC_ (x.EnableLC_, f, this),
+  EnableOMP_ (x.EnableOMP_, f, this),
+  EnableMem_ (x.EnableMem_, f, this)
 {
 }
 
@@ -3789,9 +3804,10 @@ forceCalculation_t (const ::xercesc::DOMElement& e,
 : ::xml_schema::type (e, f | ::xml_schema::flags::base, c),
   Gravity_ (this),
   LennardJones_ (this),
-  LennardJonesCell_ (this),
-  LennardJonesOMP_ (this),
-  LennardJonesGravity_ (this)
+  EnableGrav_ (this),
+  EnableLC_ (this),
+  EnableOMP_ (this),
+  EnableMem_ (this)
 {
   if ((f & ::xml_schema::flags::base) == 0)
   {
@@ -3838,44 +3854,58 @@ parse (::xsd::cxx::xml::dom::parser< char >& p,
       }
     }
 
-    // LennardJonesCell
+    // EnableGrav
     //
-    if (n.name () == "LennardJonesCell" && n.namespace_ ().empty ())
+    if (n.name () == "EnableGrav" && n.namespace_ ().empty ())
     {
-      ::std::unique_ptr< LennardJonesCell_type > r (
-        LennardJonesCell_traits::create (i, f, this));
+      ::std::unique_ptr< EnableGrav_type > r (
+        EnableGrav_traits::create (i, f, this));
 
-      if (!this->LennardJonesCell_)
+      if (!this->EnableGrav_)
       {
-        this->LennardJonesCell_.set (::std::move (r));
+        this->EnableGrav_.set (::std::move (r));
         continue;
       }
     }
 
-    // LennardJonesOMP
+    // EnableLC
     //
-    if (n.name () == "LennardJonesOMP" && n.namespace_ ().empty ())
+    if (n.name () == "EnableLC" && n.namespace_ ().empty ())
     {
-      ::std::unique_ptr< LennardJonesOMP_type > r (
-        LennardJonesOMP_traits::create (i, f, this));
+      ::std::unique_ptr< EnableLC_type > r (
+        EnableLC_traits::create (i, f, this));
 
-      if (!this->LennardJonesOMP_)
+      if (!this->EnableLC_)
       {
-        this->LennardJonesOMP_.set (::std::move (r));
+        this->EnableLC_.set (::std::move (r));
         continue;
       }
     }
 
-    // LennardJonesGravity
+    // EnableOMP
     //
-    if (n.name () == "LennardJonesGravity" && n.namespace_ ().empty ())
+    if (n.name () == "EnableOMP" && n.namespace_ ().empty ())
     {
-      ::std::unique_ptr< LennardJonesGravity_type > r (
-        LennardJonesGravity_traits::create (i, f, this));
+      ::std::unique_ptr< EnableOMP_type > r (
+        EnableOMP_traits::create (i, f, this));
 
-      if (!this->LennardJonesGravity_)
+      if (!this->EnableOMP_)
       {
-        this->LennardJonesGravity_.set (::std::move (r));
+        this->EnableOMP_.set (::std::move (r));
+        continue;
+      }
+    }
+
+    // EnableMem
+    //
+    if (n.name () == "EnableMem" && n.namespace_ ().empty ())
+    {
+      ::std::unique_ptr< EnableMem_type > r (
+        EnableMem_traits::create (i, f, this));
+
+      if (!this->EnableMem_)
+      {
+        this->EnableMem_.set (::std::move (r));
         continue;
       }
     }
@@ -3899,9 +3929,10 @@ operator= (const forceCalculation_t& x)
     static_cast< ::xml_schema::type& > (*this) = x;
     this->Gravity_ = x.Gravity_;
     this->LennardJones_ = x.LennardJones_;
-    this->LennardJonesCell_ = x.LennardJonesCell_;
-    this->LennardJonesOMP_ = x.LennardJonesOMP_;
-    this->LennardJonesGravity_ = x.LennardJonesGravity_;
+    this->EnableGrav_ = x.EnableGrav_;
+    this->EnableLC_ = x.EnableLC_;
+    this->EnableOMP_ = x.EnableOMP_;
+    this->EnableMem_ = x.EnableMem_;
   }
 
   return *this;
@@ -4388,290 +4419,6 @@ operator= (const boundaries_t& x)
 
 boundaries_t::
 ~boundaries_t ()
-{
-}
-
-// linkedCell_t
-//
-
-linkedCell_t::
-linkedCell_t (const BoundaryBox_type& BoundaryBox,
-              const CutoffRadius_type& CutoffRadius)
-: ::xml_schema::type (),
-  BoundaryBox_ (BoundaryBox, this),
-  CutoffRadius_ (CutoffRadius, this)
-{
-}
-
-linkedCell_t::
-linkedCell_t (::std::unique_ptr< BoundaryBox_type > BoundaryBox,
-              const CutoffRadius_type& CutoffRadius)
-: ::xml_schema::type (),
-  BoundaryBox_ (std::move (BoundaryBox), this),
-  CutoffRadius_ (CutoffRadius, this)
-{
-}
-
-linkedCell_t::
-linkedCell_t (const linkedCell_t& x,
-              ::xml_schema::flags f,
-              ::xml_schema::container* c)
-: ::xml_schema::type (x, f, c),
-  BoundaryBox_ (x.BoundaryBox_, f, this),
-  CutoffRadius_ (x.CutoffRadius_, f, this)
-{
-}
-
-linkedCell_t::
-linkedCell_t (const ::xercesc::DOMElement& e,
-              ::xml_schema::flags f,
-              ::xml_schema::container* c)
-: ::xml_schema::type (e, f | ::xml_schema::flags::base, c),
-  BoundaryBox_ (this),
-  CutoffRadius_ (this)
-{
-  if ((f & ::xml_schema::flags::base) == 0)
-  {
-    ::xsd::cxx::xml::dom::parser< char > p (e, true, false, false);
-    this->parse (p, f);
-  }
-}
-
-void linkedCell_t::
-parse (::xsd::cxx::xml::dom::parser< char >& p,
-       ::xml_schema::flags f)
-{
-  for (; p.more_content (); p.next_content (false))
-  {
-    const ::xercesc::DOMElement& i (p.cur_element ());
-    const ::xsd::cxx::xml::qualified_name< char > n (
-      ::xsd::cxx::xml::dom::name< char > (i));
-
-    // BoundaryBox
-    //
-    if (n.name () == "BoundaryBox" && n.namespace_ ().empty ())
-    {
-      ::std::unique_ptr< BoundaryBox_type > r (
-        BoundaryBox_traits::create (i, f, this));
-
-      if (!BoundaryBox_.present ())
-      {
-        this->BoundaryBox_.set (::std::move (r));
-        continue;
-      }
-    }
-
-    // CutoffRadius
-    //
-    if (n.name () == "CutoffRadius" && n.namespace_ ().empty ())
-    {
-      ::std::unique_ptr< CutoffRadius_type > r (
-        CutoffRadius_traits::create (i, f, this));
-
-      if (!CutoffRadius_.present ())
-      {
-        this->CutoffRadius_.set (::std::move (r));
-        continue;
-      }
-    }
-
-    break;
-  }
-
-  if (!BoundaryBox_.present ())
-  {
-    throw ::xsd::cxx::tree::expected_element< char > (
-      "BoundaryBox",
-      "");
-  }
-
-  if (!CutoffRadius_.present ())
-  {
-    throw ::xsd::cxx::tree::expected_element< char > (
-      "CutoffRadius",
-      "");
-  }
-}
-
-linkedCell_t* linkedCell_t::
-_clone (::xml_schema::flags f,
-        ::xml_schema::container* c) const
-{
-  return new class linkedCell_t (*this, f, c);
-}
-
-linkedCell_t& linkedCell_t::
-operator= (const linkedCell_t& x)
-{
-  if (this != &x)
-  {
-    static_cast< ::xml_schema::type& > (*this) = x;
-    this->BoundaryBox_ = x.BoundaryBox_;
-    this->CutoffRadius_ = x.CutoffRadius_;
-  }
-
-  return *this;
-}
-
-linkedCell_t::
-~linkedCell_t ()
-{
-}
-
-// naive_t
-//
-
-naive_t::
-naive_t ()
-: ::xml_schema::type ()
-{
-}
-
-naive_t::
-naive_t (const naive_t& x,
-         ::xml_schema::flags f,
-         ::xml_schema::container* c)
-: ::xml_schema::type (x, f, c)
-{
-}
-
-naive_t::
-naive_t (const ::xercesc::DOMElement& e,
-         ::xml_schema::flags f,
-         ::xml_schema::container* c)
-: ::xml_schema::type (e, f, c)
-{
-}
-
-naive_t::
-naive_t (const ::xercesc::DOMAttr& a,
-         ::xml_schema::flags f,
-         ::xml_schema::container* c)
-: ::xml_schema::type (a, f, c)
-{
-}
-
-naive_t::
-naive_t (const ::std::string& s,
-         const ::xercesc::DOMElement* e,
-         ::xml_schema::flags f,
-         ::xml_schema::container* c)
-: ::xml_schema::type (s, e, f, c)
-{
-}
-
-naive_t* naive_t::
-_clone (::xml_schema::flags f,
-        ::xml_schema::container* c) const
-{
-  return new class naive_t (*this, f, c);
-}
-
-naive_t::
-~naive_t ()
-{
-}
-
-// simulationStrategy_t
-//
-
-simulationStrategy_t::
-simulationStrategy_t ()
-: ::xml_schema::type (),
-  LinkedCell_ (this),
-  Naive_ (this)
-{
-}
-
-simulationStrategy_t::
-simulationStrategy_t (const simulationStrategy_t& x,
-                      ::xml_schema::flags f,
-                      ::xml_schema::container* c)
-: ::xml_schema::type (x, f, c),
-  LinkedCell_ (x.LinkedCell_, f, this),
-  Naive_ (x.Naive_, f, this)
-{
-}
-
-simulationStrategy_t::
-simulationStrategy_t (const ::xercesc::DOMElement& e,
-                      ::xml_schema::flags f,
-                      ::xml_schema::container* c)
-: ::xml_schema::type (e, f | ::xml_schema::flags::base, c),
-  LinkedCell_ (this),
-  Naive_ (this)
-{
-  if ((f & ::xml_schema::flags::base) == 0)
-  {
-    ::xsd::cxx::xml::dom::parser< char > p (e, true, false, false);
-    this->parse (p, f);
-  }
-}
-
-void simulationStrategy_t::
-parse (::xsd::cxx::xml::dom::parser< char >& p,
-       ::xml_schema::flags f)
-{
-  for (; p.more_content (); p.next_content (false))
-  {
-    const ::xercesc::DOMElement& i (p.cur_element ());
-    const ::xsd::cxx::xml::qualified_name< char > n (
-      ::xsd::cxx::xml::dom::name< char > (i));
-
-    // LinkedCell
-    //
-    if (n.name () == "LinkedCell" && n.namespace_ ().empty ())
-    {
-      ::std::unique_ptr< LinkedCell_type > r (
-        LinkedCell_traits::create (i, f, this));
-
-      if (!this->LinkedCell_)
-      {
-        this->LinkedCell_.set (::std::move (r));
-        continue;
-      }
-    }
-
-    // Naive
-    //
-    if (n.name () == "Naive" && n.namespace_ ().empty ())
-    {
-      ::std::unique_ptr< Naive_type > r (
-        Naive_traits::create (i, f, this));
-
-      if (!this->Naive_)
-      {
-        this->Naive_.set (::std::move (r));
-        continue;
-      }
-    }
-
-    break;
-  }
-}
-
-simulationStrategy_t* simulationStrategy_t::
-_clone (::xml_schema::flags f,
-        ::xml_schema::container* c) const
-{
-  return new class simulationStrategy_t (*this, f, c);
-}
-
-simulationStrategy_t& simulationStrategy_t::
-operator= (const simulationStrategy_t& x)
-{
-  if (this != &x)
-  {
-    static_cast< ::xml_schema::type& > (*this) = x;
-    this->LinkedCell_ = x.LinkedCell_;
-    this->Naive_ = x.Naive_;
-  }
-
-  return *this;
-}
-
-simulationStrategy_t::
-~simulationStrategy_t ()
 {
 }
 
@@ -6774,7 +6521,6 @@ file_t::
 
 simulation_t::
 simulation_t (const ForceCalculation_type& ForceCalculation,
-              const SimulationStrategy_type& SimulationStrategy,
               const FileType_type& FileType)
 : ::xml_schema::type (),
   OutputFile_ (this),
@@ -6785,7 +6531,6 @@ simulation_t (const ForceCalculation_type& ForceCalculation,
   PositionCalculation_ (this),
   VelocityCalculation_ (this),
   AverageBrownianMotion_ (this),
-  SimulationStrategy_ (SimulationStrategy, this),
   Dimensions_ (this),
   Thermostat_ (this),
   LogLevel_ (this),
@@ -6797,7 +6542,6 @@ simulation_t (const ForceCalculation_type& ForceCalculation,
 
 simulation_t::
 simulation_t (::std::unique_ptr< ForceCalculation_type > ForceCalculation,
-              ::std::unique_ptr< SimulationStrategy_type > SimulationStrategy,
               ::std::unique_ptr< FileType_type > FileType)
 : ::xml_schema::type (),
   OutputFile_ (this),
@@ -6808,7 +6552,6 @@ simulation_t (::std::unique_ptr< ForceCalculation_type > ForceCalculation,
   PositionCalculation_ (this),
   VelocityCalculation_ (this),
   AverageBrownianMotion_ (this),
-  SimulationStrategy_ (std::move (SimulationStrategy), this),
   Dimensions_ (this),
   Thermostat_ (this),
   LogLevel_ (this),
@@ -6831,7 +6574,6 @@ simulation_t (const simulation_t& x,
   PositionCalculation_ (x.PositionCalculation_, f, this),
   VelocityCalculation_ (x.VelocityCalculation_, f, this),
   AverageBrownianMotion_ (x.AverageBrownianMotion_, f, this),
-  SimulationStrategy_ (x.SimulationStrategy_, f, this),
   Dimensions_ (x.Dimensions_, f, this),
   Thermostat_ (x.Thermostat_, f, this),
   LogLevel_ (x.LogLevel_, f, this),
@@ -6854,7 +6596,6 @@ simulation_t (const ::xercesc::DOMElement& e,
   PositionCalculation_ (this),
   VelocityCalculation_ (this),
   AverageBrownianMotion_ (this),
-  SimulationStrategy_ (this),
   Dimensions_ (this),
   Thermostat_ (this),
   LogLevel_ (this),
@@ -6985,20 +6726,6 @@ parse (::xsd::cxx::xml::dom::parser< char >& p,
       }
     }
 
-    // SimulationStrategy
-    //
-    if (n.name () == "SimulationStrategy" && n.namespace_ ().empty ())
-    {
-      ::std::unique_ptr< SimulationStrategy_type > r (
-        SimulationStrategy_traits::create (i, f, this));
-
-      if (!SimulationStrategy_.present ())
-      {
-        this->SimulationStrategy_.set (::std::move (r));
-        continue;
-      }
-    }
-
     // Dimensions
     //
     if (n.name () == "Dimensions" && n.namespace_ ().empty ())
@@ -7090,13 +6817,6 @@ parse (::xsd::cxx::xml::dom::parser< char >& p,
       "");
   }
 
-  if (!SimulationStrategy_.present ())
-  {
-    throw ::xsd::cxx::tree::expected_element< char > (
-      "SimulationStrategy",
-      "");
-  }
-
   if (!FileType_.present ())
   {
     throw ::xsd::cxx::tree::expected_element< char > (
@@ -7126,7 +6846,6 @@ operator= (const simulation_t& x)
     this->PositionCalculation_ = x.PositionCalculation_;
     this->VelocityCalculation_ = x.VelocityCalculation_;
     this->AverageBrownianMotion_ = x.AverageBrownianMotion_;
-    this->SimulationStrategy_ = x.SimulationStrategy_;
     this->Dimensions_ = x.Dimensions_;
     this->Thermostat_ = x.Thermostat_;
     this->LogLevel_ = x.LogLevel_;
@@ -7669,104 +7388,121 @@ operator<< (::xercesc::DOMElement& e, const lennardJones_t& i)
 }
 
 void
-operator<< (::xercesc::DOMElement& e, const lennardJonesCell_t& i)
+operator<< (::xercesc::DOMElement& e, const enGrav_t& i)
 {
   e << static_cast< const ::xml_schema::type& > (i);
 
-  // Epsilon
+  // X
   //
-  if (i.Epsilon ())
   {
     ::xercesc::DOMAttr& a (
       ::xsd::cxx::xml::dom::create_attribute (
-        "Epsilon",
+        "X",
         e));
 
-    a << ::xml_schema::as_double(*i.Epsilon ());
+    a << ::xml_schema::as_double(i.X ());
   }
 
-  // Sigma
+  // Y
   //
-  if (i.Sigma ())
   {
     ::xercesc::DOMAttr& a (
       ::xsd::cxx::xml::dom::create_attribute (
-        "Sigma",
+        "Y",
         e));
 
-    a << *i.Sigma ();
+    a << ::xml_schema::as_double(i.Y ());
+  }
+
+  // Z
+  //
+  {
+    ::xercesc::DOMAttr& a (
+      ::xsd::cxx::xml::dom::create_attribute (
+        "Z",
+        e));
+
+    a << ::xml_schema::as_double(i.Z ());
   }
 }
 
 void
-operator<< (::xercesc::DOMElement& e, const lennardJonesOMP_t& i)
+operator<< (::xercesc::DOMElement& e, const enLC_t& i)
 {
   e << static_cast< const ::xml_schema::type& > (i);
 
-  // Epsilon
+  // BoundaryBox
   //
-  if (i.Epsilon ())
   {
-    ::xercesc::DOMAttr& a (
-      ::xsd::cxx::xml::dom::create_attribute (
-        "Epsilon",
+    ::xercesc::DOMElement& s (
+      ::xsd::cxx::xml::dom::create_element (
+        "BoundaryBox",
         e));
 
-    a << ::xml_schema::as_double(*i.Epsilon ());
+    s << i.BoundaryBox ();
   }
 
-  // Sigma
+  // CutoffRadius
   //
-  if (i.Sigma ())
   {
-    ::xercesc::DOMAttr& a (
-      ::xsd::cxx::xml::dom::create_attribute (
-        "Sigma",
+    ::xercesc::DOMElement& s (
+      ::xsd::cxx::xml::dom::create_element (
+        "CutoffRadius",
         e));
 
-    a << *i.Sigma ();
+    s << i.CutoffRadius ();
   }
 }
 
 void
-operator<< (::xercesc::DOMElement& e, const lennardJonesGravity_t& i)
+operator<< (::xercesc::DOMElement& e, const enOMP_t& i)
+{
+  e << static_cast< const ::xml_schema::type& > (i);
+}
+
+void
+operator<< (::xercesc::DOMAttr&, const enOMP_t&)
+{
+}
+
+void
+operator<< (::xml_schema::list_stream&,
+            const enOMP_t&)
+{
+}
+
+void
+operator<< (::xercesc::DOMElement& e, const enMemPull_t& i)
+{
+  e << static_cast< const ::xml_schema::type& > (i);
+}
+
+void
+operator<< (::xercesc::DOMAttr&, const enMemPull_t&)
+{
+}
+
+void
+operator<< (::xml_schema::list_stream&,
+            const enMemPull_t&)
+{
+}
+
+void
+operator<< (::xercesc::DOMElement& e, const enMem_t& i)
 {
   e << static_cast< const ::xml_schema::type& > (i);
 
-  // G_Grav
+  // EnableMemPull
   //
-  if (i.G_Grav ())
+  if (i.EnableMemPull ())
   {
-    ::xercesc::DOMAttr& a (
-      ::xsd::cxx::xml::dom::create_attribute (
-        "G_Grav",
+    ::xercesc::DOMElement& s (
+      ::xsd::cxx::xml::dom::create_element (
+        "EnableMemPull",
         e));
 
-    a << ::xml_schema::as_double(*i.G_Grav ());
-  }
-
-  // Epsilon
-  //
-  if (i.Epsilon ())
-  {
-    ::xercesc::DOMAttr& a (
-      ::xsd::cxx::xml::dom::create_attribute (
-        "Epsilon",
-        e));
-
-    a << ::xml_schema::as_double(*i.Epsilon ());
-  }
-
-  // Sigma
-  //
-  if (i.Sigma ())
-  {
-    ::xercesc::DOMAttr& a (
-      ::xsd::cxx::xml::dom::create_attribute (
-        "Sigma",
-        e));
-
-    a << *i.Sigma ();
+    s << *i.EnableMemPull ();
   }
 }
 
@@ -7799,40 +7535,52 @@ operator<< (::xercesc::DOMElement& e, const forceCalculation_t& i)
     s << *i.LennardJones ();
   }
 
-  // LennardJonesCell
+  // EnableGrav
   //
-  if (i.LennardJonesCell ())
+  if (i.EnableGrav ())
   {
     ::xercesc::DOMElement& s (
       ::xsd::cxx::xml::dom::create_element (
-        "LennardJonesCell",
+        "EnableGrav",
         e));
 
-    s << *i.LennardJonesCell ();
+    s << *i.EnableGrav ();
   }
 
-  // LennardJonesOMP
+  // EnableLC
   //
-  if (i.LennardJonesOMP ())
+  if (i.EnableLC ())
   {
     ::xercesc::DOMElement& s (
       ::xsd::cxx::xml::dom::create_element (
-        "LennardJonesOMP",
+        "EnableLC",
         e));
 
-    s << *i.LennardJonesOMP ();
+    s << *i.EnableLC ();
   }
 
-  // LennardJonesGravity
+  // EnableOMP
   //
-  if (i.LennardJonesGravity ())
+  if (i.EnableOMP ())
   {
     ::xercesc::DOMElement& s (
       ::xsd::cxx::xml::dom::create_element (
-        "LennardJonesGravity",
+        "EnableOMP",
         e));
 
-    s << *i.LennardJonesGravity ();
+    s << *i.EnableOMP ();
+  }
+
+  // EnableMem
+  //
+  if (i.EnableMem ())
+  {
+    ::xercesc::DOMElement& s (
+      ::xsd::cxx::xml::dom::create_element (
+        "EnableMem",
+        e));
+
+    s << *i.EnableMem ();
   }
 }
 
@@ -7973,81 +7721,6 @@ operator<< (::xercesc::DOMElement& e, const boundaries_t& i)
         e));
 
     s << i.Bottom ();
-  }
-}
-
-void
-operator<< (::xercesc::DOMElement& e, const linkedCell_t& i)
-{
-  e << static_cast< const ::xml_schema::type& > (i);
-
-  // BoundaryBox
-  //
-  {
-    ::xercesc::DOMElement& s (
-      ::xsd::cxx::xml::dom::create_element (
-        "BoundaryBox",
-        e));
-
-    s << i.BoundaryBox ();
-  }
-
-  // CutoffRadius
-  //
-  {
-    ::xercesc::DOMElement& s (
-      ::xsd::cxx::xml::dom::create_element (
-        "CutoffRadius",
-        e));
-
-    s << i.CutoffRadius ();
-  }
-}
-
-void
-operator<< (::xercesc::DOMElement& e, const naive_t& i)
-{
-  e << static_cast< const ::xml_schema::type& > (i);
-}
-
-void
-operator<< (::xercesc::DOMAttr&, const naive_t&)
-{
-}
-
-void
-operator<< (::xml_schema::list_stream&,
-            const naive_t&)
-{
-}
-
-void
-operator<< (::xercesc::DOMElement& e, const simulationStrategy_t& i)
-{
-  e << static_cast< const ::xml_schema::type& > (i);
-
-  // LinkedCell
-  //
-  if (i.LinkedCell ())
-  {
-    ::xercesc::DOMElement& s (
-      ::xsd::cxx::xml::dom::create_element (
-        "LinkedCell",
-        e));
-
-    s << *i.LinkedCell ();
-  }
-
-  // Naive
-  //
-  if (i.Naive ())
-  {
-    ::xercesc::DOMElement& s (
-      ::xsd::cxx::xml::dom::create_element (
-        "Naive",
-        e));
-
-    s << *i.Naive ();
   }
 }
 
@@ -8817,17 +8490,6 @@ operator<< (::xercesc::DOMElement& e, const simulation_t& i)
         e));
 
     s << *i.AverageBrownianMotion ();
-  }
-
-  // SimulationStrategy
-  //
-  {
-    ::xercesc::DOMElement& s (
-      ::xsd::cxx::xml::dom::create_element (
-        "SimulationStrategy",
-        e));
-
-    s << i.SimulationStrategy ();
   }
 
   // Dimensions

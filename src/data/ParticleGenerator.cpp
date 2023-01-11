@@ -7,7 +7,7 @@
 
 namespace ParticleGenerator {
     int bodyID = 1; /**every body gets generated with a unique body id */
-    int particleID = 1; /**every particle gets generated with a unique particleID*/
+    int particleID = 0; /**every particle gets generated with a unique particleID*/
 
 	void generateCuboid(struct Body& body, double v_bolz, std::list<Particle>& buffer, int dims, double sigma, double epsilon){ //thermal friction hardcoded to 0.1, is that what we want to do?
         //Maybe it would be more efficient to concatenate two vectors instead of placing one particle after another in the ParticleContainer
@@ -86,7 +86,7 @@ namespace ParticleGenerator {
 
         for(double i = 0; i < x0; i++){
             for(double j = 0; j < x1; j++){
-                Eigen::Vector3d pos = body.fixpoint + (body.distance * membrComputeOffset(planeFlag, x0, x1));
+                Eigen::Vector3d pos = body.fixpoint + (body.distance * membrComputeOffset(planeFlag, i, j));
                 auto v_tmp = maxwellBoltzmannDistributedVelocity(v_bolz, dims);
 
                 int particleID = getNextParticleID();

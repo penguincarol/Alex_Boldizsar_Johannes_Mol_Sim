@@ -7,11 +7,14 @@
 #include <vector>
 #include <Eigen>
 
+bool vectorEqual(const Eigen::Vector3d &lhs, const Eigen::Vector3d &rhs){
+    return (lhs[0]==rhs[0] && lhs[1]==rhs[1] && lhs[2]==rhs[2]);
+}
+
 /**
  * Test if the Membrane gets initialized as expected even if the buffer is not empty
  */
 TEST(ParticleGenerator, generateMembrane){
-    std::cout<<"I am here\n";
     std::list<Particle> buf{};
     std::list<Membrane> membrBuf{};
 
@@ -33,6 +36,14 @@ TEST(ParticleGenerator, generateMembrane){
     ASSERT_EQ(buf.size(), 3 + 3*3);
     ASSERT_EQ(membrBuf.size(), 1);
 
-    membrBuf.front().printMembrNodeStructure();
+    //check sporadically if some positions of particles are correct
+    Membrane& membr = membrBuf.front();
+
+    std::vector<Particle> bufVec(buf.begin(), buf.end());
+    std::vector<Membrane> bufMembrVec(membrBuf.begin(), membrBuf.end());
+
+    ASSERT_TRUE(vectorEqual(bufVec[bufMembrVec[0].getMembrNodes()[0][0]].getX(), {1.,1.,1}));    //we take the particle behind the index that membr[0][0] points to and see if it has the expected value
+    ASSERT_TRUE(vectorEqual(bufVec[bufMembrVec[0].getMembrNodes()[2][2]].getX(), {1. , 1.+ 2*1.2, 1+ 2*1.2}));
+    ASSERT_TRUE(vectorEqual(bufVec[bufMembrVec[0].getMembrNodes()[1][0]].getX(), {1. , 1.+ 1*1.2, 1+ 0*1.2}));
 
 }

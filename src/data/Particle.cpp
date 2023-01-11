@@ -71,6 +71,13 @@ Particle::Particle(const Eigen::Vector3d &x_arg, const std::array<double, 3> &v_
     io::output::loggers::general->trace("Particle generated!");
 }
 
+Particle::Particle(const Eigen::Vector3d &x_arg, const Eigen::Vector3d &v_arg, double m_arg, int type_arg, int id_arg)
+:x(x_arg), v(v_arg), m(m_arg), type(type_arg), id(id_arg){
+    f = {0,0,0};
+    old_f = {0,0,0};
+    io::output::loggers::general->trace("Particle generated!");
+}
+
 const Eigen::Vector3d &Particle::getX() const { return x; }
 
 const Eigen::Vector3d &Particle::getV() const { return v; }

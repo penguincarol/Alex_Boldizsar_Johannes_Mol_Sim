@@ -11,6 +11,7 @@
 
 namespace ParticleGenerator{
     extern int bodyID;
+    extern int particleID;
 
     /**
      * @brief generates  Cuboid with the parameters defined in the Body
@@ -66,4 +67,9 @@ namespace ParticleGenerator{
      * ID 0 is reserved for single particles.
      * */
     int getNextBodyID();
+
+    /**
+     * Retrieves an global unique ID for a particle.
+     * */
+    int getNextParticleID();
 };

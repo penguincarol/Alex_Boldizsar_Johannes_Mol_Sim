@@ -44,6 +44,8 @@ int main(int argc, char *argsv[]) {
         ioWrapper.reload();
         // get particles from current file
         ioWrapper.getParticles(buffer);
+        //TODO:
+        //ioWrapper.getMembranes(memBuffer);
     }
     // get final file args
     config.loadIOWArgs(ioWrapper.getArgMap());
@@ -52,6 +54,8 @@ int main(int argc, char *argsv[]) {
     ParticleContainer pc = ParticleContainer(buffer,
                                              {config.get<boundingBox_X0>(), config.get<boundingBox_X1>(), config.get<boundingBox_X2>()},
                                              config.get<rCutoff>());
+    //TODO: add memBranes to pc
+
     buffer.clear();
 
     //set up simulation

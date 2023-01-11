@@ -7,6 +7,7 @@
 
 namespace ParticleGenerator {
     int bodyID = 1; /**every body gets generated with a unique body id */
+    int particleID = 1; /**every particle gets generated with a unique particleID*/
 
 	void generateCuboid(struct Body& body, double v_bolz, std::list<Particle>& buffer, int dims, double sigma, double epsilon){ //thermal friction hardcoded to 0.1, is that what we want to do?
         //Maybe it would be more efficient to concatenate two vectors instead of placing one particle after another in the ParticleContainer
@@ -23,7 +24,7 @@ namespace ParticleGenerator {
                     Eigen::Vector3d pos = body.fixpoint + (body.distance * Eigen::Vector3d(x,y,z));
                     auto v_tmp = maxwellBoltzmannDistributedVelocity(v_bolz, dims);
                     Eigen::Vector3d v { v_tmp[0], v_tmp[1], v_tmp[2] };
-                    buffer.emplace_back(pos, (body.start_velocity +  v), body.mass, typeID);
+                    buffer.emplace_back(pos, (body.start_velocity +  v), body.mass, typeID, getNextParticleID());
                     buffer.back().setSigma(sigma);
                     buffer.back().setEpsilon(epsilon);
                 }
@@ -55,7 +56,7 @@ namespace ParticleGenerator {
         //determine which dimension is one and which other 2 dimensions you can use for initialization
 
         int typeID = getNextBodyID();
-        int planeFlag;  //0: x-y plane 1: z-x plane 2: y-z plane
+        int planeFlag;  //0: y-z plane 1: x-z plane 2: x-y plane
 
         double x0;
         double x1;
@@ -78,25 +79,29 @@ namespace ParticleGenerator {
             planeFlag = 0;
         }
 
+
+
+        //std::vector<std::vector<unsigned long>> membrNodes(x0, std::vector<unsigned long>(0, x1));
         std::vector<std::vector<unsigned long>> membrNodes(x0, std::vector<unsigned long>{});
-        unsigned long particleCount = buffer.size();    //get the amount of particles so far. I need this to give the right indexing structure to membrNodes
 
         for(double i = 0; i < x0; i++){
-            for(double j = 0; i < x1; j++){
+            for(double j = 0; j < x1; j++){
                 Eigen::Vector3d pos = body.fixpoint + (body.distance * membrComputeOffset(planeFlag, x0, x1));
                 auto v_tmp = maxwellBoltzmannDistributedVelocity(v_bolz, dims);
 
+                int particleID = getNextParticleID();
+
                 Eigen::Vector3d v { v_tmp[0], v_tmp[1], v_tmp[2] };
-                buffer.emplace_back(pos, (body.start_velocity +  v), body.mass, typeID);
+                buffer.emplace_back(pos, (body.start_velocity +  v), body.mass, typeID, particleID);
                 buffer.back().setSigma(sigma);
                 buffer.back().setEpsilon(epsilon);
 
-                membrNodes[x0][x1] = particleCount; //set membraneNode to the index corresponding to the particle that is in this position in the "grid graph"
-                particleCount++;
+                //membrNodes[i][j] = particleID; //set membraneNode to the index corresponding to the particle that is in this position in the "grid graph"
+                membrNodes[i].emplace_back(particleID); //set membraneNode to the index corresponding to the particle that is in this position in the "grid graph"
             }
         }
 
-        membranes.emplace_back(body.featherStrength, body.desiredDistanze, std::move(membrNodes));
+        membranes.emplace_back(body.featherStrength, body.desiredDistanze, membrNodes);
 
     }
 
@@ -149,7 +154,7 @@ namespace ParticleGenerator {
                         for(auto p : pos){
                             auto v_tmp = maxwellBoltzmannDistributedVelocity(v_bolz, dims);
                             Eigen::Vector3d v { v_tmp[0], v_tmp[1], v_tmp[2] };
-                            buffer.emplace_back(p, (body.start_velocity +  v), body.mass, typeID);
+                            buffer.emplace_back(p, (body.start_velocity +  v), body.mass, typeID, getNextParticleID());
                             buffer.back().setSigma(sigma);
                             buffer.back().setEpsilon(epsilon);
                         }
@@ -161,12 +166,16 @@ namespace ParticleGenerator {
 
 
     void generateParticle(Eigen::Vector3d& x, Eigen::Vector3d& v, double m, std::list<Particle>& buffer, double sigma, double epsilon){
-        buffer.emplace_back(x, v, m, 0);
+        buffer.emplace_back(x, v, m, getNextBodyID(), getNextParticleID());
         buffer.back().setSigma(sigma);
         buffer.back().setEpsilon(epsilon);
     }
 
     int getNextBodyID() {
         return bodyID++;
+    }
+
+    int getNextParticleID(){
+        return particleID++;
     }
 }

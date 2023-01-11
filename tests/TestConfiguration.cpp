@@ -307,8 +307,9 @@ TEST(Configuration, integrationXMLReader) {
 TEST(Configuration, testXMLReaderSigmaEpsilon) {
     using namespace io::input;
     std::list<Particle> particles;
+    std::list<Membrane> membrBuf;
     std::unordered_map<io::input::names, std::string> argMap;
-    io::input::XMLReader::readFile("lennardJonesSigEps.xml", particles, argMap);
+    io::input::XMLReader::readFile("lennardJonesSigEps.xml", particles, membrBuf, argMap);
 
     EXPECT_EQ(argMap[epsilon], "42.000000") << "epsilon was set to " << argMap[epsilon] << " and not 42" << std::endl;
     EXPECT_EQ(argMap[sigma], "24.000000") << "sigma was set to " << argMap[sigma] << " and not 24" << std::endl;;
@@ -318,8 +319,9 @@ TEST(Configuration, testXMLReaderSigmaEpsilon) {
 TEST(Configuration, testXMLPosCalcSetting) {
     using namespace io::input;
     std::list<Particle> particles;
+    std::list<Membrane> membrBuf;
     std::unordered_map<io::input::names, std::string> argMap;
-    io::input::XMLReader::readFile("setPosCalc.xml", particles, argMap);
+    io::input::XMLReader::readFile("setPosCalc.xml", particles, membrBuf, argMap);
 
     EXPECT_EQ(argMap[positionCalculation], "StoermerVelvet");
 }
@@ -327,8 +329,9 @@ TEST(Configuration, testXMLPosCalcSetting) {
 TEST(Configuration, testXMLLogLevel) {
     using namespace io::input;
     std::list<Particle> particles;
+    std::list<Membrane> membrBuf;
     std::unordered_map<io::input::names, std::string> argMap;
-    io::input::XMLReader::readFile("logLevelSets.xml", particles, argMap);
+    io::input::XMLReader::readFile("logLevelSets.xml", particles, membrBuf, argMap);
 
     EXPECT_EQ(argMap[logLevel], "5")<< "Log level was set to " << argMap[logLevel] << " and not 5" ;
 }
@@ -336,8 +339,9 @@ TEST(Configuration, testXMLLogLevel) {
 TEST(Configuration, testXMLLinkedCell) {
     using namespace io::input;
     std::list<Particle> particles;
+    std::list<Membrane> membrBuf;
     std::unordered_map<io::input::names, std::string> argMap;
-    io::input::XMLReader::readFile("simulationStrategySets.xml", particles, argMap);
+    io::input::XMLReader::readFile("simulationStrategySets.xml", particles, membrBuf, argMap);
 
     EXPECT_EQ(argMap[linkedCell], "1")<< "SimulationStrategy was set to " << argMap[linkedCell] << " not LinkedCell" ;
 

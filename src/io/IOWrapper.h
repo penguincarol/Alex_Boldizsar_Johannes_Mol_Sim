@@ -144,7 +144,29 @@ namespace io {
             }
         }
 
-        //TODO: getMembranes
+        //TODO: look with Alex if i forgot something
+        /**
+         * Delegates to InputLoader::getParticles
+         * */
+        inline void getMembranes(std::vector<Membrane> &membrBuf) {
+            switch (loadType) {
+                case io::input::type::XML: {
+                    xmlLoader.getMembranes(membrBuf);
+                    return;
+                }
+                case io::input::type::FILE: {
+                    fileLoader.getMembranes(membrBuf);
+                    return;
+                }
+                case io::input::type::BODY: {
+                    bodyLoader.getMembranes(membrBuf);
+                    return;
+                }
+                default:
+                    return;
+            }
+        }
+
 
         /**
          * Returns a read only view to the argument map

@@ -101,7 +101,7 @@ namespace ParticleGenerator {
             }
         }
 
-        membranes.emplace_back(body.featherStrength, body.desiredDistanze, membrNodes);
+        membranes.emplace_back(body.springStrength, body.desiredDistanze, membrNodes);
 
     }
 

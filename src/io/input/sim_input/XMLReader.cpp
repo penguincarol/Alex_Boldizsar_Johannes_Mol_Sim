@@ -241,6 +241,32 @@ namespace io::input {
                         ParticleGenerator::generateSphere(body, brown_val, particles, dims_val, sig, eps);
                     }
 
+                    //TODO: generateMembrane stuff here
+                    //How do i add the membrane as an option here? ShapeList is automatically generated..
+                    else if (s.Membrane().present()) {
+                        body.shape = Shape::membrane;
+
+                        dvectorToEigenVector3d(s.Membrane()->Position(), body.fixpoint);
+                        dvectorToEigenVector3d(s.Membrane()->Velocity(), body.start_velocity);
+                        ivectorToEigenVector3d(s.Membrane()->Dimensions(), body.dimensions);
+                        if (s.Membrane()->Mass() == 0 || s.Membrane()->Spacing() == 0) {
+                            output::loggers::general->warn("Membrane has a mass or spacing of 0, which is illegal. Skipping this membrane...");
+                            continue;
+                        }
+                        body.distance = s.Membrane()->Spacing();
+                        body.mass = s.Membrane()->Mass();
+                        double eps, sig;
+                        if (s.Membrane()->Sigma().present()) sig = s.Cuboid()->Membrane().get();
+                        else if (arg_map.contains(sigma)) sig = std::stod(arg_map[sigma]);
+                        else sig = default_sigma;
+                        if (s.Membrane()->Epsilon().present()) eps = s.Membrane()->Epsilon().get();
+                        else if (arg_map.contains(epsilon)) eps = std::stod(arg_map[epsilon]);
+                        else eps = default_epsilon;
+
+                        body.desiredDistanze = s.Membrane()->DesiredDistance();
+                        body.springStrength = s.Membrane()->SpringStrength();
+                        ParticleGenerator::generateMembrane(body, brown_val, particles, membranes, dims_val, sig, eps);
+                    }
 
 
                     else {

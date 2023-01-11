@@ -14,6 +14,9 @@ void Membrane::printMembrNodeStructure() {
 
         for(int j = 0; j < membrNodes[i].size(); j++){
             std::cout<<membrNodes[i][j];
+            double getDesiredDistance();
+
+            double getSoringStrength();
             if(j+1< membrNodes.size()){std::cout<<"--";}
         }
         std::cout<<std::endl;
@@ -30,4 +33,12 @@ void Membrane::printMembrNodeStructure() {
 
 std::vector<std::vector<unsigned long>> Membrane::getMembrNodes(){
     return membrNodes;
-};
+}
+
+double Membrane::getDesiredDistance(){
+    return r0;
+}
+
+double Membrane::getSpringStrength(){
+    return k;
+}

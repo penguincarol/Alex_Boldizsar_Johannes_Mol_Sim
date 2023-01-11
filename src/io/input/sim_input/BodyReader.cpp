@@ -29,7 +29,7 @@ namespace io::input {
 
     BodyReader::~BodyReader() = default;
 
-    void BodyReader::readFile(const char *filename, std::list<Particle> &buffer, std::list<Membrane> &,
+    void BodyReader::readFile(const char *filename, std::list<Particle> &buffer, std::list<Membrane> &membranes,
                               std::unordered_map<io::input::names, std::string> &arg_map) {
         std::array<double, 3> x;
         std::array<double, 3> v;
@@ -176,6 +176,9 @@ namespace io::input {
                                 std::to_string(body.fixpoint[2]) + std::string("] created"));
                         ParticleGenerator::generateParticle(body.fixpoint, body.start_velocity, body.mass, buffer, sig, eps);
                         break;
+                    case membrane:
+                        ParticleGenerator::generateMembrane(body, brown_average, buffer, membranes, dims, sig, eps);
+                        io::output::loggers::general->debug("Membrane created");
                     default:
                         io::output::loggers::general->error("Unknown body type specified!");
                         break;
@@ -198,7 +201,7 @@ namespace io::input {
             lowercase(b);
             return a == b;
         };
-        const std::array<std::string, num_shapes> strOfShape = {"Cuboid", "Sphere", "Particle"};
+        const std::array<std::string, num_shapes> strOfShape = {"Cuboid", "Sphere", "Particle", "Membrane"};
         for (size_t i = 0; i < num_shapes; i++) {
             if (compare(shape, strOfShape[i])) {
                 return all_shapes[i];   //all shapes defined in Body.h

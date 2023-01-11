@@ -283,7 +283,7 @@ private:
     VectorCoordWrapper cells;
     std::array<unsigned int, 3> gridDimensions; //stores the number of cells in x- y- and z- direction
     std::array<double, 3> domainSize;
-    std::vector<Membrane> membranes;  //basically a list of edges forming different graphs on the same node-set
+    std::vector<Membrane> membranes;  //stores the membranes created membranes as defined in the Membrane-class
     double x_2_max;
     double x_1_max;
     double x_0_max;
@@ -891,8 +891,21 @@ public:
      * Runs the function on the internal data
      * */
     template<typename F>
+    template<typename F>
     void runOnData(F fun) {
         fun(force, oldForce, x, v, m, type, count, eps, sig);
+    }
+
+    /**
+     * Runs function on internal data.
+     * Should be used by forceFunctor acting on Membranes
+     * @tparam F
+     * @param fun
+     */
+    template<typename F>
+    void runOnMembranes(F fun){
+        //I actually believe that you need all those parameters. We can still change that if i am wrong
+        fun(membranes, force, oldForce, x, v, m, type, count, eps, sig);
     }
 
     /**
@@ -930,6 +943,14 @@ public:
      * @param function
      */
     void forAllPairs(const std::function<void(Particle &p1, Particle &p2)> &function);
+
+    /**
+     * @brief Applies given function to all pairs of Particles that are connected by a spring due to Membranes
+     * Also iterates over all Membranes created
+     * analogon to forAllPairs
+     * This method is too slow for actual use but might be good for debugging purposes or prototyping
+     */
+    void forAllMembraneSprings(const std::function<void(Particle &p1, Particle &p2, double desiredDistance, double springStrength)> &function);
 
     /**
      * Handles interactions between halo and border cells.

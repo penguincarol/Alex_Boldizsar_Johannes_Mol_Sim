@@ -250,6 +250,79 @@ void ParticleContainer::forAllPairs(const std::function<void(Particle &p1, Parti
     }
 }
 
+void ParticleContainer::forAllMembraneSprings(const std::function<void(Particle &p1, Particle &p2, double desiredDistance, double springStrength)> &function){
+    for(Membrane& membrane: membranes){
+        if(membrane.getMembrNodes().size() <= 0){
+            continue;
+        }
+
+        std::array<size_t,2> membrDims{membrane.getMembrNodes().size(), membrane.getMembrNodes()[0].size()};
+
+        for(size_t i = 0; i < membrDims[0]; i++){
+            for(size_t j = 0; j < membrDims[1] - 1; j++){
+                auto index1 = membrane.getMembrNodes()[i][j];
+                auto index2 = membrane.getMembrNodes()[i][j+1];
+
+                Particle p1;
+                loadParticle(p1, index1);
+                Particle p2;
+                loadParticle(p2, index2);
+                function(p1, p2, membrane.getDesiredDistance(), membrane.getSpringStrength());
+                storeParticle(p1, index1);
+                storeParticle(p2, index2);
+            }
+        }
+
+        for(size_t i = 0; i < membrDims[0] - 1; i++){
+            for(size_t j = 0; j < membrDims[1]; j++){
+                auto index1 = membrane.getMembrNodes()[i][j];
+                auto index2 = membrane.getMembrNodes()[i+1][j];
+
+                Particle p1;
+                loadParticle(p1, index1);
+                Particle p2;
+                loadParticle(p2, index2);
+                function(p1, p2, membrane.getDesiredDistance(), membrane.getSpringStrength());
+                storeParticle(p1, index1);
+                storeParticle(p2, index2);
+            }
+        }
+
+        for(size_t i = 0; i < membrDims[0]; i++) {
+            for (size_t j = 0; j < membrDims[1]; j++) {
+
+                //to top right (thinking about membrane structure)
+                if(i+1 < membrDims[0] && j+1 < membrDims[1]){
+                    auto index1 = membrane.getMembrNodes()[i][j];
+                    auto index2 = membrane.getMembrNodes()[i+1][j+1];
+
+                    Particle p1;
+                    loadParticle(p1, index1);
+                    Particle p2;
+                    loadParticle(p2, index2);
+                    function(p1, p2, membrane.getDesiredDistance(), membrane.getSpringStrength());
+                    storeParticle(p1, index1);
+                    storeParticle(p2, index2);
+                }
+
+                //to bottom right (thinking about membrane structure)
+                if(i+1 < membrDims[0] && j-1 >= 0){
+                    auto index1 = membrane.getMembrNodes()[i][j];
+                    auto index2 = membrane.getMembrNodes()[i+1][j-1];
+
+                    Particle p1;
+                    loadParticle(p1, index1);
+                    Particle p2;
+                    loadParticle(p2, index2);
+                    function(p1, p2, membrane.getDesiredDistance(), membrane.getSpringStrength());
+                    storeParticle(p1, index1);
+                    storeParticle(p2, index2);
+                }
+            }
+        }
+    }
+}
+
 
 void ParticleContainer::forAllPairs(void (*function)(Particle &p1, Particle &p2)) {
     for (u_int32_t i = 0; i < count; i++) {

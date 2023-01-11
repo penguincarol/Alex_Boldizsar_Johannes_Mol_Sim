@@ -27,4 +27,8 @@ public:
      * @return
      */
     std::vector<std::vector<unsigned long>> getMembrNodes();
+
+    double getDesiredDistance();
+
+    double getSpringStrength();
 };

@@ -10,8 +10,8 @@ class Membrane {
 private:
     double k;
     double r0;
-    std::vector<std::tuple<unsigned long, unsigned long>> springs;
+    std::vector<std::vector<unsigned long>> membrNodes;
 
 public:
-    Membrane(double k, double r0, std::vector<std::tuple<unsigned long, unsigned long>>& springs);
+    Membrane(double k, double r0, std::vector<std::vector<unsigned long>>&& membrNodes);
 };

@@ -29,7 +29,7 @@ namespace io::input {
 
     BodyReader::~BodyReader() = default;
 
-    void BodyReader::readFile(const char *filename, std::list<Particle> &buffer,
+    void BodyReader::readFile(const char *filename, std::list<Particle> &buffer, std::list<Membrane> &,
                               std::unordered_map<io::input::names, std::string> &arg_map) {
         std::array<double, 3> x;
         std::array<double, 3> v;

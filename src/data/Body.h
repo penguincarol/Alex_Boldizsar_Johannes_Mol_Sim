@@ -14,4 +14,7 @@ struct Body {
     double distance;
     double mass;
     Eigen::Vector3d start_velocity;
+
+    double desiredDistanze; /**These two parameters only get used in case that shape is Membrane. Otherwise it's undefined*/
+    double featherStrength; /**These two parameters only get used in case that shape is Membrane. Otherwise it's undefined*/
 };

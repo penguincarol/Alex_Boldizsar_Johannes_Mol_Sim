@@ -34,7 +34,7 @@ namespace io::input {
          * @param buffer is where all generated particles will be stored in
          * @param arg_map, storage for all args
          */
-        static void readFile(const char *filename, std::list<Particle> &buffer, std::unordered_map<io::input::names,std::string>& arg_map);
+        static void readFile(const char *filename, std::list<Particle> &buffer, std::list<Membrane> &membranes, std::unordered_map<io::input::names,std::string>& arg_map);
 
         /**
          * @brief Converts the String describing a shape to the according shape

@@ -188,27 +188,6 @@ namespace io {
                     ForceCalculation.LennardJones(lj);
                     break;
                 }
-                case sim::physics::force::lennardJonesOMP: {
-                    lennardJonesOMP_t lj;
-                    lj.Epsilon(config.get<io::input::epsilon>());
-                    lj.Sigma(config.get<io::input::epsilon>());
-                    ForceCalculation.LennardJonesOMP(lj);
-                    break;
-                }
-                case sim::physics::force::lennardJonesCell: {
-                    lennardJonesCell_t lj;
-                    lj.Epsilon(config.get<io::input::epsilon>());
-                    lj.Sigma(config.get<io::input::epsilon>());
-                    ForceCalculation.LennardJonesCell(lj);
-                    break;
-                }
-                case sim::physics::force::lennardJonesGravity: {
-                    lennardJonesGravity_t lj;
-                    lj.Epsilon(config.get<io::input::epsilon>());
-                    lj.Sigma(config.get<io::input::epsilon>());
-                    ForceCalculation.LennardJonesGravity(lj);
-                    break;
-                }
                 default:
                     break;
             }

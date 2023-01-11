@@ -404,14 +404,34 @@ namespace io::input {
                             default_delta_temp,
                             [](std::string &arg) { return std::stod(arg); }
                     )},
-            {"-gGrav",
+            {"-gGrav0",
                     ArgEntry<double>(
-                            "-gGrav",
-                            "--gGravity",
+                            "-gGrav0",
+                            "--gGravity0",
                             "Defines the gravity constant for the LennardJonesGravity force calculation mode.",
                             "<value>",
                             true,
-                            default_g_grav,
+                            default_g_grav0,
+                            [](std::string &arg) { return std::stod(arg); }
+                    )},
+            {"-gGrav1",
+                    ArgEntry<double>(
+                            "-gGrav1",
+                            "--gGravity1",
+                            "Defines the gravity constant for the LennardJonesGravity force calculation mode.",
+                            "<value>",
+                            true,
+                            default_g_grav1,
+                            [](std::string &arg) { return std::stod(arg); }
+                    )},
+            {"-gGrav2",
+                    ArgEntry<double>(
+                            "-gGrav2",
+                            "--gGravity2",
+                            "Defines the gravity constant for the LennardJonesGravity force calculation mode.",
+                            "<value>",
+                            true,
+                            default_g_grav2,
                             [](std::string &arg) { return std::stod(arg); }
                     )},
             {"-cp",

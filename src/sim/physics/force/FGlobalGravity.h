@@ -8,16 +8,11 @@
 
 namespace sim::physics::force {
     /**
-     * calculate the force for all particles using the Lennard-Jones potential
+     * applies gGrav on all particles
      * */
     class FGlobalGravity : public ForceFunctorBase {
     private:
-        pair_fun_t pairFun;
-        fpair_fun_t fpairFun;
-        ForceFunctorBase* forceDelegate;
-        double gGrav;
-
-        void setPairFun();
+        double gGrav0, gGrav1, gGrav2;
 
     public:
         /**
@@ -28,16 +23,9 @@ namespace sim::physics::force {
                        double dt,
                        double eps,
                        double sig,
-                       double gG,
-                       ParticleContainer &pc,
-                       ForceFunctorBase* ff
-        ) : ForceFunctorBase(st, et, dt, eps, sig, pc), forceDelegate(ff), gGrav(gG) {
-            setPairFun();
-        }
-
-        ~FGlobalGravity() override {
-            delete forceDelegate;
-        }
+                       double gG0, double gG1, double gG2,
+                       ParticleContainer &pc
+        ) : ForceFunctorBase(st, et, dt, eps, sig, pc), gGrav0(gG0),gGrav1(gG1),gGrav2(gG2) {}
 
         void operator()() override;
 

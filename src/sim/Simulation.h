@@ -22,6 +22,7 @@
 #include "sim/physics/velocity/types.h"
 #include "sim/physics/thermostat/Thermostat.h"
 #include "io/input/Configuration.h"
+#include "sim/physics/force/ForceHandler.h"
 
 #include <memory>
 #include <chrono>
@@ -47,7 +48,6 @@ namespace sim {
         const std::string outputBaseName;
         const bool linkedCell;
         const bool checkpointingEnable;
-        physics::force::ForceFunctorBase *p_calcF;
         physics::PhysicsFunctorBase *p_calcX;
         physics::PhysicsFunctorBase *p_calcV;
 
@@ -55,7 +55,7 @@ namespace sim {
         Thermostat thermostat;
 
     public:
-        physics::force::ForceFunctorBase &calcF;
+        physics::force::ForceHandler calcF;
         physics::PhysicsFunctorBase &calcX;
         physics::PhysicsFunctorBase &calcV;
         sim::physics::bounds::BoundsHandler handleBounds;
@@ -76,26 +76,28 @@ namespace sim {
                             force::type forceType = force::stot(default_force_type),
                             position::type posType = position::stot(default_pos_type),
                             velocity::type velType = velocity::stot(default_vel_type),
-                            bool lc = default_linked_cell, bool cpe = default_checkpointing, double gG = default_g_grav,
-                            bool thermoEn = default_therm, double thermoDelta_t = default_delta_temp, int thermoNTerm = default_n_term,
+                            bool eLC = default_linked_cell, bool eOMP = default_enable_omp, bool eGrav = default_enable_grav,
+                            bool eMem = default_enable_membrane, bool eMemPull = default_enable_membrane_pull,
+                            bool eCP = default_checkpointing,
+                            double gG0 = default_g_grav0, double gG1 = default_g_grav1, double gG2 = default_g_grav2,
+                            bool eTH = default_therm, double thermoDelta_t = default_delta_temp, int thermoNTerm = default_n_term,
                             double thermoTTarget = default_t_target, double ThermoTInit = default_t_init, int dimensions = default_dims) :
                 ioWrapper(iow),
                 particleContainer(pc),
                 start_time(st), end_time(et),
                 delta_t(dt), epsilon(eps),
                 sigma(sig), outputFolder(std::move(of)),
-                outputBaseName(std::move(on)), linkedCell(lc), checkpointingEnable(cpe),
-                p_calcF(force::generateForce(forceType, st, et, dt, eps, sig, pc, lc, gG)),
+                outputBaseName(std::move(on)), linkedCell(eLC), checkpointingEnable(eCP),
                 p_calcX(position::generatePosition(posType, st, et, dt, eps, sig, pc)),
                 p_calcV(velocity::generateVelocity(velType, st, et, dt, eps, sig, pc)),
-                thermoEnable(thermoEn),
-                thermostat(pc, thermoTTarget, thermoNTerm, dimensions, thermoDelta_t, ThermoTInit, thermoEn),
-                calcF(*p_calcF),
+                thermoEnable(eTH),
+                thermostat(pc, thermoTTarget, thermoNTerm, dimensions, thermoDelta_t, ThermoTInit, eTH),
+                calcF(forceType, eLC, eOMP, eGrav, eMem, eMemPull, gG0, gG1, gG2, st, et, dt, eps, sig, pc),
                 calcX(*p_calcX),
                 calcV(*p_calcV),
                 handleBounds(leftBound, rightBound, topBound, botBound, frontBound, rearBound,
                              calcF, st, et, dt, eps, sig, pc) {
-            if (p_calcF == nullptr || p_calcX == nullptr || p_calcV == nullptr) {
+            if (p_calcX == nullptr || p_calcV == nullptr) {
                 io::output::loggers::general->error("Failed to initialize simulation. Malloc failed.");
                 exit(-1);
             }
@@ -134,8 +136,11 @@ namespace sim {
                            config.get<io::input::boundCondFront>(), config.get<io::input::boundCondRear>(),
                            config.get<io::input::forceCalculation>(), config.get<io::input::positionCalculation>(),
                            config.get<io::input::velocityCalculation>(),
-                           config.get<io::input::enableLinkedCell>(), config.get<io::input::enableCheckpointing>(),
-                           config.get<io::input::gGrav>(), config.get<io::input::enableThermo>(), config.get<io::input::thermoDelta_t>(),
+                           config.get<io::input::enableLinkedCell>(), config.get<io::input::enableOMP>(),
+                           config.get<io::input::enableGrav>(), config.get<io::input::enableMembrane>(),
+                           config.get<io::input::enableMembranePull>(), config.get<io::input::enableCheckpointing>(),
+                           config.get<io::input::gGrav0>(), config.get<io::input::gGrav1>(), config.get<io::input::gGrav2>(),
+                           config.get<io::input::enableThermo>(), config.get<io::input::thermoDelta_t>(),
                            config.get<io::input::thermoNTerm>(), config.get<io::input::thermoTTarget>(),
                            config.get<io::input::thermoTInit>(), config.get<io::input::dimensions>()) {
             io::output::loggers::simulation->trace("Sim constructor short used");
@@ -145,7 +150,6 @@ namespace sim {
          * Need to clean up due to polymorphism.
          * */
         ~Simulation() {
-            delete p_calcF;
             delete p_calcX;
             delete p_calcV;
         }

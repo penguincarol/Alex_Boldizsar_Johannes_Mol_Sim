@@ -4,11 +4,6 @@
 
 #include "FGlobalGravity.h"
 
-void sim::physics::force::FGlobalGravity::setPairFun() {
-    pairFun = forceDelegate->getForceFunction();
-    fpairFun = forceDelegate->getFastForceFunction();
-}
-
 void sim::physics::force::FGlobalGravity::operator()() {
     //perform gravity addition
     // we do not care if a particle is still active or not, faster this way
@@ -23,21 +18,21 @@ void sim::physics::force::FGlobalGravity::operator()() {
                                    std::vector<double> &sig,
                                    std::vector<unsigned long> & activeParticles) {
         for (auto index : activeParticles) {
-            force[index*3 + 1] += m[index] * gGrav;
+            force[index*3 + 0] += m[index] * gGrav0;
+            force[index*3 + 1] += m[index] * gGrav1;
+            force[index*3 + 2] += m[index] * gGrav2;
         }
     });
 }
 
 sim::physics::force::fpair_fun_t sim::physics::force::FGlobalGravity::getFastForceFunction() {
-    return fpairFun;
+    throw std::runtime_error{"This should not be called. Not supported."};
 }
 
 void sim::physics::force::FGlobalGravity::setParticleContainer(ParticleContainer &pc) {
     particleContainer = pc;
-    forceDelegate->setParticleContainer(pc);
-    setPairFun();
 }
 
 sim::physics::force::pair_fun_t &sim::physics::force::FGlobalGravity::getForceFunction() {
-    return pairFun;
+    throw std::runtime_error{"This should not be called. Not supported."};
 }

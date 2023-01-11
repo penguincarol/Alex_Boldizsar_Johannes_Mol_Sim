@@ -51,7 +51,7 @@ static void setCLIArgs() {
     std::get<io::input::ArgEntry<double>>(io::input::cli_arg_map.at("-tt")).value = 2.5;
     std::get<io::input::ArgEntry<double>>(io::input::cli_arg_map.at("-dTemp")).value = 2.6;
     std::get<io::input::ArgEntry<int>>(io::input::cli_arg_map.at("-cp")).value = 1;
-    std::get<io::input::ArgEntry<double>>(io::input::cli_arg_map.at("-gGrav")).value = 5.0;
+    std::get<io::input::ArgEntry<double>>(io::input::cli_arg_map.at("-gGrav0")).value = 5.0;
     std::get<io::input::ArgEntry<int>>(io::input::cli_arg_map.at("-lastIt")).value = 1000;
 }
 
@@ -114,7 +114,7 @@ TEST(Configuration, loadCLICorrect) {
     EXPECT_EQ(config.get<thermoTTarget>(), 2.5);
     EXPECT_EQ(config.get<thermoDelta_t>(), 2.6);
     EXPECT_EQ(config.get<enableCheckpointing>(), true);
-    EXPECT_EQ(config.get<gGrav>(), 5.0);
+    EXPECT_EQ(config.get<gGrav0>(), 5.0);
     EXPECT_EQ(config.get<simLastIteration>(), 1000);
 }
 
@@ -157,7 +157,7 @@ static void setFileMap(std::unordered_map<io::input::names, std::string>& argMap
     argMap[thermoTTarget] = "3.0";
     argMap[thermoDelta_t] = "1.0";
     argMap[enableCheckpointing] = "0";
-    argMap[gGrav] = "0.1";
+    argMap[gGrav0] = "0.1";
     argMap[simLastIteration] = "1";
 }
 
@@ -213,7 +213,7 @@ TEST(Configuration, loadFileSet) {
     EXPECT_EQ(config.get<thermoTTarget>(), 3.0);
     EXPECT_EQ(config.get<thermoDelta_t>(), 1.0);
     EXPECT_EQ(config.get<enableCheckpointing>(), false);
-    EXPECT_EQ(config.get<gGrav>(), 0.1);
+    EXPECT_EQ(config.get<gGrav0>(), 0.1);
     EXPECT_EQ(config.get<simLastIteration>(), 1);
 }
 
@@ -300,7 +300,7 @@ TEST(Configuration, integrationXMLReader) {
     EXPECT_EQ(config.get<thermoTTarget>(), 30.0);
     EXPECT_EQ(config.get<thermoDelta_t>(), 576.3);
     EXPECT_EQ(config.get<enableCheckpointing>(), true);
-    EXPECT_EQ(config.get<gGrav>(), 5.0);
+    EXPECT_EQ(config.get<gGrav0>(), 5.0);
     EXPECT_EQ(config.get<simLastIteration>(), 1000);
 }
 

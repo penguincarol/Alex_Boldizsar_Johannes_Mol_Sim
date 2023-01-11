@@ -31,7 +31,9 @@ namespace io::input {
         enableMembrane,
         enableMembranePull,
         enableOMP,
-        gGrav,
+        gGrav0,
+        gGrav1,
+        gGrav2,
             // LINKED CELL
             enableLinkedCell,
             rCutoff,

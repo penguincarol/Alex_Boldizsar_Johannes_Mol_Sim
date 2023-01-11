@@ -4,11 +4,40 @@
 
 #pragma once
 
+#include "ForceFunctorBase.h"
+#include "FGravity.h"
+
 namespace sim::physics::force {
 
-    class FGravityCells {
+    /**
+     * Performs gravity interaction between two particles while using the linked cell data structure.
+     * */
+    class FGravityCells : public ForceFunctorBase {
+    private:
+        pair_fun_t pairFun;
+        fpair_fun_t fpairFun;
+        FGravity forceDelegate;
 
+        void setPairFun();
+
+    public:
+        FGravityCells(double st,
+                 double et,
+                 double dt,
+                 double eps,
+                 double sig,
+                 ParticleContainer &pc
+        ) : ForceFunctorBase(st, et, dt, eps, sig, pc), forceDelegate(st, et, dt, eps, sig, pc) {
+            setPairFun();
+        }
+
+        void operator()() override;
+
+        void setParticleContainer(ParticleContainer& pc) override;
+
+        pair_fun_t& getForceFunction() override;
+
+        fpair_fun_t getFastForceFunction() override;
     };
-
 } // force
 

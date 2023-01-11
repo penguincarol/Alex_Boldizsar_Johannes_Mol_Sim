@@ -8,6 +8,7 @@
 #include "BoundsOutflow.h"
 #include "BoundsReflecting.h"
 #include "BoundsPeriodic.h"
+#include "sim/physics/force/ForceHandler.h"
 
 namespace sim::physics::bounds {
     using bound_t = sim::physics::bounds::type;
@@ -24,7 +25,6 @@ namespace sim::physics::bounds {
         sim::physics::bounds::BoundsFunctorBase<side_t::rear> *handleRear; //!< defines the boundsHandler used on the back side (front-rear is z-direction)
         bool periodicActive; //!< helper variable, gets set to true if there are periodic Bounds
         ParticleContainer& particleContainer; //!< stores pc that this BoundsHandler belongs to
-        force::ForceFunctorBase& forceFunctor; //!< stores forceFunctor for reflecting Bounds, etc
 
         /**
          * Handles all periodic bounds.
@@ -38,7 +38,7 @@ namespace sim::physics::bounds {
          * @brief Creates a bounds handler that supports different bounds behaviour for each side.
          * This is defined by the first six parameters.
          * <h3> Will allocate memory on heap </h3>
-         * @param ff is the currently use force calculation method.
+         * @param fh is the currently use force calculation method.
          * The remaining arguments are simulation properties.
          * @param let
          * @param rit
@@ -54,7 +54,7 @@ namespace sim::physics::bounds {
          * @param pc
          */
         BoundsHandler(bound_t let, bound_t rit, bound_t tot, bound_t bot, bound_t frt, bound_t ret,
-                      sim::physics::force::ForceFunctorBase &ff, double st, double et, double dt, double eps,
+                      sim::physics::force::ForceHandler &fh, double st, double et, double dt, double eps,
                       double sig, ParticleContainer &pc);
 
         /**
@@ -94,7 +94,7 @@ namespace sim::physics::bounds {
      * @return
      */
     template<sim::physics::bounds::side S>
-    static BoundsFunctorBase<S>* generateBound(type t, sim::physics::force::ForceFunctorBase &ff,
+    static BoundsFunctorBase<S>* generateBound(type t, sim::physics::force::ForceHandler &fh,
                                                         double st, double et, double dt, double eps, double sig,
                                                         ParticleContainer &pc,
                                                         type bLeft, type bRight, type bBottom,
@@ -116,7 +116,7 @@ namespace sim::physics::bounds {
         }
 
         if (t == bound_t::outflow) return new BoundsOutflow<S>(st, et, dt, eps, sig, pc);
-        else if (t == bound_t::reflecting) return new BoundsReflecting<S>(st, et, dt, eps, sig, pc, ff);
+        else if (t == bound_t::reflecting) return new BoundsReflecting<S>(st, et, dt, eps, sig, pc, fh);
         else if (t == bound_t::periodic) {
             bool mMinor, mMajor;
             if constexpr(S == left || S == right) {
@@ -132,7 +132,7 @@ namespace sim::physics::bounds {
                 mMinor = false;
                 mMajor = false;
             }
-            return new BoundsPeriodic<S>(st, et, dt, eps, sig, pc, ff, mMinor, mMajor);
+            return new BoundsPeriodic<S>(st, et, dt, eps, sig, pc, fh, mMinor, mMajor);
         }
         else return new BoundsFunctorBase<S>(st, et, dt, eps, sig, pc);
     }

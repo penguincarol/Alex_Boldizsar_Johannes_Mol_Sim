@@ -5,13 +5,13 @@
 #pragma once
 
 #include "BoundsFunctorBase.h"
-#include "sim/physics/force/ForceFunctorBase.h"
+#include "sim/physics/force/ForceHandler.h"
 
 namespace sim::physics::bounds {
     template<sim::physics::bounds::side S>
     class BoundsPeriodic : public BoundsFunctorBase<S> {
     private:
-        force::ForceFunctorBase& forceFunctor;
+        force::ForceHandler& forceHandler;
         bool mirrorMinor;
         bool mirrorMajor;
 
@@ -30,8 +30,8 @@ namespace sim::physics::bounds {
          * @param mMinor
          * @param mMajor
          */
-        BoundsPeriodic(double st, double et, double dt, double eps, double sig, ParticleContainer &pc, force::ForceFunctorBase& ff, bool mMinor, bool mMajor)
-                : BoundsFunctorBase<S>(st, et, dt, eps, sig, pc), forceFunctor(ff), mirrorMinor(mMinor), mirrorMajor(mMajor) {}
+        BoundsPeriodic(double st, double et, double dt, double eps, double sig, ParticleContainer &pc, force::ForceHandler& fh, bool mMinor, bool mMajor)
+                : BoundsFunctorBase<S>(st, et, dt, eps, sig, pc), forceHandler(fh), mirrorMinor(mMinor), mirrorMajor(mMajor) {}
 
         /**Reflects particle upon nearing the border.
          * Halo construction and force calculation has to be called independently by calling handle Halo.
@@ -54,7 +54,7 @@ namespace sim::physics::bounds {
 
         /**Calculates the force for this halo side in periodic bounds.*/
         void calcHaloForce() final {
-            this->particleContainer.template forAllPairsHaloSide<S>(forceFunctor.getFastForceFunction());
+            this->particleContainer.template forAllPairsHaloSide<S>(forceHandler.getFastForceFunction());
         }
     };
 } // sim::physics::bounds

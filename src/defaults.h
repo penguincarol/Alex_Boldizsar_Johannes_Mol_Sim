@@ -37,7 +37,9 @@ constexpr int default_n_term{0};
 constexpr double default_t_target{20.0};
 constexpr double default_delta_temp{std::numeric_limits<double>::infinity()}; // DO NOT CHANGE THIS!
 constexpr bool default_checkpointing{true};
-constexpr double default_g_grav{1.0};
+constexpr double default_g_grav0{1.0};
+constexpr double default_g_grav1{1.0};
+constexpr double default_g_grav2{1.0};
 constexpr auto default_loader{"xml"};
 constexpr int default_last_iteration{0};
 constexpr bool default_enable_grav{false};

@@ -81,7 +81,7 @@ namespace io::input {
                 setInMapND(forceCalculation, "lennardjonesgravity");
                 setInMap(epsilon, lj->Epsilon().present(), std::to_string(default_epsilon), [&]()->std::string{return std::to_string(lj->Epsilon().get());});
                 setInMap(sigma, lj->Sigma().present(), std::to_string(default_sigma), [&]()->std::string{return std::to_string(lj->Sigma().get());});
-                setInMap(gGrav, lj->Sigma().present(), std::to_string(default_g_grav), [&]()->std::string{return std::to_string(lj->G_Grav().get());});
+                setInMap(gGrav0, lj->Sigma().present(), std::to_string(default_g_grav0), [&]()->std::string{return std::to_string(lj->G_Grav().get());});
             }
             else {
                 output::loggers::general->debug("This really shouldn't happen. No ForceCalculation was specified despite it being mandatory. Using default...");

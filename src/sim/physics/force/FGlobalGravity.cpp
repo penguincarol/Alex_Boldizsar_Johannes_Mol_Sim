@@ -2,17 +2,14 @@
 // Created by alex on 06.12.2022.
 //
 
-#include "FLennardJonesGravity.h"
+#include "FGlobalGravity.h"
 
-void sim::physics::force::FLennardJonesGravity::setPairFun() {
+void sim::physics::force::FGlobalGravity::setPairFun() {
     pairFun = forceDelegate->getForceFunction();
     fpairFun = forceDelegate->getFastForceFunction();
 }
 
-void sim::physics::force::FLennardJonesGravity::operator()() {
-    // perform normal force calculation
-    forceDelegate->operator()();
-
+void sim::physics::force::FGlobalGravity::operator()() {
     //perform gravity addition
     // we do not care if a particle is still active or not, faster this way
     particleContainer.runOnActiveData([&](std::vector<double> &force,
@@ -31,16 +28,16 @@ void sim::physics::force::FLennardJonesGravity::operator()() {
     });
 }
 
-sim::physics::force::fpair_fun_t sim::physics::force::FLennardJonesGravity::getFastForceFunction() {
+sim::physics::force::fpair_fun_t sim::physics::force::FGlobalGravity::getFastForceFunction() {
     return fpairFun;
 }
 
-void sim::physics::force::FLennardJonesGravity::setParticleContainer(ParticleContainer &pc) {
+void sim::physics::force::FGlobalGravity::setParticleContainer(ParticleContainer &pc) {
     particleContainer = pc;
     forceDelegate->setParticleContainer(pc);
     setPairFun();
 }
 
-sim::physics::force::pair_fun_t &sim::physics::force::FLennardJonesGravity::getForceFunction() {
+sim::physics::force::pair_fun_t &sim::physics::force::FGlobalGravity::getForceFunction() {
     return pairFun;
 }

@@ -9,7 +9,7 @@
 #include "FLennardJones.h"
 #include "FLennardJonesOMP.h"
 #include "FLennardJonesCells.h"
-#include "FLennardJonesGravity.h"
+#include "FGlobalGravity.h"
 #include "io/output/Logging.h"
 
 namespace sim::physics::force {

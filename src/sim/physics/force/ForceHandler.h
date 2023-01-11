@@ -8,7 +8,6 @@ namespace sim::physics::force {
      * Takes care of all force calculation.
      * */
     class ForceHandler {
-
     };
 } // sim::physics::force
 

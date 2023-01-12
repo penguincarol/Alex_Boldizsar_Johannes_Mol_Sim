@@ -7,6 +7,7 @@
 
 #include "FileReader.h"
 #include "io/output/Logging.h"
+#include "data/Membrane.h"
 
 
 #include <cstdlib>
@@ -18,7 +19,7 @@ namespace io::input {
 
     FileReader::~FileReader() = default;
 
-    void FileReader::readFile(const char *filename, std::list<Particle> &particles, std::unordered_map<io::input::names, std::string> & ) {
+    void FileReader::readFile(const char *filename, std::list<Particle> &particles, std::list<Membrane> &,  std::unordered_map<io::input::names, std::string> & ) {
         std::array<double, 3> x;
         std::array<double, 3> v;
         double m;

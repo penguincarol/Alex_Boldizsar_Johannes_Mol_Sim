@@ -10,16 +10,16 @@
 #include <fstream>
 #include <filesystem>
 
+#include "defaults.h"
 #include "data/Particle.h"
-#include "io/input/sim_input/InputLoader.h"
 #include "io/output/VTKWriter.h"
+#include "io/input/arg_names.h"
+#include "io/input/Configuration.h"
+#include "io/input/sim_input/types.h"
+#include "io/input/sim_input/InputLoader.h"
 #include "io/input/sim_input/FileReader.h"
 #include "io/input/sim_input/BodyReader.h"
-#include "defaults.h"
-#include "io/input/arg_names.h"
 #include "io/input/sim_input/XMLReader.h"
-#include "io/input/sim_input/types.h"
-#include "io/input/Configuration.h"
 
 namespace io {
     /**
@@ -137,6 +137,28 @@ namespace io {
                 }
                 case io::input::type::BODY: {
                     bodyLoader.getParticles(buf);
+                    return;
+                }
+                default:
+                    return;
+            }
+        }
+
+        /**
+         * Delegates to InputLoader::getParticles
+         * */
+        inline void getMembranes(std::vector<Membrane> &membrBuf) {
+            switch (loadType) {
+                case io::input::type::XML: {
+                    xmlLoader.getMembranes(membrBuf);
+                    return;
+                }
+                case io::input::type::FILE: {
+                    fileLoader.getMembranes(membrBuf);
+                    return;
+                }
+                case io::input::type::BODY: {
+                    bodyLoader.getMembranes(membrBuf);
                     return;
                 }
                 default:

@@ -23,7 +23,7 @@ namespace io::input {
 
         virtual ~XMLReader();
 
-        static void readFile(const char *filename, std::list<Particle> &particles, std::unordered_map<io::input::names, std::string> &);
+        static void readFile(const char *filename, std::list<Particle> &particles, std::list<Membrane>& membranes, std::unordered_map<io::input::names, std::string> &);
 
     private:
         static void dvectorToEigenVector3d(dvector_t const &, Eigen::Vector3d &);

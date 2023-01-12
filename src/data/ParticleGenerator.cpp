@@ -6,12 +6,13 @@
 #include <iostream>
 
 namespace ParticleGenerator {
-    int bodyID = 1;
+    int bodyID = 1; /**every body gets generated with a unique body id */
+    int particleID = 0; /**every particle gets generated with a unique particleID*/
 
 	void generateCuboid(struct Body& body, double v_bolz, std::list<Particle>& buffer, int dims, double sigma, double epsilon){ //thermal friction hardcoded to 0.1, is that what we want to do?
         //Maybe it would be more efficient to concatenate two vectors instead of placing one particle after another in the ParticleContainer
         if(body.shape != cuboid){
-            std::cerr<<"generateCuboid does not work for shapes that aren't Cuboids";
+            io::output::loggers::general->error("generateCuboid does not work for shapes that aren't Cuboids");
         }
         int typeID = getNextBodyID();
         for (size_t x = 0; x < body.dimensions[0]; x++)
@@ -23,12 +24,85 @@ namespace ParticleGenerator {
                     Eigen::Vector3d pos = body.fixpoint + (body.distance * Eigen::Vector3d(x,y,z));
                     auto v_tmp = maxwellBoltzmannDistributedVelocity(v_bolz, dims);
                     Eigen::Vector3d v { v_tmp[0], v_tmp[1], v_tmp[2] };
-                    buffer.emplace_back(pos, (body.start_velocity +  v), body.mass, typeID);
+                    buffer.emplace_back(pos, (body.start_velocity +  v), body.mass, typeID, getNextParticleID());
                     buffer.back().setSigma(sigma);
                     buffer.back().setEpsilon(epsilon);
                 }
             }
         }
+    }
+
+    /**
+     * Helper methods to increase readability of generateMembrane.
+     * This method is not meant to be used on its own
+     * @return
+     */
+    static Eigen::Vector3d membrComputeOffset(int planeFlag, double x0, double x1){
+        if(planeFlag == 0){
+            return Eigen::Vector3d {0, x0, x1};
+        }else if(planeFlag == 1){
+            return Eigen::Vector3d {x0, 0, x1};
+        }else{
+            return Eigen::Vector3d {x0, x1, 0};
+        }
+    }
+
+    void generateMembrane(struct Body& body, double v_bolz, std::list<Particle>& buffer, std::list<Membrane>& membranes, int dims, double sigma, double epsilon){
+        if(body.shape != membrane){
+            io::output::loggers::general->error("generateMembrane does not work on shapes that aren't Membranes");
+        }
+
+        //we initialize a 2 dimensional field with a 3 dimensional input where one of the dimensions is one
+        //determine which dimension is one and which other 2 dimensions you can use for initialization
+
+        int typeID = getNextBodyID();
+        int planeFlag;  //0: y-z plane 1: x-z plane 2: x-y plane
+
+        double x0;
+        double x1;
+        if(body.dimensions[0] == 1){
+            x0 = body.dimensions[1];
+            x1 = body.dimensions[2];
+            planeFlag = 0;
+        }else if(body.dimensions[1] == 1){
+            x0 = body.dimensions[0];
+            x1 = body.dimensions[2];
+            planeFlag = 1;
+        }else if(body.dimensions[2] == 1){
+            x0 = body.dimensions[0];
+            x1 = body.dimensions[1];
+            planeFlag = 2;
+        }else{
+            io::output::loggers::general->error("Membrane needs to be 2 dimensional. Since the input specified a three dimensional Membrane it gets interpreted as a 2d Membrane in the x-y-plane");
+            x0 = body.dimensions[1];
+            x1 = body.dimensions[2];
+            planeFlag = 0;
+        }
+
+
+
+        //std::vector<std::vector<unsigned long>> membrNodes(x0, std::vector<unsigned long>(0, x1));
+        std::vector<std::vector<unsigned long>> membrNodes(x0, std::vector<unsigned long>{});
+
+        for(double i = 0; i < x0; i++){
+            for(double j = 0; j < x1; j++){
+                Eigen::Vector3d pos = body.fixpoint + (body.distance * membrComputeOffset(planeFlag, i, j));
+                auto v_tmp = maxwellBoltzmannDistributedVelocity(v_bolz, dims);
+
+                int particleID = getNextParticleID();
+
+                Eigen::Vector3d v { v_tmp[0], v_tmp[1], v_tmp[2] };
+                buffer.emplace_back(pos, (body.start_velocity +  v), body.mass, typeID, particleID);
+                buffer.back().setSigma(sigma);
+                buffer.back().setEpsilon(epsilon);
+
+                //membrNodes[i][j] = particleID; //set membraneNode to the index corresponding to the particle that is in this position in the "grid graph"
+                membrNodes[i].emplace_back(particleID); //set membraneNode to the index corresponding to the particle that is in this position in the "grid graph"
+            }
+        }
+
+        membranes.emplace_back(body.springStrength, body.desiredDistance, membrNodes);
+
     }
 
     //this implementation is basically cutting a sphere out of a cuboid. that is obviously fine and asymptotically not worse than the best solution but still..
@@ -37,7 +111,7 @@ namespace ParticleGenerator {
         struct Body bodycopy(body); //we do configurate some parameters so better copy it.. we don't want weird side effects
 
         if(body.shape != sphere){
-            std::cerr<<"generateSphere does not work for shapes that aren't Spheres";
+            io::output::loggers::general->error("generateSphere does not work for shapes that aren't Spheres");
         }
 
         //configuration stuff:
@@ -80,7 +154,7 @@ namespace ParticleGenerator {
                         for(auto p : pos){
                             auto v_tmp = maxwellBoltzmannDistributedVelocity(v_bolz, dims);
                             Eigen::Vector3d v { v_tmp[0], v_tmp[1], v_tmp[2] };
-                            buffer.emplace_back(p, (body.start_velocity +  v), body.mass, typeID);
+                            buffer.emplace_back(p, (body.start_velocity +  v), body.mass, typeID, getNextParticleID());
                             buffer.back().setSigma(sigma);
                             buffer.back().setEpsilon(epsilon);
                         }
@@ -92,12 +166,16 @@ namespace ParticleGenerator {
 
 
     void generateParticle(Eigen::Vector3d& x, Eigen::Vector3d& v, double m, std::list<Particle>& buffer, double sigma, double epsilon){
-        buffer.emplace_back(x, v, m, 0);
+        buffer.emplace_back(x, v, m, getNextBodyID(), getNextParticleID());
         buffer.back().setSigma(sigma);
         buffer.back().setEpsilon(epsilon);
     }
 
     int getNextBodyID() {
         return bodyID++;
+    }
+
+    int getNextParticleID(){
+        return particleID++;
     }
 }

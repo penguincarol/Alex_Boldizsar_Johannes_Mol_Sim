@@ -1730,6 +1730,202 @@ Sigma (const Sigma_optional& x)
 }
 
 
+// membrane_t
+// 
+
+const membrane_t::Position_type& membrane_t::
+Position () const
+{
+  return this->Position_.get ();
+}
+
+membrane_t::Position_type& membrane_t::
+Position ()
+{
+  return this->Position_.get ();
+}
+
+void membrane_t::
+Position (const Position_type& x)
+{
+  this->Position_.set (x);
+}
+
+void membrane_t::
+Position (::std::unique_ptr< Position_type > x)
+{
+  this->Position_.set (std::move (x));
+}
+
+const membrane_t::Velocity_type& membrane_t::
+Velocity () const
+{
+  return this->Velocity_.get ();
+}
+
+membrane_t::Velocity_type& membrane_t::
+Velocity ()
+{
+  return this->Velocity_.get ();
+}
+
+void membrane_t::
+Velocity (const Velocity_type& x)
+{
+  this->Velocity_.set (x);
+}
+
+void membrane_t::
+Velocity (::std::unique_ptr< Velocity_type > x)
+{
+  this->Velocity_.set (std::move (x));
+}
+
+const membrane_t::Dimensions_type& membrane_t::
+Dimensions () const
+{
+  return this->Dimensions_.get ();
+}
+
+membrane_t::Dimensions_type& membrane_t::
+Dimensions ()
+{
+  return this->Dimensions_.get ();
+}
+
+void membrane_t::
+Dimensions (const Dimensions_type& x)
+{
+  this->Dimensions_.set (x);
+}
+
+void membrane_t::
+Dimensions (::std::unique_ptr< Dimensions_type > x)
+{
+  this->Dimensions_.set (std::move (x));
+}
+
+const membrane_t::Spacing_type& membrane_t::
+Spacing () const
+{
+  return this->Spacing_.get ();
+}
+
+membrane_t::Spacing_type& membrane_t::
+Spacing ()
+{
+  return this->Spacing_.get ();
+}
+
+void membrane_t::
+Spacing (const Spacing_type& x)
+{
+  this->Spacing_.set (x);
+}
+
+const membrane_t::Mass_type& membrane_t::
+Mass () const
+{
+  return this->Mass_.get ();
+}
+
+membrane_t::Mass_type& membrane_t::
+Mass ()
+{
+  return this->Mass_.get ();
+}
+
+void membrane_t::
+Mass (const Mass_type& x)
+{
+  this->Mass_.set (x);
+}
+
+const membrane_t::SpringStrength_type& membrane_t::
+SpringStrength () const
+{
+  return this->SpringStrength_.get ();
+}
+
+membrane_t::SpringStrength_type& membrane_t::
+SpringStrength ()
+{
+  return this->SpringStrength_.get ();
+}
+
+void membrane_t::
+SpringStrength (const SpringStrength_type& x)
+{
+  this->SpringStrength_.set (x);
+}
+
+const membrane_t::DesiredDistance_type& membrane_t::
+DesiredDistance () const
+{
+  return this->DesiredDistance_.get ();
+}
+
+membrane_t::DesiredDistance_type& membrane_t::
+DesiredDistance ()
+{
+  return this->DesiredDistance_.get ();
+}
+
+void membrane_t::
+DesiredDistance (const DesiredDistance_type& x)
+{
+  this->DesiredDistance_.set (x);
+}
+
+const membrane_t::Epsilon_optional& membrane_t::
+Epsilon () const
+{
+  return this->Epsilon_;
+}
+
+membrane_t::Epsilon_optional& membrane_t::
+Epsilon ()
+{
+  return this->Epsilon_;
+}
+
+void membrane_t::
+Epsilon (const Epsilon_type& x)
+{
+  this->Epsilon_.set (x);
+}
+
+void membrane_t::
+Epsilon (const Epsilon_optional& x)
+{
+  this->Epsilon_ = x;
+}
+
+const membrane_t::Sigma_optional& membrane_t::
+Sigma () const
+{
+  return this->Sigma_;
+}
+
+membrane_t::Sigma_optional& membrane_t::
+Sigma ()
+{
+  return this->Sigma_;
+}
+
+void membrane_t::
+Sigma (const Sigma_type& x)
+{
+  this->Sigma_.set (x);
+}
+
+void membrane_t::
+Sigma (const Sigma_optional& x)
+{
+  this->Sigma_ = x;
+}
+
+
 // shape_t
 // 
 
@@ -1821,6 +2017,36 @@ void shape_t::
 Sphere (::std::unique_ptr< Sphere_type > x)
 {
   this->Sphere_.set (std::move (x));
+}
+
+const shape_t::Membrane_optional& shape_t::
+Membrane () const
+{
+  return this->Membrane_;
+}
+
+shape_t::Membrane_optional& shape_t::
+Membrane ()
+{
+  return this->Membrane_;
+}
+
+void shape_t::
+Membrane (const Membrane_type& x)
+{
+  this->Membrane_.set (x);
+}
+
+void shape_t::
+Membrane (const Membrane_optional& x)
+{
+  this->Membrane_ = x;
+}
+
+void shape_t::
+Membrane (::std::unique_ptr< Membrane_type > x)
+{
+  this->Membrane_.set (std::move (x));
 }
 
 
@@ -5635,6 +5861,270 @@ sphere_t::
 {
 }
 
+// membrane_t
+//
+
+membrane_t::
+membrane_t (const Position_type& Position,
+            const Velocity_type& Velocity,
+            const Dimensions_type& Dimensions,
+            const Spacing_type& Spacing,
+            const Mass_type& Mass,
+            const SpringStrength_type& SpringStrength,
+            const DesiredDistance_type& DesiredDistance)
+: ::xml_schema::type (),
+  Position_ (Position, this),
+  Velocity_ (Velocity, this),
+  Dimensions_ (Dimensions, this),
+  Spacing_ (Spacing, this),
+  Mass_ (Mass, this),
+  SpringStrength_ (SpringStrength, this),
+  DesiredDistance_ (DesiredDistance, this),
+  Epsilon_ (this),
+  Sigma_ (this)
+{
+}
+
+membrane_t::
+membrane_t (::std::unique_ptr< Position_type > Position,
+            ::std::unique_ptr< Velocity_type > Velocity,
+            ::std::unique_ptr< Dimensions_type > Dimensions,
+            const Spacing_type& Spacing,
+            const Mass_type& Mass,
+            const SpringStrength_type& SpringStrength,
+            const DesiredDistance_type& DesiredDistance)
+: ::xml_schema::type (),
+  Position_ (std::move (Position), this),
+  Velocity_ (std::move (Velocity), this),
+  Dimensions_ (std::move (Dimensions), this),
+  Spacing_ (Spacing, this),
+  Mass_ (Mass, this),
+  SpringStrength_ (SpringStrength, this),
+  DesiredDistance_ (DesiredDistance, this),
+  Epsilon_ (this),
+  Sigma_ (this)
+{
+}
+
+membrane_t::
+membrane_t (const membrane_t& x,
+            ::xml_schema::flags f,
+            ::xml_schema::container* c)
+: ::xml_schema::type (x, f, c),
+  Position_ (x.Position_, f, this),
+  Velocity_ (x.Velocity_, f, this),
+  Dimensions_ (x.Dimensions_, f, this),
+  Spacing_ (x.Spacing_, f, this),
+  Mass_ (x.Mass_, f, this),
+  SpringStrength_ (x.SpringStrength_, f, this),
+  DesiredDistance_ (x.DesiredDistance_, f, this),
+  Epsilon_ (x.Epsilon_, f, this),
+  Sigma_ (x.Sigma_, f, this)
+{
+}
+
+membrane_t::
+membrane_t (const ::xercesc::DOMElement& e,
+            ::xml_schema::flags f,
+            ::xml_schema::container* c)
+: ::xml_schema::type (e, f | ::xml_schema::flags::base, c),
+  Position_ (this),
+  Velocity_ (this),
+  Dimensions_ (this),
+  Spacing_ (this),
+  Mass_ (this),
+  SpringStrength_ (this),
+  DesiredDistance_ (this),
+  Epsilon_ (this),
+  Sigma_ (this)
+{
+  if ((f & ::xml_schema::flags::base) == 0)
+  {
+    ::xsd::cxx::xml::dom::parser< char > p (e, true, false, true);
+    this->parse (p, f);
+  }
+}
+
+void membrane_t::
+parse (::xsd::cxx::xml::dom::parser< char >& p,
+       ::xml_schema::flags f)
+{
+  for (; p.more_content (); p.next_content (false))
+  {
+    const ::xercesc::DOMElement& i (p.cur_element ());
+    const ::xsd::cxx::xml::qualified_name< char > n (
+      ::xsd::cxx::xml::dom::name< char > (i));
+
+    // Position
+    //
+    if (n.name () == "Position" && n.namespace_ ().empty ())
+    {
+      ::std::unique_ptr< Position_type > r (
+        Position_traits::create (i, f, this));
+
+      if (!Position_.present ())
+      {
+        this->Position_.set (::std::move (r));
+        continue;
+      }
+    }
+
+    // Velocity
+    //
+    if (n.name () == "Velocity" && n.namespace_ ().empty ())
+    {
+      ::std::unique_ptr< Velocity_type > r (
+        Velocity_traits::create (i, f, this));
+
+      if (!Velocity_.present ())
+      {
+        this->Velocity_.set (::std::move (r));
+        continue;
+      }
+    }
+
+    // Dimensions
+    //
+    if (n.name () == "Dimensions" && n.namespace_ ().empty ())
+    {
+      ::std::unique_ptr< Dimensions_type > r (
+        Dimensions_traits::create (i, f, this));
+
+      if (!Dimensions_.present ())
+      {
+        this->Dimensions_.set (::std::move (r));
+        continue;
+      }
+    }
+
+    break;
+  }
+
+  if (!Position_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_element< char > (
+      "Position",
+      "");
+  }
+
+  if (!Velocity_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_element< char > (
+      "Velocity",
+      "");
+  }
+
+  if (!Dimensions_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_element< char > (
+      "Dimensions",
+      "");
+  }
+
+  while (p.more_attributes ())
+  {
+    const ::xercesc::DOMAttr& i (p.next_attribute ());
+    const ::xsd::cxx::xml::qualified_name< char > n (
+      ::xsd::cxx::xml::dom::name< char > (i));
+
+    if (n.name () == "Spacing" && n.namespace_ ().empty ())
+    {
+      this->Spacing_.set (Spacing_traits::create (i, f, this));
+      continue;
+    }
+
+    if (n.name () == "Mass" && n.namespace_ ().empty ())
+    {
+      this->Mass_.set (Mass_traits::create (i, f, this));
+      continue;
+    }
+
+    if (n.name () == "SpringStrength" && n.namespace_ ().empty ())
+    {
+      this->SpringStrength_.set (SpringStrength_traits::create (i, f, this));
+      continue;
+    }
+
+    if (n.name () == "DesiredDistance" && n.namespace_ ().empty ())
+    {
+      this->DesiredDistance_.set (DesiredDistance_traits::create (i, f, this));
+      continue;
+    }
+
+    if (n.name () == "Epsilon" && n.namespace_ ().empty ())
+    {
+      this->Epsilon_.set (Epsilon_traits::create (i, f, this));
+      continue;
+    }
+
+    if (n.name () == "Sigma" && n.namespace_ ().empty ())
+    {
+      this->Sigma_.set (Sigma_traits::create (i, f, this));
+      continue;
+    }
+  }
+
+  if (!Spacing_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_attribute< char > (
+      "Spacing",
+      "");
+  }
+
+  if (!Mass_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_attribute< char > (
+      "Mass",
+      "");
+  }
+
+  if (!SpringStrength_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_attribute< char > (
+      "SpringStrength",
+      "");
+  }
+
+  if (!DesiredDistance_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_attribute< char > (
+      "DesiredDistance",
+      "");
+  }
+}
+
+membrane_t* membrane_t::
+_clone (::xml_schema::flags f,
+        ::xml_schema::container* c) const
+{
+  return new class membrane_t (*this, f, c);
+}
+
+membrane_t& membrane_t::
+operator= (const membrane_t& x)
+{
+  if (this != &x)
+  {
+    static_cast< ::xml_schema::type& > (*this) = x;
+    this->Position_ = x.Position_;
+    this->Velocity_ = x.Velocity_;
+    this->Dimensions_ = x.Dimensions_;
+    this->Spacing_ = x.Spacing_;
+    this->Mass_ = x.Mass_;
+    this->SpringStrength_ = x.SpringStrength_;
+    this->DesiredDistance_ = x.DesiredDistance_;
+    this->Epsilon_ = x.Epsilon_;
+    this->Sigma_ = x.Sigma_;
+  }
+
+  return *this;
+}
+
+membrane_t::
+~membrane_t ()
+{
+}
+
 // shape_t
 //
 
@@ -5643,7 +6133,8 @@ shape_t ()
 : ::xml_schema::type (),
   Particle_ (this),
   Cuboid_ (this),
-  Sphere_ (this)
+  Sphere_ (this),
+  Membrane_ (this)
 {
 }
 
@@ -5654,7 +6145,8 @@ shape_t (const shape_t& x,
 : ::xml_schema::type (x, f, c),
   Particle_ (x.Particle_, f, this),
   Cuboid_ (x.Cuboid_, f, this),
-  Sphere_ (x.Sphere_, f, this)
+  Sphere_ (x.Sphere_, f, this),
+  Membrane_ (x.Membrane_, f, this)
 {
 }
 
@@ -5665,7 +6157,8 @@ shape_t (const ::xercesc::DOMElement& e,
 : ::xml_schema::type (e, f | ::xml_schema::flags::base, c),
   Particle_ (this),
   Cuboid_ (this),
-  Sphere_ (this)
+  Sphere_ (this),
+  Membrane_ (this)
 {
   if ((f & ::xml_schema::flags::base) == 0)
   {
@@ -5726,6 +6219,20 @@ parse (::xsd::cxx::xml::dom::parser< char >& p,
       }
     }
 
+    // Membrane
+    //
+    if (n.name () == "Membrane" && n.namespace_ ().empty ())
+    {
+      ::std::unique_ptr< Membrane_type > r (
+        Membrane_traits::create (i, f, this));
+
+      if (!this->Membrane_)
+      {
+        this->Membrane_.set (::std::move (r));
+        continue;
+      }
+    }
+
     break;
   }
 }
@@ -5746,6 +6253,7 @@ operator= (const shape_t& x)
     this->Particle_ = x.Particle_;
     this->Cuboid_ = x.Cuboid_;
     this->Sphere_ = x.Sphere_;
+    this->Membrane_ = x.Membrane_;
   }
 
   return *this;
@@ -8142,6 +8650,113 @@ operator<< (::xercesc::DOMElement& e, const sphere_t& i)
 }
 
 void
+operator<< (::xercesc::DOMElement& e, const membrane_t& i)
+{
+  e << static_cast< const ::xml_schema::type& > (i);
+
+  // Position
+  //
+  {
+    ::xercesc::DOMElement& s (
+      ::xsd::cxx::xml::dom::create_element (
+        "Position",
+        e));
+
+    s << i.Position ();
+  }
+
+  // Velocity
+  //
+  {
+    ::xercesc::DOMElement& s (
+      ::xsd::cxx::xml::dom::create_element (
+        "Velocity",
+        e));
+
+    s << i.Velocity ();
+  }
+
+  // Dimensions
+  //
+  {
+    ::xercesc::DOMElement& s (
+      ::xsd::cxx::xml::dom::create_element (
+        "Dimensions",
+        e));
+
+    s << i.Dimensions ();
+  }
+
+  // Spacing
+  //
+  {
+    ::xercesc::DOMAttr& a (
+      ::xsd::cxx::xml::dom::create_attribute (
+        "Spacing",
+        e));
+
+    a << ::xml_schema::as_double(i.Spacing ());
+  }
+
+  // Mass
+  //
+  {
+    ::xercesc::DOMAttr& a (
+      ::xsd::cxx::xml::dom::create_attribute (
+        "Mass",
+        e));
+
+    a << ::xml_schema::as_double(i.Mass ());
+  }
+
+  // SpringStrength
+  //
+  {
+    ::xercesc::DOMAttr& a (
+      ::xsd::cxx::xml::dom::create_attribute (
+        "SpringStrength",
+        e));
+
+    a << ::xml_schema::as_double(i.SpringStrength ());
+  }
+
+  // DesiredDistance
+  //
+  {
+    ::xercesc::DOMAttr& a (
+      ::xsd::cxx::xml::dom::create_attribute (
+        "DesiredDistance",
+        e));
+
+    a << ::xml_schema::as_double(i.DesiredDistance ());
+  }
+
+  // Epsilon
+  //
+  if (i.Epsilon ())
+  {
+    ::xercesc::DOMAttr& a (
+      ::xsd::cxx::xml::dom::create_attribute (
+        "Epsilon",
+        e));
+
+    a << ::xml_schema::as_double(*i.Epsilon ());
+  }
+
+  // Sigma
+  //
+  if (i.Sigma ())
+  {
+    ::xercesc::DOMAttr& a (
+      ::xsd::cxx::xml::dom::create_attribute (
+        "Sigma",
+        e));
+
+    a << ::xml_schema::as_double(*i.Sigma ());
+  }
+}
+
+void
 operator<< (::xercesc::DOMElement& e, const shape_t& i)
 {
   e << static_cast< const ::xml_schema::type& > (i);
@@ -8180,6 +8795,18 @@ operator<< (::xercesc::DOMElement& e, const shape_t& i)
         e));
 
     s << *i.Sphere ();
+  }
+
+  // Membrane
+  //
+  if (i.Membrane ())
+  {
+    ::xercesc::DOMElement& s (
+      ::xsd::cxx::xml::dom::create_element (
+        "Membrane",
+        e));
+
+    s << *i.Membrane ();
   }
 }
 

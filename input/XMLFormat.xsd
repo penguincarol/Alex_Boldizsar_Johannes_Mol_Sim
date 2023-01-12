@@ -222,11 +222,26 @@
         <xsd:attribute name="Sigma" type="xsd:double" use="optional"/>
     </xsd:complexType>
 
+    <xsd:complexType name="membrane_t">
+        <xsd:sequence>
+            <xsd:element name="Position" type="dvector_t"/>
+            <xsd:element name="Velocity" type="dvector_t"/>
+            <xsd:element name="Dimensions" type="ivector_t"/>
+        </xsd:sequence>
+        <xsd:attribute name="Spacing" type="xsd:double" use="required"/>
+        <xsd:attribute name="Mass" type="xsd:double" use="required"/>
+        <xsd:attribute name="SpringStrength" type="xsd:double" use="required"/>
+        <xsd:attribute name="DesiredDistance" type="xsd:double" use="required"/>
+        <xsd:attribute name="Epsilon" type="xsd:double" use="optional"/>
+        <xsd:attribute name="Sigma" type="xsd:double" use="optional"/>
+    </xsd:complexType>
+
     <xsd:complexType name="shape_t">
         <xsd:choice>
             <xsd:element name="Particle" type="particle_t"/>
             <xsd:element name="Cuboid" type="cuboid_t"/>
             <xsd:element name="Sphere" type="sphere_t"/>
+            <xsd:element name="Membrane" type="membrane_t"/>
         </xsd:choice>
     </xsd:complexType>
 

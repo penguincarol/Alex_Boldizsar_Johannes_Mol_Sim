@@ -3,9 +3,7 @@
             xsi:noNamespaceSchemaLocation="XMLFormat.xsd">
     <ForceCalculation>
         <Gravity/>
-    </ForceCalculation>
-    <SimulationStrategy>
-        <LinkedCell>
+        <EnableLC>
             <BoundaryBox>
                 <BoxSize X="1" Y="1" Z="1"/>
                 <Front>Reflecting</Front>
@@ -16,8 +14,8 @@
                 <Bottom>Reflecting</Bottom>
             </BoundaryBox>
             <CutoffRadius>1</CutoffRadius>
-        </LinkedCell>
-    </SimulationStrategy>
+        </EnableLC>
+    </ForceCalculation>
     <FileType>
         <Input>
             <ShapeList/>

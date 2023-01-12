@@ -216,7 +216,7 @@ namespace io::input {
             valueLock[sigma] = std::get<io::input::ArgEntry<double>>(cli_arg_map.at("-sig")).isSet;
             valueLock[epsilon] = std::get<io::input::ArgEntry<double>>(cli_arg_map.at("-eps")).isSet;
             valueLock[brown] = std::get<io::input::ArgEntry<double>>(cli_arg_map.at("-brown")).isSet;
-            valueLock[enableLinkedCell] = std::get<io::input::ArgEntry<int>>(cli_arg_map.at("-lc")).isSet;
+            valueLock[enableLinkedCell] = std::get<io::input::ArgEntry<int>>(cli_arg_map.at("-fELC")).isSet;
             valueLock[enableGrav] = std::get<io::input::ArgEntry<int>>(cli_arg_map.at("-fEGrav")).isSet;
             valueLock[enableMembrane] = std::get<io::input::ArgEntry<int>>(cli_arg_map.at("-fEMem")).isSet;
             valueLock[enableMembranePull] = std::get<io::input::ArgEntry<int>>(cli_arg_map.at("-fEMemPull")).isSet;

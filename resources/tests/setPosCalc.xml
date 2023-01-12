@@ -5,9 +5,6 @@
         <Gravity/>
     </ForceCalculation>
     <PositionCalculation>StoermerVelvet</PositionCalculation>
-    <SimulationStrategy>
-        <Naive/>
-    </SimulationStrategy>
     <FileType>
         <Input>
             <ShapeList/>

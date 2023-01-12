@@ -4,9 +4,6 @@
     <ForceCalculation>
         <LennardJones Epsilon="42" Sigma="24"/>
     </ForceCalculation>
-    <SimulationStrategy>
-        <Naive/>
-    </SimulationStrategy>
     <FileType>
         <Input>
             <ShapeList/>

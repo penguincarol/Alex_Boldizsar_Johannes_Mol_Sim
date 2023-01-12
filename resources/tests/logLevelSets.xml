@@ -4,9 +4,6 @@
     <ForceCalculation>
         <Gravity/>
     </ForceCalculation>
-    <SimulationStrategy>
-        <Naive/>
-    </SimulationStrategy>
     <LogLevel>5</LogLevel>
     <FileType>
         <Input>

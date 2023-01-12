@@ -18,6 +18,31 @@ namespace sim::physics::force {
         });
     }*/
 
+    void FMembrane::addSpringForce(size_t p1i, size_t p1j, size_t p2i, size_t p2j,
+                                           Membrane& membrane, std::vector<double>& force, std::vector<double>& x){
+        size_t idI = membrane.getMembrNodes()[p1i][p1j];
+        size_t idJ = membrane.getMembrNodes()[p2i][p2j];
+
+        //if that's not how ids work i have to rewrite this part but that should be rather easy
+        //TODO: x[pc.idMap[idI]*3 + 0] instead of what is currently there
+
+        Eigen::Vector3d dist{x[idI*3 + 0] - x[idJ*3 + 0],
+                             x[idI*3 + 1] - x[idJ*3 + 1],
+                             x[idI*3 + 2] - x[idJ*3 + 2]};
+        double norm = dist.norm();
+        Eigen::Vector3d f_ij = membrane.getSpringStrength() * (norm - membrane.getDesiredDistance()) * dist / norm;
+
+        force[idI*3 + 0] += f_ij[0];
+        force[idI*3 + 1] += f_ij[1];
+        force[idI*3 + 2] += f_ij[2];
+
+        force[idJ*3 + 0] -= f_ij[0];
+        force[idJ*3 + 1] -= f_ij[1];
+        force[idJ*3 + 2] -= f_ij[2];
+
+        return;
+    }
+
     void FMembrane::operator()() {
         forceDelegate->operator()();    //take it out for new forceFunctor-interpretation
 
@@ -50,42 +75,13 @@ namespace sim::physics::force {
 
                     for(size_t i = lowerboundsI[_case]; i < upperboundsI[_case]; i++){
                         for(size_t j = lowerboundsJ[_case]; j < upperboundsJ[_case]; j++){
-                            //TODO: computeSpringForces
+                            this->addSpringForce(i,j, i+ offsets[_case][0], i + offsets[_case][1],
+                                                                      membrane, force, x);
+
                         }
                     }
 
                 }
-
-                //this part is getting redundant because of the no-duplication stuff going on above
-                //horizontal lines
-                for(size_t i = 0; i < grid.size()-1; i++){
-                    for(size_t j = 0; j < grid[0].size(); j++){
-                        //TODO: computeSpringForces
-                    }
-                }
-
-                //vertical lines
-                for(size_t i = 0; i < grid.size(); i++){
-                    for(size_t j = 0; j < grid[0].size()-1; j++){
-                        //TODO: computeSpringForces
-                    }
-                }
-
-                //to top right diagonals
-                for(size_t i = 0; i < grid.size()-1; i++){
-                    for(size_t j = 0; j < grid[0].size()-1; j++){
-                        //TODO: computeSpringForces
-                    }
-                }
-
-                //to bottom right diagonals
-                for(size_t i = 0; i < grid.size()-1; i++){
-                    for(size_t j = 1; j < grid[0].size(); j++){
-                        //TODO: computeSpringForces
-                    }
-                }
-                //end of redundant stuff
-
 
             }
         });

@@ -39,6 +39,14 @@ public:
         delete forceDelegate;
     }
 
+    /**
+     * Helper method to increase readability of the code
+     * Not meant to be used on its own
+     * computes the force between the particles p1 and p2 that are in the same membrane caused by the spring between them
+     */
+    void addSpringForce(size_t p1i, size_t p1j, size_t p2i, size_t p2j,
+                                           Membrane& membrane, std::vector<double>& force, std::vector<double>& x);
+
     void operator()() override;
 
     void setParticleContainer(ParticleContainer& pc) override;

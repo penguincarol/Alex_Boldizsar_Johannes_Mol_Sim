@@ -241,7 +241,6 @@ namespace io::input {
                         ParticleGenerator::generateSphere(body, brown_val, particles, dims_val, sig, eps);
                     }
 
-                    //TODO: generateMembrane stuff here
                     //How do i add the membrane as an option here? ShapeList is automatically generated..
                     else if (s.Membrane().present()) {
                         body.shape = Shape::membrane;

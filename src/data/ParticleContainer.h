@@ -896,7 +896,6 @@ public:
      * Runs the function on the internal data
      * */
     template<typename F>
-    template<typename F>
     void runOnData(F fun) {
         fun(force, oldForce, x, v, m, type, count, eps, sig);
     }

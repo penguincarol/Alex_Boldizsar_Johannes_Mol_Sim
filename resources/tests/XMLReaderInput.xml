@@ -6,7 +6,7 @@
     <EndTime>10.0</EndTime>
     <TimeStepSize>2.0</TimeStepSize>
     <ForceCalculation>
-        <LennardJonesCell Epsilon="5.0" Sigma="1.0"/>
+        <LennardJones Epsilon="5.0" Sigma="1.0"/>
     </ForceCalculation>
     <PositionCalculation>StoermerVelvetOMP</PositionCalculation>
     <VelocityCalculation>StoermerVelvetOMP</VelocityCalculation>

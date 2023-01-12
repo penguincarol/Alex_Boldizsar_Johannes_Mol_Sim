@@ -2,6 +2,7 @@
 
 #include "sim/physics/bounds/BoundsHandler.h"
 #include "sim/physics/force/FLennardJonesCells.h"
+#include "sim/physics/force/ForceHandler.h"
 #include "data/Particle.h"
 
 #include <numeric>
@@ -18,12 +19,12 @@ TEST(BoundsHandler, outflow){
     particles.emplace_back(p1);
     particles.emplace_back(p2);
     ParticleContainer pc{particles, {3.0,3.0,3.0}, 1.0};
-    auto func = sim::physics::force::FLennardJonesCells(0, 1, 0.1, 1, 1, pc);
+    sim::physics::force::ForceHandler forceHandler {sim::physics::force::lennardJones, true, false, false, false, false, 0, 0, 0, 0, 1, 0.1, 1, 1, pc};
     sim::physics::bounds::BoundsHandler bh{sim::physics::bounds::outflow, sim::physics::bounds::outflow,
                                            sim::physics::bounds::outflow,
                                            sim::physics::bounds::outflow, sim::physics::bounds::outflow,
                                            sim::physics::bounds::outflow,
-                                           func,
+                                           forceHandler,
                                            0, 1, 0.1, 1, 1,
                                            pc
     };
@@ -45,11 +46,11 @@ TEST(BoundsHandler, reflecting){
     particles.emplace_back(p1);
 
     ParticleContainer pc{particles, {3.,3.,3.}, 1.0};
-    auto func = sim::physics::force::FLennardJonesCells(0, 1, 0.1, 1, 1, pc);
+    sim::physics::force::ForceHandler forceHandler {sim::physics::force::lennardJones, true, false, false, false, false, 0, 0, 0, 0, 1, 0.1, 1, 1, pc};
     sim::physics::bounds::BoundsHandler bh{sim::physics::bounds::reflecting, sim::physics::bounds::reflecting,
                                            sim::physics::bounds::reflecting, sim::physics::bounds::reflecting,  
                                            sim::physics::bounds::reflecting, sim::physics::bounds::reflecting,
-                                           func,
+                                           forceHandler,
                                            0, 1, 0.1, 1, newSigma,
                                            pc
     };
@@ -62,7 +63,7 @@ TEST(BoundsHandler, reflecting){
     //apply what should happen with operator manually
     std::array<double, 3> posP1Halo{3. + (3 - p1Copy.getX()[0]), p1Copy.getX()[1], p1Copy.getX()[2]};
     Particle p1CopyHalo{posP1Halo, {0,0,0}, 1, 0};
-    func.getForceFunction()(p1Copy, p1CopyHalo);
+    forceHandler.getForceFunction()(p1Copy, p1CopyHalo);
     
     //now the effect should virtually be the same
     ASSERT_TRUE(std::abs((p1.getX() - p1Copy.getX()).norm()) < p1.getX().norm()*0.000001)<<"Applying boundary condition did not result in the expected applied force";
@@ -77,7 +78,7 @@ TEST(BoundsHandler, reflecting){
     sim::physics::bounds::BoundsHandler bh2{sim::physics::bounds::reflecting, sim::physics::bounds::reflecting,
                                            sim::physics::bounds::reflecting, sim::physics::bounds::reflecting,  
                                            sim::physics::bounds::reflecting, sim::physics::bounds::reflecting,
-                                           func,
+                                           forceHandler,
                                            0, 1, 0.1, 1, newSigma,
                                            pc
     };
@@ -101,11 +102,11 @@ TEST(BoundsHandler, periodicMovement){
     ParticleContainer pc{particles, domainSize, 1.2};
     pc.updateCells();
 
-    auto func = sim::physics::force::FLennardJonesCells(0, 1, 0.1, 1, 1, pc);
+    sim::physics::force::ForceHandler forceHandler {sim::physics::force::lennardJones, true, false, false, false, false, 0, 0, 0, 0, 1, 0.1, 1, 1, pc};
     sim::physics::bounds::BoundsHandler bh{sim::physics::bounds::periodic, sim::physics::bounds::periodic,
                                            sim::physics::bounds::reflecting, sim::physics::bounds::reflecting,
                                            sim::physics::bounds::reflecting, sim::physics::bounds::reflecting,
-                                           func,
+                                           forceHandler,
                                            0, 1, 0.1, 1, 0.89,
                                            pc
     };
@@ -140,11 +141,11 @@ TEST(BoundsHandler, periodicForces){
     });
 
     pc.updateCells();
-    auto func = sim::physics::force::FLennardJonesCells(0, 1, 0.1, 1, 1, pc);
+    sim::physics::force::ForceHandler forceHandler {sim::physics::force::lennardJones, true, false, false, false, false, 0, 0, 0, 0, 1, 0.1, 1, 1, pc};
     sim::physics::bounds::BoundsHandler bh{sim::physics::bounds::periodic, sim::physics::bounds::periodic,
                                            sim::physics::bounds::reflecting, sim::physics::bounds::reflecting,
                                            sim::physics::bounds::reflecting, sim::physics::bounds::reflecting,
-                                           func,
+                                           forceHandler,
                                            0, 1, 0.1, 1, 0.89,
                                            pc
     };

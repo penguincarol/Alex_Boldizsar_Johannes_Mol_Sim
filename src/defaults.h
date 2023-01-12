@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "sim/physics/force/FLennardJonesOMP.h"
+#include "sim/physics/force/FLennardJones.h"
 #include "sim/physics/position/XStoermerVelvetOMP.h"
 #include "sim/physics/velocity/VStoermerVelvetOMP.h"
 
@@ -47,6 +47,6 @@ constexpr bool default_enable_omp{false};
 constexpr bool default_enable_membrane{false};
 constexpr bool default_enable_membrane_pull{false};
 
-using calcF = sim::physics::force::FLennardJonesOMP;
+using calcF = sim::physics::force::FLennardJones;
 using calcX = sim::physics::position::XStoermerVelvetOMP;
 using calcV = sim::physics::velocity::VStoermerVelvetOMP;

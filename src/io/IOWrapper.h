@@ -191,32 +191,28 @@ namespace io {
                 default:
                     break;
             }
-
-            simulationStrategy_t SimulationStrategy;
-            if (config.get<io::input::enableLinkedCell>()) {
-                std::unordered_map<sim::physics::bounds::type, std::string> bMap = {{sim::physics::bounds::outflow,    "Outflow"},
-                                                                                    {sim::physics::bounds::reflecting, "Reflecting"},
-                                                                                    {sim::physics::bounds::periodic,   "Periodic"}};
-                SimulationStrategy.LinkedCell(
-                        linkedCell_t(
-                                boundaries_t(
-                                        posDVector_t(
-                                                config.get<io::input::boundingBox_X0>(),
-                                                config.get<io::input::boundingBox_X1>(),
-                                                config.get<io::input::boundingBox_X2>()
-                                        ),
-                                        boundaryBehavior_t(bMap[config.get<io::input::boundCondFront>()]),
-                                        boundaryBehavior_t(bMap[config.get<io::input::boundCondRear>()]),
-                                        boundaryBehavior_t(bMap[config.get<io::input::boundCondLeft>()]),
-                                        boundaryBehavior_t(bMap[config.get<io::input::boundCondRight>()]),
-                                        boundaryBehavior_t(bMap[config.get<io::input::boundCondTop>()]),
-                                        boundaryBehavior_t(bMap[config.get<io::input::boundCondBottom>()])
-                                ),
-                                config.get<io::input::rCutoff>())
-                );
-            } else {
-                SimulationStrategy.Naive(naive_t());
-            }
+            if (config.get<io::input::enableGrav>()) ForceCalculation.EnableGrav(enGrav_t(config.get<io::input::gGrav0>(),config.get<io::input::gGrav1>(),config.get<io::input::gGrav2>()));
+            std::unordered_map<sim::physics::bounds::type, std::string> bMap = {{sim::physics::bounds::outflow,    "Outflow"},
+                                                                                {sim::physics::bounds::reflecting, "Reflecting"},
+                                                                                {sim::physics::bounds::periodic,   "Periodic"}};
+            if (config.get<io::input::enableLinkedCell>()) ForceCalculation.EnableLC(enLC_t(boundaries_t(
+                                                                                                    posDVector_t(
+                                                                                                            config.get<io::input::boundingBox_X0>(),
+                                                                                                            config.get<io::input::boundingBox_X1>(),
+                                                                                                            config.get<io::input::boundingBox_X2>()
+                                                                                                    ),
+                                                                                                    boundaryBehavior_t(bMap[config.get<io::input::boundCondFront>()]),
+                                                                                                    boundaryBehavior_t(bMap[config.get<io::input::boundCondRear>()]),
+                                                                                                    boundaryBehavior_t(bMap[config.get<io::input::boundCondLeft>()]),
+                                                                                                    boundaryBehavior_t(bMap[config.get<io::input::boundCondRight>()]),
+                                                                                                    boundaryBehavior_t(bMap[config.get<io::input::boundCondTop>()]),
+                                                                                                    boundaryBehavior_t(bMap[config.get<io::input::boundCondBottom>()])
+                                                                                            ),
+                                                                                            config.get<io::input::rCutoff>()));
+            if (config.get<io::input::enableOMP>()) ForceCalculation.EnableOMP(enOMP_t());
+            enMem_t EnableMem {};
+            if (config.get<io::input::enableMembranePull>()) EnableMem.EnableMemPull(enMemPull_t());
+            if (config.get<io::input::enableMembrane>()) ForceCalculation.EnableMem(EnableMem);
 
             file_t FileType;
             cp_particle_list_t CPParticles;
@@ -236,7 +232,7 @@ namespace io {
             CPParticles.CPParticle(sequence);
             FileType.Checkpoint(checkpoint_t(iteration, CPParticles));
 
-            simulation_t simulation(ForceCalculation, SimulationStrategy, FileType);
+            simulation_t simulation(ForceCalculation, FileType);
 
             //create optional objects for simulation_t
             output_t OutputFile;

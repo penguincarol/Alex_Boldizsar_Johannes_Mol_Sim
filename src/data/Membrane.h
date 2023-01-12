@@ -12,8 +12,11 @@ private:
     double r0;
     std::vector<std::vector<unsigned long>> membrNodes;
 
+    double pullEt;
+    double pullF;
+
 public:
-    Membrane(double k, double r0, std::vector<std::vector<unsigned long>> &membrNodes);
+    Membrane(double k, double r0, std::vector<std::vector<unsigned long>> &membrNodes, double pullEt = 0, double pullF = 0);
 
     /**
      * Helper method that prints out the current membrane node structure
@@ -26,7 +29,7 @@ public:
      * not supposed to be used in performance critical areas due to unnessecary copying
      * @return
      */
-    std::vector<std::vector<unsigned long>> getMembrNodes();
+    std::vector<std::vector<unsigned long>>& getMembrNodes();
 
     double getDesiredDistance();
 

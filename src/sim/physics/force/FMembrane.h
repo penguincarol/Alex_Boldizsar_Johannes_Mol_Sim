@@ -7,14 +7,14 @@
 
 namespace sim::physics::force {
 /**
- * calculate the force for all particles using the Lennard-Jones potential
+ * calculate the force caused by springs in every membrane
  * */
 class FMembrane : public ForceFunctorBase {
 private:
     pair_fun_t pairFun;
     fpair_fun_t fpairFun;
     ForceFunctorBase* forceDelegate;
-    double gGrav;
+    std::vector<Membrane> membranes;
 
     void setPairFun();
 
@@ -28,11 +28,11 @@ public:
                        double dt,
                        double eps,
                        double sig,
-                       double gG,
                        ParticleContainer &pc,
                        ForceFunctorBase* ff
-    ) : ForceFunctorBase(st, et, dt, eps, sig, pc), forceDelegate(ff), gGrav(gG) {
+    ) : ForceFunctorBase(st, et, dt, eps, sig, pc), forceDelegate(ff), membranes(pc.getMembranes()) {
         setPairFun();
+        forceDelegate->setParticleContainer(pc);
     }
 
     ~FMembrane() override {

@@ -119,6 +119,10 @@ Particle ParticleContainer::getParticle(unsigned long i) {
     return p;
 }
 
+std::vector<Membrane>& ParticleContainer::getMembranes() {
+    return membranes;
+}
+
 std::array<unsigned int, 3> ParticleContainer::getGridDimensions() {
     return gridDimensions;
 }

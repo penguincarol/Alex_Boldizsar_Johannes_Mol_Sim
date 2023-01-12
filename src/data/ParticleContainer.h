@@ -419,6 +419,11 @@ s    * right corresponding cell-vector
     Particle getParticle(unsigned long i);
 
     /**
+     * @return reference to internally stored membranes
+     */
+    std::vector<Membrane>& getMembranes();
+
+    /**
      * Moves all forces to the oldForces buffer
      * */
      void clearStoreForce();
@@ -905,7 +910,7 @@ public:
     template<typename F>
     void runOnMembranes(F fun){
         //I actually believe that you need all those parameters. We can still change that if i am wrong
-        fun(membranes, force, oldForce, x, v, m, type, count, eps, sig);
+        fun(membranes, force, x, count);
     }
 
     /**

@@ -7,7 +7,8 @@
 #include<vector>
 #include<iostream>
 
-Membrane::Membrane(double k_, double r0_, std::vector<std::vector<unsigned long>> &membrNodes_):k{k_}, r0(r0_), membrNodes(membrNodes_) {}
+Membrane::Membrane(double k_, double r0_, std::vector<std::vector<unsigned long>> &membrNodes_, double pullEt_, double pullF_)
+:k{k_}, r0(r0_), membrNodes(membrNodes_), pullEt(pullEt_), pullF(pullF_) {}
 
 void Membrane::printMembrNodeStructure() {
     for(int i = 0; i < membrNodes.size(); i++){
@@ -31,7 +32,7 @@ void Membrane::printMembrNodeStructure() {
 }
 
 
-std::vector<std::vector<unsigned long>> Membrane::getMembrNodes(){
+std::vector<std::vector<unsigned long>>& Membrane::getMembrNodes(){
     return membrNodes;
 }
 

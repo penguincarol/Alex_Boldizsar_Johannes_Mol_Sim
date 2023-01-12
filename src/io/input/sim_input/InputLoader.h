@@ -4,8 +4,9 @@
 
 #pragma once
 
-#include "data/Particle.h"
 #include "defaults.h"
+#include "data/Particle.h"
+#include "data/Membrane.h"
 #include "io/input/arg_names.h"
 
 #include <list>
@@ -20,11 +21,12 @@ namespace io::input {
      * Basic interface to load particles.
      * @param LOAD is a function that loads raw data from @param LOCATOR into the list.
      * */
-    template<typename LOCATOR, void (*LOAD)(LOCATOR, std::list<Particle> &,
+    template<typename LOCATOR, void (*LOAD)(LOCATOR, std::list<Particle> &, std::list<Membrane> &,
                                             std::unordered_map<io::input::names, std::string> &)>
     class InputLoader {
     private:
         std::list<Particle> buffer;
+        std::list<Membrane> membranes;
         LOCATOR locator;
         std::unordered_map<io::input::names, std::string> &arg_map;
     public:
@@ -37,7 +39,7 @@ namespace io::input {
          * Calls the loader again and stores all particles the internal buffer.
          * */
         void reload() {
-            LOAD(locator, buffer, arg_map);
+            LOAD(locator, buffer, membranes, arg_map);
         }
 
         /**
@@ -49,6 +51,17 @@ namespace io::input {
                 buffer.pop_front();
             }
         }
+
+        /**
+         *
+         */
+        void getMembranes(std::vector<Membrane>& membr){
+            while(!membranes.empty()){
+                membr.template emplace_back(membranes.front());
+                membranes.pop_front();
+            }
+        }
+
 
         /**
          * Updates the locator with l

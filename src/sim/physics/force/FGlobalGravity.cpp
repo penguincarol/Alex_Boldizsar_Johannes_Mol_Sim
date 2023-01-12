@@ -2,17 +2,9 @@
 // Created by alex on 06.12.2022.
 //
 
-#include "FLennardJonesGravity.h"
+#include "FGlobalGravity.h"
 
-void sim::physics::force::FLennardJonesGravity::setPairFun() {
-    pairFun = forceDelegate->getForceFunction();
-    fpairFun = forceDelegate->getFastForceFunction();
-}
-
-void sim::physics::force::FLennardJonesGravity::operator()() {
-    // perform normal force calculation
-    forceDelegate->operator()();
-
+void sim::physics::force::FGlobalGravity::operator()() {
     //perform gravity addition
     // we do not care if a particle is still active or not, faster this way
     particleContainer.runOnActiveData([&](std::vector<double> &force,
@@ -26,21 +18,21 @@ void sim::physics::force::FLennardJonesGravity::operator()() {
                                    std::vector<double> &sig,
                                    std::vector<unsigned long> & activeParticles) {
         for (auto index : activeParticles) {
-            force[index*3 + 1] += m[index] * gGrav;
+            force[index*3 + 0] += m[index] * gGrav0;
+            force[index*3 + 1] += m[index] * gGrav1;
+            force[index*3 + 2] += m[index] * gGrav2;
         }
     });
 }
 
-sim::physics::force::fpair_fun_t sim::physics::force::FLennardJonesGravity::getFastForceFunction() {
-    return fpairFun;
+sim::physics::force::fpair_fun_t sim::physics::force::FGlobalGravity::getFastForceFunction() {
+    throw std::runtime_error{"This should not be called. Not supported."};
 }
 
-void sim::physics::force::FLennardJonesGravity::setParticleContainer(ParticleContainer &pc) {
+void sim::physics::force::FGlobalGravity::setParticleContainer(ParticleContainer &pc) {
     particleContainer = pc;
-    forceDelegate->setParticleContainer(pc);
-    setPairFun();
 }
 
-sim::physics::force::pair_fun_t &sim::physics::force::FLennardJonesGravity::getForceFunction() {
-    return pairFun;
+sim::physics::force::pair_fun_t &sim::physics::force::FGlobalGravity::getForceFunction() {
+    throw std::runtime_error{"This should not be called. Not supported."};
 }

@@ -6,13 +6,8 @@
     <EndTime>10.0</EndTime>
     <TimeStepSize>2.0</TimeStepSize>
     <ForceCalculation>
-        <LennardJonesCell Epsilon="5.0" Sigma="1.0"/>
-    </ForceCalculation>
-    <PositionCalculation>StoermerVelvetOMP</PositionCalculation>
-    <VelocityCalculation>StoermerVelvetOMP</VelocityCalculation>
-    <AverageBrownianMotion>5.0</AverageBrownianMotion>
-    <SimulationStrategy>
-        <LinkedCell>
+        <LennardJones Epsilon="5.0" Sigma="1.0"/>
+        <EnableLC>
             <BoundaryBox>
                 <BoxSize X="120.0" Y="50.0" Z="10.0"/>
                 <Front>Outflow</Front>
@@ -23,8 +18,11 @@
                 <Bottom>Reflecting</Bottom>
             </BoundaryBox>
             <CutoffRadius>3.0</CutoffRadius>
-        </LinkedCell>
-    </SimulationStrategy>
+        </EnableLC>
+    </ForceCalculation>
+    <PositionCalculation>StoermerVelvetOMP</PositionCalculation>
+    <VelocityCalculation>StoermerVelvetOMP</VelocityCalculation>
+    <AverageBrownianMotion>5.0</AverageBrownianMotion>
     <Dimensions>3</Dimensions>
     <Thermostat>
         <T_Init>50.0</T_Init>

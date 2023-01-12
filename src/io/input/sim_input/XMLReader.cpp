@@ -10,7 +10,7 @@ namespace io::input {
 
     XMLReader::~XMLReader() = default;
 
-    void XMLReader::readFile(const char *filename, std::list<Particle> &particles,
+    void XMLReader::readFile(const char *filename, std::list<Particle> &particles, std::list<Membrane>& membranes,
                              std::unordered_map<io::input::names, std::string> &arg_map) {
         xml_schema::properties properties;
         properties.no_namespace_schema_location("./XMLFormat.xsd");
@@ -67,25 +67,42 @@ namespace io::input {
                 setInMap(epsilon, lj->Epsilon().present(), std::to_string(default_epsilon), [&]()->std::string{return std::to_string(lj->Epsilon().get());});
                 setInMap(sigma, lj->Sigma().present(), std::to_string(default_sigma), [&]()->std::string{return std::to_string(lj->Sigma().get());});
             }
-            else if (auto& lj = simulation->ForceCalculation().LennardJonesCell(); lj.present()) {
-                setInMapND(forceCalculation, "lennardjonescell");
-                setInMap(epsilon, lj->Epsilon().present(), std::to_string(default_epsilon), [&]()->std::string{return std::to_string(lj->Epsilon().get());});
-                setInMap(sigma, lj->Sigma().present(), std::to_string(default_sigma), [&]()->std::string{return std::to_string(lj->Sigma().get());});
-            }
-            else if (auto& lj = simulation->ForceCalculation().LennardJonesOMP(); lj.present()) {
-                setInMapND(forceCalculation, "lennardjonesOMP");
-                setInMap(epsilon, lj->Epsilon().present(), std::to_string(default_epsilon), [&]()->std::string{return std::to_string(lj->Epsilon().get());});
-                setInMap(sigma, lj->Sigma().present(), std::to_string(default_sigma), [&]()->std::string{return std::to_string(lj->Sigma().get());});
-            }
-            else if (auto& lj = simulation->ForceCalculation().LennardJonesGravity(); lj.present()) {
-                setInMapND(forceCalculation, "lennardjonesgravity");
-                setInMap(epsilon, lj->Epsilon().present(), std::to_string(default_epsilon), [&]()->std::string{return std::to_string(lj->Epsilon().get());});
-                setInMap(sigma, lj->Sigma().present(), std::to_string(default_sigma), [&]()->std::string{return std::to_string(lj->Sigma().get());});
-                setInMap(gGrav, lj->Sigma().present(), std::to_string(default_g_grav), [&]()->std::string{return std::to_string(lj->G_Grav().get());});
-            }
             else {
                 output::loggers::general->debug("This really shouldn't happen. No ForceCalculation was specified despite it being mandatory. Using default...");
                 setInMapND(forceCalculation, default_force_type);
+            }
+
+            if (auto& eGrav = simulation->ForceCalculation().EnableGrav(); eGrav.present()) {
+                setInMapND(enableGrav, "1");
+                setInMapND(gGrav0, std::to_string(eGrav->X()));
+                setInMapND(gGrav1, std::to_string(eGrav->Y()));
+                setInMapND(gGrav2, std::to_string(eGrav->Z()));
+            } else {
+                setInMapND(enableGrav, "0");
+            }
+            if (auto& eLC = simulation->ForceCalculation().EnableLC(); eLC.present()) {
+                setInMapND(enableLinkedCell, "1");
+                setInMapND(rCutoff, std::to_string(eLC->CutoffRadius()));
+                setInMapND(boundingBox_X0, std::to_string(eLC->BoundaryBox().BoxSize().X()));
+                setInMapND(boundingBox_X1, std::to_string(eLC->BoundaryBox().BoxSize().Y()));
+                setInMapND(boundingBox_X2, std::to_string(eLC->BoundaryBox().BoxSize().Z()));
+
+                setInMapND(boundCondFront, eLC->BoundaryBox().Front());
+                setInMapND(boundCondRear, eLC->BoundaryBox().Rear());
+                setInMapND(boundCondLeft, eLC->BoundaryBox().Left());
+                setInMapND(boundCondRight, eLC->BoundaryBox().Right());
+                setInMapND(boundCondTop, eLC->BoundaryBox().Top());
+                setInMapND(boundCondBottom, eLC->BoundaryBox().Bottom());
+            } else {
+                setInMapND(enableLinkedCell, "0");
+            }
+            setInMapND(enableOMP, std::to_string(static_cast<int>(simulation->ForceCalculation().EnableOMP().present())));
+            if (auto& eMem = simulation->ForceCalculation().EnableMem(); eMem.present()) {
+                setInMapND(enableMembrane, "1");
+                setInMapND(enableMembranePull, std::to_string(static_cast<int>(eMem->EnableMemPull().present())));
+            } else {
+                setInMapND(enableMembrane, "0");
+                setInMapND(enableMembranePull, "0");
             }
 
             setInMap(positionCalculation, simulation->PositionCalculation().present(), default_pos_type,[&]()->std::string{return simulation->PositionCalculation().get();});
@@ -94,59 +111,24 @@ namespace io::input {
             setInMapVal(brown, simulation->AverageBrownianMotion().present(), std::to_string(default_brown), [&]()->std::string{return std::to_string(simulation->AverageBrownianMotion().get());});
             double brown_val = std::stod(parseBuffer);
 
-            if (simulation->SimulationStrategy().Naive().present()) {
-                setInMapND(linkedCell, "0");
-            }
-            else if (auto& lc = simulation->SimulationStrategy().LinkedCell(); lc.present()) {
-                setInMapND(linkedCell, "1");
-                setInMapND(rCutoff, std::to_string(lc->CutoffRadius()));
-                setInMapND(boundingBox_X0, std::to_string(lc->BoundaryBox().BoxSize().X()));
-                setInMapND(boundingBox_X1, std::to_string(lc->BoundaryBox().BoxSize().Y()));
-                setInMapND(boundingBox_X2, std::to_string(lc->BoundaryBox().BoxSize().Z()));
-
-                setInMapND(boundCondFront, lc->BoundaryBox().Front());
-                setInMapND(boundCondRear, lc->BoundaryBox().Rear());
-                setInMapND(boundCondLeft, lc->BoundaryBox().Left());
-                setInMapND(boundCondRight, lc->BoundaryBox().Right());
-                setInMapND(boundCondTop, lc->BoundaryBox().Top());
-                setInMapND(boundCondBottom, lc->BoundaryBox().Bottom());
-            }
-            else {
-                output::loggers::general->debug("This really shouldn't happen. No SimulationStrategy was specified despite it being mandatory. Using default...");
-
-                arg_map.emplace(linkedCell, std::to_string(default_linked_cell));
-
-                arg_map.emplace(boundingBox_X0, std::to_string(default_bound_x0));
-                arg_map.emplace(boundingBox_X1, std::to_string(default_bound_x1));
-                arg_map.emplace(boundingBox_X2, std::to_string(default_bound_x2));
-
-                arg_map.emplace(boundCondFront, default_boundary_cond_str);
-                arg_map.emplace(boundCondRear, default_boundary_cond_str);
-                arg_map.emplace(boundCondLeft, default_boundary_cond_str);
-                arg_map.emplace(boundCondRight, default_boundary_cond_str);
-                arg_map.emplace(boundCondTop, default_boundary_cond_str);
-                arg_map.emplace(boundCondBottom, default_boundary_cond_str);
-            }
-
-
             setInMapVal(dimensions, simulation->Dimensions().present(), std::to_string(default_dims), [&]()->std::string{return std::to_string(simulation->Dimensions().get());});
             int dims_val = std::stoi(parseBuffer);
 
             if (auto& t = simulation->Thermostat(); t.present()) {
-                setInMapND(thermoEnable, std::to_string(1));
+                setInMapND(enableThermo, std::to_string(1));
                 setInMapND(thermoTInit, std::to_string(t.get().T_Init()));
                 setInMapND(thermoNTerm, std::to_string(t.get().N_Term()));
                 setInMap(thermoTTarget, t.get().T_Target().present(), std::to_string(t.get().T_Init()), [&]()->std::string{return std::to_string(t.get().T_Target().get());});
                 setInMap(thermoDelta_t, t.get().Delta_T().present(), std::to_string(default_delta_temp), [&]()->std::string{return std::to_string(t.get().Delta_T().get());});
             } else {
-                setInMapND(thermoEnable, std::to_string(0));
+                setInMapND(enableThermo, std::to_string(0));
             }
 
 
             // <!-- Misc -->
 
             setInMap(logLevel, simulation->LogLevel().present(), std::to_string(default_log_level), [&]()->std::string{return std::to_string(simulation->LogLevel().get());});
-            setInMap(checkpointingEnable, simulation->EnableCheckpointing().present(), std::to_string(default_checkpointing),[&]()->std::string{return std::to_string(simulation->EnableCheckpointing().get());});
+            setInMap(enableCheckpointing, simulation->EnableCheckpointing().present(), std::to_string(default_checkpointing), [&]()->std::string{return std::to_string(simulation->EnableCheckpointing().get());});
 
             if (simulation->Benchmark().present()) {
                 setInMapND(benchmark, "1");
@@ -241,6 +223,31 @@ namespace io::input {
                         ParticleGenerator::generateSphere(body, brown_val, particles, dims_val, sig, eps);
                     }
 
+                    //How do i add the membrane as an option here? ShapeList is automatically generated..
+                    else if (s.Membrane().present()) {
+                        body.shape = Shape::membrane;
+
+                        dvectorToEigenVector3d(s.Membrane()->Position(), body.fixpoint);
+                        dvectorToEigenVector3d(s.Membrane()->Velocity(), body.start_velocity);
+                        ivectorToEigenVector3d(s.Membrane()->Dimensions(), body.dimensions);
+                        if (s.Membrane()->Mass() == 0 || s.Membrane()->Spacing() == 0) {
+                            output::loggers::general->warn("Membrane has a mass or spacing of 0, which is illegal. Skipping this membrane...");
+                            continue;
+                        }
+                        body.distance = s.Membrane()->Spacing();
+                        body.mass = s.Membrane()->Mass();
+                        double eps, sig;
+                        if (s.Membrane()->Sigma().present()) sig = s.Membrane()->Sigma().get();
+                        else if (arg_map.contains(sigma)) sig = std::stod(arg_map[sigma]);
+                        else sig = default_sigma;
+                        if (s.Membrane()->Epsilon().present()) eps = s.Membrane()->Epsilon().get();
+                        else if (arg_map.contains(epsilon)) eps = std::stod(arg_map[epsilon]);
+                        else eps = default_epsilon;
+
+                        body.desiredDistance = s.Membrane()->DesiredDistance();
+                        body.springStrength = s.Membrane()->SpringStrength();
+                        ParticleGenerator::generateMembrane(body, brown_val, particles, membranes, dims_val, sig, eps);
+                    }
                     else {
                         output::loggers::general->debug("An unknown shape was detected. This really shouldn't happen. Skipping...");
                         continue;

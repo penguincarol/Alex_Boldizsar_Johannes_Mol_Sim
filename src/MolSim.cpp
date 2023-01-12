@@ -7,6 +7,7 @@
 #include "sim/Simulation.h"
 #include "benchmark.h"
 #include "io/input/Configuration.h"
+#include "data/Membrane.h"
 
 #include <string>
 #include <variant>
@@ -35,6 +36,7 @@ int main(int argc, char *argsv[]) {
 
     // load all input files
     std::vector<Particle> buffer;
+    std::vector<Membrane> memBuffer;
     auto ioWrapper = io::IOWrapper(parser.getLoader());
     for (auto& file : inputFiles) {
         ioWrapper.setLocator(file);
@@ -42,6 +44,7 @@ int main(int argc, char *argsv[]) {
         ioWrapper.reload();
         // get particles from current file
         ioWrapper.getParticles(buffer);
+        ioWrapper.getMembranes(memBuffer);
     }
     // get final file args
     config.loadIOWArgs(ioWrapper.getArgMap());
@@ -49,8 +52,9 @@ int main(int argc, char *argsv[]) {
 
     ParticleContainer pc = ParticleContainer(buffer,
                                              {config.get<boundingBox_X0>(), config.get<boundingBox_X1>(), config.get<boundingBox_X2>()},
-                                             config.get<rCutoff>());
+                                             config.get<rCutoff>(), memBuffer);
     buffer.clear();
+    memBuffer.clear();
 
     //set up simulation
     sim::Simulation simulation{ioWrapper, pc, config};

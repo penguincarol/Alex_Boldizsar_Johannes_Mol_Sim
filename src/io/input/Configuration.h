@@ -75,16 +75,25 @@ namespace io::input {
         using current_entry = typename extract<static_cast<int>(N),
                 entry<outputFilePath, std::string>,
                 entry<outputFileName, std::string>,
+                entry<logLevel, int>,
+                entry<enableCheckpointing, bool>,
+                entry<simLastIteration, int>,
                 entry<startTime, double>,
                 entry<endTime, double>,
                 entry<delta_t, double>,
-                entry<forceCalculation, force_t>,
-                entry<positionCalculation, pos_t>,
-                entry<velocityCalculation, vel_t>,
                 entry<sigma, double>,
                 entry<epsilon, double>,
                 entry<brown, double>,
-                entry<linkedCell, bool>,
+                entry<dimensions, int>,
+                entry<forceCalculation, force_t>,
+                entry<enableGrav, bool>,
+                entry<enableMembrane, bool>,
+                entry<enableMembranePull, bool>,
+                entry<enableOMP, bool>,
+                entry<gGrav0, double>,
+                entry<gGrav1, double>,
+                entry<gGrav2, double>,
+                entry<enableLinkedCell, bool>,
                 entry<rCutoff, double>,
                 entry<boundingBox_X0, double>,
                 entry<boundingBox_X1, double>,
@@ -95,20 +104,17 @@ namespace io::input {
                 entry<boundCondRight, bound_t>,
                 entry<boundCondTop, bound_t>,
                 entry<boundCondBottom, bound_t>,
-                entry<dimensions, int>,
-                entry<logLevel, int>,
+                entry<velocityCalculation, vel_t>,
+                entry<positionCalculation, pos_t>,
                 entry<benchmark, bool>,
                 entry<benchmarkType, std::string>,
                 entry<benchMaxBodySize, int>,
                 entry<benchIterationCount, int>,
-                entry<thermoEnable, bool>,
+                entry<enableThermo, bool>,
                 entry<thermoTInit, double>,
                 entry<thermoNTerm, int>,
                 entry<thermoTTarget, double>,
-                entry<thermoDelta_t, double>,
-                entry<checkpointingEnable, bool>,
-                entry<simLastIteration, int>,
-                entry<gGrav, double>
+                entry<thermoDelta_t, double>
         >::type;
 
         using get = typename cond<current_entry::key != N, WRONG_ORDER_T, typename current_entry::value>::type;
@@ -167,7 +173,11 @@ namespace io::input {
             dataStorage[sigma] = std::get<io::input::ArgEntry<double>>(cli_arg_map.at("-sig")).value;
             dataStorage[epsilon] = std::get<io::input::ArgEntry<double>>(cli_arg_map.at("-eps")).value;
             dataStorage[brown] = std::get<io::input::ArgEntry<double>>(cli_arg_map.at("-brown")).value;
-            dataStorage[linkedCell] = std::get<io::input::ArgEntry<int>>(cli_arg_map.at("-lc")).value != 0;
+            dataStorage[enableLinkedCell] = std::get<io::input::ArgEntry<int>>(cli_arg_map.at("-fELC")).value != 0;
+            dataStorage[enableGrav] = std::get<io::input::ArgEntry<int>>(cli_arg_map.at("-fEGrav")).value != 0;
+            dataStorage[enableMembrane] = std::get<io::input::ArgEntry<int>>(cli_arg_map.at("-fEMem")).value != 0;
+            dataStorage[enableMembranePull] = std::get<io::input::ArgEntry<int>>(cli_arg_map.at("-fEMemPull")).value != 0;
+            dataStorage[enableOMP] = std::get<io::input::ArgEntry<int>>(cli_arg_map.at("-fEOMP")).value != 0;
             dataStorage[rCutoff] = std::get<io::input::ArgEntry<double>>(cli_arg_map.at("-rc")).value;
             dataStorage[boundingBox_X0] = std::get<io::input::ArgEntry<double>>(cli_arg_map.at("-bbox0")).value;
             dataStorage[boundingBox_X1] = std::get<io::input::ArgEntry<double>>(cli_arg_map.at("-bbox1")).value;
@@ -184,13 +194,15 @@ namespace io::input {
             dataStorage[benchmarkType] = std::get<io::input::ArgEntry<std::string>>(io::input::cli_arg_map.at("-bench")).value;
             dataStorage[benchMaxBodySize] = std::get<io::input::ArgEntry<int>>(io::input::cli_arg_map.at("-bMax")).value;
             dataStorage[benchIterationCount] = std::get<io::input::ArgEntry<int>>(io::input::cli_arg_map.at("-i")).value;
-            dataStorage[thermoEnable] =std::get<io::input::ArgEntry<int>>(io::input::cli_arg_map.at("-thermo")).value != 0;
+            dataStorage[enableThermo] = std::get<io::input::ArgEntry<int>>(io::input::cli_arg_map.at("-thermo")).value != 0;
             dataStorage[thermoTInit] = std::get<io::input::ArgEntry<double>>(io::input::cli_arg_map.at("-ti")).value;
             dataStorage[thermoNTerm] = std::get<io::input::ArgEntry<int>>(io::input::cli_arg_map.at("-nt")).value;
             dataStorage[thermoTTarget] = std::get<io::input::ArgEntry<double>>(io::input::cli_arg_map.at("-tt")).value;
             dataStorage[thermoDelta_t] = std::get<io::input::ArgEntry<double>>(io::input::cli_arg_map.at("-dTemp")).value;
-            dataStorage[checkpointingEnable] =std::get<io::input::ArgEntry<int>>(io::input::cli_arg_map.at("-cp")).value != 0;
-            dataStorage[gGrav] = std::get<io::input::ArgEntry<double>>(io::input::cli_arg_map.at("-gGrav")).value;
+            dataStorage[enableCheckpointing] = std::get<io::input::ArgEntry<int>>(io::input::cli_arg_map.at("-cp")).value != 0;
+            dataStorage[gGrav0] = std::get<io::input::ArgEntry<double>>(io::input::cli_arg_map.at("-gGrav0")).value;
+            dataStorage[gGrav1] = std::get<io::input::ArgEntry<double>>(io::input::cli_arg_map.at("-gGrav1")).value;
+            dataStorage[gGrav2] = std::get<io::input::ArgEntry<double>>(io::input::cli_arg_map.at("-gGrav2")).value;
             dataStorage[simLastIteration] = std::get<io::input::ArgEntry<int>>(io::input::cli_arg_map.at("-lastIt")).value;
 
             valueLock[outputFilePath] = std::get<io::input::ArgEntry<std::string>>(cli_arg_map.at("-of")).isSet;
@@ -204,7 +216,11 @@ namespace io::input {
             valueLock[sigma] = std::get<io::input::ArgEntry<double>>(cli_arg_map.at("-sig")).isSet;
             valueLock[epsilon] = std::get<io::input::ArgEntry<double>>(cli_arg_map.at("-eps")).isSet;
             valueLock[brown] = std::get<io::input::ArgEntry<double>>(cli_arg_map.at("-brown")).isSet;
-            valueLock[linkedCell] = std::get<io::input::ArgEntry<int>>(cli_arg_map.at("-lc")).isSet;
+            valueLock[enableLinkedCell] = std::get<io::input::ArgEntry<int>>(cli_arg_map.at("-fELC")).isSet;
+            valueLock[enableGrav] = std::get<io::input::ArgEntry<int>>(cli_arg_map.at("-fEGrav")).isSet;
+            valueLock[enableMembrane] = std::get<io::input::ArgEntry<int>>(cli_arg_map.at("-fEMem")).isSet;
+            valueLock[enableMembranePull] = std::get<io::input::ArgEntry<int>>(cli_arg_map.at("-fEMemPull")).isSet;
+            valueLock[enableOMP] = std::get<io::input::ArgEntry<int>>(cli_arg_map.at("-fEOMP")).isSet;
             valueLock[rCutoff] = std::get<io::input::ArgEntry<double>>(cli_arg_map.at("-rc")).isSet;
             valueLock[boundingBox_X0] = std::get<io::input::ArgEntry<double>>(cli_arg_map.at("-bbox0")).isSet;
             valueLock[boundingBox_X1] = std::get<io::input::ArgEntry<double>>(cli_arg_map.at("-bbox1")).isSet;
@@ -221,13 +237,15 @@ namespace io::input {
             valueLock[benchmarkType] = std::get<io::input::ArgEntry<std::string>>(io::input::cli_arg_map.at("-bench")).isSet;
             valueLock[benchMaxBodySize] = std::get<io::input::ArgEntry<int>>(io::input::cli_arg_map.at("-bMax")).isSet;
             valueLock[benchIterationCount] = std::get<io::input::ArgEntry<int>>(io::input::cli_arg_map.at("-i")).isSet;
-            valueLock[thermoEnable] = std::get<io::input::ArgEntry<int>>(io::input::cli_arg_map.at("-thermo")).isSet;
+            valueLock[enableThermo] = std::get<io::input::ArgEntry<int>>(io::input::cli_arg_map.at("-thermo")).isSet;
             valueLock[thermoTInit] = std::get<io::input::ArgEntry<double>>(io::input::cli_arg_map.at("-ti")).isSet;
             valueLock[thermoNTerm] = std::get<io::input::ArgEntry<int>>(io::input::cli_arg_map.at("-nt")).isSet;
             valueLock[thermoTTarget] = std::get<io::input::ArgEntry<double>>(io::input::cli_arg_map.at("-tt")).isSet;
             valueLock[thermoDelta_t] = std::get<io::input::ArgEntry<double>>(io::input::cli_arg_map.at("-dTemp")).isSet;
-            valueLock[checkpointingEnable] = std::get<io::input::ArgEntry<int>>(io::input::cli_arg_map.at("-cp")).isSet;
-            valueLock[gGrav] = std::get<io::input::ArgEntry<double>>(io::input::cli_arg_map.at("-gGrav")).isSet;
+            valueLock[enableCheckpointing] = std::get<io::input::ArgEntry<int>>(io::input::cli_arg_map.at("-cp")).isSet;
+            valueLock[gGrav0] = std::get<io::input::ArgEntry<double>>(io::input::cli_arg_map.at("-gGrav0")).isSet;
+            valueLock[gGrav1] = std::get<io::input::ArgEntry<double>>(io::input::cli_arg_map.at("-gGrav1")).isSet;
+            valueLock[gGrav2] = std::get<io::input::ArgEntry<double>>(io::input::cli_arg_map.at("-gGrav2")).isSet;
             valueLock[simLastIteration] = std::get<io::input::ArgEntry<int>>(io::input::cli_arg_map.at("-lastIt")).isSet;
         }
 
@@ -246,7 +264,11 @@ namespace io::input {
             if (!valueLock[sigma] && argMap.contains(sigma)) dataStorage[sigma] = std::stod(argMap.at(sigma));
             if (!valueLock[epsilon] && argMap.contains(epsilon)) dataStorage[epsilon] = std::stod(argMap.at(epsilon));
             if (!valueLock[brown] && argMap.contains(brown)) dataStorage[brown] = std::stod(argMap.at(brown));
-            if (!valueLock[linkedCell] && argMap.contains(linkedCell))dataStorage[linkedCell] = std::stoi(argMap.at(linkedCell)) != 0;
+            if (!valueLock[enableLinkedCell] && argMap.contains(enableLinkedCell))dataStorage[enableLinkedCell] = std::stoi(argMap.at(enableLinkedCell)) != 0;
+            if (!valueLock[enableGrav] && argMap.contains(enableGrav))dataStorage[enableGrav] = std::stoi(argMap.at(enableGrav)) != 0;
+            if (!valueLock[enableMembrane] && argMap.contains(enableMembrane))dataStorage[enableMembrane] = std::stoi(argMap.at(enableMembrane)) != 0;
+            if (!valueLock[enableMembranePull] && argMap.contains(enableMembranePull))dataStorage[enableMembranePull] = std::stoi(argMap.at(enableMembranePull)) != 0;
+            if (!valueLock[enableOMP] && argMap.contains(enableOMP))dataStorage[enableOMP] = std::stoi(argMap.at(enableOMP)) != 0;
             if (!valueLock[rCutoff] && argMap.contains(rCutoff)) dataStorage[rCutoff] = std::stod(argMap.at(rCutoff));
             if (!valueLock[boundingBox_X0] && argMap.contains(boundingBox_X0))dataStorage[boundingBox_X0] = std::stod(argMap.at(boundingBox_X0));
             if (!valueLock[boundingBox_X1] && argMap.contains(boundingBox_X1))dataStorage[boundingBox_X1] = std::stod(argMap.at(boundingBox_X1));
@@ -263,13 +285,15 @@ namespace io::input {
             if (!valueLock[benchmarkType] && argMap.contains(benchmarkType))dataStorage[benchmarkType] = argMap.at(benchmarkType);
             if (!valueLock[benchMaxBodySize] && argMap.contains(benchMaxBodySize))dataStorage[benchMaxBodySize] = std::stoi(argMap.at(benchMaxBodySize));
             if (!valueLock[benchIterationCount] && argMap.contains(benchIterationCount))dataStorage[benchIterationCount] = std::stoi(argMap.at(benchIterationCount));
-            if (!valueLock[thermoEnable] && argMap.contains(thermoEnable))dataStorage[thermoEnable] = std::stoi(argMap.at(thermoEnable)) != 0;
+            if (!valueLock[enableThermo] && argMap.contains(enableThermo))dataStorage[enableThermo] = std::stoi(argMap.at(enableThermo)) != 0;
             if (!valueLock[thermoTInit] && argMap.contains(thermoTInit))dataStorage[thermoTInit] = std::stod(argMap.at(thermoTInit));
             if (!valueLock[thermoNTerm] && argMap.contains(thermoNTerm))dataStorage[thermoNTerm] = std::stoi(argMap.at(thermoNTerm));
             if (!valueLock[thermoTTarget] && argMap.contains(thermoTTarget))dataStorage[thermoTTarget] = std::stod(argMap.at(thermoTTarget));
             if (!valueLock[thermoDelta_t] && argMap.contains(thermoDelta_t))dataStorage[thermoDelta_t] = std::stod(argMap.at(thermoDelta_t));
-            if (!valueLock[checkpointingEnable] && argMap.contains(checkpointingEnable))dataStorage[checkpointingEnable] = std::stoi(argMap.at(checkpointingEnable)) != 0;
-            if (!valueLock[gGrav] && argMap.contains(gGrav)) dataStorage[gGrav] = std::stod(argMap.at(gGrav));
+            if (!valueLock[enableCheckpointing] && argMap.contains(enableCheckpointing))dataStorage[enableCheckpointing] = std::stoi(argMap.at(enableCheckpointing)) != 0;
+            if (!valueLock[gGrav0] && argMap.contains(gGrav0)) dataStorage[gGrav0] = std::stod(argMap.at(gGrav0));
+            if (!valueLock[gGrav1] && argMap.contains(gGrav1)) dataStorage[gGrav1] = std::stod(argMap.at(gGrav1));
+            if (!valueLock[gGrav2] && argMap.contains(gGrav2)) dataStorage[gGrav2] = std::stod(argMap.at(gGrav2));
             if (!valueLock[simLastIteration] && argMap.contains(simLastIteration))dataStorage[simLastIteration] = std::stoi(argMap.at(simLastIteration));
         }
     };

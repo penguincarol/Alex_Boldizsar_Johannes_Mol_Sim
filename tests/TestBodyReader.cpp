@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
 #include "data/Particle.h"
+#include "data/Membrane.h"
 #include "io/input/sim_input/BodyReader.h"
 #include "io/input/arg_names.h"
 
@@ -13,10 +14,11 @@
 TEST(BodyReader, readFile){
     io::input::BodyReader bodyReader;
     std::list<Particle> buffer;
+    std::list<Membrane> membrBuf;
     double eps{0.0};
     double sig{0.0};
     std::unordered_map<io::input::names, std::string> argMap;
-    bodyReader.readFile("../../input/bodyReaderTestFile.txt", buffer, argMap);
+    bodyReader.readFile("../../input/bodyReaderTestFile.txt", buffer, membrBuf, argMap);
 
     std::vector<Eigen::Vector3d> supposed2BeThere = {{0.,0.,0.}, {0.,1.,0.}, 
         {1.,1.,1.}, {2.,1.,1.}, {1.,2.,1.}, {1.,1.,2.}, {4.,5.,6.},

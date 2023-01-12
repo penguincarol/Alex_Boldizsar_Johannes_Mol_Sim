@@ -10,16 +10,16 @@
 #include <fstream>
 #include <filesystem>
 
+#include "defaults.h"
 #include "data/Particle.h"
-#include "io/input/sim_input/InputLoader.h"
 #include "io/output/VTKWriter.h"
+#include "io/input/arg_names.h"
+#include "io/input/Configuration.h"
+#include "io/input/sim_input/types.h"
+#include "io/input/sim_input/InputLoader.h"
 #include "io/input/sim_input/FileReader.h"
 #include "io/input/sim_input/BodyReader.h"
-#include "defaults.h"
-#include "io/input/arg_names.h"
 #include "io/input/sim_input/XMLReader.h"
-#include "io/input/sim_input/types.h"
-#include "io/input/Configuration.h"
 
 namespace io {
     /**
@@ -145,6 +145,28 @@ namespace io {
         }
 
         /**
+         * Delegates to InputLoader::getParticles
+         * */
+        inline void getMembranes(std::vector<Membrane> &membrBuf) {
+            switch (loadType) {
+                case io::input::type::XML: {
+                    xmlLoader.getMembranes(membrBuf);
+                    return;
+                }
+                case io::input::type::FILE: {
+                    fileLoader.getMembranes(membrBuf);
+                    return;
+                }
+                case io::input::type::BODY: {
+                    bodyLoader.getMembranes(membrBuf);
+                    return;
+                }
+                default:
+                    return;
+            }
+        }
+
+        /**
          * Returns a read only view to the argument map
          * */
         const std::unordered_map<io::input::names, std::string> &getArgMap() const {
@@ -188,56 +210,31 @@ namespace io {
                     ForceCalculation.LennardJones(lj);
                     break;
                 }
-                case sim::physics::force::lennardJonesOMP: {
-                    lennardJonesOMP_t lj;
-                    lj.Epsilon(config.get<io::input::epsilon>());
-                    lj.Sigma(config.get<io::input::epsilon>());
-                    ForceCalculation.LennardJonesOMP(lj);
-                    break;
-                }
-                case sim::physics::force::lennardJonesCell: {
-                    lennardJonesCell_t lj;
-                    lj.Epsilon(config.get<io::input::epsilon>());
-                    lj.Sigma(config.get<io::input::epsilon>());
-                    ForceCalculation.LennardJonesCell(lj);
-                    break;
-                }
-                case sim::physics::force::lennardJonesGravity: {
-                    lennardJonesGravity_t lj;
-                    lj.Epsilon(config.get<io::input::epsilon>());
-                    lj.Sigma(config.get<io::input::epsilon>());
-                    ForceCalculation.LennardJonesGravity(lj);
-                    break;
-                }
                 default:
                     break;
             }
-
-            simulationStrategy_t SimulationStrategy;
-            if (config.get<io::input::linkedCell>()) {
-                std::unordered_map<sim::physics::bounds::type, std::string> bMap = {{sim::physics::bounds::outflow,    "Outflow"},
-                                                                                    {sim::physics::bounds::reflecting, "Reflecting"},
-                                                                                    {sim::physics::bounds::periodic,   "Periodic"}};
-                SimulationStrategy.LinkedCell(
-                        linkedCell_t(
-                                boundaries_t(
-                                        posDVector_t(
-                                                config.get<io::input::boundingBox_X0>(),
-                                                config.get<io::input::boundingBox_X1>(),
-                                                config.get<io::input::boundingBox_X2>()
-                                        ),
-                                        boundaryBehavior_t(bMap[config.get<io::input::boundCondFront>()]),
-                                        boundaryBehavior_t(bMap[config.get<io::input::boundCondRear>()]),
-                                        boundaryBehavior_t(bMap[config.get<io::input::boundCondLeft>()]),
-                                        boundaryBehavior_t(bMap[config.get<io::input::boundCondRight>()]),
-                                        boundaryBehavior_t(bMap[config.get<io::input::boundCondTop>()]),
-                                        boundaryBehavior_t(bMap[config.get<io::input::boundCondBottom>()])
-                                ),
-                                config.get<io::input::rCutoff>())
-                );
-            } else {
-                SimulationStrategy.Naive(naive_t());
-            }
+            if (config.get<io::input::enableGrav>()) ForceCalculation.EnableGrav(enGrav_t(config.get<io::input::gGrav0>(),config.get<io::input::gGrav1>(),config.get<io::input::gGrav2>()));
+            std::unordered_map<sim::physics::bounds::type, std::string> bMap = {{sim::physics::bounds::outflow,    "Outflow"},
+                                                                                {sim::physics::bounds::reflecting, "Reflecting"},
+                                                                                {sim::physics::bounds::periodic,   "Periodic"}};
+            if (config.get<io::input::enableLinkedCell>()) ForceCalculation.EnableLC(enLC_t(boundaries_t(
+                                                                                                    posDVector_t(
+                                                                                                            config.get<io::input::boundingBox_X0>(),
+                                                                                                            config.get<io::input::boundingBox_X1>(),
+                                                                                                            config.get<io::input::boundingBox_X2>()
+                                                                                                    ),
+                                                                                                    boundaryBehavior_t(bMap[config.get<io::input::boundCondFront>()]),
+                                                                                                    boundaryBehavior_t(bMap[config.get<io::input::boundCondRear>()]),
+                                                                                                    boundaryBehavior_t(bMap[config.get<io::input::boundCondLeft>()]),
+                                                                                                    boundaryBehavior_t(bMap[config.get<io::input::boundCondRight>()]),
+                                                                                                    boundaryBehavior_t(bMap[config.get<io::input::boundCondTop>()]),
+                                                                                                    boundaryBehavior_t(bMap[config.get<io::input::boundCondBottom>()])
+                                                                                            ),
+                                                                                            config.get<io::input::rCutoff>()));
+            if (config.get<io::input::enableOMP>()) ForceCalculation.EnableOMP(enOMP_t());
+            enMem_t EnableMem {};
+            if (config.get<io::input::enableMembranePull>()) EnableMem.EnableMemPull(enMemPull_t());
+            if (config.get<io::input::enableMembrane>()) ForceCalculation.EnableMem(EnableMem);
 
             file_t FileType;
             cp_particle_list_t CPParticles;
@@ -257,7 +254,7 @@ namespace io {
             CPParticles.CPParticle(sequence);
             FileType.Checkpoint(checkpoint_t(iteration, CPParticles));
 
-            simulation_t simulation(ForceCalculation, SimulationStrategy, FileType);
+            simulation_t simulation(ForceCalculation, FileType);
 
             //create optional objects for simulation_t
             output_t OutputFile;
@@ -280,7 +277,7 @@ namespace io {
 
             simulation.AverageBrownianMotion(config.get<io::input::brown>());
             simulation.Dimensions(dimension_t(config.get<io::input::dimensions>()));
-            if(config.get<io::input::thermoEnable>()) {
+            if(config.get<io::input::enableThermo>()) {
                 thermostat_t therm(config.get<io::input::thermoTInit>(), config.get<io::input::thermoNTerm>());
                 therm.T_Target(config.get<io::input::thermoTTarget>());
                 therm.Delta_T(config.get<io::input::thermoDelta_t>());

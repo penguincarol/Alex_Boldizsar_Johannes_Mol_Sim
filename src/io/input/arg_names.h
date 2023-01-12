@@ -10,42 +10,58 @@ namespace io::input {
     * Defines names in the map for arguments in the input loader
     * */
     enum names {
+        //IO
         outputFilePath,
         outputFileName,
+        logLevel,
+            // CHECKPOINT
+            enableCheckpointing,
+            simLastIteration,
+        // SIM GENERAL
         startTime,
         endTime,
         delta_t,
-        forceCalculation,
-        positionCalculation,
-        velocityCalculation,
         sigma,
         epsilon,
         brown,
-        linkedCell,
-        rCutoff,
-        boundingBox_X0,
-        boundingBox_X1,
-        boundingBox_X2,
-        boundCondFront,
-        boundCondRear,
-        boundCondLeft,
-        boundCondRight,
-        boundCondTop,
-        boundCondBottom,
         dimensions,
-        logLevel,
+        // FORCE
+        forceCalculation,
+        enableGrav,
+        enableMembrane,
+        enableMembranePull,
+        enableOMP,
+        gGrav0,
+        gGrav1,
+        gGrav2,
+            // LINKED CELL
+            enableLinkedCell,
+            rCutoff,
+            boundingBox_X0,
+            boundingBox_X1,
+            boundingBox_X2,
+            boundCondFront,
+            boundCondRear,
+            boundCondLeft,
+            boundCondRight,
+            boundCondTop,
+            boundCondBottom,
+        // VELOCITY
+        velocityCalculation,
+        // POSITION
+        positionCalculation,
+        // BENCHMARK
         benchmark,
         benchmarkType,
         benchMaxBodySize,
         benchIterationCount,
-        thermoEnable,
+        // THERMO
+        enableThermo,
         thermoTInit,
         thermoNTerm,
         thermoTTarget,
         thermoDelta_t,
-        checkpointingEnable,
-        simLastIteration,
-        gGrav,
+        //MISC
         names_count [[maybe_unused]]
     };
 } // io::input

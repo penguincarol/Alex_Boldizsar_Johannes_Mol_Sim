@@ -12,9 +12,6 @@ namespace sim::physics::force {
     enum type {
         gravity,
         lennardJones,
-        lennardJonesOMP,
-        lennardJonesCell,
-        lennardJonesGravity,
         types_count [[maybe_unused]]
     };
 
@@ -25,8 +22,4 @@ namespace sim::physics::force {
      * */
     type stot(const std::string &);
 
-    /**
-     * Generates the correct force functor depending on t
-     * */
-    ForceFunctorBase* generateForce(type t, double st, double et, double dt, double eps, double sig, ParticleContainer &pc, bool lc, double gGrav);
 } //sim::physics::force

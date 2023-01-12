@@ -4,6 +4,7 @@
 #include "Particle.h"
 #include "sim/physics/bounds/types.h"
 #include "io/output/Logging.h"
+#include "Membrane.h"
 
 #include <vector>
 #include <array>
@@ -281,6 +282,7 @@ private:
     VectorCoordWrapper cells;
     std::array<unsigned int, 3> gridDimensions; //stores the number of cells in x- y- and z- direction
     std::array<double, 3> domainSize;
+    std::vector<Membrane> membranes;  //stores the membranes created membranes as defined in the Membrane-class
     double x_2_max;
     double x_1_max;
     double x_0_max;
@@ -358,7 +360,7 @@ public:
      * @param domainSize
      * @param r_cutoff
      */
-    ParticleContainer(const std::vector<Particle> &buffer, std::array<double, 3> domainSize, double r_cutoff);
+    ParticleContainer(const std::vector<Particle> &buffer, std::array<double, 3> domainSize, double r_cutoff, const std::vector<Membrane>& membranes = {});
 
     /**
      * @brief Constructor of ParticleContainer that also initializes a seemingly two dimensional cell-structure
@@ -367,7 +369,7 @@ public:
      * @param domainSize
      * @param r_cutoff
      */
-    ParticleContainer(const std::vector<Particle> &buffer, std::array<double, 2> domainSize, double r_cutoff);
+    ParticleContainer(const std::vector<Particle> &buffer, std::array<double, 2> domainSize, double r_cutoff, const std::vector<Membrane>& membranes = {});
 
     /**
      * @brief returns the index of the cell in cells corresponding to the coordinates given. Performs NO bounds checks!
@@ -414,6 +416,11 @@ s    * right corresponding cell-vector
      * Get a copy of particle at position @param i
      * */
     Particle getParticle(unsigned long i);
+
+    /**
+     * @return reference to internally stored membranes
+     */
+    std::vector<Membrane>& getMembranes();
 
     /**
      * Moves all forces to the oldForces buffer
@@ -899,6 +906,18 @@ public:
     }
 
     /**
+     * Runs function on internal data.
+     * Should be used by forceFunctor acting on Membranes
+     * @tparam F
+     * @param fun
+     */
+    template<typename F>
+    void runOnMembranes(F fun){
+        //I actually believe that you need all those parameters. We can still change that if i am wrong
+        fun(membranes, force, x, count);
+    }
+
+    /**
      * Runs the function on the internal data, gets activeParticles as additional argument
      * */
     template<typename F>
@@ -933,6 +952,14 @@ public:
      * @param function
      */
     void forAllPairs(const std::function<void(Particle &p1, Particle &p2)> &function);
+
+    /**
+     * @brief Applies given function to all pairs of Particles that are connected by a spring due to Membranes
+     * Also iterates over all Membranes created
+     * analogon to forAllPairs
+     * This method is too slow for actual use but might be good for debugging purposes or prototyping
+     */
+    [[maybe_unused]] void forAllMembraneSprings(const std::function<void(Particle &p1, Particle &p2, double desiredDistance, double springStrength)> &function);
 
     /**
      * Handles interactions between halo and border cells.

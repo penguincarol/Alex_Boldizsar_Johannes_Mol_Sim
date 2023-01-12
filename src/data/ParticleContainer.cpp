@@ -58,8 +58,8 @@ ParticleContainer::ParticleContainer(const std::vector<Particle> &buffer) {
 }
 
 ParticleContainer::ParticleContainer(const std::vector<Particle> &buffer, std::array<double, 3> domSize,
-                                     double r_cutoff) :
-        ParticleContainer::ParticleContainer(buffer) {
+                                     double r_cutoff, const std::vector<Membrane>& membranesIn) :
+        ParticleContainer::ParticleContainer(buffer){
     domainSize = domSize;
     x_2_max = domainSize[2];
     x_1_max = domainSize[1];
@@ -67,6 +67,7 @@ ParticleContainer::ParticleContainer(const std::vector<Particle> &buffer, std::a
     x_2_min = 0;
     x_1_min = 0;
     x_0_min = 0;
+    membranes = membranesIn;
     //very explicit casts to absolutely make sure, that the rounding is done correctly
     //this implementation uses shorter grids on the side if the numbers are nasty btw
     std::array<double, 3> helperGridDimensions{std::ceil(domSize[0] / r_cutoff), std::ceil(domSize[1] / r_cutoff),
@@ -84,8 +85,8 @@ ParticleContainer::ParticleContainer(const std::vector<Particle> &buffer, std::a
 }
 
 ParticleContainer::ParticleContainer(const std::vector<Particle> &buffer, std::array<double, 2> domainSize,
-                                     double r_cutoff) :
-        ParticleContainer::ParticleContainer(buffer, {domainSize[0], domainSize[1], r_cutoff}, r_cutoff) {};
+                                     double r_cutoff, const std::vector<Membrane>& membranesIn) :
+        ParticleContainer::ParticleContainer(buffer, {domainSize[0], domainSize[1], r_cutoff}, r_cutoff, membranesIn) {};
 #pragma endregion
 
 #pragma region Utils
@@ -116,6 +117,10 @@ Particle ParticleContainer::getParticle(unsigned long i) {
     Particle p;
     loadParticle(p, i);
     return p;
+}
+
+std::vector<Membrane>& ParticleContainer::getMembranes() {
+    return membranes;
 }
 
 std::array<unsigned int, 3> ParticleContainer::getGridDimensions() {
@@ -245,6 +250,79 @@ void ParticleContainer::forAllPairs(const std::function<void(Particle &p1, Parti
             function(p1, p2);
             storeParticle(p1, i);
             storeParticle(p2, j);
+        }
+    }
+}
+
+[[maybe_unused]] void ParticleContainer::forAllMembraneSprings(const std::function<void(Particle &p1, Particle &p2, double desiredDistance, double springStrength)> &function){
+    for(Membrane& membrane: membranes){
+        if(membrane.getMembrNodes().size() <= 0){
+            continue;
+        }
+
+        std::array<size_t,2> membrDims{membrane.getMembrNodes().size(), membrane.getMembrNodes()[0].size()};
+
+        for(size_t i = 0; i < membrDims[0]; i++){
+            for(size_t j = 0; j < membrDims[1] - 1; j++){
+                auto index1 = membrane.getMembrNodes()[i][j];
+                auto index2 = membrane.getMembrNodes()[i][j+1];
+
+                Particle p1;
+                loadParticle(p1, index1);
+                Particle p2;
+                loadParticle(p2, index2);
+                function(p1, p2, membrane.getDesiredDistance(), membrane.getSpringStrength());
+                storeParticle(p1, index1);
+                storeParticle(p2, index2);
+            }
+        }
+
+        for(size_t i = 0; i < membrDims[0] - 1; i++){
+            for(size_t j = 0; j < membrDims[1]; j++){
+                auto index1 = membrane.getMembrNodes()[i][j];
+                auto index2 = membrane.getMembrNodes()[i+1][j];
+
+                Particle p1;
+                loadParticle(p1, index1);
+                Particle p2;
+                loadParticle(p2, index2);
+                function(p1, p2, membrane.getDesiredDistance(), membrane.getSpringStrength());
+                storeParticle(p1, index1);
+                storeParticle(p2, index2);
+            }
+        }
+
+        for(size_t i = 0; i < membrDims[0]; i++) {
+            for (size_t j = 0; j < membrDims[1]; j++) {
+
+                //to top right (thinking about membrane structure)
+                if(i+1 < membrDims[0] && j+1 < membrDims[1]){
+                    auto index1 = membrane.getMembrNodes()[i][j];
+                    auto index2 = membrane.getMembrNodes()[i+1][j+1];
+
+                    Particle p1;
+                    loadParticle(p1, index1);
+                    Particle p2;
+                    loadParticle(p2, index2);
+                    function(p1, p2, membrane.getDesiredDistance(), membrane.getSpringStrength());
+                    storeParticle(p1, index1);
+                    storeParticle(p2, index2);
+                }
+
+                //to bottom right (thinking about membrane structure)
+                if(i+1 < membrDims[0] && j-1 >= 0){
+                    auto index1 = membrane.getMembrNodes()[i][j];
+                    auto index2 = membrane.getMembrNodes()[i+1][j-1];
+
+                    Particle p1;
+                    loadParticle(p1, index1);
+                    Particle p2;
+                    loadParticle(p2, index2);
+                    function(p1, p2, membrane.getDesiredDistance(), membrane.getSpringStrength());
+                    storeParticle(p1, index1);
+                    storeParticle(p2, index2);
+                }
+            }
         }
     }
 }

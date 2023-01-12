@@ -55,6 +55,11 @@ private:
      * */
     double epsilon;
 
+    /**
+     * Every particle has a unique particleID
+     */
+    int id;
+
 public:
     explicit Particle(int type = 0);
 
@@ -69,6 +74,8 @@ public:
     Particle(const Eigen::Vector3d &x_arg, const Eigen::Vector3d &v_arg, double m_arg, int type = 0);
 
     Particle(const Eigen::Vector3d &x_arg, const std::array<double, 3> &v_arg, double m_arg, int type = 0);
+
+    Particle(const Eigen::Vector3d &x_arg, const Eigen::Vector3d &v_arg, double m_arg, int type, int id);
 
     Particle(Particle &&other);
 
@@ -151,6 +158,12 @@ public:
     bool operator==(const Particle &other);
 
     std::string toString() const;
+
+    int getID() const;
+
+    int getID();
+
+    void setID(const int i);
 };
 
 std::ostream &operator<<(std::ostream &stream, Particle &p);

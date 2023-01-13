@@ -223,8 +223,8 @@
     </xsd:complexType>
 
     <xsd:complexType name="index2d_t">
-        <xsd:attribute name="I" type="xsd:positiveInteger"/>
-        <xsd:attribute name="J" type="xsd:positiveInteger"/>
+        <xsd:attribute name="I" type="xsd:positiveInteger" use="required"/>
+        <xsd:attribute name="J" type="xsd:positiveInteger" use="required"/>
     </xsd:complexType>
     <xsd:complexType name="index2d_list_t">
         <xsd:sequence>

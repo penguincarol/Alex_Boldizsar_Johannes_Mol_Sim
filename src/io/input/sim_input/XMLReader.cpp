@@ -230,6 +230,17 @@ namespace io::input {
                         dvectorToEigenVector3d(s.Membrane()->Position(), body.fixpoint);
                         dvectorToEigenVector3d(s.Membrane()->Velocity(), body.start_velocity);
                         ivectorToEigenVector3d(s.Membrane()->Dimensions(), body.dimensions);
+
+                        if (auto& pull = s.Membrane()->Pull(); pull.present()) {
+                            body.pullEndTime = (pull->EndTimePull().present()) ? pull->EndTimePull().get() : std::stod(arg_map[endTime]);
+                            body.pullForce = { pull->PullForce().X(), pull->PullForce().Y(), pull->PullForce().Z() };
+                            for(auto& ind : pull->PullIndices().Index()) body.pullIndices.push_back({ind.I(), ind.J()});
+                        } else {
+                            body.pullEndTime = std::stod(arg_map[startTime]);
+                            body.pullForce = { 0 ,0 ,0 };
+                            body.pullIndices.clear();
+                        }
+
                         if (s.Membrane()->Mass() == 0 || s.Membrane()->Spacing() == 0) {
                             output::loggers::general->warn("Membrane has a mass or spacing of 0, which is illegal. Skipping this membrane...");
                             continue;

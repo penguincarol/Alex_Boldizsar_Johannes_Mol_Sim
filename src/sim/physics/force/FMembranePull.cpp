@@ -6,7 +6,22 @@
 
 namespace sim::physics::force {
     void FMembranePull::operator()() {
-        //TODO impl me
+        particleContainer.runOnMembranes([&](std::vector<Membrane>& membranes,
+                                            std::vector<double>& force,
+                                            std::vector<double>& x,
+                                            unsigned long count){
+            for(auto& mem : membranes) {
+                if (mem.getPullEndTime() < current_time) continue;
+
+                for(auto& point : mem.getPullIndices()) {
+                    size_t id = mem.getMembrNodes()[point[0]][point[1]];
+                    force[id*3 + 0] += mem.getPullForce()[0];
+                    force[id*3 + 1] += mem.getPullForce()[1];
+                    force[id*3 + 2] += mem.getPullForce()[2];
+                }
+            }
+        });
+        current_time += delta_t;
     }
 
     void FMembranePull::setParticleContainer(ParticleContainer &pc) {

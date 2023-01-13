@@ -1000,7 +1000,7 @@ public:
                                 auto& bCell = cells.getOuter(hcCoords[cIndex][0]+bcOffset[cIndex][0]*scale0, hcCoords[cIndex][1]+bcOffset[cIndex][1]*scale1, hcCoords[cIndex][2]+bcOffset[cIndex][2]*scale2);
                                 //apply function
                                 for (auto indexJ : bCell) {
-                                    fun(force, x, eps, sig, m, indexI, indexJ, true, true);
+                                    fun(force, x, eps, sig, m, type, indexI, indexJ);
                                 }
                             }
                         }
@@ -1058,7 +1058,7 @@ public:
                                             for(int scale2{0}; scale2 < 2; scale2++) {
                                                 auto &bCell = cells.getInnerGlobal(x_0 + dir[0] + dirs[0][0]*scale0, x_1 + dir[1] + dirs[0][1]*scale1, x_2 + dir[2] + dirs[0][2]*scale2);
                                                 for (auto indexJ: bCell) {
-                                                    fun(force, x, eps, sig, m, indexI, indexJ, true, true);
+                                                    fun(force, x, eps, sig, m, type, indexI, indexJ);
                                                 }
                                             }
                                         }
@@ -1125,7 +1125,7 @@ public:
                                     for (auto &dir: dirs) {
                                         auto &bCell = cells.getInnerGlobal(x_0 + dir[0] + scaleOffset * dirs[4][0], x_1 + dir[1] + scaleOffset * dirs[4][1], x_2 + dir[2] + scaleOffset * dirs[4][2]);
                                         for (auto indexJ: bCell) {
-                                            fun(force, x, eps, sig, m, indexI, indexJ, true, true);
+                                            fun(force, x, eps, sig, m, type, indexI, indexJ);
                                         }
                                     }
                                 }

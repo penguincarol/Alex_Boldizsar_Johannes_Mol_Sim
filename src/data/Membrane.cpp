@@ -37,10 +37,22 @@ std::vector<std::vector<unsigned long>>& Membrane::getMembrNodes(){
     return membrNodes;
 }
 
-double Membrane::getDesiredDistance(){
+double Membrane::getDesiredDistance() const {
     return r0;
 }
 
-double Membrane::getSpringStrength(){
+double Membrane::getSpringStrength() const {
     return k;
+}
+
+double Membrane::getPullEndTime() const  {
+    return pullEt;
+}
+
+std::array<double, 3> Membrane::getPullForce() const  {
+    return pullF;
+}
+
+const std::vector<std::array<size_t, 2>> &Membrane::getPullIndices() const  {
+    return pullIndices;
 }

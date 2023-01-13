@@ -43,7 +43,7 @@ namespace sim::physics::force {
 
     void FMembrane::operator()() {
         //fun(membranes, force, x, count);
-        particleContainer.runOnMembranes([&](std::vector<Membrane>& membranes,
+        particleContainer.runOnMembranes([](std::vector<Membrane>& membranes,
                                         std::vector<double>& force,
                                         std::vector<double>& x,
                                         unsigned long count){
@@ -71,7 +71,7 @@ namespace sim::physics::force {
 
                     for(size_t i = lowerboundsI[_case]; i < upperboundsI[_case]; i++){
                         for(size_t j = lowerboundsJ[_case]; j < upperboundsJ[_case]; j++){
-                            this->addSpringForce(i,j, i+ offsets[_case][0], j + offsets[_case][1],
+                            addSpringForce(i,j, i+ offsets[_case][0], j + offsets[_case][1],
                                                                       membrane, force, x);
 
                         }

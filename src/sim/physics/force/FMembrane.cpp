@@ -30,7 +30,12 @@ namespace sim::physics::force {
                              x[idI*3 + 1] - x[idJ*3 + 1],
                              x[idI*3 + 2] - x[idJ*3 + 2]};
         double norm = dist.norm();
-        Eigen::Vector3d f_ij = membrane.getSpringStrength() * (norm - membrane.getDesiredDistance()) * dist / norm;
+        Eigen::Vector3d f_ij;
+        if(p1i != p2i && p1j != p2j){
+            f_ij = membrane.getSpringStrength() * (norm - std::sqrt(2) * membrane.getDesiredDistance()) * dist / norm;
+        }else{
+            f_ij = membrane.getSpringStrength() * (norm - membrane.getDesiredDistance()) * dist / norm;
+        }
 
         force[idI*3 + 0] -= f_ij[0];
         force[idI*3 + 1] -= f_ij[1];

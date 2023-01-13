@@ -39,7 +39,7 @@ namespace sim::physics::force {
                 for(unsigned long indexY = indexX + 1; indexY < cellItems.size(); indexY++) {
                     unsigned long indexI = cellItems[indexX];
                     unsigned long indexJ = cellItems[indexY];
-                    this->fpairFun(force, x, eps, sig, m, indexI, indexJ, true, true);
+                    this->fpairFun(force, x, eps, sig, m, type, indexI, indexJ);
                 }
             }
         });
@@ -57,7 +57,7 @@ namespace sim::physics::force {
                                                               std::vector<double> &sig){
             for(unsigned long indexI : cell0Items){
                 for(unsigned long indexJ : cell1Items) {
-                    this->fpairFun(force, x, eps, sig, m, indexI, indexJ, true, true);
+                    this->fpairFun(force, x, eps, sig, m, type, indexI, indexJ);
                 }
             }
         });

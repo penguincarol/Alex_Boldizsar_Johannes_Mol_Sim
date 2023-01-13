@@ -2,11 +2,11 @@
 <Simulation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
             xsi:noNamespaceSchemaLocation="../input/XMLFormat.xsd">
     <OutputFile OutputFileName="memTest"/>
-    <EndTime>1.0</EndTime>
-    <TimeStepSize>0.0005</TimeStepSize>
+    <EndTime>50.0</EndTime>
+    <TimeStepSize>0.001</TimeStepSize>
     <ForceCalculation>
         <LennardJones Epsilon="1.0" Sigma="1.0"/>
-        <EnableGrav X="0.0" Y="-0.4" Z="0.0"/>
+        <EnableGrav X="0.0" Y="-0.001" Z="0.0"/>
         <EnableLC>
             <BoundaryBox>
                 <BoxSize X="102.0" Y="12.0" Z="102.0"/>
@@ -19,22 +19,29 @@
             </BoundaryBox>
             <CutoffRadius>2.5</CutoffRadius>
         </EnableLC>
-        <EnableMem/>
+        <EnableMem>
+            <EnableMemPull/>
+        </EnableMem>
     </ForceCalculation>
-    <AverageBrownianMotion>0.01</AverageBrownianMotion>
+    <AverageBrownianMotion>0.001</AverageBrownianMotion>
     <Dimensions>3</Dimensions>
-    <Thermostat>
-        <T_Init>40</T_Init>
-        <N_Term>1000</N_Term>
-    </Thermostat>
     <FileType>
         <Input>
             <ShapeList>
                 <Shape>
-                    <Membrane Spacing="1.0" Mass="2.0" SpringStrength="300.0" DesiredDistance="0.5">
-                        <Position X="1.0" Y="10.0" Z="1.0"/>
+                    <Membrane Spacing="2.2" Mass="2.0" SpringStrength="300.0" DesiredDistance="2.2">
+                        <Position X="15.0" Y="10.0" Z="15.0"/>
                         <Velocity X="0.0" Y="0.0" Z="0.0"/>
-                        <Dimensions X="100" Y="1" Z="100"/>
+                        <Dimensions X="30" Y="1" Z="30"/>
+                        <Pull EndTimePull="20.0">
+                            <PullForce X="0.0" Y="4.8" Z="0.0"/>
+                            <PullIndices>
+                                <Index I="17" J="24"/>
+                                <Index I="17" J="25"/>
+                                <Index I="18" J="24"/>
+                                <Index I="18" J="25"/>
+                            </PullIndices>
+                        </Pull>
                     </Membrane>
                 </Shape>
             </ShapeList>

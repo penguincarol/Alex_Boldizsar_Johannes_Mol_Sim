@@ -22,7 +22,7 @@ namespace sim::physics::force {
                                        std::vector<double> &sig){
             for(unsigned long indexI = 0; indexI < count; indexI++){
                 for(unsigned long indexJ = indexI + 1; indexJ < count; indexJ++) {
-                    this->fpairFun(force, x, eps, sig, m, indexI, indexJ, true, true);
+                    this->fpairFun(force, x, eps, sig, m, type, indexI, indexJ);
                 }
             }
         });
@@ -37,31 +37,40 @@ namespace sim::physics::force {
         setPairFun();
     }
 
+    static const double rt3_2 = std::pow(2,1/3);
     static void fastPairFunction(std::vector<double> &force,
                                  std::vector<double> &x,
                                  std::vector<double> &eps,
                                  std::vector<double> &sig,
                                  std::vector<double> &m,
-                                 unsigned long indexI, unsigned long indexJ, bool wbI, bool wbJ) {
-        double sigma, sigma6, epsilon, d0, d1, d2, l2NInvSquare, fac0, l2NInvPow6, fac1_sum1, fac1;
+                                 std::vector<int> &t,
+                                 unsigned long indexI, unsigned long indexJ) {
+        double sigma, sigma2, sigma6, epsilon, d0, d1, d2, dsqr, l2NInvSquare, fac0, l2NInvPow6, fac1_sum1, fac1;
         sigma = (sig[indexI] + sig[indexJ]) / 2;
-        sigma6 = sigma * sigma * sigma * sigma * sigma * sigma;
+        sigma2 = sigma * sigma;
+        sigma6 = sigma2 * sigma2 * sigma2;
         epsilon = std::sqrt(eps[indexI] * eps[indexJ]); // TODO this can be cached
         d0 = x[indexI*3 + 0] - x[indexJ*3 + 0];
         d1 = x[indexI*3 + 1] - x[indexJ*3 + 1];
         d2 = x[indexI*3 + 2] - x[indexJ*3 + 2];
-        l2NInvSquare = 1 / (d0*d0 + d1*d1 + d2*d2);
+        dsqr = d0*d0 + d1*d1 + d2*d2;
+        //check if is membrane -> need to skip attractive forces
+        if (t[indexI] & 0x80000000 || t[indexJ] & 0x80000000) {
+            if (dsqr >= rt3_2 * sigma2) return;
+        }
+
+        l2NInvSquare = 1 / (dsqr);
         fac0 = 24 * epsilon * l2NInvSquare;
         l2NInvPow6 = l2NInvSquare * l2NInvSquare * l2NInvSquare;
         fac1_sum1 = sigma6 * l2NInvPow6;
         fac1 = (fac1_sum1) - 2 * (fac1_sum1 * fac1_sum1);
 
-        force[indexI*3 + 0] -= wbI * fac0 * fac1 * d0;
-        force[indexI*3 + 1] -= wbI * fac0 * fac1 * d1;
-        force[indexI*3 + 2] -= wbI * fac0 * fac1 * d2;
-        force[indexJ*3 + 0] += wbJ * fac0 * fac1 * d0;
-        force[indexJ*3 + 1] += wbJ * fac0 * fac1 * d1;
-        force[indexJ*3 + 2] += wbJ * fac0 * fac1 * d2;
+        force[indexI*3 + 0] -= fac0 * fac1 * d0;
+        force[indexI*3 + 1] -= fac0 * fac1 * d1;
+        force[indexI*3 + 2] -= fac0 * fac1 * d2;
+        force[indexJ*3 + 0] += fac0 * fac1 * d0;
+        force[indexJ*3 + 1] += fac0 * fac1 * d1;
+        force[indexJ*3 + 2] += fac0 * fac1 * d2;
     }
 
     void FLennardJones::setPairFun() {

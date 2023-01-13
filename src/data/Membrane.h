@@ -33,7 +33,13 @@ public:
      */
     std::vector<std::vector<unsigned long>>& getMembrNodes();
 
-    double getDesiredDistance();
+    [[nodiscard]] double getDesiredDistance() const;
 
-    double getSpringStrength();
+    [[nodiscard]] double getSpringStrength() const;
+
+    [[nodiscard]] double getPullEndTime() const;
+
+    [[nodiscard]] std::array<double,3> getPullForce() const;
+
+    [[nodiscard]] const std::vector<std::array<size_t,2>>& getPullIndices() const;
 };

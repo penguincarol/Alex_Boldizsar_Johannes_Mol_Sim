@@ -15,7 +15,8 @@ namespace sim::physics::force {
                                    std::vector<double> &eps,
                                    std::vector<double> &sig,
                                    std::vector<double> &m,
-                                   unsigned long indexI, unsigned long indexJ, bool wbI, bool wbJ);
+                                   std::vector<int> &t,
+                                   unsigned long indexI, unsigned long indexJ);
 
     class ForceFunctorBase : public PhysicsFunctorBase {
     public:

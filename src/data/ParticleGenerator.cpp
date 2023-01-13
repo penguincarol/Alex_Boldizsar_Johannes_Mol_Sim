@@ -55,7 +55,7 @@ namespace ParticleGenerator {
         //we initialize a 2 dimensional field with a 3 dimensional input where one of the dimensions is one
         //determine which dimension is one and which other 2 dimensions you can use for initialization
 
-        int typeID = getNextBodyID();
+        int typeID = getNextBodyID() | 0x80000000;
         int planeFlag;  //0: y-z plane 1: x-z plane 2: x-y plane
 
         double x0;
@@ -101,7 +101,7 @@ namespace ParticleGenerator {
             }
         }
 
-        membranes.emplace_back(body.springStrength, body.desiredDistance, membrNodes);
+        membranes.emplace_back(body.springStrength, body.desiredDistance, membrNodes, body.pullEndTime, std::array<double,3>{body.pullForce[0],body.pullForce[1],body.pullForce[2]}, body.pullIndices);
 
     }
 

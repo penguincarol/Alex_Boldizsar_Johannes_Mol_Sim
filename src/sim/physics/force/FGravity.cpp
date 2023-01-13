@@ -18,7 +18,8 @@ namespace sim::physics::force {
                                  std::vector<double> &eps,
                                  std::vector<double> &sig,
                                  std::vector<double> &m,
-                                 unsigned long indexI, unsigned long indexJ, bool wbI, bool wbJ) {
+                                 std::vector<int> &t,
+                                 unsigned long indexI, unsigned long indexJ) {
         double d0, d1, d2, s, df0, df1, df2;
         d0 = x[3*indexI + 0] - x[3*indexJ + 0];
         d1 = x[3*indexI + 1] - x[3*indexJ + 1];
@@ -27,12 +28,12 @@ namespace sim::physics::force {
         df0 = d0 * s;
         df1 = d1 * s;
         df2 = d2 * s;
-        force[3*indexI + 0] -= wbI * df0;
-        force[3*indexI + 1] -= wbI * df1;
-        force[3*indexI + 2] -= wbI * df2;
-        force[3*indexJ + 0] += wbJ * df0;
-        force[3*indexJ + 1] += wbJ * df1;
-        force[3*indexJ + 2] += wbJ * df2;
+        force[3*indexI + 0] -= df0;
+        force[3*indexI + 1] -= df1;
+        force[3*indexI + 2] -= df2;
+        force[3*indexJ + 0] += df0;
+        force[3*indexJ + 1] += df1;
+        force[3*indexJ + 2] += df2;
     }
 
     void FGravity::setPairFun() {

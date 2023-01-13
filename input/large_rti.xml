@@ -5,11 +5,9 @@
     <EndTime>50.0</EndTime>
     <TimeStepSize>0.0005</TimeStepSize>
     <ForceCalculation>
-        <LennardJonesGravity G_Grav="-12.44" Epsilon="1.0" Sigma="1.0"/>
-    </ForceCalculation>
-    <AverageBrownianMotion>0.0</AverageBrownianMotion>
-    <SimulationStrategy>
-        <LinkedCell>
+        <LennardJones Epsilon="1.0" Sigma="1.0"/>
+        <EnableGrav X="0.0" Y="-12.44" Z="0.0"/>
+        <EnableLC>
             <BoundaryBox>
                 <BoxSize X="300.0" Y="54.0" Z="1.0"/>
                 <Front>Reflecting</Front>
@@ -20,8 +18,9 @@
                 <Bottom>Reflecting</Bottom>
             </BoundaryBox>
             <CutoffRadius>3.0</CutoffRadius>
-        </LinkedCell>
-    </SimulationStrategy>
+        </EnableLC>
+    </ForceCalculation>
+    <AverageBrownianMotion>0.0</AverageBrownianMotion>
     <Dimensions>2</Dimensions>
     <Thermostat>
         <T_Init>40.0</T_Init>

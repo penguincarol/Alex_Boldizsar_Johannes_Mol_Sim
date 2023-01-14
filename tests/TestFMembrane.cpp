@@ -76,25 +76,27 @@ TEST(FMembrane, operator) {
     Eigen::Vector3d forceRight{1 * (1.-0.5), 0., 0.};
     ASSERT_TRUE(vectorEqual(pc.getParticle(membrNodes[2][1]).getF(), forceRight)) << "ForceRight was "  << pc.getParticle(membrNodes[2][1]).getF() << "\nbut was expected to be " << forceRight << "\n";    //particle to the right
 
-
-    double normDiagonalLeftDown = pc.getParticle(membrNodes[0][0]).getF().norm();   //particle bottom left
-    double diagDistanceLeftDown = std::sqrt(1.5 * 1.5 + 1 * 1);
-    Eigen::Vector3d forceDiagBelow{normDiagonalLeftDown * 1.5 / diagDistanceLeftDown,
-                              normDiagonalLeftDown * 1 / diagDistanceLeftDown, 0.};
-    ASSERT_DOUBLE_EQ(normDiagonalLeftDown, 1 * (diagDistanceLeftDown - std::sqrt(2) * 1));
-    ASSERT_TRUE(vectorEqual(pc.getParticle(membrNodes[0][0]).getF(), forceDiagBelow)) << "Force on the bottom left was "  << pc.getParticle(membrNodes[0][0]).getF() << "\nbut was expected to be " << forceDiagBelow << "\n";
-
-    double normDiagRightUp = pc.getParticle(membrNodes[2][2]).getF().norm();
-    double diagDistanceRightUp = std::sqrt(0.5 * 0.5 + 1 * 1);
-    Eigen::Vector3d forceRightUp{normDiagRightUp * 0.5 / diagDistanceRightUp,
-                                 normDiagRightUp * 1 / diagDistanceRightUp, 0.};
-    ASSERT_DOUBLE_EQ(normDiagRightUp, std::abs(1 * (diagDistanceRightUp - std::sqrt(2) * 1)));
-    ASSERT_TRUE(vectorEqual(pc.getParticle(membrNodes[2][2]).getF(), forceRightUp));
-
     double normAbove = pc.getParticle(membrNodes[1][2]).getF().norm();  //particle Above
     double aboveDistance = std::sqrt(0.5 * 0.5 + 1 * 1);
     Eigen::Vector3d forceAbove{normAbove * 0.5 / aboveDistance, -normAbove * 1 / aboveDistance, 0.};
     ASSERT_DOUBLE_EQ(normAbove, std::abs(1 * (aboveDistance - 1)));
     ASSERT_TRUE(vectorEqual(pc.getParticle(membrNodes[1][2]).getF(), forceAbove)) << "Force on Particle above was "  << pc.getParticle(membrNodes[1][2]).getF() << "\nbut was expected to be " << forceAbove << "\n";
+
+    double normLeftDown = pc.getParticle(membrNodes[0][0]).getF().norm();   //particle bottom left
+    double diagDistanceLeftDown = std::sqrt(1.5 * 1.5 + 1 * 1);
+    Eigen::Vector3d forceLeftDown{normLeftDown * 1.5 / diagDistanceLeftDown,
+                              normLeftDown * 1 / diagDistanceLeftDown, 0.};
+    ASSERT_DOUBLE_EQ(normLeftDown, 1 * (diagDistanceLeftDown - std::sqrt(2) * 1));
+    ASSERT_TRUE(vectorEqual(pc.getParticle(membrNodes[0][0]).getF(), forceLeftDown)) << "Force on the bottom left was "  << pc.getParticle(membrNodes[0][0]).getF() << "\nbut was expected to be " << forceLeftDown << "\n";
+
+    double normRightUp = pc.getParticle(membrNodes[2][2]).getF().norm();
+    double diagDistanceRightUp = std::sqrt(0.5 * 0.5 + 1 * 1);
+    Eigen::Vector3d forceRightUp{normRightUp * 0.5 / diagDistanceRightUp,
+                                 normRightUp * 1 / diagDistanceRightUp, 0.};
+    ASSERT_DOUBLE_EQ(normRightUp, std::abs(1 * (diagDistanceRightUp - std::sqrt(2) * 1)));
+    ASSERT_TRUE(vectorEqual(pc.getParticle(membrNodes[2][2]).getF(), forceRightUp));
+
+    Eigen::Vector3d fMiddleParticle{-forceLeft[0]-forceRight[0]- 2*forceLeftDown[0] - 2*forceRightUp[0] - 2*forceAbove[0], 0., 0.};
+    ASSERT_TRUE(vectorEqual(pc.getParticle(membrNodes[1][1]).getF(), fMiddleParticle));
 
 }

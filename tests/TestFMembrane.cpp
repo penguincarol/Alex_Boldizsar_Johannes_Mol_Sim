@@ -6,6 +6,7 @@
 #include "data/ParticleContainer.h"
 #include "data/ParticleGenerator.h"
 #include "sim/physics/force/FMembrane.h"
+#include "sim/physics/force/FMembranePull.h"
 
 static bool vectorEqual(const Eigen::Vector3d& lhs, const Eigen::Vector3d& rhs){
     for(int i=0; i<3; i++){
@@ -29,7 +30,7 @@ TEST(FMembrane, operator) {
     cub.mass = 0.5;
     cub.start_velocity = {0., 0., 0.};
 
-    //first case: desiredDistance = startingDistance
+    //desiredDistance = startingDistance
     Body membr;
     membr.shape = membrane;
     membr.fixpoint = {6, 1, 1};
@@ -99,4 +100,75 @@ TEST(FMembrane, operator) {
     Eigen::Vector3d fMiddleParticle{-forceLeft[0]-forceRight[0]- 2*forceLeftDown[0] - 2*forceRightUp[0] - 2*forceAbove[0], 0., 0.};
     ASSERT_TRUE(vectorEqual(pc.getParticle(membrNodes[1][1]).getF(), fMiddleParticle));
 
+}
+
+TEST(FMembranePull, operator) {
+    std::list<Particle> buf;
+    std::list<Membrane> membrBuf;
+
+    Body membr;
+    membr.shape = membrane;
+    membr.fixpoint = {6, 1, 1};
+    membr.dimensions = {4,4, 1};
+    membr.distance = 1;
+    membr.mass = 1;
+    membr.start_velocity = {0., 0., 0.};
+    membr.desiredDistance = 1;
+    membr.springStrength = 1;
+    membr.pullEndTime = 0.5;
+    membr.pullForce = {0, 1, 2};
+    membr.pullIndices = {std::array<size_t, 2>{1,1}, std::array<size_t, 2>{3,1}};
+
+    ParticleGenerator::generateMembrane(membr, 0, buf, membrBuf, 3, 1, 1);
+
+    std::vector bufVec(buf.begin(), buf.end());
+    std::vector<Membrane> membrVec(membrBuf.begin(), membrBuf.end());
+    ParticleContainer pc(bufVec, std::array<double, 3>{10., 10., 10.}, 3., membrVec);
+
+    auto fPull = sim::physics::force::FMembranePull(0, 3, 1, 1, 1, pc);
+
+    pc.forAllParticles([&](Particle& p){
+        ASSERT_EQ(p.getF().norm(), 0.);
+    });
+
+    fPull.operator()();
+
+    auto membrNodes = pc.getMembranes()[0].getMembrNodes();
+
+    ASSERT_TRUE(vectorEqual(pc.getParticle(membrNodes[1][1]).getF(), Eigen::Vector3d{0, 1, 2}));
+    ASSERT_TRUE(vectorEqual(pc.getParticle(membrNodes[3][1]).getF(), Eigen::Vector3d{0, 1, 2}));
+
+    for(int i=0; i< 4; i++){
+        for(int j=0; j<4; j++){
+            if((i!=3 && i!=1) || j!=1){
+                ASSERT_TRUE(vectorEqual(pc.getParticle(membrNodes[i][j]).getF(), Eigen::Vector3d{0, 0, 0}));
+            }
+        }
+    }
+
+    pc.runOnData([&](std::vector<double>& force,
+                 std::vector<double>& oldForce,
+                 std::vector<double>& x,
+                 std::vector<double>& v,
+                 std::vector<double>& m,
+                 std::vector<int>& type,
+                 unsigned long,
+                 std::vector<double>&,
+                 std::vector<double>&){
+        std::for_each(force.begin(), force.end(), [&](double& e){e=0;});
+    });
+
+    for(int i=0; i< 4; i++){
+        for(int j=0; j<4; j++){
+            ASSERT_TRUE(vectorEqual(pc.getParticle(membrNodes[i][j]).getF(), Eigen::Vector3d{0, 0, 0}));
+        }
+    }
+
+    fPull.operator()();
+
+    for(int i=0; i< 4; i++){
+        for(int j=0; j<4; j++){
+            ASSERT_TRUE(vectorEqual(pc.getParticle(membrNodes[i][j]).getF(), Eigen::Vector3d{0, 0, 0}));
+        }
+    }
 }

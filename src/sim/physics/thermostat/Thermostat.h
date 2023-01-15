@@ -8,6 +8,8 @@
 #include <vector>
 #include <numeric>
 
+enum class ThermoMode {normal, pipe};
+
 /**
  * @brief Thermostat is responsible for adjusting the temperature and determining whether temp-adjustment is wanted
  * 
@@ -27,6 +29,10 @@ private:
     double Ttarget;
     /**determines the maximum temperature manipulation in one iteration step*/
     double deltaTemp;
+    /**thermoMode determines whether we are simulating a pipe (with unmoving pipe particles) or any other simulation */
+    const ThermoMode thermoMode;
+    /**in pipe mode some particles get ignored in temperature calculation. Therefore this variable might not be activeParticles.size() (but in pipe sim no other particles get deleted. otherwise this doesn't work)*/
+    size_t numberFlowingParticles;
 
 
 public:
@@ -39,8 +45,22 @@ public:
      *
      * This might be confusing but hopefully as close as possible to the intended behaviour.
      */
-    explicit Thermostat(ParticleContainer& particleContainer, double T_t = default_t_target, unsigned int cT = default_n_term, unsigned int dimensions = default_dims, double dT = default_delta_temp, double TInit = default_t_init, bool thermoEnable = default_therm):
-        pc(particleContainer), countThreshold(cT), dims(dimensions) {
+    explicit Thermostat(ParticleContainer& particleContainer, double T_t = default_t_target,
+                        unsigned int cT = default_n_term, unsigned int dimensions = default_dims,
+                        double dT = default_delta_temp, double TInit = default_t_init,
+                        bool thermoEnable = default_therm, ThermoMode tm = ThermoMode::normal)
+                        : pc(particleContainer), countThreshold(cT), dims(dimensions), thermoMode(tm) {
+        if(tm == ThermoMode::normal){
+            numberFlowingParticles = pc.activeSize();
+        }else{
+            pc.runOnActiveData([&](auto&,auto&,auto&,auto&,std::vector<double> &m,auto&,auto,auto&,auto&,
+                                   std::unordered_map<unsigned long, unsigned long> &id_to_index, auto){
+                for(auto [_,a]: id_to_index){
+                    if(m[a] >= 0) numberFlowingParticles++;
+                }
+            });
+        }
+
         if(thermoEnable) {
             //if currentTemp != 0 and TempToCreate != 0 this WILL distort the ordered movement and initialize the temperature a bit
             //inhomogenous

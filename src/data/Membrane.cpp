@@ -12,19 +12,17 @@ Membrane::Membrane(double k_, double r0_, std::vector<std::vector<unsigned long>
 :k{k_}, r0(r0_), membrNodes(membrNodes_), pullEt(pullEt_), pullF(pullF_), pullIndices(std::move(pullInd)) {}
 
 void Membrane::printMembrNodeStructure() {
-    for(int i = 0; i < membrNodes.size(); i++){
+    for(unsigned long i = 0; i < membrNodes.size(); i++){
 
-        for(int j = 0; j < membrNodes[i].size(); j++){
+        for(unsigned long  j = 0; j < membrNodes[i].size(); j++){
             std::cout<<membrNodes[i][j];
-            double getDesiredDistance();
 
-            double getSoringStrength();
             if(j+1< membrNodes.size()){std::cout<<"--";}
         }
         std::cout<<std::endl;
 
         if(i+1 < membrNodes.size()){
-            for(int j = 0; j < membrNodes[i].size();j++){
+            for(unsigned long  j = 0; j < membrNodes[i].size();j++){
                 std::cout<<"|  ";
             }
             std::cout<<std::endl;

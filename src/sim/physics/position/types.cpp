@@ -27,7 +27,7 @@ namespace sim::physics::position {
         switch (t) {
             case stoermerVelvet: return new XStoermerVelvet(st, et ,dt, eps, sig, pc);
             case stoermerVelvetOMP: return new XStoermerVelvetOMP(st, et ,dt, eps, sig, pc);
-            default: return new calcX(st, et ,dt, eps, sig, pc);
+            default: return new XStoermerVelvet(st, et ,dt, eps, sig, pc);
         }
     }
 } // sim::physics::position

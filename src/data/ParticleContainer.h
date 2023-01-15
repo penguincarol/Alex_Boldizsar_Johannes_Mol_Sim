@@ -19,7 +19,7 @@
  *      Another implementation might decide to use a different underlying structure.
  */
 class ParticleContainer {
-private:
+public:
     /**
      * Is in itself a 3d vector, but can provide access to a 3d sub-vector with a certain inset
      * s.t. the inner vector seems as if there is no outer vector.
@@ -1192,6 +1192,16 @@ public:
                                                                              std::vector<unsigned long> &cell0Items,
                                                                              std::vector<unsigned long> &cell1Items));
 
+    /**
+     * Generates all cell pairs of neighbours.
+     * Pairs that do not interfere with each other are in their own vector.
+     * Pairs contain indices to address the cells.
+     * vector of task groups -> vector of
+     * each task group needs a barrier -> vector of
+     * task group is vector task for one thread -> vector of
+     * task is vector of pairs -> pair
+     * */
+    std::vector<std::vector<std::vector<std::pair<unsigned long, unsigned long>>>> generateDistinctCellNeighbours();
 
     /**
      * Performs fun on provided data. All lambda args particle container internal data.

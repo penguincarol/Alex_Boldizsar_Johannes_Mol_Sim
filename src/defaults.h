@@ -4,10 +4,6 @@
 
 #pragma once
 
-#include "sim/physics/force/FLennardJones.h"
-#include "sim/physics/position/XStoermerVelvetOMP.h"
-#include "sim/physics/velocity/VStoermerVelvetOMP.h"
-
 #include <limits>
 
 constexpr double default_delta_t{1.0};
@@ -46,7 +42,4 @@ constexpr bool default_enable_grav{false};
 constexpr bool default_enable_omp{false};
 constexpr bool default_enable_membrane{false};
 constexpr bool default_enable_membrane_pull{false};
-
-using calcF = sim::physics::force::FLennardJones;
-using calcX = sim::physics::position::XStoermerVelvetOMP;
-using calcV = sim::physics::velocity::VStoermerVelvetOMP;
+constexpr unsigned long max_thread_tasks{1000};

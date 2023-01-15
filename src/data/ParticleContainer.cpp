@@ -550,5 +550,203 @@ void ParticleContainer::clearStoreForce() {
     }
 }
 
+std::vector<std::vector<std::vector<std::pair<unsigned long, unsigned long>>>> ParticleContainer::generateDistinctCellNeighbours() {
+    std::vector<std::vector<std::vector<std::pair<unsigned long, unsigned long>>>> result;
+    std::vector<std::vector<std::pair<unsigned long, unsigned long>>> task_group_buffer;
+    std::vector<std::pair<unsigned long, unsigned long>> task_buffer;
+
+    //Straight lines ----------------------------------------
+    //all pairs in x_0 direction:
+    {
+        for (unsigned int x_1 = 0; x_1 < gridDimensions[1]; x_1++) {
+            for (unsigned int x_2 = 0; x_2 < gridDimensions[2]; x_2++) {
+                for (unsigned int x_0 = 0; x_0 < gridDimensions[0] - 1; x_0++) {
+                    task_buffer.emplace_back(cellIndexFromCellCoordinatesFast(x_0, x_1, x_2),
+                                             cellIndexFromCellCoordinatesFast(x_0 + 1, x_1, x_2));
+                }
+                task_group_buffer.emplace_back(task_buffer);
+                task_buffer.clear();
+            }
+        }
+        result.emplace_back(task_group_buffer);
+        task_group_buffer.clear();
+
+        //all pairs in x_1 direction:
+        for (unsigned int x_0 = 0; x_0 < gridDimensions[0]; x_0++) {
+            for (unsigned int x_2 = 0; x_2 < gridDimensions[2]; x_2++) {
+                for (unsigned int x_1 = 0; x_1 < gridDimensions[1] - 1; x_1++) {
+                    task_buffer.emplace_back(cellIndexFromCellCoordinatesFast(x_0, x_1, x_2),
+                                             cellIndexFromCellCoordinatesFast(x_0, x_1 + 1, x_2));
+                }
+                task_group_buffer.emplace_back(task_buffer);
+                task_buffer.clear();
+            }
+        }
+        result.emplace_back(task_group_buffer);
+        task_group_buffer.clear();
+
+        //all pairs in x_2 direction:
+        for (unsigned int x_0 = 0; x_0 < gridDimensions[0]; x_0++) {
+            for (unsigned int x_1 = 0; x_1 < gridDimensions[1]; x_1++) {
+                for (unsigned int x_2 = 0; x_2 < gridDimensions[2] - 1; x_2++) {
+                    task_buffer.emplace_back(cellIndexFromCellCoordinatesFast(x_0, x_1, x_2),
+                                             cellIndexFromCellCoordinatesFast(x_0, x_1, x_2 + 1));
+                }
+                task_group_buffer.emplace_back(task_buffer);
+                task_buffer.clear();
+            }
+        }
+        result.emplace_back(task_group_buffer);
+        task_group_buffer.clear();
+    }
+    //End of straight lines ---------------------------------------------------
+
+    //"2d-diagonals"------------------------------------------------
+    {
+        //diagonals lying in the x_0-x_1 plane
+        for (unsigned int x_2 = 0; x_2 < gridDimensions[2]; x_2++) {
+            //diagonals from bottom left to top right
+            for (unsigned int x_0 = 0; x_0 < gridDimensions[0] - 1; x_0++) {
+                for (unsigned int x_1 = 0; x_1 < gridDimensions[1] - 1; x_1++) {
+                    task_buffer.emplace_back(cellIndexFromCellCoordinatesFast(x_0, x_1, x_2),
+                                             cellIndexFromCellCoordinatesFast(x_0 + 1, x_1 + 1, x_2));
+                }
+            }
+            task_group_buffer.emplace_back(task_buffer);
+            task_buffer.clear();
+        }
+        result.emplace_back(task_group_buffer);
+        task_group_buffer.clear();
+
+        for (unsigned int x_2 = 0; x_2 < gridDimensions[2]; x_2++) {
+            //diagonals from top left to bottom right
+            for (unsigned int x_0 = 0; x_0 < gridDimensions[0] - 1; x_0++) {
+                for (unsigned int x_1 = 1; x_1 < gridDimensions[1]; x_1++) {
+                    task_buffer.emplace_back(cellIndexFromCellCoordinatesFast(x_0, x_1, x_2),
+                                             cellIndexFromCellCoordinatesFast(x_0 + 1, x_1 - 1, x_2));
+                }
+            }
+            task_group_buffer.emplace_back(task_buffer);
+            task_buffer.clear();
+        }
+        result.emplace_back(task_group_buffer);
+        task_group_buffer.clear();
+
+        //diagonals lying in the x_0-x_2 plane
+        for (unsigned int x_1 = 0; x_1 < gridDimensions[1]; x_1++) {
+            //diagonals from bottom left to top right
+            for (unsigned int x_0 = 0; x_0 < gridDimensions[0] - 1; x_0++) {
+                for (unsigned int x_2 = 0; x_2 < gridDimensions[2] - 1; x_2++) {
+                    task_buffer.emplace_back(cellIndexFromCellCoordinatesFast(x_0, x_1, x_2),
+                                             cellIndexFromCellCoordinatesFast(x_0 + 1, x_1, x_2 + 1));
+                }
+            }
+            task_group_buffer.emplace_back(task_buffer);
+            task_buffer.clear();
+        }
+        result.emplace_back(task_group_buffer);
+        task_group_buffer.clear();
+        for (unsigned int x_1 = 0; x_1 < gridDimensions[1]; x_1++) {
+            //diagonals from top left to bottom right
+            for (unsigned int x_0 = 0; x_0 < gridDimensions[0] - 1; x_0++) {
+                for (unsigned int x_2 = 1; x_2 < gridDimensions[2]; x_2++) {
+                    task_buffer.emplace_back(cellIndexFromCellCoordinatesFast(x_0, x_1, x_2),
+                                             cellIndexFromCellCoordinatesFast(x_0 + 1, x_1, x_2 - 1));
+                }
+            }
+            task_group_buffer.emplace_back(task_buffer);
+            task_buffer.clear();
+        }
+        result.emplace_back(task_group_buffer);
+        task_group_buffer.clear();
+
+        //diagonals lying in the x_1-x_2 plane
+        for (unsigned int x_0 = 0; x_0 < gridDimensions[0]; x_0++) {
+            //diagonals from bottom left to top right
+            for (unsigned int x_1 = 0; x_1 < gridDimensions[1] - 1; x_1++) {
+                for (unsigned int x_2 = 0; x_2 < gridDimensions[2] - 1; x_2++) {
+                    task_buffer.emplace_back(cellIndexFromCellCoordinatesFast(x_0, x_1, x_2),
+                                             cellIndexFromCellCoordinatesFast(x_0, x_1 + 1, x_2 + 1));
+                }
+            }
+            task_group_buffer.emplace_back(task_buffer);
+            task_buffer.clear();
+        }
+        result.emplace_back(task_group_buffer);
+        task_group_buffer.clear();
+        for (unsigned int x_0 = 0; x_0 < gridDimensions[0]; x_0++) {
+            //diagonals from top left to bottom right
+            for (unsigned int x_1 = 0; x_1 < gridDimensions[1] - 1; x_1++) {
+                for (unsigned int x_2 = 1; x_2 < gridDimensions[2]; x_2++) {
+                    task_buffer.emplace_back(cellIndexFromCellCoordinatesFast(x_0, x_1, x_2),
+                                             cellIndexFromCellCoordinatesFast(x_0, x_1 + 1, x_2 - 1));
+                }
+            }
+            task_group_buffer.emplace_back(task_buffer);
+            task_buffer.clear();
+        }
+        result.emplace_back(task_group_buffer);
+        task_group_buffer.clear();
+    }
+    //End of "2d diagonals"-----------------------------------------------
+
+    //Start of "3d diagonals"----------------
+    {//from bottom front left top back right
+        for (unsigned int x_0 = 0; x_0 < gridDimensions[0] - 1; x_0++) {
+            for (unsigned int x_1 = 0; x_1 < gridDimensions[1] - 1; x_1++) {
+                for (unsigned int x_2 = 0; x_2 < gridDimensions[2] - 1; x_2++) {
+                    task_buffer.emplace_back(cellIndexFromCellCoordinatesFast(x_0, x_1, x_2),
+                                             cellIndexFromCellCoordinatesFast(x_0 + 1, x_1 + 1, x_2 + 1));
+                }
+            }
+            task_group_buffer.emplace_back(task_buffer);
+            task_buffer.clear();
+            result.emplace_back(task_group_buffer);
+            task_group_buffer.clear();
+        }
+        //from top front left to bottom back right
+        for (unsigned int x_0 = 0; x_0 < gridDimensions[0] - 1; x_0++) {
+            for (unsigned int x_1 = 1; x_1 < gridDimensions[1]; x_1++) {
+                for (unsigned int x_2 = 0; x_2 < gridDimensions[2] - 1; x_2++) {
+                    task_buffer.emplace_back(cellIndexFromCellCoordinatesFast(x_0, x_1, x_2),
+                                             cellIndexFromCellCoordinatesFast(x_0 + 1, x_1 - 1, x_2 + 1));
+                }
+            }
+            task_group_buffer.emplace_back(task_buffer);
+            task_buffer.clear();
+            result.emplace_back(task_group_buffer);
+            task_group_buffer.clear();
+        }
+        //from bottom back left to top front right
+        for (unsigned int x_0 = 0; x_0 < gridDimensions[0] - 1; x_0++) {
+            for (unsigned int x_1 = 0; x_1 < gridDimensions[1] - 1; x_1++) {
+                for (unsigned int x_2 = 1; x_2 < gridDimensions[2]; x_2++) {
+                    task_buffer.emplace_back(cellIndexFromCellCoordinatesFast(x_0, x_1, x_2),
+                                             cellIndexFromCellCoordinatesFast(x_0 + 1, x_1 + 1, x_2 - 1));
+                }
+            }
+            task_group_buffer.emplace_back(task_buffer);
+            task_buffer.clear();
+            result.emplace_back(task_group_buffer);
+            task_group_buffer.clear();
+        }
+        //from top back left to bottom front right
+        for (unsigned int x_0 = 0; x_0 < gridDimensions[0] - 1; x_0++) {
+            for (unsigned int x_1 = 1; x_1 < gridDimensions[1]; x_1++) {
+                for (unsigned int x_2 = 1; x_2 < gridDimensions[2]; x_2++) {
+                    task_buffer.emplace_back(cellIndexFromCellCoordinatesFast(x_0, x_1, x_2),
+                                             cellIndexFromCellCoordinatesFast(x_0 + 1, x_1 - 1, x_2 - 1));
+                }
+            }
+            task_group_buffer.emplace_back(task_buffer);
+            task_buffer.clear();
+            result.emplace_back(task_group_buffer);
+            task_group_buffer.clear();
+        }
+    }
+    //End of "3d diagonals" -----------------
+    return result;
+}
+
 #pragma endregion
 

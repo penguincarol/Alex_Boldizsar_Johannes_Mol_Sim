@@ -21,8 +21,9 @@ void Thermostat::getCooking(){
                                    unsigned long count,
                                    std::vector<double> &eps,
                                    std::vector<double> &sig,
-                                   std::vector<unsigned long> &activeParticles){
-        for(auto a: activeParticles){
+                                   std::unordered_map<unsigned long, unsigned long> &id_to_index,
+                                   auto&){
+        for(auto [_,a]: id_to_index){
             v[3*a] = beta * v[3*a];
             v[3*a+1] = beta * v[3*a+1];
             v[3*a+2] = beta * v[3*a+2];
@@ -49,8 +50,9 @@ double Thermostat::computeCurrentTemp(){
                                 unsigned long count,
                                 std::vector<double> &eps,
                                 std::vector<double> &sig,
-                                std::vector<unsigned long> &activeParticles){
-    for(auto a: activeParticles){
+                                std::unordered_map<unsigned long, unsigned long> &id_to_index,
+                                auto&){
+    for(auto [_,a]: id_to_index){
         sum += m[a] * (v[3*a]*v[3*a] + v[3*a+1]*v[3*a+1] + v[3*a+2]*v[3*a+2]);
     }
     });

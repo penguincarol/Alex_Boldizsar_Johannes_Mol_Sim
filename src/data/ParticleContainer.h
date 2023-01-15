@@ -268,6 +268,12 @@ private:
     };
 
 private:
+    /**
+     * Amount of indices, to be padded with.
+     * Resulting padding size is: padding_count * 3 * 8 in Byte.
+     * E.G. with padding count 6 => padded by 144 Byte
+     * */
+    static constexpr unsigned long padding_count = 6;
     double root6_of_2;
     std::vector<double> force;
     std::vector<double> oldForce;
@@ -278,6 +284,7 @@ private:
     std::vector<double> sig;
     std::vector<int> type;
     unsigned long count;
+    /**contains particle IDs*/
     std::vector<unsigned long> activeParticles;
     VectorCoordWrapper cells;
     std::array<unsigned int, 3> gridDimensions; //stores the number of cells in x- y- and z- direction
@@ -290,6 +297,18 @@ private:
     double x_1_min;
     double x_0_min;
     double r_cutoff;
+    std::unordered_map<unsigned long, unsigned long> id_to_index;
+    std::unordered_map<unsigned long, unsigned long> index_to_id;
+
+    /**
+     * Swaps the position of the given particles. Addressed using particle IDs. Location will be looked up in id_to_index map.
+     * */
+    void swap(unsigned long id0, unsigned long id1);
+
+    /**
+     * Moves particle at index indexSrc to index indexDst. id is the ID of the particle to be moved.
+     * */
+    void move(unsigned long indexSrc, unsigned indexDst, unsigned long id);
 
     /**
      * Stores a particle from @param p into the internal data at @param index
@@ -914,7 +933,7 @@ public:
     template<typename F>
     void runOnMembranes(F fun){
         //I actually believe that you need all those parameters. We can still change that if i am wrong
-        fun(membranes, force, x, count);
+        fun(membranes, force, x, count, id_to_index);
     }
 
     /**
@@ -922,7 +941,7 @@ public:
      * */
     template<typename F>
     void runOnActiveData(F fun) {
-        fun(force, oldForce, x, v, m, type, count, eps, sig, activeParticles);
+        fun(force, oldForce, x, v, m, type, count, eps, sig, id_to_index, activeParticles);
     }
 
     /**

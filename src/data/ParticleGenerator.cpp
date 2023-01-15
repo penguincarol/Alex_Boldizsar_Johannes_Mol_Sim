@@ -14,6 +14,7 @@ namespace ParticleGenerator {
         if(body.shape != cuboid){
             io::output::loggers::general->error("generateCuboid does not work for shapes that aren't Cuboids");
         }
+        if(body.mass == -std::numeric_limits<double>::infinity()){v_bolz = 0;}  //catch pipeWalls
         int typeID = getNextBodyID();
         for (size_t x = 0; x < body.dimensions[0]; x++)
         {
@@ -23,7 +24,7 @@ namespace ParticleGenerator {
                 {
                     Eigen::Vector3d pos = body.fixpoint + (body.distance * Eigen::Vector3d(x,y,z));
                     auto v_tmp = maxwellBoltzmannDistributedVelocity(v_bolz, dims);
-                    Eigen::Vector3d v { v_tmp[0], v_tmp[1], v_tmp[2] };
+                    Eigen::Vector3d v{ v_tmp[0], v_tmp[1], v_tmp[2] };
                     buffer.emplace_back(pos, (body.start_velocity +  v), body.mass, typeID, getNextParticleID());
                     buffer.back().setSigma(sigma);
                     buffer.back().setEpsilon(epsilon);
@@ -51,6 +52,8 @@ namespace ParticleGenerator {
         if(body.shape != membrane){
             io::output::loggers::general->error("generateMembrane does not work on shapes that aren't Membranes");
         }
+
+        if(body.mass == -std::numeric_limits<double>::infinity()){v_bolz = 0;}  //catch pipeWalls (should be irrelevant but you never know)
 
         //we initialize a 2 dimensional field with a 3 dimensional input where one of the dimensions is one
         //determine which dimension is one and which other 2 dimensions you can use for initialization
@@ -114,6 +117,8 @@ namespace ParticleGenerator {
             io::output::loggers::general->error("generateSphere does not work for shapes that aren't Spheres");
         }
 
+        if(body.mass == -std::numeric_limits<double>::infinity()){v_bolz = 0;}  //catch pipeWalls (should be irrelevant but you never know)
+
         //configuration stuff:
             //this should be the case in a well-formed input anyway:
         bodycopy.dimensions[1] = bodycopy.dimensions[0];
@@ -166,6 +171,7 @@ namespace ParticleGenerator {
 
 
     void generateParticle(Eigen::Vector3d& x, Eigen::Vector3d& v, double m, std::list<Particle>& buffer, double sigma, double epsilon){
+
         buffer.emplace_back(x, v, m, getNextBodyID(), getNextParticleID());
         buffer.back().setSigma(sigma);
         buffer.back().setEpsilon(epsilon);

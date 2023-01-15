@@ -27,7 +27,7 @@ namespace sim::physics::velocity {
         switch (t) {
             case stoermerVelvet: return new VStoermerVelvet(st, et ,dt, eps, sig, pc);
             case stoermerVelvetOMP: return new VStoermerVelvetOMP(st, et ,dt, eps, sig, pc);
-            default: return new calcV(st, et ,dt, eps, sig, pc);
+            default: return new VStoermerVelvet(st, et ,dt, eps, sig, pc);
         }
     }
 } // sim::physics::velocity

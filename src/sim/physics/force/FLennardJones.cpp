@@ -11,7 +11,7 @@ namespace sim::physics::force {
      * \image latex plot.eps "Runtime comparison of All-Pairs algorithm with Linked-Cell algorithm" width=5cm
      */
     void FLennardJones::operator()() {
-        particleContainer.runOnData([this](std::vector<double> &force,
+        particleContainer.runOnActiveData([this](std::vector<double> &force,
                                        std::vector<double> &oldForce,
                                        std::vector<double> &x,
                                        std::vector<double> &v,
@@ -19,10 +19,11 @@ namespace sim::physics::force {
                                        std::vector<int> &type,
                                        unsigned long count,
                                        std::vector<double> &eps,
-                                       std::vector<double> &sig){
+                                       std::vector<double> &sig,
+                                       std::unordered_map<unsigned long, unsigned long> &id_to_index, auto&_){
             for(unsigned long indexI = 0; indexI < count; indexI++){
                 for(unsigned long indexJ = indexI + 1; indexJ < count; indexJ++) {
-                    this->fpairFun(force, x, eps, sig, m, type, indexI, indexJ);
+                    this->fpairFun(force, x, eps, sig, m, type, id_to_index[indexI], id_to_index[indexJ]);
                 }
             }
         });

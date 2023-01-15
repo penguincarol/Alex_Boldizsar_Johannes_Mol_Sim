@@ -30,7 +30,7 @@ namespace sim::physics::force {
         * computes the force between the particles p1 and p2 that are in the same membrane caused by the spring between them
         */
         static void addSpringForce(size_t p1i, size_t p1j, size_t p2i, size_t p2j,
-                            Membrane &membrane, std::vector<double> &force, std::vector<double> &x);
+                            Membrane &membrane, std::vector<double> &force, std::vector<double> &x, std::unordered_map<unsigned long, unsigned long> &id_to_index);
 
         void operator()() override;
 

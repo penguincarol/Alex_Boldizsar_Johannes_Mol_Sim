@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Simulation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
             xsi:noNamespaceSchemaLocation="../input/XMLFormat.xsd">
-    <EndTime>5.0</EndTime>
+    <OutputFile OutputFileName="rti3d"/>
+    <EndTime>100.0</EndTime>
     <TimeStepSize>0.0005</TimeStepSize>
     <ForceCalculation>
         <LennardJones Epsilon="1.0" Sigma="1.0"/>
+        <EnableGrav X="0.0" Y="-12.44" Z="0.0"/>
         <EnableLC>
             <BoundaryBox>
-                <BoxSize X="12.0" Y="12.0" Z="102.0"/>
+                <BoxSize X="60.0" Y="60.0" Z="60.0"/>
                 <Front>Periodic</Front>
                 <Rear>Periodic</Rear>
                 <Left>Periodic</Left>
@@ -15,10 +17,10 @@
                 <Top>Reflecting</Top>
                 <Bottom>Reflecting</Bottom>
             </BoundaryBox>
-            <CutoffRadius>2.5</CutoffRadius>
+            <CutoffRadius>3.6</CutoffRadius>
         </EnableLC>
     </ForceCalculation>
-    <AverageBrownianMotion>0.01</AverageBrownianMotion>
+    <AverageBrownianMotion>0.0</AverageBrownianMotion>
     <Dimensions>3</Dimensions>
     <Thermostat>
         <T_Init>40</T_Init>
@@ -28,10 +30,17 @@
         <Input>
             <ShapeList>
                 <Shape>
-                    <Cuboid Spacing="1.0" Mass="1.0">
-                        <Position X="1.0" Y="1.0" Z="1.0"/>
+                    <Cuboid Spacing="1.2" Mass="1.0" Sigma="1.2" Epsilon="1.0">
+                        <Position X="0.6" Y="0.6" Z="0.6"/>
                         <Velocity X="0.0" Y="0.0" Z="0.0"/>
-                        <Dimensions X="10" Y="10" Z="10"/>
+                        <Dimensions X="50" Y="20" Z="50"/>
+                    </Cuboid>
+                </Shape>
+                <Shape>
+                    <Cuboid Spacing="1.2" Mass="2.0" Sigma="1.1" Epsilon="1.0">
+                        <Position X="0.6" Y="24.6" Z="0.6"/>
+                        <Velocity X="0.0" Y="0.0" Z="0.0"/>
+                        <Dimensions X="50" Y="20" Z="50"/>
                     </Cuboid>
                 </Shape>
             </ShapeList>

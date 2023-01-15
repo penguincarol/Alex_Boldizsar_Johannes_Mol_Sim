@@ -23,6 +23,7 @@
 #include "sim/physics/thermostat/Thermostat.h"
 #include "io/input/Configuration.h"
 #include "sim/physics/force/ForceHandler.h"
+#include "sim/analysis/Profiler.h"
 
 #include <memory>
 #include <chrono>
@@ -182,6 +183,13 @@ namespace sim {
                     if(checkpointingEnable) ioWrapper.writeCheckpoint(particleContainer, config, iteration, current_time);
                     io::output::loggers::simulation->info("Progress: {:03.2f}%", current_time / end_time * 100);
                     io::output::loggers::simulation->trace("Iteration {} finished.", iteration);
+                }
+                if (iteration % 10000 == 0) {
+                    sim::analysis::Profiler::run(50,
+                                                 {config.get<io::input::boundingBox_X0>(),
+                                                  config.get<io::input::boundingBox_X1>(),
+                                                  config.get<io::input::boundingBox_X2>()},
+                                                 particleContainer, "flowProfile" + std::to_string(iteration%10000) +std::string{".csv"});
                 }
 
                 current_time += delta_t;

@@ -19,7 +19,7 @@
  *      Another implementation might decide to use a different underlying structure.
  */
 class ParticleContainer {
-private:
+public:
     /**
      * Is in itself a 3d vector, but can provide access to a 3d sub-vector with a certain inset
      * s.t. the inner vector seems as if there is no outer vector.
@@ -268,6 +268,12 @@ private:
     };
 
 private:
+    /**
+     * Amount of indices, to be padded with.
+     * Resulting padding size is: padding_count * 3 * 8 in Byte.
+     * E.G. with padding count 6 => padded by 144 Byte
+     * */
+    static constexpr unsigned long padding_count = 6;
     double root6_of_2;
     std::vector<double> force;
     std::vector<double> oldForce;
@@ -278,6 +284,7 @@ private:
     std::vector<double> sig;
     std::vector<int> type;
     unsigned long count;
+    /**contains particle IDs*/
     std::vector<unsigned long> activeParticles;
     VectorCoordWrapper cells;
     std::array<unsigned int, 3> gridDimensions; //stores the number of cells in x- y- and z- direction
@@ -290,6 +297,18 @@ private:
     double x_1_min;
     double x_0_min;
     double r_cutoff;
+    std::unordered_map<unsigned long, unsigned long> id_to_index;
+    std::unordered_map<unsigned long, unsigned long> index_to_id;
+
+    /**
+     * Swaps the position of the given particles. Addressed using particle IDs. Location will be looked up in id_to_index map.
+     * */
+    void swap(unsigned long id0, unsigned long id1);
+
+    /**
+     * Moves particle at index indexSrc to index indexDst. id is the ID of the particle to be moved.
+     * */
+    void move(unsigned long indexSrc, unsigned indexDst, unsigned long id);
 
     /**
      * Stores a particle from @param p into the internal data at @param index
@@ -914,7 +933,7 @@ public:
     template<typename F>
     void runOnMembranes(F fun){
         //I actually believe that you need all those parameters. We can still change that if i am wrong
-        fun(membranes, force, x, count);
+        fun(membranes, force, x, count, id_to_index);
     }
 
     /**
@@ -922,7 +941,7 @@ public:
      * */
     template<typename F>
     void runOnActiveData(F fun) {
-        fun(force, oldForce, x, v, m, type, count, eps, sig, activeParticles);
+        fun(force, oldForce, x, v, m, type, count, eps, sig, id_to_index, activeParticles);
     }
 
     /**
@@ -1173,6 +1192,25 @@ public:
                                                                              std::vector<unsigned long> &cell0Items,
                                                                              std::vector<unsigned long> &cell1Items));
 
+    /**
+     * Initializes generateDistinctCellNeighbours cache.
+     * */
+    void initTaskModel();
+private:
+    std::vector<std::vector<std::vector<std::pair<unsigned long, unsigned long>>>> taskModelCache;
+
+public:
+
+    /**
+     * Generates all cell pairs of neighbours.
+     * Pairs that do not interfere with each other are in their own vector.
+     * Pairs contain indices to address the cells.
+     * vector of task groups -> vector of
+     * each task group needs a barrier -> vector of
+     * task group is vector task for one thread -> vector of
+     * task is vector of pairs -> pair
+     * */
+    const std::vector<std::vector<std::vector<std::pair<unsigned long, unsigned long>>>>& generateDistinctCellNeighbours();
 
     /**
      * Performs fun on provided data. All lambda args particle container internal data.
@@ -1193,183 +1231,43 @@ public:
      * */
     template<typename F>
     void forAllDistinctCellNeighbours(F fun) {
-        //Implementation2:
-        //basically every code snippet occurs three times right here because every dimension needs to bee the "free variable" for every case once
-        //but actually this seems more robust than making some fancy "iterate over all possible variable distribution"-thingies
+        //Implementation3:
 
-        //Straight lines ----------------------------------------
-        //all pairs in x_0 direction:
-        for (unsigned int x_1 = 0; x_1 < gridDimensions[1]; x_1++) {
-            for (unsigned int x_2 = 0; x_2 < gridDimensions[2]; x_2++) {
-                for (unsigned int x_0 = 0; x_0 < gridDimensions[0] - 1; x_0++) {
-                    fun(force, oldForce, x, v, m, type, count,
-                        cells[cellIndexFromCellCoordinatesFast(x_0, x_1, x_2)],
-                        cells[cellIndexFromCellCoordinatesFast(x_0 + 1, x_1, x_2)], eps, sig);
-                    SPDLOG_TRACE("Cell ({} {} {}) interacted with ({} {} {})", x_0, x_1, x_2, x_0 + 1, x_1, x_2);
-                }
-            }
-        }
-        //all pairs in x_1 direction:
-        for (unsigned int x_0 = 0; x_0 < gridDimensions[0]; x_0++) {
-            for (unsigned int x_2 = 0; x_2 < gridDimensions[2]; x_2++) {
-                for (unsigned int x_1 = 0; x_1 < gridDimensions[1] - 1; x_1++) {
-                    fun(force, oldForce, x, v, m, type, count,
-                        cells[cellIndexFromCellCoordinatesFast(x_0, x_1, x_2)],
-                        cells[cellIndexFromCellCoordinatesFast(x_0, x_1 + 1, x_2)], eps, sig);
-                    SPDLOG_TRACE("Cell ({} {} {}) interacted with ({} {} {})", x_0, x_1, x_2, x_0,
-                                 x_1 + 1, x_2);
-                }
-            }
-        }
-        //all pairs in x_2 direction:
-        for (unsigned int x_0 = 0; x_0 < gridDimensions[0]; x_0++) {
-            for (unsigned int x_1 = 0; x_1 < gridDimensions[1]; x_1++) {
-                for (unsigned int x_2 = 0; x_2 < gridDimensions[2] - 1; x_2++) {
-                    fun(force, oldForce, x, v, m, type, count,
-                        cells[cellIndexFromCellCoordinatesFast(x_0, x_1, x_2)],
-                        cells[cellIndexFromCellCoordinatesFast(x_0, x_1, x_2 + 1)], eps, sig);
-                    SPDLOG_TRACE("Cell ({} {} {}) interacted with ({} {} {})", x_0, x_1, x_2, x_0,
-                                 x_1, x_2 + 1);
-                }
-            }
-        }
-        //End of straight lines ---------------------------------------------------
+        //All these variables could be const attributes of class
+        const auto numCases = 13;
 
-        //"2d-diagonals"------------------------------------------------
-        //diagonals lying in the x_0-x_1 plane
-        for (unsigned int x_2 = 0; x_2 < gridDimensions[2]; x_2++) {
-            //diagonals from bottom left to top right
-            for (unsigned int x_0 = 0; x_0 < gridDimensions[0] - 1; x_0++) {
-                for (unsigned int x_1 = 0; x_1 < gridDimensions[1] - 1; x_1++) {
-                    fun(force, oldForce, x, v, m, type, count,
-                        cells[cellIndexFromCellCoordinatesFast(x_0, x_1, x_2)],
-                        cells[cellIndexFromCellCoordinatesFast(x_0 + 1, x_1 + 1,
-                                                               x_2)], eps,
-                        sig); //check with the neighbour that is one to the right and one above you
-                    SPDLOG_TRACE("Cell ({} {} {}) interacted with ({} {} {})", x_0, x_1, x_2,
-                                 x_0 + 1, x_1 + 1, x_2);
-                }
-            }
-            //diagonals from top left to bottom right
-            for (unsigned int x_0 = 0; x_0 < gridDimensions[0] - 1; x_0++) {
-                for (unsigned int x_1 = 1; x_1 < gridDimensions[1]; x_1++) {
-                    fun(force, oldForce, x, v, m, type, count,
-                        cells[cellIndexFromCellCoordinatesFast(x_0, x_1, x_2)],
-                        cells[cellIndexFromCellCoordinatesFast(x_0 + 1, x_1 - 1,
-                                                               x_2)], eps,
-                        sig); //(check with the neighbour that is one to the right and one below you)
-                    SPDLOG_TRACE("Cell ({} {} {}) interacted with ({} {} {})", x_0, x_1, x_2,
-                                 x_0 + 1, x_1 - 1, x_2);
-                }
-            }
-        }
-        //diagonals lying in the x_0-x_2 plane
-        for (unsigned int x_1 = 0; x_1 < gridDimensions[1]; x_1++) {
-            //diagonals from bottom left to top right
-            for (unsigned int x_0 = 0; x_0 < gridDimensions[0] - 1; x_0++) {
-                for (unsigned int x_2 = 0; x_2 < gridDimensions[2] - 1; x_2++) {
-                    fun(force, oldForce, x, v, m, type, count,
-                        cells[cellIndexFromCellCoordinatesFast(x_0, x_1, x_2)],
-                        cells[cellIndexFromCellCoordinatesFast(x_0 + 1, x_1, x_2 +
-                                                                             1)], eps,
-                        sig); //check with the neighbour that is one to the right and one above you
-                    SPDLOG_TRACE("Cell ({} {} {}) interacted with ({} {} {})", x_0, x_1, x_2,
-                                 x_0 + 1, x_1, x_2 + 1);
-                }
-            }
-            //diagonals from top left to bottom right
-            for (unsigned int x_0 = 0; x_0 < gridDimensions[0] - 1; x_0++) {
-                for (unsigned int x_2 = 1; x_2 < gridDimensions[2]; x_2++) {
-                    fun(force, oldForce, x, v, m, type, count,
-                        cells[cellIndexFromCellCoordinatesFast(x_0, x_1, x_2)],
-                        cells[cellIndexFromCellCoordinatesFast(x_0 + 1, x_1, x_2 -
-                                                                             1)], eps,
-                        sig); //(check with the neighbour that is one to the right and one below you)
-                    SPDLOG_TRACE("Cell ({} {} {}) interacted with ({} {} {})", x_0, x_1, x_2,
-                                 x_0 + 1, x_1, x_2 - 1);
-                }
-            }
-        }
-        //diagonals lying in the x_1-x_2 plane
-        for (unsigned int x_0 = 0; x_0 < gridDimensions[0]; x_0++) {
-            //diagonals from bottom left to top right
-            for (unsigned int x_1 = 0; x_1 < gridDimensions[1] - 1; x_1++) {
-                for (unsigned int x_2 = 0; x_2 < gridDimensions[2] - 1; x_2++) {
-                    fun(force, oldForce, x, v, m, type, count,
-                        cells[cellIndexFromCellCoordinatesFast(x_0, x_1, x_2)],
-                        cells[cellIndexFromCellCoordinatesFast(x_0, x_1 + 1, x_2 +
-                                                                             1)], eps,
-                        sig); //check with the neighbour that is one to the right and one above you
-                    SPDLOG_TRACE("Cell ({} {} {}) interacted with ({} {} {})", x_0, x_1, x_2, x_0,
-                                 x_1 + 1, x_2 + 1);
-                }
-            }
-            //diagonals from top left to bottom right
-            for (unsigned int x_1 = 0; x_1 < gridDimensions[1] - 1; x_1++) {
-                for (unsigned int x_2 = 1; x_2 < gridDimensions[2]; x_2++) {
-                    fun(force, oldForce, x, v, m, type, count,
-                        cells[cellIndexFromCellCoordinatesFast(x_0, x_1, x_2)],
-                        cells[cellIndexFromCellCoordinatesFast(x_0, x_1 + 1, x_2 -
-                                                                             1)], eps,
-                        sig); //(check with the neighbour that is one to the right and one below you)
-                    SPDLOG_TRACE("Cell ({} {} {}) interacted with ({} {} {})", x_0, x_1, x_2, x_0,
-                                 x_1 + 1, x_2 - 1);
-                }
-            }
-        }
-        //End of "2d diagonals"-----------------------------------------------
+        using a = std::array<int, 3>;
+        constexpr std::array<a, numCases> offsets{a{1,0,0}, a{0,1,0}, a{0,0,1},
+                                        a{1,1,0}, a{1,-1,0},
+                                        a{1,0,1}, a{1,0,-1}, a{0,1,1}, a{0,1,-1},
+                                        a{1,1,1}, a{1,-1,1}, a{1,1,-1}, a{1,-1,-1}};
 
-        //Start of "3d diagonals"----------------
-        //from bottom front left top back right
-        for (unsigned int x_0 = 0; x_0 < gridDimensions[0] - 1; x_0++) {
-            for (unsigned int x_1 = 0; x_1 < gridDimensions[1] - 1; x_1++) {
-                for (unsigned int x_2 = 0; x_2 < gridDimensions[2] - 1; x_2++) {
-                    fun(force, oldForce, x, v, m, type, count,
-                        cells[cellIndexFromCellCoordinatesFast(x_0, x_1, x_2)],
-                        cells[cellIndexFromCellCoordinatesFast(x_0 + 1, x_1 + 1, x_2 + 1)], eps, sig);
-                    SPDLOG_TRACE("Cell ({} {} {}) interacted with ({} {} {})", x_0, x_1, x_2,
-                                 x_0 + 1, x_1 + 1, x_2 + 1);
-                    //std::cout<<"(" << x_0 << ", " << x_1 << ", " << x_2 << ") interacted with (" << x_0+1 << ", " << x_1+1 << ", " << x_2+1 << ")\n";
+        auto gD = gridDimensions;
+        using b = std::array<unsigned int, 3>;
+        const std::array<b, numCases> upperBounds{b{gD[0]-1, gD[1], gD[2]}, b{gD[0], gD[1]-1, gD[2]}, b{gD[0], gD[1], gD[2]-1},
+                                            b{gD[0]-1, gD[1]-1, gD[2]}, b{gD[0]-1, gD[1], gD[2]},
+                                            b{gD[0]-1, gD[1], gD[2]-1}, b{gD[0]-1, gD[1], gD[2]}, b{gD[0], gD[1]-1, gD[2]-1}, b{gD[0], gD[1]-1, gD[2]},
+                                            b{gD[0]-1, gD[1]-1, gD[2]-1}, b{gD[0]-1, gD[1], gD[2]-1}, b{gD[0]-1, gD[1]-1, gD[2]}, b{gD[0]-1, gD[1], gD[2]}};
+
+        constexpr std::array<b, numCases> lowerBounds{b{0,0,0}, b{0,0,0}, b{0,0,0},
+                                            b{0,0,0}, b{0,1,0},
+                                            b{0,0,0}, b{0,0,1}, b{0,0,0}, b{0,0,1},
+                                            b{0,0,0}, b{0,1,0}, b{0,0,1}, b{0,1,1}};
+
+        for(auto c = 0; c < numCases; c++){ //pun intended
+
+            for(unsigned int x0 = lowerBounds[c][0]; x0 < upperBounds[c][0]; x0++){
+                for(unsigned int x1 = lowerBounds[c][1]; x1 < upperBounds[c][1]; x1++){
+                    for(unsigned int x2 = lowerBounds[c][2]; x2 < upperBounds[c][2]; x2++){
+                        fun(force, oldForce, x, v, m, type, count,
+                            cells[cellIndexFromCellCoordinatesFast(x0, x1, x2)],
+                            cells[cellIndexFromCellCoordinatesFast(x0 + offsets[c][0], x1 + offsets[c][1], x2 + offsets[c][2])], eps, sig);
+                        SPDLOG_TRACE("Cell ({} {} {}) interacted with ({} {} {})", x0, x1, x2, x0 + offsets[c][0], x1 + offsets[c][1], x2 + offsets[c][2]);
+                    }
                 }
             }
+
         }
-        //from top front left to bottom back right
-        for (unsigned int x_0 = 0; x_0 < gridDimensions[0] - 1; x_0++) {
-            for (unsigned int x_1 = 1; x_1 < gridDimensions[1]; x_1++) {
-                for (unsigned int x_2 = 0; x_2 < gridDimensions[2] - 1; x_2++) {
-                    fun(force, oldForce, x, v, m, type, count,
-                        cells[cellIndexFromCellCoordinatesFast(x_0, x_1, x_2)],
-                        cells[cellIndexFromCellCoordinatesFast(x_0 + 1, x_1 - 1, x_2 + 1)], eps, sig);
-                    SPDLOG_TRACE("Cell ({} {} {}) interacted with ({} {} {})", x_0, x_1, x_2,
-                                 x_0 + 1, x_1 - 1, x_2 + 1);
-                }
-            }
-        }
-        //from bottom back left to top front right
-        for (unsigned int x_0 = 0; x_0 < gridDimensions[0] - 1; x_0++) {
-            for (unsigned int x_1 = 0; x_1 < gridDimensions[1] - 1; x_1++) {
-                for (unsigned int x_2 = 1; x_2 < gridDimensions[2]; x_2++) {
-                    fun(force, oldForce, x, v, m, type, count,
-                        cells[cellIndexFromCellCoordinatesFast(x_0, x_1, x_2)],
-                        cells[cellIndexFromCellCoordinatesFast(x_0 + 1, x_1 + 1, x_2 - 1)], eps, sig);
-                    SPDLOG_TRACE("Cell ({} {} {}) interacted with ({} {} {})", x_0, x_1, x_2,
-                                 x_0 + 1, x_1 + 1, x_2 - 1);
-                }
-            }
-        }
-        //from top back left to bottom front right
-        for (unsigned int x_0 = 0; x_0 < gridDimensions[0] - 1; x_0++) {
-            for (unsigned int x_1 = 1; x_1 < gridDimensions[1]; x_1++) {
-                for (unsigned int x_2 = 1; x_2 < gridDimensions[2]; x_2++) {
-                    fun(force, oldForce, x, v, m, type, count,
-                        cells[cellIndexFromCellCoordinatesFast(x_0, x_1, x_2)],
-                        cells[cellIndexFromCellCoordinatesFast(x_0 + 1, x_1 - 1, x_2 - 1)], eps, sig);
-                    SPDLOG_TRACE("Cell ({} {} {}) interacted with ({} {} {})", x_0, x_1, x_2,
-                                 x_0 + 1, x_1 - 1, x_2 - 1);
-                }
-            }
-        }
-        //End of "3d diagonals" -----------------
     }
 
 };

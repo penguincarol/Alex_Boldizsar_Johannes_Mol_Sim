@@ -3,6 +3,8 @@
 
 #include "sim/physics/thermostat/Thermostat.h"
 #include "data/Particle.h"
+#include "data/ParticleGenerator.h"
+#include "data/Body.h"
 
 TEST(Thermostat, helperFunctionsAndCooling) {
     std::vector<Particle> buffer{};
@@ -140,4 +142,19 @@ TEST(Thermostat, HeatInit){
     Thermostat ts(pc, 0, 2, 3, 3, 30, true);
 
     ASSERT_TRUE(std::abs(ts.computeCurrentTemp()-TInit) < TInit*0.0001)<< "Current temp was " << ts.computeCurrentTemp() <<" instead of being approximately " << TInit<< " after initialization with Thermostat"<<std::endl;
+}
+
+TEST(Thermostat, pipeFeature){
+    Body pipeWall;
+    pipeWall.shape = cuboid;
+    pipeWall.fixpoint = Eigen::Vector3d{0,0,0};
+    pipeWall.dimensions = Eigen::Vector3d {4,4,4};
+    pipeWall.distance = 1;
+    pipeWall.mass = -std::numeric_limits<double>::infinity();
+    pipeWall.start_velocity = Eigen::Vector3d {0,0,0};
+
+    std::list<Particle> buf{};
+    ParticleGenerator::generateCuboid(pipeWall, 0, buf, 3, 1, 1);
+
+
 }

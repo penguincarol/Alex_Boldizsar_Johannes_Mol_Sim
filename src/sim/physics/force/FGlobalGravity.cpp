@@ -16,8 +16,9 @@ void sim::physics::force::FGlobalGravity::operator()() {
                                    unsigned long count,
                                    std::vector<double> &eps,
                                    std::vector<double> &sig,
-                                   std::vector<unsigned long> & activeParticles) {
-        for (auto index : activeParticles) {
+                                   std::unordered_map<unsigned long, unsigned long> &id_to_index,
+                                   std::vector<unsigned long> &activeParticles) {
+        for (auto [_,index] : id_to_index) {
             force[index*3 + 0] += m[index] * gGrav0;
             force[index*3 + 1] += m[index] * gGrav1;
             force[index*3 + 2] += m[index] * gGrav2;

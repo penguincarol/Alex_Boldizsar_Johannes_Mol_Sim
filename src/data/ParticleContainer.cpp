@@ -25,7 +25,6 @@ ParticleContainer::ParticleContainer(const std::vector<Particle> &buffer) {
 
     //define which particles are still part of the simulation
     activeParticles.resize(count);
-    std::iota(activeParticles.begin(), activeParticles.end(), 0);
 
     //load particles
     for (unsigned long index{0}; index < count; index++) {
@@ -54,6 +53,10 @@ ParticleContainer::ParticleContainer(const std::vector<Particle> &buffer) {
 
         sig[index] = buffer[index].getSigma();
         eps[index] = buffer[index].getEpsilon();
+
+        id_to_index[buffer[index].getID()] = index;
+        index_to_id[index] = buffer[index].getID();
+        activeParticles[index] = buffer[index].getID();
     }
 }
 
@@ -78,10 +81,27 @@ ParticleContainer::ParticleContainer(const std::vector<Particle> &buffer, std::a
     cells = VectorCoordWrapper(gridDimensions[0]+2, gridDimensions[1]+2, gridDimensions[2]+2);
     this->r_cutoff = (double) r_cutoff;
 
+    if(true) {
+        //create padding
+        unsigned long newSize = (cells.size() - 1) * padding_count + count;
+        force.resize(newSize * 3);
+        oldForce.resize(newSize * 3);
+        x.resize(newSize * 3);
+        v.resize(newSize * 3);
+        m.resize(newSize);
+        type.resize(newSize);
+        eps.resize(newSize);
+        sig.resize(newSize);
+        //particles are now at the beginning of all vectors
+        //by calling update cells will be sorted and moved into cell
+    }
+
     updateCells();
 
     //halo value
     root6_of_2 = std::pow(2, 1/6);
+
+    initTaskModel();
 }
 
 ParticleContainer::ParticleContainer(const std::vector<Particle> &buffer, std::array<double, 2> domainSize,
@@ -111,6 +131,8 @@ void ParticleContainer::clear() {
     sig.clear();
     activeParticles.clear();
     cells.clear();
+    id_to_index.clear();
+    index_to_id.clear();
 }
 
 Particle ParticleContainer::getParticle(unsigned long i) {
@@ -194,27 +216,140 @@ void ParticleContainer::storeParticle(Particle &p, unsigned long index) {
 
 
 void ParticleContainer::updateCells() {
-    //I am doing an implementation that works first and then i figure out if there is a better way
-    //than deciding for every particle in every iteration once again
-
-    //by the way: is there a way to advice a vector not to shrink? i can't find it with like.. 10 mins of googling
+    // have local copy of current particle indices -> is id_to_index map
+    // padding already exists
+    // create desired cell indices -> will update cells
     io::output::loggers::general->trace("updateCells called");
-    for (auto &cell: cells) {
-        cell.clear();
-    }
-    for (unsigned int i: activeParticles) {
+    for (auto &cell: cells) cell.clear();
+    for (unsigned long id: activeParticles) {
+        unsigned long i = id_to_index[id];
         //i am intentionally rounding down with casts from double to unsigned int
         std::array<unsigned int, 3> cellCoordinate = {0,0,0};
         if(x[3*i+0] > 0) cellCoordinate[0] = (unsigned int) (x[3 * i] / r_cutoff);
         if(x[3*i+1] > 0) cellCoordinate[1] = (unsigned int) (x[3 * i+1] / r_cutoff);
         if(x[3*i+2] > 0) cellCoordinate[2] = (unsigned int) (x[3 * i+2] / r_cutoff);
-        this->cells[cellIndexFromCellCoordinates(cellCoordinate)].emplace_back(i);
+        this->cells[cellIndexFromCellCoordinates(cellCoordinate)].emplace_back(id);
+    } // now cells contain ID of particle -> need sort particles and replace ID in cell with index
+
+    if(false) return; // TODO fix me
+
+    const unsigned long cellCount = cells.size();
+    unsigned long vecIndex = 0;
+    for (unsigned long indexCells {0}; indexCells < cellCount; indexCells++) {
+        const unsigned long cellItems = cells[indexCells].size();
+        for (unsigned long indexC {0}; indexC < cellItems; indexC++) {
+            const unsigned long thisID = cells[indexCells][indexC];
+            if (index_to_id.contains(vecIndex)) { // need to swap
+                const unsigned long otherID = index_to_id[vecIndex];
+                swap(thisID, otherID);
+            }
+            else { //current position is free
+                move(id_to_index[thisID], vecIndex, thisID);
+            }
+            //thisID done -> replace ID in cells with index
+            cells[indexCells][indexC] = vecIndex;
+
+            vecIndex++;
+        }
+        vecIndex += padding_count; // padding
     }
 }
 
+void ParticleContainer::swap(unsigned long id0, unsigned long id1) {
+    unsigned long index0 = id_to_index[id0];
+    unsigned long index1 = id_to_index[id1];
+    if(index0==index1) return;
+
+    double f0, f1, f2, of0, of1, of2, x0, x1, x2, v0, v1, v2, mm, s, e;
+    int t;
+
+    f0 = force[index0 * 3 + 0];
+    f1 = force[index0 * 3 + 1];
+    f2 = force[index0 * 3 + 2];
+    of0 = oldForce[index0 * 3 + 0];
+    of1 = oldForce[index0 * 3 + 1];
+    of2 = oldForce[index0 * 3 + 2];
+    x0 = x[index0 * 3 + 0];
+    x1 = x[index0 * 3 + 1];
+    x2 = x[index0 * 3 + 2];
+    v0 = v[index0 * 3 + 0];
+    v1 = v[index0 * 3 + 1];
+    v2 = v[index0 * 3 + 2];
+    mm = m[index0];
+    t = type[index0];
+    s = sig[index0];
+    e = eps[index0];
+
+    force[index0 * 3 + 0]    = force[index1 * 3 + 0];
+    force[index0 * 3 + 1]    = force[index1 * 3 + 1];
+    force[index0 * 3 + 2]    = force[index1 * 3 + 2];
+    oldForce[index0 * 3 + 0] = oldForce[index1 * 3 + 0];
+    oldForce[index0 * 3 + 1] = oldForce[index1 * 3 + 1];
+    oldForce[index0 * 3 + 2] = oldForce[index1 * 3 + 2];
+    x[index0 * 3 + 0]        = x[index1 * 3 + 0];
+    x[index0 * 3 + 1]        = x[index1 * 3 + 1];
+    x[index0 * 3 + 2]        = x[index1 * 3 + 2];
+    v[index0 * 3 + 0]        = v[index1 * 3 + 0];
+    v[index0 * 3 + 1]        = v[index1 * 3 + 1];
+    v[index0 * 3 + 2]        = v[index1 * 3 + 2];
+    m[index0]                = m[index1];
+    type[index0]             = type[index1];
+    sig[index0]              = sig[index1];
+    eps[index0]              = eps[index1];
+
+    force[index1 * 3 + 0] = f0;
+    force[index1 * 3 + 1] = f1;
+    force[index1 * 3 + 2] = f2;
+    oldForce[index1 * 3 + 0] = of0;
+    oldForce[index1 * 3 + 1] = of1;
+    oldForce[index1 * 3 + 2] = of2;
+    x[index1 * 3 + 0] = x0;
+    x[index1 * 3 + 1] = x1;
+    x[index1 * 3 + 2] = x2;
+    v[index1 * 3 + 0] = v0;
+    v[index1 * 3 + 1] = v1;
+    v[index1 * 3 + 2] = v2;
+    m[index1] = mm;
+    type[index1] = t;
+    sig[index1] = s;
+    eps[index1] = e;
+
+    id_to_index[id0] = index1;
+    id_to_index[id1] = index0;
+    index_to_id[index0] = id1;
+    index_to_id[index1] = id0;
+}
+
+void ParticleContainer::move(unsigned long indexSrc, unsigned indexDst, unsigned long id) {
+    force[indexDst * 3 + 0]    = force[indexSrc * 3 + 0];
+    force[indexDst * 3 + 1]    = force[indexSrc * 3 + 1];
+    force[indexDst * 3 + 2]    = force[indexSrc * 3 + 2];
+    oldForce[indexDst * 3 + 0] = oldForce[indexSrc * 3 + 0];
+    oldForce[indexDst * 3 + 1] = oldForce[indexSrc * 3 + 1];
+    oldForce[indexDst * 3 + 2] = oldForce[indexSrc * 3 + 2];
+    x[indexDst * 3 + 0]        = x[indexSrc * 3 + 0];
+    x[indexDst * 3 + 1]        = x[indexSrc * 3 + 1];
+    x[indexDst * 3 + 2]        = x[indexSrc * 3 + 2];
+    v[indexDst * 3 + 0]        = v[indexSrc * 3 + 0];
+    v[indexDst * 3 + 1]        = v[indexSrc * 3 + 1];
+    v[indexDst * 3 + 2]        = v[indexSrc * 3 + 2];
+    m[indexDst]                = m[indexSrc];
+    type[indexDst]             = type[indexSrc];
+    sig[indexDst]              = sig[indexSrc];
+    eps[indexDst]              = eps[indexSrc];
+
+    id_to_index[id] = indexDst;
+    index_to_id.erase(indexSrc);
+    index_to_id[indexDst] = id;
+}
+
 void ParticleContainer::deactivateParticles(std::unordered_set<unsigned long> &indices) {
-    activeParticles.erase(std::remove_if(activeParticles.begin(), activeParticles.end(), [&](const auto &item) {
-        return indices.contains(item);
+    for(unsigned long ind : indices) {
+        id_to_index.erase(index_to_id[ind]);
+        index_to_id.erase(ind);
+    }
+    activeParticles.erase(std::remove_if(activeParticles.begin(), activeParticles.end(), [&](const auto &id) {
+        return indices.contains(id_to_index[id]);
     }), activeParticles.end());
 }
 
@@ -223,36 +358,51 @@ void ParticleContainer::deactivateParticles(std::unordered_set<unsigned long> &i
 #pragma region Functional
 
 void ParticleContainer::forAllParticles(const std::function<void(Particle &)> &function) {
-    for (unsigned long index: activeParticles) {
+    for (unsigned long id: activeParticles) {
         Particle p;
-        loadParticle(p, index);
+        loadParticle(p, id_to_index[id]);
         function(p);
-        storeParticle(p, index);
+        storeParticle(p, id_to_index[id]);
     }
 }
 
 void ParticleContainer::forAllParticles(void(*function)(Particle &)) {
-    for (unsigned long index: activeParticles) {
+    for (unsigned long id: activeParticles) {
         Particle p;
-        loadParticle(p, index);
+        loadParticle(p, id_to_index[id]);
         function(p);
-        storeParticle(p, index);
+        storeParticle(p, id_to_index[id]);
+    }
+}
+
+void ParticleContainer::forAllPairs(void (*function)(Particle &p1, Particle &p2)) {
+    for (u_int32_t i = 0; i < activeSize(); i++) {
+        for (u_int32_t j = i + 1; j < activeSize(); j++) {
+            Particle p1;
+            loadParticle(p1, id_to_index[activeParticles[i]]);
+            Particle p2;
+            loadParticle(p2, id_to_index[activeParticles[j]]);
+            function(p1, p2);
+            storeParticle(p1, id_to_index[activeParticles[i]]);
+            storeParticle(p2, id_to_index[activeParticles[j]]);
+        }
     }
 }
 
 void ParticleContainer::forAllPairs(const std::function<void(Particle &p1, Particle &p2)> &function) {
-    for (u_int32_t i = 0; i < count; i++) {
-        for (u_int32_t j = i + 1; j < count; j++) {
+    for (u_int32_t i = 0; i < activeSize(); i++) {
+        for (u_int32_t j = i + 1; j < activeSize(); j++) {
             Particle p1;
-            loadParticle(p1, i);
+            loadParticle(p1, id_to_index[activeParticles[i]]);
             Particle p2;
-            loadParticle(p2, j);
+            loadParticle(p2, id_to_index[activeParticles[j]]);
             function(p1, p2);
-            storeParticle(p1, i);
-            storeParticle(p2, j);
+            storeParticle(p1, id_to_index[activeParticles[i]]);
+            storeParticle(p2, id_to_index[activeParticles[j]]);
         }
     }
 }
+
 
 [[maybe_unused]] void ParticleContainer::forAllMembraneSprings(const std::function<void(Particle &p1, Particle &p2, double desiredDistance, double springStrength)> &function){
     for(Membrane& membrane: membranes){
@@ -264,31 +414,31 @@ void ParticleContainer::forAllPairs(const std::function<void(Particle &p1, Parti
 
         for(size_t i = 0; i < membrDims[0]; i++){
             for(size_t j = 0; j < membrDims[1] - 1; j++){
-                auto index1 = membrane.getMembrNodes()[i][j];
-                auto index2 = membrane.getMembrNodes()[i][j+1];
+                auto id1 = membrane.getMembrNodes()[i][j];
+                auto id2 = membrane.getMembrNodes()[i][j+1];
 
                 Particle p1;
-                loadParticle(p1, index1);
+                loadParticle(p1, id_to_index[id1]);
                 Particle p2;
-                loadParticle(p2, index2);
+                loadParticle(p2, id_to_index[id2]);
                 function(p1, p2, membrane.getDesiredDistance(), membrane.getSpringStrength());
-                storeParticle(p1, index1);
-                storeParticle(p2, index2);
+                storeParticle(p1, id_to_index[id1]);
+                storeParticle(p2, id_to_index[id2]);
             }
         }
 
         for(size_t i = 0; i < membrDims[0] - 1; i++){
             for(size_t j = 0; j < membrDims[1]; j++){
-                auto index1 = membrane.getMembrNodes()[i][j];
-                auto index2 = membrane.getMembrNodes()[i+1][j];
+                auto id1 = membrane.getMembrNodes()[i][j];
+                auto id2 = membrane.getMembrNodes()[i+1][j];
 
                 Particle p1;
-                loadParticle(p1, index1);
+                loadParticle(p1, id_to_index[id1]);
                 Particle p2;
-                loadParticle(p2, index2);
+                loadParticle(p2, id_to_index[id2]);
                 function(p1, p2, membrane.getDesiredDistance(), membrane.getSpringStrength());
-                storeParticle(p1, index1);
-                storeParticle(p2, index2);
+                storeParticle(p1, id_to_index[id1]);
+                storeParticle(p2, id_to_index[id2]);
             }
         }
 
@@ -297,47 +447,32 @@ void ParticleContainer::forAllPairs(const std::function<void(Particle &p1, Parti
 
                 //to top right (thinking about membrane structure)
                 if(i+1 < membrDims[0] && j+1 < membrDims[1]){
-                    auto index1 = membrane.getMembrNodes()[i][j];
-                    auto index2 = membrane.getMembrNodes()[i+1][j+1];
+                    auto id1 = membrane.getMembrNodes()[i][j];
+                    auto id2 = membrane.getMembrNodes()[i+1][j+1];
 
                     Particle p1;
-                    loadParticle(p1, index1);
+                    loadParticle(p1, id_to_index[id1]);
                     Particle p2;
-                    loadParticle(p2, index2);
+                    loadParticle(p2, id_to_index[id2]);
                     function(p1, p2, membrane.getDesiredDistance(), membrane.getSpringStrength());
-                    storeParticle(p1, index1);
-                    storeParticle(p2, index2);
+                    storeParticle(p1, id_to_index[id1]);
+                    storeParticle(p2, id_to_index[id2]);
                 }
 
                 //to bottom right (thinking about membrane structure)
                 if(i+1 < membrDims[0] && j-1 >= 0){
-                    auto index1 = membrane.getMembrNodes()[i][j];
-                    auto index2 = membrane.getMembrNodes()[i+1][j-1];
+                    auto id1 = membrane.getMembrNodes()[i][j];
+                    auto id2 = membrane.getMembrNodes()[i+1][j-1];
 
                     Particle p1;
-                    loadParticle(p1, index1);
+                    loadParticle(p1, id_to_index[id1]);
                     Particle p2;
-                    loadParticle(p2, index2);
+                    loadParticle(p2, id_to_index[id2]);
                     function(p1, p2, membrane.getDesiredDistance(), membrane.getSpringStrength());
-                    storeParticle(p1, index1);
-                    storeParticle(p2, index2);
+                    storeParticle(p1, id_to_index[id1]);
+                    storeParticle(p2, id_to_index[id2]);
                 }
             }
-        }
-    }
-}
-
-
-void ParticleContainer::forAllPairs(void (*function)(Particle &p1, Particle &p2)) {
-    for (u_int32_t i = 0; i < count; i++) {
-        for (u_int32_t j = i + 1; j < count; j++) {
-            Particle p1;
-            loadParticle(p1, i);
-            Particle p2;
-            loadParticle(p2, j);
-            function(p1, p2);
-            storeParticle(p1, i);
-            storeParticle(p2, j);
         }
     }
 }
@@ -383,7 +518,7 @@ void ParticleContainer::forAllPairsInSameCell(const std::function<void(Particle 
     }
 }
 
-[[maybe_unused]] [[maybe_unused]] void ParticleContainer::forAllDistinctCellPairs(
+[[maybe_unused]] void ParticleContainer::forAllDistinctCellPairs(
 #pragma region param
         void(*fun)(std::vector<double> &force,
                    std::vector<double> &oldForce,
@@ -406,7 +541,8 @@ void ParticleContainer::forAllPairsInSameCell(const std::function<void(Particle 
 }
 
 void ParticleContainer::clearStoreForce() {
-    for(unsigned long i {0}; i < count; i++) {
+    unsigned long size = force.size() / 3;
+    for(unsigned long i {0}; i < size; i++) {
         oldForce[3*i + 0] = force[3*i + 0];
         oldForce[3*i + 1] = force[3*i + 1];
         oldForce[3*i + 2] = force[3*i + 2];
@@ -414,6 +550,206 @@ void ParticleContainer::clearStoreForce() {
         force[3*i + 1] = 0;
         force[3*i + 2] = 0;
     }
+}
+
+void ParticleContainer::initTaskModel() {
+    std::vector<std::vector<std::pair<unsigned long, unsigned long>>> task_group_buffer;
+    std::vector<std::pair<unsigned long, unsigned long>> task_buffer;
+
+    //Straight lines ----------------------------------------
+    //all pairs in x_0 direction:
+    {
+        for (unsigned int x_1 = 0; x_1 < gridDimensions[1]; x_1++) {
+            for (unsigned int x_2 = 0; x_2 < gridDimensions[2]; x_2++) {
+                for (unsigned int x_0 = 0; x_0 < gridDimensions[0] - 1; x_0++) {
+                    task_buffer.emplace_back(cellIndexFromCellCoordinatesFast(x_0, x_1, x_2),
+                                             cellIndexFromCellCoordinatesFast(x_0 + 1, x_1, x_2));
+                }
+                task_group_buffer.emplace_back(task_buffer);
+                task_buffer.clear();
+            }
+        }
+        taskModelCache.emplace_back(task_group_buffer);
+        task_group_buffer.clear();
+
+        //all pairs in x_1 direction:
+        for (unsigned int x_0 = 0; x_0 < gridDimensions[0]; x_0++) {
+            for (unsigned int x_2 = 0; x_2 < gridDimensions[2]; x_2++) {
+                for (unsigned int x_1 = 0; x_1 < gridDimensions[1] - 1; x_1++) {
+                    task_buffer.emplace_back(cellIndexFromCellCoordinatesFast(x_0, x_1, x_2),
+                                             cellIndexFromCellCoordinatesFast(x_0, x_1 + 1, x_2));
+                }
+                task_group_buffer.emplace_back(task_buffer);
+                task_buffer.clear();
+            }
+        }
+        taskModelCache.emplace_back(task_group_buffer);
+        task_group_buffer.clear();
+
+        //all pairs in x_2 direction:
+        for (unsigned int x_0 = 0; x_0 < gridDimensions[0]; x_0++) {
+            for (unsigned int x_1 = 0; x_1 < gridDimensions[1]; x_1++) {
+                for (unsigned int x_2 = 0; x_2 < gridDimensions[2] - 1; x_2++) {
+                    task_buffer.emplace_back(cellIndexFromCellCoordinatesFast(x_0, x_1, x_2),
+                                             cellIndexFromCellCoordinatesFast(x_0, x_1, x_2 + 1));
+                }
+                task_group_buffer.emplace_back(task_buffer);
+                task_buffer.clear();
+            }
+        }
+        taskModelCache.emplace_back(task_group_buffer);
+        task_group_buffer.clear();
+    }
+    //End of straight lines ---------------------------------------------------
+
+    //"2d-diagonals"------------------------------------------------
+    {
+        //diagonals lying in the x_0-x_1 plane
+        for (unsigned int x_2 = 0; x_2 < gridDimensions[2]; x_2++) {
+            //diagonals from bottom left to top right
+            for (unsigned int x_0 = 0; x_0 < gridDimensions[0] - 1; x_0++) {
+                for (unsigned int x_1 = 0; x_1 < gridDimensions[1] - 1; x_1++) {
+                    task_buffer.emplace_back(cellIndexFromCellCoordinatesFast(x_0, x_1, x_2),
+                                             cellIndexFromCellCoordinatesFast(x_0 + 1, x_1 + 1, x_2));
+                }
+            }
+            task_group_buffer.emplace_back(task_buffer);
+            task_buffer.clear();
+        }
+        taskModelCache.emplace_back(task_group_buffer);
+        task_group_buffer.clear();
+
+        for (unsigned int x_2 = 0; x_2 < gridDimensions[2]; x_2++) {
+            //diagonals from top left to bottom right
+            for (unsigned int x_0 = 0; x_0 < gridDimensions[0] - 1; x_0++) {
+                for (unsigned int x_1 = 1; x_1 < gridDimensions[1]; x_1++) {
+                    task_buffer.emplace_back(cellIndexFromCellCoordinatesFast(x_0, x_1, x_2),
+                                             cellIndexFromCellCoordinatesFast(x_0 + 1, x_1 - 1, x_2));
+                }
+            }
+            task_group_buffer.emplace_back(task_buffer);
+            task_buffer.clear();
+        }
+        taskModelCache.emplace_back(task_group_buffer);
+        task_group_buffer.clear();
+
+        //diagonals lying in the x_0-x_2 plane
+        for (unsigned int x_1 = 0; x_1 < gridDimensions[1]; x_1++) {
+            //diagonals from bottom left to top right
+            for (unsigned int x_0 = 0; x_0 < gridDimensions[0] - 1; x_0++) {
+                for (unsigned int x_2 = 0; x_2 < gridDimensions[2] - 1; x_2++) {
+                    task_buffer.emplace_back(cellIndexFromCellCoordinatesFast(x_0, x_1, x_2),
+                                             cellIndexFromCellCoordinatesFast(x_0 + 1, x_1, x_2 + 1));
+                }
+            }
+            task_group_buffer.emplace_back(task_buffer);
+            task_buffer.clear();
+        }
+        taskModelCache.emplace_back(task_group_buffer);
+        task_group_buffer.clear();
+        for (unsigned int x_1 = 0; x_1 < gridDimensions[1]; x_1++) {
+            //diagonals from top left to bottom right
+            for (unsigned int x_0 = 0; x_0 < gridDimensions[0] - 1; x_0++) {
+                for (unsigned int x_2 = 1; x_2 < gridDimensions[2]; x_2++) {
+                    task_buffer.emplace_back(cellIndexFromCellCoordinatesFast(x_0, x_1, x_2),
+                                             cellIndexFromCellCoordinatesFast(x_0 + 1, x_1, x_2 - 1));
+                }
+            }
+            task_group_buffer.emplace_back(task_buffer);
+            task_buffer.clear();
+        }
+        taskModelCache.emplace_back(task_group_buffer);
+        task_group_buffer.clear();
+
+        //diagonals lying in the x_1-x_2 plane
+        for (unsigned int x_0 = 0; x_0 < gridDimensions[0]; x_0++) {
+            //diagonals from bottom left to top right
+            for (unsigned int x_1 = 0; x_1 < gridDimensions[1] - 1; x_1++) {
+                for (unsigned int x_2 = 0; x_2 < gridDimensions[2] - 1; x_2++) {
+                    task_buffer.emplace_back(cellIndexFromCellCoordinatesFast(x_0, x_1, x_2),
+                                             cellIndexFromCellCoordinatesFast(x_0, x_1 + 1, x_2 + 1));
+                }
+            }
+            task_group_buffer.emplace_back(task_buffer);
+            task_buffer.clear();
+        }
+        taskModelCache.emplace_back(task_group_buffer);
+        task_group_buffer.clear();
+        for (unsigned int x_0 = 0; x_0 < gridDimensions[0]; x_0++) {
+            //diagonals from top left to bottom right
+            for (unsigned int x_1 = 0; x_1 < gridDimensions[1] - 1; x_1++) {
+                for (unsigned int x_2 = 1; x_2 < gridDimensions[2]; x_2++) {
+                    task_buffer.emplace_back(cellIndexFromCellCoordinatesFast(x_0, x_1, x_2),
+                                             cellIndexFromCellCoordinatesFast(x_0, x_1 + 1, x_2 - 1));
+                }
+            }
+            task_group_buffer.emplace_back(task_buffer);
+            task_buffer.clear();
+        }
+        taskModelCache.emplace_back(task_group_buffer);
+        task_group_buffer.clear();
+    }
+    //End of "2d diagonals"-----------------------------------------------
+
+    //Start of "3d diagonals"----------------
+    {//from bottom front left top back right
+        for (unsigned int x_0 = 0; x_0 < gridDimensions[0] - 1; x_0++) {
+            for (unsigned int x_1 = 0; x_1 < gridDimensions[1] - 1; x_1++) {
+                for (unsigned int x_2 = 0; x_2 < gridDimensions[2] - 1; x_2++) {
+                    task_buffer.emplace_back(cellIndexFromCellCoordinatesFast(x_0, x_1, x_2),
+                                             cellIndexFromCellCoordinatesFast(x_0 + 1, x_1 + 1, x_2 + 1));
+                }
+            }
+            task_group_buffer.emplace_back(task_buffer);
+            task_buffer.clear();
+            taskModelCache.emplace_back(task_group_buffer);
+            task_group_buffer.clear();
+        }
+        //from top front left to bottom back right
+        for (unsigned int x_0 = 0; x_0 < gridDimensions[0] - 1; x_0++) {
+            for (unsigned int x_1 = 1; x_1 < gridDimensions[1]; x_1++) {
+                for (unsigned int x_2 = 0; x_2 < gridDimensions[2] - 1; x_2++) {
+                    task_buffer.emplace_back(cellIndexFromCellCoordinatesFast(x_0, x_1, x_2),
+                                             cellIndexFromCellCoordinatesFast(x_0 + 1, x_1 - 1, x_2 + 1));
+                }
+            }
+            task_group_buffer.emplace_back(task_buffer);
+            task_buffer.clear();
+            taskModelCache.emplace_back(task_group_buffer);
+            task_group_buffer.clear();
+        }
+        //from bottom back left to top front right
+        for (unsigned int x_0 = 0; x_0 < gridDimensions[0] - 1; x_0++) {
+            for (unsigned int x_1 = 0; x_1 < gridDimensions[1] - 1; x_1++) {
+                for (unsigned int x_2 = 1; x_2 < gridDimensions[2]; x_2++) {
+                    task_buffer.emplace_back(cellIndexFromCellCoordinatesFast(x_0, x_1, x_2),
+                                             cellIndexFromCellCoordinatesFast(x_0 + 1, x_1 + 1, x_2 - 1));
+                }
+            }
+            task_group_buffer.emplace_back(task_buffer);
+            task_buffer.clear();
+            taskModelCache.emplace_back(task_group_buffer);
+            task_group_buffer.clear();
+        }
+        //from top back left to bottom front right
+        for (unsigned int x_0 = 0; x_0 < gridDimensions[0] - 1; x_0++) {
+            for (unsigned int x_1 = 1; x_1 < gridDimensions[1]; x_1++) {
+                for (unsigned int x_2 = 1; x_2 < gridDimensions[2]; x_2++) {
+                    task_buffer.emplace_back(cellIndexFromCellCoordinatesFast(x_0, x_1, x_2),
+                                             cellIndexFromCellCoordinatesFast(x_0 + 1, x_1 - 1, x_2 - 1));
+                }
+            }
+            task_group_buffer.emplace_back(task_buffer);
+            task_buffer.clear();
+            taskModelCache.emplace_back(task_group_buffer);
+            task_group_buffer.clear();
+        }
+    }
+    //End of "3d diagonals" -----------------
+}
+
+const std::vector<std::vector<std::vector<std::pair<unsigned long, unsigned long>>>>& ParticleContainer::generateDistinctCellNeighbours() {
+    return taskModelCache;
 }
 
 #pragma endregion

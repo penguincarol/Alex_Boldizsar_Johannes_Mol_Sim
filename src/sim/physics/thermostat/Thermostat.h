@@ -31,6 +31,8 @@ private:
     double deltaTemp;
     /**thermoMode determines whether we are simulating a pipe (with unmoving pipe particles) or any other simulation */
     const ThermoMode thermoMode;
+    /**in pipe mode some particles get ignored in temperature calculation. Therefore this variable might not be activeParticles.size() (but in pipe sim no other particles get deleted. otherwise this doesn't work)*/
+    size_t numberFlowingParticles;
 
 
 public:
@@ -45,6 +47,25 @@ public:
      */
     explicit Thermostat(ParticleContainer& particleContainer, double T_t = default_t_target, unsigned int cT = default_n_term, unsigned int dimensions = default_dims, double dT = default_delta_temp, double TInit = default_t_init, bool thermoEnable = default_therm, ThermoMode tm = ThermoMode::normal):
         pc(particleContainer), countThreshold(cT), dims(dimensions), thermoMode(tm) {
+        if(tm == ThermoMode::normal){
+            numberFlowingParticles = pc.activeSize();
+        }else{
+            pc.runOnActiveData([&](std::vector<double> &force,
+                                   std::vector<double> &oldForce,
+                                   std::vector<double> &x,
+                                   std::vector<double> &v,
+                                   std::vector<double> &m,
+                                   std::vector<int> &type,
+                                   unsigned long count,
+                                   std::vector<double> &eps,
+                                   std::vector<double> &sig,
+                                   std::vector<unsigned long> &activeParticles){
+                for(auto a: activeParticles){
+                    if(m[a] >= 0) numberFlowingParticles++;
+                }
+            });
+        }
+
         if(thermoEnable) {
             //if currentTemp != 0 and TempToCreate != 0 this WILL distort the ordered movement and initialize the temperature a bit
             //inhomogenous

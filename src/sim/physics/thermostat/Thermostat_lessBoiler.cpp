@@ -77,8 +77,8 @@ double Thermostat::computeCurrentTemp(){
         return sum/(dims*static_cast<double>(pc.activeSize()));
     }else{  //ThermoMode::pipe
         double meanYdirection{0};
-        size_t numberFlowingParticles{0};   //TODO: there is A LOT of room for improvement here because we already know that!!
-        pc.runOnActiveData([&meanYdirection, &numberFlowingParticles](std::vector<double> &force,
+        auto nfp = this->numberFlowingParticles;
+        pc.runOnActiveData([&meanYdirection, nfp](std::vector<double> &force,
                                   std::vector<double> &oldForce,
                                   std::vector<double> &x,
                                   std::vector<double> &v,
@@ -91,10 +91,9 @@ double Thermostat::computeCurrentTemp(){
             for(auto a: activeParticles){
                 if(m[a] >= 0){
                     meanYdirection += v[3*a+1];
-                    numberFlowingParticles++;
                 }
             }
-            meanYdirection = meanYdirection / numberFlowingParticles;   //unfortunately we can't use activeParticles.size() here because of pipe particles
+            meanYdirection = meanYdirection / nfp;
         });
 
         double sum{0};

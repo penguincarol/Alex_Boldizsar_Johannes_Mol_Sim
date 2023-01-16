@@ -1197,8 +1197,12 @@ public:
      * Initializes generateDistinctCellNeighbours cache.
      * */
     void initTaskModel();
+
+    void initAlternativeTaskModel();
 private:
     std::vector<std::vector<std::vector<std::pair<unsigned long, unsigned long>>>> taskModelCache;
+    std::vector<std::vector<std::pair<unsigned long, unsigned long>>> alternativeTaskModelCache;
+
 
 public:
 
@@ -1212,6 +1216,9 @@ public:
      * task is vector of pairs -> pair
      * */
     const std::vector<std::vector<std::vector<std::pair<unsigned long, unsigned long>>>>& generateDistinctCellNeighbours();
+
+    const std::vector<std::vector<std::pair<unsigned long, unsigned long>>>& generateDistinctAlternativeCellNeighbours();
+
 
     /**
      * Performs fun on provided data. All lambda args particle container internal data.

@@ -103,7 +103,9 @@ ParticleContainer::ParticleContainer(const std::vector<Particle> &buffer, std::a
     //halo value
     root6_of_2 = std::pow(2, 1/6);
 
-    if(eOMP) initTaskModel();
+    if(eOMP){
+        initTaskModel();
+        initAlternativeTaskModel();}
 }
 
 ParticleContainer::ParticleContainer(const std::vector<Particle> &buffer, std::array<double, 2> domainSize,
@@ -554,6 +556,65 @@ void ParticleContainer::clearStoreForce() {
     }
 }
 
+void ParticleContainer::initAlternativeTaskModel(){
+    //26 TaskGroups (for the 13 cases*2)
+    //every taskGroup has the pairs of CellIndices that are independently doable split up into numThreads packages
+
+    //All these variables could be const attributes of class
+    const auto numCases = 13;
+
+    using a = std::array<int, 3>;
+    constexpr std::array<a, numCases> offsets{a{1,0,0}, a{0,1,0}, a{0,0,1},
+                                              a{1,1,0}, a{1,-1,0},
+                                              a{1,0,1}, a{1,0,-1}, a{0,1,1}, a{0,1,-1},
+                                              a{1,1,1}, a{1,-1,1}, a{1,1,-1}, a{1,-1,-1}};
+
+    auto gD = gridDimensions;
+    using b = std::array<unsigned int, 3>;
+    const std::array<b, numCases> upperBounds{b{gD[0]-1, gD[1], gD[2]}, b{gD[0], gD[1]-1, gD[2]}, b{gD[0], gD[1], gD[2]-1},
+                                              b{gD[0]-1, gD[1]-1, gD[2]}, b{gD[0]-1, gD[1], gD[2]},
+                                              b{gD[0]-1, gD[1], gD[2]-1}, b{gD[0]-1, gD[1], gD[2]}, b{gD[0], gD[1]-1, gD[2]-1}, b{gD[0], gD[1]-1, gD[2]},
+                                              b{gD[0]-1, gD[1]-1, gD[2]-1}, b{gD[0]-1, gD[1], gD[2]-1}, b{gD[0]-1, gD[1]-1, gD[2]}, b{gD[0]-1, gD[1], gD[2]}};
+
+    constexpr std::array<b, numCases> lowerBounds{b{0,0,0}, b{0,0,0}, b{0,0,0},
+                                                  b{0,0,0}, b{0,1,0},
+                                                  b{0,0,0}, b{0,0,1}, b{0,0,0}, b{0,0,1},
+                                                  b{0,0,0}, b{0,1,0}, b{0,0,1}, b{0,1,1}};
+
+    for(auto c = 0; c < numCases; c++){ //pun intended
+        //const std::vector<std::vector<std::vector<std::pair<unsigned long, unsigned long>>>>& generateDistinctCellNeighbours()
+        const unsigned long maxThreads{static_cast<unsigned long>(omp_get_max_threads())};
+        std::vector<std::pair<unsigned long, unsigned long>> independentTasksBlock{maxThreads};
+
+        for(unsigned int x0 = lowerBounds[c][0]; x0 < upperBounds[c][0]; x0+=2){
+            for(unsigned int x1 = lowerBounds[c][1]; x1 < upperBounds[c][1]; x1+=2){
+                for(unsigned int x2 = lowerBounds[c][2]; x2 < upperBounds[c][2]; x2+=2){
+                    independentTasksBlock.emplace_back(cellIndexFromCellCoordinatesFast(x0, x1, x2),
+                                                       cellIndexFromCellCoordinatesFast(x0 + offsets[c][0], x1 + offsets[c][1], x2 + offsets[c][2]));
+                    SPDLOG_TRACE("Added CellInteraction (({} {} {}), ({} {} {})) to taskBlock {}", x0, x1, x2, x0 + offsets[c][0], x1 + offsets[c][1], x2 + offsets[c][2], 2*c+0);
+                }
+            }
+        }
+
+        alternativeTaskModelCache.emplace_back(independentTasksBlock);
+
+        //yes you could cut this down to 2 lines with another helper array but this more verbose version seems much easier to understand
+        std::vector<std::pair<unsigned long, unsigned long>> independentTasksBlock2{maxThreads};
+
+        for(unsigned int x0 = lowerBounds[c][0] + 1; x0 < upperBounds[c][0]; x0+=2){
+            for(unsigned int x1 = lowerBounds[c][1] + 1; x1 < upperBounds[c][1]; x1+=2){
+                for(unsigned int x2 = lowerBounds[c][2] + 1; x2 < upperBounds[c][2]; x2+=2){
+                    independentTasksBlock2.emplace_back(cellIndexFromCellCoordinatesFast(x0, x1, x2),
+                                                       cellIndexFromCellCoordinatesFast(x0 + offsets[c][0], x1 + offsets[c][1], x2 + offsets[c][2]));
+                    SPDLOG_TRACE("Added CellInteraction (({} {} {}), ({} {} {})) to taskBlock {}", x0, x1, x2, x0 + offsets[c][0], x1 + offsets[c][1], x2 + offsets[c][2], 2*c+1);
+                }
+            }
+        }
+        alternativeTaskModelCache.emplace_back(independentTasksBlock2);
+
+    }
+}
+
 void ParticleContainer::initTaskModel() {
     //26 TaskGroups (for the 13 cases*2)
     //every taskGroup has the pairs of CellIndices that are independently doable split up into numThreads packages
@@ -589,7 +650,7 @@ void ParticleContainer::initTaskModel() {
             for(unsigned int x1 = lowerBounds[c][1]; x1 < upperBounds[c][1]; x1+=2){
                 for(unsigned int x2 = lowerBounds[c][2]; x2 < upperBounds[c][2]; x2+=2){
                     independentTasksBlock[roundRobinCounter].emplace_back(cellIndexFromCellCoordinatesFast(x0, x1, x2),
-                                                       cellIndexFromCellCoordinatesFast(x0 + offsets[c][0], x1 + offsets[c][1], x2 + offsets[c][2]));
+                                                                          cellIndexFromCellCoordinatesFast(x0 + offsets[c][0], x1 + offsets[c][1], x2 + offsets[c][2]));
                     roundRobinCounter = (roundRobinCounter+1)%maxThreads;
                     SPDLOG_TRACE("Added CellInteraction (({} {} {}), ({} {} {})) to taskBlock {}", x0, x1, x2, x0 + offsets[c][0], x1 + offsets[c][1], x2 + offsets[c][2], 2*c+0);
                 }
@@ -605,7 +666,7 @@ void ParticleContainer::initTaskModel() {
             for(unsigned int x1 = lowerBounds[c][1] + 1; x1 < upperBounds[c][1]; x1+=2){
                 for(unsigned int x2 = lowerBounds[c][2] + 1; x2 < upperBounds[c][2]; x2+=2){
                     independentTasksBlock2[roundRobinCounter].emplace_back(cellIndexFromCellCoordinatesFast(x0, x1, x2),
-                                                       cellIndexFromCellCoordinatesFast(x0 + offsets[c][0], x1 + offsets[c][1], x2 + offsets[c][2]));
+                                                                           cellIndexFromCellCoordinatesFast(x0 + offsets[c][0], x1 + offsets[c][1], x2 + offsets[c][2]));
                     roundRobinCounter = (roundRobinCounter+1)%maxThreads;
                     SPDLOG_TRACE("Added CellInteraction (({} {} {}), ({} {} {})) to taskBlock {}", x0, x1, x2, x0 + offsets[c][0], x1 + offsets[c][1], x2 + offsets[c][2], 2*c+1);
                 }
@@ -614,9 +675,8 @@ void ParticleContainer::initTaskModel() {
         taskModelCache.emplace_back(independentTasksBlock2);
 
     }
-
-
 }
+
 
 /*
 void ParticleContainer::initTaskModel() {
@@ -817,6 +877,10 @@ void ParticleContainer::initTaskModel() {
 
 const std::vector<std::vector<std::vector<std::pair<unsigned long, unsigned long>>>>& ParticleContainer::generateDistinctCellNeighbours() {
     return taskModelCache;
+}
+
+const std::vector<std::vector<std::pair<unsigned long, unsigned long>>>& ParticleContainer::generateDistinctAlternativeCellNeighbours(){
+    return alternativeTaskModelCache;
 }
 
 #pragma endregion

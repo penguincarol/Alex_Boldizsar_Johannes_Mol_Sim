@@ -299,6 +299,7 @@ private:
     double r_cutoff;
     std::unordered_map<unsigned long, unsigned long> id_to_index;
     std::unordered_map<unsigned long, unsigned long> index_to_id;
+    bool eOMP;
 
     /**
      * Swaps the position of the given particles. Addressed using particle IDs. Location will be looked up in id_to_index map.
@@ -379,7 +380,7 @@ public:
      * @param domainSize
      * @param r_cutoff
      */
-    ParticleContainer(const std::vector<Particle> &buffer, std::array<double, 3> domainSize, double r_cutoff, const std::vector<Membrane>& membranes = {});
+    ParticleContainer(const std::vector<Particle> &buffer, std::array<double, 3> domainSize, double r_cutoff, const std::vector<Membrane>& membranes = {}, bool fEOMP = false);
 
     /**
      * @brief Constructor of ParticleContainer that also initializes a seemingly two dimensional cell-structure
@@ -388,7 +389,7 @@ public:
      * @param domainSize
      * @param r_cutoff
      */
-    ParticleContainer(const std::vector<Particle> &buffer, std::array<double, 2> domainSize, double r_cutoff, const std::vector<Membrane>& membranes = {});
+    ParticleContainer(const std::vector<Particle> &buffer, std::array<double, 2> domainSize, double r_cutoff, const std::vector<Membrane>& membranes = {}, bool fEOMP = false);
 
     /**
      * @brief returns the index of the cell in cells corresponding to the coordinates given. Performs NO bounds checks!

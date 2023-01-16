@@ -184,13 +184,13 @@ namespace sim {
                     io::output::loggers::simulation->info("Progress: {:03.2f}%", current_time / end_time * 100);
                     io::output::loggers::simulation->trace("Iteration {} finished.", iteration);
                 }
-                if (iteration % 10000 == 0) {
-                    sim::analysis::Profiler::run(50,
-                                                 {config.get<io::input::boundingBox_X0>(),
-                                                  config.get<io::input::boundingBox_X1>(),
-                                                  config.get<io::input::boundingBox_X2>()},
-                                                 particleContainer, "flowProfile" + std::to_string(iteration%10000) +std::string{".csv"});
-                }
+//                if (iteration % 10000 == 0) {
+//                    sim::analysis::Profiler::run(50,
+//                                                 {config.get<io::input::boundingBox_X0>(),
+//                                                  config.get<io::input::boundingBox_X1>(),
+//                                                  config.get<io::input::boundingBox_X2>()},
+//                                                 particleContainer, "flowProfile" + std::to_string(iteration%10000) +std::string{".csv"});
+//                }
 
                 current_time += delta_t;
             }

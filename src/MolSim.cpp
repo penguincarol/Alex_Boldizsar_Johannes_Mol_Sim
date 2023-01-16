@@ -52,7 +52,7 @@ int main(int argc, char *argsv[]) {
 
     ParticleContainer pc = ParticleContainer(buffer,
                                              {config.get<boundingBox_X0>(), config.get<boundingBox_X1>(), config.get<boundingBox_X2>()},
-                                             config.get<rCutoff>(), memBuffer);
+                                             config.get<rCutoff>(), memBuffer, config.get<enableOMP>());
     buffer.clear();
     memBuffer.clear();
 

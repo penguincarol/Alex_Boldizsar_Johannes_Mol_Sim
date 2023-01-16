@@ -62,8 +62,9 @@ ParticleContainer::ParticleContainer(const std::vector<Particle> &buffer) {
 }
 
 ParticleContainer::ParticleContainer(const std::vector<Particle> &buffer, std::array<double, 3> domSize,
-                                     double r_cutoff, const std::vector<Membrane>& membranesIn) :
-        ParticleContainer::ParticleContainer(buffer){
+                                     double r_cutoff, const std::vector<Membrane>& membranesIn, bool fEOMP) :
+        ParticleContainer::ParticleContainer(buffer) {
+    eOMP = fEOMP;
     domainSize = domSize;
     x_2_max = domainSize[2];
     x_1_max = domainSize[1];
@@ -82,7 +83,7 @@ ParticleContainer::ParticleContainer(const std::vector<Particle> &buffer, std::a
     cells = VectorCoordWrapper(gridDimensions[0]+2, gridDimensions[1]+2, gridDimensions[2]+2);
     this->r_cutoff = (double) r_cutoff;
 
-    if(true) {
+    if(eOMP) {
         //create padding
         unsigned long newSize = (cells.size() - 1) * padding_count + count;
         force.resize(newSize * 3);
@@ -102,12 +103,12 @@ ParticleContainer::ParticleContainer(const std::vector<Particle> &buffer, std::a
     //halo value
     root6_of_2 = std::pow(2, 1/6);
 
-    initTaskModel();
+    if(eOMP) initTaskModel();
 }
 
 ParticleContainer::ParticleContainer(const std::vector<Particle> &buffer, std::array<double, 2> domainSize,
-                                     double r_cutoff, const std::vector<Membrane>& membranesIn) :
-        ParticleContainer::ParticleContainer(buffer, {domainSize[0], domainSize[1], r_cutoff}, r_cutoff, membranesIn) {};
+                                     double r_cutoff, const std::vector<Membrane>& membranesIn, bool fEOMP) :
+        ParticleContainer::ParticleContainer(buffer, {domainSize[0], domainSize[1], r_cutoff}, r_cutoff, membranesIn, fEOMP) {};
 #pragma endregion
 
 #pragma region Utils
@@ -232,7 +233,7 @@ void ParticleContainer::updateCells() {
         this->cells[cellIndexFromCellCoordinates(cellCoordinate)].emplace_back(id);
     } // now cells contain ID of particle -> need sort particles and replace ID in cell with index
 
-    if(false) return; // TODO fix me
+    if(!eOMP) return;
 
     const unsigned long cellCount = cells.size();
     unsigned long vecIndex = 0;

@@ -9,6 +9,8 @@
 namespace sim::physics::force {
 
     class FMembranePullOMP : public ForceFunctorBase{
+    private:
+        double current_time;
     public:
         FMembranePullOMP(double st,
                      double et,
@@ -16,7 +18,7 @@ namespace sim::physics::force {
                      double eps,
                      double sig,
                      ParticleContainer &pc
-        ) : ForceFunctorBase(st, et, dt, eps, sig, pc) {}
+        ) : ForceFunctorBase(st, et, dt, eps, sig, pc), current_time(st) {}
 
         void operator()() override;
 

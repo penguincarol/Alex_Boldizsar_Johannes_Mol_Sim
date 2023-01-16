@@ -144,6 +144,7 @@ TEST(Thermostat, HeatInit){
     ASSERT_TRUE(std::abs(ts.computeCurrentTemp()-TInit) < TInit*0.0001)<< "Current temp was " << ts.computeCurrentTemp() <<" instead of being approximately " << TInit<< " after initialization with Thermostat"<<std::endl;
 }
 
+
 TEST(Thermostat, pipeFeature){
     Body pipeWall;
     pipeWall.shape = cuboid;
@@ -156,5 +157,31 @@ TEST(Thermostat, pipeFeature){
     std::list<Particle> buf{};
     ParticleGenerator::generateCuboid(pipeWall, 0, buf, 3, 1, 1);
 
+    Body fluid;
+    fluid.shape = cuboid;
+    fluid.fixpoint = {6, 0,0};
+    fluid.dimensions = {4,1,1};
+    fluid.distance = 0.5;
+    fluid.mass = 1;
+    fluid.start_velocity = Eigen::Vector3d{0,-2,0};
+    ParticleGenerator::generateCuboid(fluid, 0, buf, 3, 1, 1);
+
+    constexpr size_t ePW = 4*4*4;
+
+    std::vector<Particle> bufVec(buf.begin(), buf.end());
+
+    std::array<Eigen::Vector3d, 4> vOff{Eigen::Vector3d{0,-2,0}, Eigen::Vector3d {1,1,0},
+                                        Eigen::Vector3d {0,1,0}, Eigen::Vector3d {1,0, 1}};
+    for(unsigned int i = 0; i<4; i++){
+        bufVec[ePW +i].setV(bufVec[ePW+i].getV() + vOff[i]);
+    }
+
+    ParticleContainer pc(bufVec, {15,15,15}, 3);
+    Thermostat tm(pc, 2, 2, 3, 1, 0, true, ThermoMode::pipe);
+
+    //T = sum_particles(m*<v,v>)/(#dims*#particles)
+    constexpr double currentTemp{ (2*2 + 5)/(3*4)};
+
+    ASSERT_DOUBLE_EQ(tm.computeCurrentTemp(), currentTemp);
 
 }

@@ -652,7 +652,8 @@ void ParticleContainer::initTaskModel() {
                     independentTasksBlock[roundRobinCounter].emplace_back(cellIndexFromCellCoordinatesFast(x0, x1, x2),
                                                                           cellIndexFromCellCoordinatesFast(x0 + offsets[c][0], x1 + offsets[c][1], x2 + offsets[c][2]));
                     roundRobinCounter = (roundRobinCounter+1)%maxThreads;
-                    SPDLOG_TRACE("Added CellInteraction (({} {} {}), ({} {} {})) to taskBlock {}", x0, x1, x2, x0 + offsets[c][0], x1 + offsets[c][1], x2 + offsets[c][2], 2*c+0);
+                    SPDLOG_TRACE("Added CellInteraction (({} {} {}), ({} {} {})) to taskBlock {}", x0, x1, x2, x0 + offsets[c][0], x1 + offsets[c][1], x2 + offsets[c][2], roundRobinCounter);
+                    //io::output::loggers::simulation->info("Added CellInteraction (({} {} {}), ({} {} {})) to taskBlock {}", x0, x1, x2, x0 + offsets[c][0], x1 + offsets[c][1], x2 + offsets[c][2], roundRobinCounter);
                 }
             }
         }
@@ -668,7 +669,7 @@ void ParticleContainer::initTaskModel() {
                     independentTasksBlock2[roundRobinCounter].emplace_back(cellIndexFromCellCoordinatesFast(x0, x1, x2),
                                                                            cellIndexFromCellCoordinatesFast(x0 + offsets[c][0], x1 + offsets[c][1], x2 + offsets[c][2]));
                     roundRobinCounter = (roundRobinCounter+1)%maxThreads;
-                    SPDLOG_TRACE("Added CellInteraction (({} {} {}), ({} {} {})) to taskBlock {}", x0, x1, x2, x0 + offsets[c][0], x1 + offsets[c][1], x2 + offsets[c][2], 2*c+1);
+                    SPDLOG_TRACE("Added CellInteraction (({} {} {}), ({} {} {})) to taskBlock {}", x0, x1, x2, x0 + offsets[c][0], x1 + offsets[c][1], x2 + offsets[c][2], roundRobinCounter);
                 }
             }
         }

@@ -74,9 +74,11 @@ namespace sim::physics::force {
             }
 
             //generate tasks: for all distinct cell neighbours
+
+            /*
             std::vector<std::vector<std::pair<unsigned long, unsigned long>>> alternativeTaskGroups = particleContainer.generateDistinctAlternativeCellNeighbours();
             for(auto& task : alternativeTaskGroups){
-                #pragma omp parallel for schedule(static,1000)
+                #pragma omp parallel for schedule(static,100)
                 //#pragma omp parallel for reduction (+:force) readonly(alternativeTaskGroups, cells, force, x, eps, sig, m, type, fpairFun)
 
                 for(auto [indexC0, indexC1] : task) {
@@ -90,9 +92,9 @@ namespace sim::physics::force {
                     }
                 }
 
-            }
+            }*/
 
-            /*
+
             std::vector<std::vector<std::vector<std::pair<unsigned long, unsigned long>>>> task_groups =
                     particleContainer.generateDistinctCellNeighbours();
             for(auto& task_group : task_groups) {
@@ -109,7 +111,7 @@ namespace sim::physics::force {
                         }
                     }
                 }
-            }*/
+            }
         });
     }
 } // force

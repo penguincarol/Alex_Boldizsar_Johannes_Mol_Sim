@@ -1201,7 +1201,7 @@ public:
     void initAlternativeTaskModel();
 private:
     std::vector<std::vector<std::vector<std::pair<unsigned long, unsigned long>>>> taskModelCache;
-    std::vector<std::vector<std::pair<unsigned long, unsigned long>>> alternativeTaskModelCache;
+    std::vector<std::pair<unsigned long, unsigned long>> alternativeTaskModelCache;
 
 
 public:
@@ -1217,7 +1217,7 @@ public:
      * */
     const std::vector<std::vector<std::vector<std::pair<unsigned long, unsigned long>>>>& generateDistinctCellNeighbours();
 
-    const std::vector<std::vector<std::pair<unsigned long, unsigned long>>>& generateDistinctAlternativeCellNeighbours();
+    const std::vector<std::pair<unsigned long, unsigned long>>& generateDistinctAlternativeCellNeighbours();
 
 
     /**

@@ -6,7 +6,6 @@
     <TimeStepSize>0.0005</TimeStepSize>
     <ForceCalculation>
         <LennardJones Epsilon="1.0" Sigma="1.0"/>
-        <EnableGrav X="0.0" Y="-12.44" Z="0.0"/>
         <EnableLC>
             <BoundaryBox>
                 <BoxSize X="60.0" Y="60.0" Z="60.0"/>

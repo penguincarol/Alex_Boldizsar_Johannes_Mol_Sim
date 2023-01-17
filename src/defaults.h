@@ -42,4 +42,4 @@ constexpr bool default_enable_grav{false};
 constexpr bool default_enable_omp{false};
 constexpr bool default_enable_membrane{false};
 constexpr bool default_enable_membrane_pull{false};
-constexpr unsigned long max_thread_tasks{1000};
+constexpr unsigned long max_thread_tasks{100};

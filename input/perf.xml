@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Simulation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
             xsi:noNamespaceSchemaLocation="../input/XMLFormat.xsd">
-    <EndTime>20.0</EndTime>
+    <EndTime>4.0</EndTime>
     <TimeStepSize>0.0005</TimeStepSize>
     <ForceCalculation>
         <LennardJones Epsilon="1.0" Sigma="1.0"/>
         <EnableLC>
             <BoundaryBox>
-                <BoxSize X="102.0" Y="12.0" Z="12.0"/>
+                <BoxSize X="12.0" Y="12.0" Z="12.0"/>
                 <Front>Periodic</Front>
                 <Rear>Periodic</Rear>
                 <Left>Periodic</Left>
@@ -17,6 +17,7 @@
             </BoundaryBox>
             <CutoffRadius>2.5</CutoffRadius>
         </EnableLC>
+        <EnableOMP/>
     </ForceCalculation>
     <AverageBrownianMotion>0.01</AverageBrownianMotion>
     <Dimensions>3</Dimensions>
@@ -31,13 +32,6 @@
                     <Cuboid Spacing="1.0" Mass="1.0">
                         <Position X="1.0" Y="1.0" Z="1.0"/>
                         <Velocity X="15.0" Y="0.0" Z="0.0"/>
-                        <Dimensions X="10" Y="10" Z="10"/>
-                    </Cuboid>
-                </Shape>
-                <Shape>
-                    <Cuboid Spacing="1.0" Mass="1.0">
-                        <Position X="91.0" Y="1.0" Z="1.0"/>
-                        <Velocity X="-15.0" Y="0.0" Z="0.0"/>
                         <Dimensions X="10" Y="10" Z="10"/>
                     </Cuboid>
                 </Shape>

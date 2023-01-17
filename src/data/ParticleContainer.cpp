@@ -589,14 +589,12 @@ void ParticleContainer::initAlternativeTaskModel(){
         for(unsigned int x0 = lowerBounds[c][0]; x0 < upperBounds[c][0]; x0+=2){
             for(unsigned int x1 = lowerBounds[c][1]; x1 < upperBounds[c][1]; x1+=2){
                 for(unsigned int x2 = lowerBounds[c][2]; x2 < upperBounds[c][2]; x2+=2){
-                    independentTasksBlock.emplace_back(cellIndexFromCellCoordinatesFast(x0, x1, x2),
+                    alternativeTaskModelCache.emplace_back(cellIndexFromCellCoordinatesFast(x0, x1, x2),
                                                        cellIndexFromCellCoordinatesFast(x0 + offsets[c][0], x1 + offsets[c][1], x2 + offsets[c][2]));
                     SPDLOG_TRACE("Added CellInteraction (({} {} {}), ({} {} {})) to taskBlock {}", x0, x1, x2, x0 + offsets[c][0], x1 + offsets[c][1], x2 + offsets[c][2], 2*c+0);
                 }
             }
         }
-
-        alternativeTaskModelCache.emplace_back(independentTasksBlock);
 
         //yes you could cut this down to 2 lines with another helper array but this more verbose version seems much easier to understand
         std::vector<std::pair<unsigned long, unsigned long>> independentTasksBlock2{maxThreads};
@@ -604,13 +602,13 @@ void ParticleContainer::initAlternativeTaskModel(){
         for(unsigned int x0 = lowerBounds[c][0] + 1; x0 < upperBounds[c][0]; x0+=2){
             for(unsigned int x1 = lowerBounds[c][1] + 1; x1 < upperBounds[c][1]; x1+=2){
                 for(unsigned int x2 = lowerBounds[c][2] + 1; x2 < upperBounds[c][2]; x2+=2){
-                    independentTasksBlock2.emplace_back(cellIndexFromCellCoordinatesFast(x0, x1, x2),
+                    alternativeTaskModelCache.emplace_back(cellIndexFromCellCoordinatesFast(x0, x1, x2),
                                                        cellIndexFromCellCoordinatesFast(x0 + offsets[c][0], x1 + offsets[c][1], x2 + offsets[c][2]));
                     SPDLOG_TRACE("Added CellInteraction (({} {} {}), ({} {} {})) to taskBlock {}", x0, x1, x2, x0 + offsets[c][0], x1 + offsets[c][1], x2 + offsets[c][2], 2*c+1);
                 }
             }
         }
-        alternativeTaskModelCache.emplace_back(independentTasksBlock2);
+
 
     }
 }
@@ -880,7 +878,7 @@ const std::vector<std::vector<std::vector<std::pair<unsigned long, unsigned long
     return taskModelCache;
 }
 
-const std::vector<std::vector<std::pair<unsigned long, unsigned long>>>& ParticleContainer::generateDistinctAlternativeCellNeighbours(){
+const std::vector<std::pair<unsigned long, unsigned long>>& ParticleContainer::generateDistinctAlternativeCellNeighbours(){
     return alternativeTaskModelCache;
 }
 

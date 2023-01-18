@@ -54,7 +54,7 @@ namespace sim::physics::bounds {
 
         /**Calculates the force for this halo side in periodic bounds.*/
         void calcHaloForce() final {
-            this->particleContainer.template forAllPairsHaloSide<S>(forceHandler.getFastForceFunction());
+            this->particleContainer.template forAllPairsHaloSide<S>(forceHandler.getForceFunction());
         }
     };
 } // sim::physics::bounds

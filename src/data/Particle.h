@@ -77,8 +77,6 @@ public:
 
     Particle(const Eigen::Vector3d &x_arg, const Eigen::Vector3d &v_arg, double m_arg, int type, int id);
 
-    Particle(Particle &&other);
-
     virtual ~Particle();
 
     const Eigen::Vector3d &getX() const;

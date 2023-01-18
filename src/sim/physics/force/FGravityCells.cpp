@@ -25,39 +25,25 @@ namespace sim::physics::force {
     }
 
     void FGravityCells::operator()() {
-        particleContainer.forAllCells([this](std::vector<double> &force,
-                                             std::vector<double> &oldForce,
-                                             std::vector<double> &x,
-                                             std::vector<double> &v,
-                                             std::vector<double> &m,
-                                             std::vector<int> &type,
+        particleContainer.forAllCells([this](std::vector<Particle> &particles,
                                              unsigned long count,
-                                             std::vector<unsigned long> &cellItems,
-                                             std::vector<double> &eps,
-                                             std::vector<double> &sig){
+                                             std::vector<unsigned long> &cellItems){
             for(unsigned long indexX = 0; indexX < cellItems.size(); indexX++){
                 for(unsigned long indexY = indexX + 1; indexY < cellItems.size(); indexY++) {
                     unsigned long indexI = cellItems[indexX];
                     unsigned long indexJ = cellItems[indexY];
-                    this->fpairFun(force, x, eps, sig, m, type, indexI, indexJ);
+                    this->pairFun(particles[indexI], particles[indexJ]);
                 }
             }
         });
 
-        particleContainer.forAllDistinctCellNeighbours([this](std::vector<double> &force,
-                                                              std::vector<double> &oldForce,
-                                                              std::vector<double> &x,
-                                                              std::vector<double> &v,
-                                                              std::vector<double> &m,
-                                                              std::vector<int> &type,
+        particleContainer.forAllDistinctCellNeighbours([this](std::vector<Particle> &particles,
                                                               unsigned long count,
                                                               std::vector<unsigned long> &cell0Items,
-                                                              std::vector<unsigned long> &cell1Items,
-                                                              std::vector<double> &eps,
-                                                              std::vector<double> &sig){
+                                                              std::vector<unsigned long> &cell1Items){
             for(unsigned long indexI : cell0Items){
                 for(unsigned long indexJ : cell1Items) {
-                    this->fpairFun(force, x, eps, sig, m, type, indexI, indexJ);
+                    this->pairFun(particles[indexI], particles[indexJ]);
                 }
             }
         });

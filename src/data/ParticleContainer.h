@@ -273,16 +273,9 @@ private:
      * Resulting padding size is: padding_count * 3 * 8 in Byte.
      * E.G. with padding count 6 => padded by 144 Byte
      * */
-    static constexpr unsigned long padding_count = 6;
+    static constexpr unsigned long padding_count = 1;
     double root6_of_2;
-    std::vector<double> force;
-    std::vector<double> oldForce;
-    std::vector<double> x;
-    std::vector<double> v;
-    std::vector<double> m;
-    std::vector<double> eps;
-    std::vector<double> sig;
-    std::vector<int> type;
+    std::vector<Particle> particles;
     unsigned long count;
     /**contains particle IDs*/
     std::vector<unsigned long> activeParticles;
@@ -310,54 +303,6 @@ private:
      * Moves particle at index indexSrc to index indexDst. id is the ID of the particle to be moved.
      * */
     void move(unsigned long indexSrc, unsigned indexDst, unsigned long id);
-
-    /**
-     * Stores a particle from @param p into the internal data at @param index
-     * */
-    void storeParticle(Particle &p, unsigned long index);
-
-    /**
-     * Stores a particle from @param p into the provided buffers.
-     * @param p Particle that is to be stored
-     * @param index index of the particle (in case of vectors that store 3-dimensional data (e.g. X, F, V, ...) index needs to get multiplied by 3)
-     * @param force
-     * @param oldForce
-     * @param x
-     * @param v
-     * @param m
-     * @param type
-     * @param e epsilon vector
-     * @param s sigma vector
-     */
-    static void
-    storeParticle(Particle &p, unsigned long index, std::vector<double> &force, std::vector<double> &oldForce,
-                  std::vector<double> &x, std::vector<double> &v, std::vector<double> &m,
-                  std::vector<int> &type, std::vector<double> &e, std::vector<double> &s);
-
-    /**
-     * Loads a particle from the internal data into @param p at @param index
-     * @param p
-     * @param index
-     */
-    void loadParticle(Particle &p, unsigned long index);
-
-    /**
-     * Loads a particle from the provided buffer into @param p at @param index
-     * @param p
-     * @param index
-     * @param force
-     * @param oldForce
-     * @param x
-     * @param v
-     * @param m
-     * @param type
-     * @param e
-     * @param s
-     */
-    static void
-    loadParticle(Particle &p, unsigned long index, std::vector<double> &force, std::vector<double> &oldForce,
-                 std::vector<double> &x, std::vector<double> &v, std::vector<double> &m,
-                 std::vector<int> &type, std::vector<double> &e, std::vector<double> &s);
 
 public:
     /**
@@ -460,15 +405,12 @@ s    * right corresponding cell-vector
                 for (unsigned int x_2 = 0; x_2 < gridDimensions[2]; x_2++) {
                     auto &cell_indices_left = cells[cellIndexFromCellCoordinates({0, x_1, x_2})];
                     for (auto i: cell_indices_left) {
-                        if (x[3 * i + 0] != 0 && x[3 * i + 0] < maxBorderDistance) {
-                            Particle p_real;
-                            loadParticle(p_real, i);
-                            auto &pos = p_real.getX();
+                        Particle& p_real = particles[i];
+                        auto& x = p_real.getX();
+                        if (x[0] != 0 && x[0] < maxBorderDistance) {
                             Particle p_halo = p_real;
-                            p_halo.setX({(-1) * pos[0], pos[1], pos[2]});
-
+                            p_halo.setX({(-1) * x[0], x[1], x[2]});
                             function(p_real, p_halo);
-                            storeParticle(p_real, i);
                         }
                     }
                 }
@@ -479,15 +421,13 @@ s    * right corresponding cell-vector
                 for (unsigned int x_2 = 0; x_2 < gridDimensions[2]; x_2++) {
                     auto &cell_indices_right = cells[cellIndexFromCellCoordinates({gridDimensions[0] - 1, x_1, x_2})];
                     for (auto i: cell_indices_right) {
-                        double distance = domainSize[0] - x[3 * i + 0];
+                        Particle& p_real = particles[i];
+                        auto& x = p_real.getX();
+                        double distance = domainSize[0] - x[0];
                         if (distance < maxBorderDistance) {
-                            Particle p_real;
-                            loadParticle(p_real, i);
                             Particle p_halo = p_real;
                             p_halo.add_to_X({distance * 2, 0, 0});
-
                             function(p_real, p_halo);
-                            storeParticle(p_real, i);
                         }
                     }
                 }
@@ -498,15 +438,13 @@ s    * right corresponding cell-vector
                 for (unsigned int x_2 = 0; x_2 < gridDimensions[2]; x_2++) {
                     auto &cell_indices_bot = cells[cellIndexFromCellCoordinates({x_0, 0, x_2})];
                     for (auto i: cell_indices_bot) {
-                        if (x[3 * i + 1] != 0 && x[3 * i + 1] < maxBorderDistance) {
-                            Particle p_real;
-                            loadParticle(p_real, i);
-                            auto &pos = p_real.getX();
+                        Particle& p_real = particles[i];
+                        auto& x = p_real.getX();
+                        if (x[1] != 0 && x[1] < maxBorderDistance) {
                             Particle p_halo = p_real;
-                            p_halo.setX({pos[0], (-1) * pos[1], pos[2]});
+                            p_halo.setX({x[0], (-1) * x[1], x[2]});
 
                             function(p_real, p_halo);
-                            storeParticle(p_real, i);
                         }
                     }
                 }
@@ -517,15 +455,14 @@ s    * right corresponding cell-vector
                 for (unsigned int x_2 = 0; x_2 < gridDimensions[2]; x_2++) {
                     auto &cell_indices_top = cells[cellIndexFromCellCoordinates({x_0, gridDimensions[1] - 1, x_2})];
                     for (auto i: cell_indices_top) {
-                        double distance = domainSize[1] - x[3 * i + 1];
+                        Particle& p_real = particles[i];
+                        auto& x = p_real.getX();
+                        double distance = domainSize[1] - x[1];
                         if (distance < maxBorderDistance) {
-                            Particle p_real;
-                            loadParticle(p_real, i);
                             Particle p_halo = p_real;
                             p_halo.add_to_X({0, distance * 2, 0});
 
                             function(p_real, p_halo);
-                            storeParticle(p_real, i);
                         }
                     }
                 }
@@ -536,15 +473,13 @@ s    * right corresponding cell-vector
                 for (unsigned int x_1 = 0; x_1 < gridDimensions[1]; x_1++) {
                     auto &cell_indices_front = cells[cellIndexFromCellCoordinates({x_0, x_1, 0})];
                     for (auto i: cell_indices_front) {
-                        if (x[3 * i + 2] != 0 && x[3 * i + 2] < maxBorderDistance) {
-                            Particle p_real;
-                            loadParticle(p_real, i);
-                            auto &pos = p_real.getX();
+                        Particle& p_real = particles[i];
+                        auto& x = p_real.getX();
+                        if (x[2] != 0 && x[2] < maxBorderDistance) {
                             Particle p_halo = p_real;
-                            p_halo.setX({pos[0], pos[1], (-1) * pos[2]});
+                            p_halo.setX({x[0], x[1], (-1) * x[2]});
 
                             function(p_real, p_halo);
-                            storeParticle(p_real, i);
                         }
                     }
                 }
@@ -555,15 +490,14 @@ s    * right corresponding cell-vector
                 for (unsigned int x_1 = 0; x_1 < gridDimensions[1]; x_1++) {
                     auto &cell_indices_back = cells[cellIndexFromCellCoordinates({x_0, x_1, gridDimensions[2] - 1})];
                     for (auto i: cell_indices_back) {
-                        double distance = domainSize[2] - x[3 * i + 2];
+                        Particle& p_real = particles[i];
+                        auto& x = p_real.getX();
+                        double distance = domainSize[2] - x[2];
                         if (distance < maxBorderDistance) {
-                            Particle p_real;
-                            loadParticle(p_real, i);
                             Particle p_halo = p_real;
                             p_halo.add_to_X({0, 0, distance * 2});
 
                             function(p_real, p_halo);
-                            storeParticle(p_real, i);
                         }
                     }
                 }
@@ -585,7 +519,7 @@ s    * right corresponding cell-vector
                     auto &cell_indices_left = cells[cellIndexFromCellCoordinates({0, x_1, x_2})];
                     cell_indices_left.erase(
                             std::remove_if(cell_indices_left.begin(), cell_indices_left.end(), [&](auto i) {
-                                if (x[3 * i + 0] < x_0_min) {
+                                if (particles[i].getX()[0] < x_0_min) {
                                     output.emplace(i);
                                     return true;
                                 }
@@ -602,7 +536,7 @@ s    * right corresponding cell-vector
                     auto &cell_indices_right = cells[cellIndexFromCellCoordinates({gridDimensions[0] - 1, x_1, x_2})];
                     cell_indices_right.erase(
                             std::remove_if(cell_indices_right.begin(), cell_indices_right.end(), [&](auto i) {
-                                if (x[3 * i + 0] > x_0_max) {
+                                if (particles[i].getX()[0] > x_0_max) {
                                     output.emplace(i);
                                     return true;
                                 }
@@ -619,7 +553,7 @@ s    * right corresponding cell-vector
                     auto &cell_indices_bot = cells[cellIndexFromCellCoordinates({x_0, 0, x_2})];
                     cell_indices_bot.erase(
                             std::remove_if(cell_indices_bot.begin(), cell_indices_bot.end(), [&](auto i) {
-                                if (x[3 * i + 1] < x_1_min) {
+                                if (particles[i].getX()[1] < x_1_min) {
                                     output.emplace(i);
                                     return true;
                                 }
@@ -636,7 +570,7 @@ s    * right corresponding cell-vector
                     auto &cell_indices_top = cells[cellIndexFromCellCoordinates({x_0, gridDimensions[1] - 1, x_2})];
                     cell_indices_top.erase(
                             std::remove_if(cell_indices_top.begin(), cell_indices_top.end(), [&](auto i) {
-                                if (x[3 * i + 1] > x_1_max) {
+                                if (particles[i].getX()[1] > x_1_max) {
                                     output.emplace(i);
                                     return true;
                                 }
@@ -653,7 +587,7 @@ s    * right corresponding cell-vector
                     auto &cell_indices_front = cells[cellIndexFromCellCoordinates({x_0, x_1, 0})];
                     cell_indices_front.erase(
                             std::remove_if(cell_indices_front.begin(), cell_indices_front.end(), [&](auto i) {
-                                if (x[3 * i + 2] < x_2_min) {
+                                if (particles[i].getX()[2] < x_2_min) {
                                     output.emplace(i);
                                     return true;
                                 }
@@ -670,7 +604,7 @@ s    * right corresponding cell-vector
                     auto &cell_indices_back = cells[cellIndexFromCellCoordinates({x_0, x_1, gridDimensions[2] - 1})];
                     cell_indices_back.erase(
                             std::remove_if(cell_indices_back.begin(), cell_indices_back.end(), [&](auto i) {
-                                if (x[3 * i + 2] > x_2_max) {
+                                if (particles[i].getX()[2] > x_2_max) {
                                     output.emplace(i);
                                     return true;
                                 }
@@ -698,9 +632,11 @@ s    * right corresponding cell-vector
             // move left to right
             double delta;
             for (auto i: indices) {
-                delta = std::abs(x_0_min - x[3 * i + 0]);
+                auto x = particles[i].getX();
+                delta = std::abs(x_0_min - x[0]);
                 delta = std::min(r_cutoff, delta);
-                x[3 * i + 0] = x_0_max - delta;
+                x[0] = x_0_max - delta;
+                particles[i].setX(x);
                 cells[xToCellCoords(i)].emplace_back(i);
 
             }
@@ -708,45 +644,55 @@ s    * right corresponding cell-vector
             // move right to left
             double delta;
             for (auto i: indices) {
-                delta = std::abs(x[3 * i + 0] - x_0_max);
+                auto x = particles[i].getX();
+                delta = std::abs(x[0] - x_0_max);
                 delta = std::min(r_cutoff, delta);
-                x[3 * i + 0] = x_0_min + delta;
+                x[0] = x_0_min + delta;
+                particles[i].setX(x);
                 cells[xToCellCoords(i)].emplace_back(i);
             }
         } else if constexpr (S == sim::physics::bounds::side::bottom) {
             // move bot to top
             double delta;
             for (auto i: indices) {
-                delta = std::abs(x_1_min - x[3 * i + 1]);
+                auto x = particles[i].getX();
+                delta = std::abs(x_1_min - x[1]);
                 delta = std::min(r_cutoff, delta);
-                x[3 * i + 1] = x_1_max - delta;
+                x[1] = x_1_max - delta;
+                particles[i].setX(x);
                 cells[xToCellCoords(i)].emplace_back(i);
             }
         } else if constexpr (S == sim::physics::bounds::side::top) {
             // move top to bot
             double delta;
             for (auto i: indices) {
-                delta = std::abs(x[3 * i + 1] - x_1_max);
+                auto x = particles[i].getX();
+                delta = std::abs(x[1] - x_1_max);
                 delta = std::min(r_cutoff, delta);
-                x[3 * i + 1] = x_1_min + delta;
+                x[1] = x_1_min + delta;
+                particles[i].setX(x);
                 cells[xToCellCoords(i)].emplace_back(i);
             }
         } else if constexpr (S == sim::physics::bounds::side::front) {
             // move front to rear
             double delta;
             for (auto i: indices) {
-                delta = std::abs(x_2_min - x[3 * i + 2]);
+                auto x = particles[i].getX();
+                delta = std::abs(x_2_min - x[2]);
                 delta = std::min(r_cutoff, delta);
-                x[3 * i + 2] = x_2_max - delta;
+                x[2] = x_2_max - delta;
+                particles[i].setX(x);
                 cells[xToCellCoords(i)].emplace_back(i);
             }
         } else if constexpr (S == sim::physics::bounds::side::rear) {
             // move rear to front
             double delta;
             for (auto i: indices) {
-                delta = std::abs(x[3 * i + 2] - x_2_max);
+                auto x = particles[i].getX();
+                delta = std::abs(x[2] - x_2_max);
                 delta = std::min(r_cutoff, delta);
-                x[3 * i + 2] = x_2_min + delta;
+                x[2] = x_2_min + delta;
+                particles[i].setX(x);
                 cells[xToCellCoords(i)].emplace_back(i);
             }
         }
@@ -759,9 +705,10 @@ private:
      * */
     unsigned int xToCellCoords(unsigned int i) {
         std::array<unsigned int, 3> cellCoordinate = {0, 0, 0};
-        if (x[3 * i] > 0) cellCoordinate[0] = (unsigned int) (x[3 * i] / r_cutoff);
-        if (x[3 * i + 1] > 0) cellCoordinate[1] = (unsigned int) (x[3 * i + 1] / r_cutoff);
-        if (x[3 * i + 2] > 0) cellCoordinate[2] = (unsigned int) (x[3 * i + 2] / r_cutoff);
+        const auto x = particles[i].getX();
+        if (x[0] > 0) cellCoordinate[0] = (unsigned int) (x[0] / r_cutoff);
+        if (x[1] > 0) cellCoordinate[1] = (unsigned int) (x[1] / r_cutoff);
+        if (x[2] > 0) cellCoordinate[2] = (unsigned int) (x[2] / r_cutoff);
         return cellIndexFromCellCoordinates(cellCoordinate);
     }
 
@@ -910,39 +857,11 @@ public:
     std::array<unsigned int, 3> getGridDimensions();
 
     /**
-     * Performs fun once. Provides all internal data to the lambda.
-     * */
-    template<typename F>
-    void runOnDataCell(F fun) {
-        fun(force, oldForce, x, v, m, type, count, cells, eps, sig);
-    }
-
-    /**
      * Runs the function on the internal data
      * */
     template<typename F>
     void runOnData(F fun) {
-        fun(force, oldForce, x, v, m, type, count, eps, sig);
-    }
-
-    /**
-     * Runs function on internal data.
-     * Should be used by forceFunctor acting on Membranes
-     * @tparam F
-     * @param fun
-     */
-    template<typename F>
-    void runOnMembranes(F fun){
-        //I actually believe that you need all those parameters. We can still change that if i am wrong
-        fun(membranes, force, x, count, id_to_index);
-    }
-
-    /**
-     * Runs the function on the internal data, gets activeParticles as additional argument
-     * */
-    template<typename F>
-    void runOnActiveData(F fun) {
-        fun(force, oldForce, x, v, m, type, count, eps, sig, id_to_index, activeParticles);
+        fun(particles, membranes, cells, count, activeParticles, id_to_index);
     }
 
     /**
@@ -950,28 +869,26 @@ public:
      *
      * @param function
      */
-    void forAllParticles(const std::function<void(Particle &)> &function);
-
-    /**
-     * @brief Applies the given function to all Particles
-     *
-     * @param function
-     */
-    void forAllParticles(void(*function)(Particle &));
-
-    /**
-     * @brief Applies given function to all pairs of Particles p_i, p_j, where p_i < p_j once
-     *  (If f(p_i, p_j) got invoked, f(p_j, p_i) won't get invoked with the same i and j)
-     * @param function
-     */
-    void forAllPairs(void (*function)(Particle &p1, Particle &p2));
+     template<typename F>
+    void forAllParticles(F fun) {
+        for (unsigned long id: activeParticles) {
+            fun(particles[id_to_index[id]]);
+        }
+    }
 
     /**
      * @brief Applies given function to all pairs of Particles p_i, p_j, where p_i < p_j once
      *  (If f(p_i, p_j) got invoked, f(p_j, p_i) won't get invoked with the same i and j)
      * @param function
      */
-    void forAllPairs(const std::function<void(Particle &p1, Particle &p2)> &function);
+     template <typename F>
+    void forAllPairs(F fun) {
+        for (u_int32_t i = 0; i < activeSize(); i++) {
+            for (u_int32_t j = i + 1; j < activeSize(); j++) {
+                fun(particles[id_to_index[activeParticles[i]]], particles[id_to_index[activeParticles[j]]]);
+            }
+        }
+    }
 
     /**
      * @brief Applies given function to all pairs of Particles that are connected by a spring due to Membranes
@@ -1008,11 +925,12 @@ public:
                 auto& hCell = cells.getOuter(hcCoords[cIndex][0], hcCoords[cIndex][1], hcCoords[cIndex][2]);
                 for (auto indexI : hCell) {
                     //transform h coords
-                    double x0, x1, x2;
-                    x0 = x[3*indexI + 0]; x1 = x[3*indexI + 1]; x2 = x[3*indexI + 2];
-                    x[3*indexI + 0] += (std::min(hcCoords[cIndex][0], 1u)) * domainSize[0] - (1 - std::min(hcCoords[cIndex][0], 1u)) * domainSize[0];
-                    x[3*indexI + 1] += (std::min(hcCoords[cIndex][1], 1u)) * domainSize[1] - (1 - std::min(hcCoords[cIndex][1], 1u)) * domainSize[1];
-                    x[3*indexI + 2] += (std::min(hcCoords[cIndex][2], 1u)) * domainSize[2] - (1 - std::min(hcCoords[cIndex][2], 1u)) * domainSize[2];
+                    const auto x = particles[indexI].getX();
+                    particles[indexI].add_to_X({
+                        (std::min(hcCoords[cIndex][0], 1u)) * domainSize[0] - (1 - std::min(hcCoords[cIndex][0], 1u)) * domainSize[0],
+                        (std::min(hcCoords[cIndex][1], 1u)) * domainSize[1] - (1 - std::min(hcCoords[cIndex][1], 1u)) * domainSize[1],
+                        (std::min(hcCoords[cIndex][2], 1u)) * domainSize[2] - (1 - std::min(hcCoords[cIndex][2], 1u)) * domainSize[2]
+                    });
 
                     for(int scale0{1}; scale0 < 3; scale0++) {
                         for(int scale1{1}; scale1 < 3; scale1++) {
@@ -1020,14 +938,14 @@ public:
                                 auto& bCell = cells.getOuter(hcCoords[cIndex][0]+bcOffset[cIndex][0]*scale0, hcCoords[cIndex][1]+bcOffset[cIndex][1]*scale1, hcCoords[cIndex][2]+bcOffset[cIndex][2]*scale2);
                                 //apply function
                                 for (auto indexJ : bCell) {
-                                    fun(force, x, eps, sig, m, type, indexI, indexJ);
+                                    fun(particles[indexI], particles[indexJ]);
                                 }
                             }
                         }
                     }
 
                     //write back original value
-                    x[3*indexI + 0] = x0; x[3*indexI + 1] = x1; x[3*indexI + 2] = x2;
+                    particles[indexI].setX(x);
                 }
                 hCell.clear();
             }
@@ -1065,11 +983,12 @@ public:
 
                             for (auto indexI : hCell) {
                                 //transform h coords
-                                double x0, x1, x2;
-                                x0 = x[3*indexI + 0]; x1 = x[3*indexI + 1]; x2 = x[3*indexI + 2];
-                                x[3*indexI + 0] -= domainSize[0] * dirs[0][0];
-                                x[3*indexI + 1] -= domainSize[1] * dirs[0][1];
-                                x[3*indexI + 2] -= domainSize[2] * dirs[0][2];
+                                const auto x = particles[indexI].getX();
+                                particles[indexI].add_to_X({
+                                                                   -domainSize[0] * dirs[0][0],
+                                                                   -domainSize[1] * dirs[0][1],
+                                                                   -domainSize[2] * dirs[0][2]
+                                                           });
 
                                 //go in check direction
                                 for (auto &dir: dirs) {
@@ -1078,7 +997,7 @@ public:
                                             for(int scale2{0}; scale2 < 2; scale2++) {
                                                 auto &bCell = cells.getInnerGlobal(x_0 + dir[0] + dirs[0][0]*scale0, x_1 + dir[1] + dirs[0][1]*scale1, x_2 + dir[2] + dirs[0][2]*scale2);
                                                 for (auto indexJ: bCell) {
-                                                    fun(force, x, eps, sig, m, type, indexI, indexJ);
+                                                    fun(particles[indexI], particles[indexJ]);
                                                 }
                                             }
                                         }
@@ -1086,7 +1005,7 @@ public:
                                 }
 
                                 //write back original value
-                                x[3*indexI + 0] = x0; x[3*indexI + 1] = x1; x[3*indexI + 2] = x2;
+                                particles[indexI].setX(x);
                             }
 
                             hCell.clear();
@@ -1134,24 +1053,25 @@ public:
                         auto& hCell = cells.getOuter(x_0, x_1, x_2);
                             for (auto indexI : hCell) {
                                 //transform h coords
-                                double x0, x1, x2;
-                                x0 = x[3*indexI + 0]; x1 = x[3*indexI + 1]; x2 = x[3*indexI + 2];
-                                x[3*indexI + 0] -= domainSize[0] * dirs[4][0];
-                                x[3*indexI + 1] -= domainSize[1] * dirs[4][1];
-                                x[3*indexI + 2] -= domainSize[2] * dirs[4][2];
+                                const auto x = particles[indexI].getX();
+                                particles[indexI].add_to_X({
+                                                                   -domainSize[0] * dirs[4][0],
+                                                                   -domainSize[1] * dirs[4][1],
+                                                                   -domainSize[2] * dirs[4][2]
+                                                           });
 
                                 //go in check direction
                                 for (int scaleOffset{0}; scaleOffset < 2; scaleOffset++) {
                                     for (auto &dir: dirs) {
                                         auto &bCell = cells.getInnerGlobal(x_0 + dir[0] + scaleOffset * dirs[4][0], x_1 + dir[1] + scaleOffset * dirs[4][1], x_2 + dir[2] + scaleOffset * dirs[4][2]);
                                         for (auto indexJ: bCell) {
-                                            fun(force, x, eps, sig, m, type, indexI, indexJ);
+                                            fun(particles[indexI], particles[indexJ]);
                                         }
                                     }
                                 }
 
                                 //write back original value
-                                x[3*indexI + 0] = x0; x[3*indexI + 1] = x1; x[3*indexI + 2] = x2;
+                                particles[indexI].setX(x);
                             }
 
                             hCell.clear();
@@ -1168,7 +1088,7 @@ public:
     template<typename F>
     void forAllCells(F fun) {
         for (auto &cellItems: cells) {
-            fun(force, oldForce, x, v, m, type, count, cellItems, eps, sig);
+            fun(particles, count, cellItems);
         }
     }
 
@@ -1180,20 +1100,6 @@ public:
     void forAllPairsInSameCell(const std::function<void(Particle &p1, Particle &p2)> &function);
 
     /**
-     * Performs fun on provided data. All lambda args particle container internal data.
-     * Will be applied on every distinct cell pair. (Set-Wise) I.e. {a,b} = {b,a}.
-     * */
-    [[maybe_unused]] [[deprecated]] void forAllDistinctCellPairs(void (*fun)(std::vector<double> &force,
-                                                                             std::vector<double> &oldForce,
-                                                                             std::vector<double> &x,
-                                                                             std::vector<double> &v,
-                                                                             std::vector<double> &m,
-                                                                             std::vector<int> &type,
-                                                                             unsigned long count,
-                                                                             std::vector<unsigned long> &cell0Items,
-                                                                             std::vector<unsigned long> &cell1Items));
-
-    /**
      * Initializes generateDistinctCellNeighbours cache.
      * */
     void initTaskModel();
@@ -1202,7 +1108,6 @@ public:
 private:
     std::vector<std::vector<std::vector<std::pair<unsigned long, unsigned long>>>> taskModelCache;
     std::vector<std::pair<unsigned long, unsigned long>> alternativeTaskModelCache;
-
 
 public:
 
@@ -1218,7 +1123,6 @@ public:
     const std::vector<std::vector<std::vector<std::pair<unsigned long, unsigned long>>>>& generateDistinctCellNeighbours();
 
     const std::vector<std::pair<unsigned long, unsigned long>>& generateDistinctAlternativeCellNeighbours();
-
 
     /**
      * Performs fun on provided data. All lambda args particle container internal data.
@@ -1267,9 +1171,9 @@ public:
             for(unsigned int x0 = lowerBounds[c][0]; x0 < upperBounds[c][0]; x0++){
                 for(unsigned int x1 = lowerBounds[c][1]; x1 < upperBounds[c][1]; x1++){
                     for(unsigned int x2 = lowerBounds[c][2]; x2 < upperBounds[c][2]; x2++){
-                        fun(force, oldForce, x, v, m, type, count,
+                        fun(particles, count,
                             cells[cellIndexFromCellCoordinatesFast(x0, x1, x2)],
-                            cells[cellIndexFromCellCoordinatesFast(x0 + offsets[c][0], x1 + offsets[c][1], x2 + offsets[c][2])], eps, sig);
+                            cells[cellIndexFromCellCoordinatesFast(x0 + offsets[c][0], x1 + offsets[c][1], x2 + offsets[c][2])]);
                         SPDLOG_TRACE("Cell ({} {} {}) interacted with ({} {} {})", x0, x1, x2, x0 + offsets[c][0], x1 + offsets[c][1], x2 + offsets[c][2]);
                     }
                 }

@@ -53,10 +53,14 @@ public:
         if(tm == ThermoMode::normal){
             numberFlowingParticles = pc.activeSize();
         }else{
-            pc.runOnActiveData([&](auto&,auto&,auto&,auto&,std::vector<double> &m,auto&,auto,auto&,auto&,
-                                   std::unordered_map<unsigned long, unsigned long> &id_to_index, auto){
+            particleContainer.runOnData([&](std::vector<Particle>& particles,
+                                            std::vector<Membrane>& membranes,
+                                            ParticleContainer::VectorCoordWrapper& cells,
+                                            unsigned long count,
+                                            std::vector<unsigned long>& activeParticles,
+                                            std::unordered_map<unsigned long, unsigned long> &id_to_index){
                 for(auto [_,a]: id_to_index){
-                    if(m[a] >= 0) numberFlowingParticles++;
+                    if(particles[a].getM() >= 0) numberFlowingParticles++;
                 }
             });
         }

@@ -39,23 +39,16 @@ void Thermostat::notify(){
 
 
 void Thermostat::initializeBrownTemp(double TInit){
-    pc.runOnActiveData([&](std::vector<double>& force,
-                            std::vector<double>& oldForce,
-                            std::vector<double>& x,
-                            std::vector<double>& v,
-                            std::vector<double>& m,
-                            std::vector<int>& type,
-                            unsigned long count,
-                            std::vector<double>& eps,
-                            std::vector<double>& sig,
-                            std::unordered_map<unsigned long, unsigned long> &id_to_index,
-                            auto&){
-                                for(auto [_,a]: id_to_index){
-                                    auto brown{maxwellBoltzmannDistributedVelocity(std::sqrt(TInit/m[a]), dims)};
-                                    //std::array<double, 3> brown{0.,0.,0.};
-                                    v[3*a] += brown[0];
-                                    v[3*a+1] += brown[1];
-                                    v[3*a+2] += brown[2];
-                                }
-                            });
+    pc.runOnData([&](std::vector<Particle>& particles,
+                                    std::vector<Membrane>& membranes,
+                                    ParticleContainer::VectorCoordWrapper& cells,
+                                    unsigned long count,
+                                    std::vector<unsigned long>& activeParticles,
+                                    std::unordered_map<unsigned long, unsigned long> &id_to_index){
+        for(auto [_,a]: id_to_index){
+            auto brown{maxwellBoltzmannDistributedVelocity(std::sqrt(TInit/particles[a].getM()), dims)};
+            //std::array<double, 3> brown{0.,0.,0.};
+            particles[a].add_to_V({brown[0],brown[1],brown[2]});
+        }
+    });
 }

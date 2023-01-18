@@ -47,45 +47,45 @@ namespace sim::physics::force {
 
     void FMembrane::operator()() {
         //fun(membranes, force, x, count);
-        particleContainer.runOnMembranes([](std::vector<Membrane>& membranes,
-                                        std::vector<double>& force,
-                                        std::vector<double>& x,
-                                        unsigned long count,
-                                        std::unordered_map<unsigned long, unsigned long> &id_to_index){
-            for(Membrane& membrane:membranes){
-                std::vector<std::vector<unsigned long>>& grid = membrane.getMembrNodes();
-                if(grid.size() <= 0){continue;}
-
-
-                //actually trying to avoid code duplication this time
-                const size_t num_cases{4};
-                std::array<size_t, num_cases> lowerboundsI = {0,0,0,0};
-                std::array<size_t, num_cases> lowerboundsJ = {0,0,0,1};
-
-                std::array<size_t, num_cases> upperboundsI = {grid.size()-1, grid.size(), grid.size()-1, grid.size()-1};
-                std::array<size_t, num_cases> upperboundsJ = {grid[0].size(), grid[0].size()-1, grid[0].size()-1, grid[0].size()};
-
-                using a = std::array<int, 2>;
-                std::array<a, num_cases> offsets = {a{1,0}, //horizontal
-                                            a{0,1}, //vertical
-                                            a{1,1}, //top right
-                                            a{1,-1} //bottom right
-                                            };
-
-                for(size_t _case = 0; _case < num_cases; _case++){
-
-                    for(size_t i = lowerboundsI[_case]; i < upperboundsI[_case]; i++){
-                        for(size_t j = lowerboundsJ[_case]; j < upperboundsJ[_case]; j++){
-                            addSpringForce(i,j, i+ offsets[_case][0], j + offsets[_case][1],
-                                                                      membrane, force, x, id_to_index);
-
-                        }
-                    }
-
-                }
-
-            }
-        });
+//        particleContainer.runOnMembranes([](std::vector<Membrane>& membranes,
+//                                        std::vector<double>& force,
+//                                        std::vector<double>& x,
+//                                        unsigned long count,
+//                                        std::unordered_map<unsigned long, unsigned long> &id_to_index){
+//            for(Membrane& membrane:membranes){
+//                std::vector<std::vector<unsigned long>>& grid = membrane.getMembrNodes();
+//                if(grid.size() <= 0){continue;}
+//
+//
+//                //actually trying to avoid code duplication this time
+//                const size_t num_cases{4};
+//                std::array<size_t, num_cases> lowerboundsI = {0,0,0,0};
+//                std::array<size_t, num_cases> lowerboundsJ = {0,0,0,1};
+//
+//                std::array<size_t, num_cases> upperboundsI = {grid.size()-1, grid.size(), grid.size()-1, grid.size()-1};
+//                std::array<size_t, num_cases> upperboundsJ = {grid[0].size(), grid[0].size()-1, grid[0].size()-1, grid[0].size()};
+//
+//                using a = std::array<int, 2>;
+//                std::array<a, num_cases> offsets = {a{1,0}, //horizontal
+//                                            a{0,1}, //vertical
+//                                            a{1,1}, //top right
+//                                            a{1,-1} //bottom right
+//                                            };
+//
+//                for(size_t _case = 0; _case < num_cases; _case++){
+//
+//                    for(size_t i = lowerboundsI[_case]; i < upperboundsI[_case]; i++){
+//                        for(size_t j = lowerboundsJ[_case]; j < upperboundsJ[_case]; j++){
+//                            addSpringForce(i,j, i+ offsets[_case][0], j + offsets[_case][1],
+//                                                                      membrane, force, x, id_to_index);
+//
+//                        }
+//                    }
+//
+//                }
+//
+//            }
+//        }); TODO impl me
     }
 
     void FMembrane::setParticleContainer(ParticleContainer &pc) {

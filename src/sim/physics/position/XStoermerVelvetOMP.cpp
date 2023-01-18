@@ -7,24 +7,20 @@
 namespace sim::physics::position {
     void XStoermerVelvetOMP::operator()() {
         double delta_t = this->delta_t;
-        particleContainer.runOnActiveData([delta_t](std::vector<double> &force,
-                                       std::vector<double> &oldForce,
-                                       std::vector<double> &x,
-                                       std::vector<double> &v,
-                                       std::vector<double> &m,
-                                       auto,
-                                       unsigned long count,
-                                       auto, auto,std::unordered_map<unsigned long, unsigned long> &id_to_index,
-                                       std::vector<unsigned long> &activeParticles) {
+        particleContainer.runOnData([&](std::vector<Particle>& particles,
+                                        std::vector<Membrane>& membranes,
+                                        ParticleContainer::VectorCoordWrapper& cells,
+                                        unsigned long count,
+                                        std::vector<unsigned long>& activeParticles,
+                                        std::unordered_map<unsigned long, unsigned long> &id_to_index){
             unsigned long index;
-#pragma omp parallel default(none) shared(force, oldForce, x, v, m, count, delta_t, activeParticles, id_to_index) private(index)
+            #pragma omp parallel default(none) shared(particles, delta_t, activeParticles, id_to_index) private(index)
             {
-#pragma omp for
+                #pragma omp for
                 for (unsigned long & activeParticle : activeParticles) {
                     index = id_to_index[activeParticle];
-                    x[index*3 + 0] += delta_t * v[index*3 + 0] + delta_t * delta_t * oldForce[index*3 + 0] / (2 * m[index]);
-                    x[index*3 + 1] += delta_t * v[index*3 + 1] + delta_t * delta_t * oldForce[index*3 + 1] / (2 * m[index]);
-                    x[index*3 + 2] += delta_t * v[index*3 + 2] + delta_t * delta_t * oldForce[index*3 + 2] / (2 * m[index]);
+                    Particle& p = particles[index];
+                    p.add_to_F(delta_t * p.getV() + delta_t*delta_t*p.getOldF()/(2*p.getM()));
                 }
             }
         });

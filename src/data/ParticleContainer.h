@@ -1168,12 +1168,12 @@ public:
      * */
     template<typename F>
     void forAllCells(F fun) {
-        size_t ps = 0;
+        //size_t ps = 0;
         for (auto &cellItems: cells) {
-            ps += cellItems.size()*cellItems.size();
+            //ps += cellItems.size()*cellItems.size();
             fun(force, oldForce, x, v, m, type, count, cellItems, eps, sig);
         }
-        std::cout << "Inter: " << ps << std::endl;
+        //std::cout << "Inter: " << ps << std::endl;
     }
 
     /**

@@ -43,47 +43,29 @@ namespace sim::physics::force {
                                             ParticleContainer::VectorCoordWrapper& cells,
                                             std::vector<double> &eps,
                                             std::vector<double> &sig){
-            size_t interactions{0};
-            #pragma omp parallel for reduction(+:interactions)
+            //size_t interactions{0};
+            #pragma omp parallel for //reduction(+:interactions)
             for(size_t cellIndex=0; cellIndex < cells.size(); cellIndex++){
                 auto& cell = cells[cellIndex];
                 for(size_t i = 0; i < cell.size(); i++){
                     for(size_t j = i+1; j < cell.size(); j++){
-                        interactions++;
+                        //interactions++;
                         this->fpairFun(force, x, eps, sig, m, type, i, j);
                     }
                 }
             }
             #pragma omp barrier
-            std::cout<<"Inter Cells with themselves: " << interactions << std::endl;
-        });
-
-        size_t interactionsDistinctCells_st{0};
-        particleContainer.forAllDistinctCellNeighbours([this, &interactionsDistinctCells_st](std::vector<double> &force,
-                                                              std::vector<double> &oldForce,
-                                                              std::vector<double> &x,
-                                                              std::vector<double> &v,
-                                                              std::vector<double> &m,
-                                                              std::vector<int> &type,
-                                                              unsigned long count,
-                                                              std::vector<unsigned long> &cell0Items,
-                                                              std::vector<unsigned long> &cell1Items,
-                                                              std::vector<double> &eps,
-                                                              std::vector<double> &sig){
-            for(unsigned long indexI : cell0Items){
-                for(unsigned long indexJ : cell1Items) {
-                    //this->fpairFun(force, x, eps, sig, m, type, indexI, indexJ);
-                    interactionsDistinctCells_st++;
-                }
-            }
+            //std::cout<<"Inter Cells with themselves: " << interactions << std::endl;
         });
 
         size_t interactionsDistinctCells{0};
-
         std::vector<std::vector<std::vector<std::pair<unsigned long, unsigned long>>>> taskBlocks = particleContainer.generateDistinctCellNeighbours();
         for(auto& tasks: taskBlocks){
             //the previous taskBlock needs to be finished before the next taskBlock can start>
-            #pragma omp parallel for reduction(+:interactionsDistinctCells)
+            if(tasks.size() != omp_get_max_threads()) {
+                io::output::loggers::simulation->debug("Task creation for force calculation didn't result in appropriate amount of tasks");
+            }
+            #pragma omp parallel for schedule(static,1) reduction(+:interactionsDistinctCells)
             for(auto& task: tasks){
                 for(auto &[cellIndexI, cellIndexJ]:task){
                     size_t cII= cellIndexI;     //openMP problems with the other variant
@@ -110,6 +92,27 @@ namespace sim::physics::force {
             }
             #pragma omp barrier
         }
+
+
+        size_t interactionsDistinctCells_st{0};
+        particleContainer.forAllDistinctCellNeighbours([this, &interactionsDistinctCells_st](std::vector<double> &force,
+                                                                                             std::vector<double> &oldForce,
+                                                                                             std::vector<double> &x,
+                                                                                             std::vector<double> &v,
+                                                                                             std::vector<double> &m,
+                                                                                             std::vector<int> &type,
+                                                                                             unsigned long count,
+                                                                                             std::vector<unsigned long> &cell0Items,
+                                                                                             std::vector<unsigned long> &cell1Items,
+                                                                                             std::vector<double> &eps,
+                                                                                             std::vector<double> &sig){
+            for(unsigned long indexI : cell0Items){
+                for(unsigned long indexJ : cell1Items) {
+                    //this->fpairFun(force, x, eps, sig, m, type, indexI, indexJ);
+                    interactionsDistinctCells_st++;
+                }
+            }
+        });
 
         std::cout<<"Inter between cells old version: " << interactionsDistinctCells_st << " new version: "<< interactionsDistinctCells << std::endl;
     }

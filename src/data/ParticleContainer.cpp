@@ -652,18 +652,24 @@ void ParticleContainer::initTaskModel() {
                                                   b{0,0,0}, b{0,0,1}, b{0,0,0}, b{0,0,1},
                                                   b{0,0,0}, b{0,1,0}, b{0,0,1}, b{0,1,1}};
 
+    std::array<unsigned int, 3> additionalIncrement{0,0,0};
     for(auto c = 0; c < numCases; c++){ //pun intended
+        if(offsets[c][0] == 1){additionalIncrement = std::array<unsigned int, 3>{1,0,0};}
+        else if(offsets[c][1] == 1){additionalIncrement = std::array<unsigned int, 3>{0,1,0};}
+        else{additionalIncrement = std::array<unsigned int, 3>{0,0,1};}
+
+
         //const std::vector<std::vector<std::vector<std::pair<unsigned long, unsigned long>>>>& generateDistinctCellNeighbours()
         const unsigned long maxThreads{static_cast<unsigned long>(omp_get_max_threads())};
-        constexpr unsigned long roundRobinMolUpdateThreshold = 250'000;
+        constexpr unsigned long roundRobinMolUpdateThreshold = 2'000'000;
         size_t roundRobinAccumulator{0};
         size_t roundRobinIndex{0};
 
         std::vector<std::vector<std::pair<unsigned long, unsigned long>>> independentTasksBlock{maxThreads, std::vector<std::pair<unsigned long, unsigned long>>{}};
 
-        for(unsigned int x0 = lowerBounds[c][0]; x0 < upperBounds[c][0]; x0+=2){
-            for(unsigned int x1 = lowerBounds[c][1]; x1 < upperBounds[c][1]; x1++){
-                for(unsigned int x2 = lowerBounds[c][2]; x2 < upperBounds[c][2]; x2++){
+        for(unsigned int x0 = lowerBounds[c][0]; x0 < upperBounds[c][0]; x0+= 1 + additionalIncrement[0]){
+            for(unsigned int x1 = lowerBounds[c][1]; x1 < upperBounds[c][1]; x1+= 1 + additionalIncrement[1]){
+                for(unsigned int x2 = lowerBounds[c][2]; x2 < upperBounds[c][2]; x2+= 1 + additionalIncrement[2]){
 
                     auto cell1 = cellIndexFromCellCoordinatesFast(x0, x1, x2);
                     auto cell2 = cellIndexFromCellCoordinatesFast(x0 + offsets[c][0], x1 + offsets[c][1], x2 + offsets[c][2]);
@@ -687,13 +693,13 @@ void ParticleContainer::initTaskModel() {
         std::vector<std::vector<std::pair<unsigned long, unsigned long>>> independentTasksBlock2{maxThreads, std::vector<std::pair<unsigned long, unsigned long>>{}};
         roundRobinIndex = 0;
         roundRobinAccumulator = 0;
-        for(unsigned int x0 = lowerBounds[c][0] + 1; x0 < upperBounds[c][0]; x0+=2){
-            for(unsigned int x1 = lowerBounds[c][1]; x1 < upperBounds[c][1]; x1++){
-                for(unsigned int x2 = lowerBounds[c][2]; x2 < upperBounds[c][2]; x2++){
+        for(unsigned int x0 = lowerBounds[c][0] ; x0 < upperBounds[c][0]; x0+= 1 + additionalIncrement[0]){
+            for(unsigned int x1 = lowerBounds[c][1]; x1 < upperBounds[c][1]; x1+= 1 + additionalIncrement[1]){
+                for(unsigned int x2 = lowerBounds[c][2]; x2 < upperBounds[c][2]; x2+= 1 + additionalIncrement[2]){
                     auto cell1 = cellIndexFromCellCoordinatesFast(x0, x1, x2);
                     auto cell2 = cellIndexFromCellCoordinatesFast(x0 + offsets[c][0], x1 + offsets[c][1], x2 + offsets[c][2]);
                     independentTasksBlock2[roundRobinIndex].emplace_back(cell1,cell2);
-                    roundRobinAccumulator += cells[cell1].size() * cells[cell2].size();
+                    roundRobinAccumulator += cells[cell1].size() * (cells[cell2].size()-1)/2;
                     SPDLOG_TRACE("Added CellInteraction (({} {} {}), ({} {} {})) to taskBlock {} and job {}", x0, x1, x2, x0 + offsets[c][0], x1 + offsets[c][1], x2 + offsets[c][2], 2*c+1, roundRobinIndex);
                     //std::cout<< "Added CellInteraction (("<< x0<<" "<<x1<<" "<< x2 << ") ("<< x0 + offsets[c][0] << " " << x1 + offsets[c][1] <<" "<< x2 + offsets[c][2]<< ")) to taskBlock " << 2*c+1<< " and job " << roundRobinIndex << std::endl;
 

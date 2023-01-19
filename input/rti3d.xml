@@ -18,6 +18,7 @@
             </BoundaryBox>
             <CutoffRadius>3.6</CutoffRadius>
         </EnableLC>
+        <EnableOMP/>
     </ForceCalculation>
     <AverageBrownianMotion>0.0</AverageBrownianMotion>
     <Dimensions>3</Dimensions>

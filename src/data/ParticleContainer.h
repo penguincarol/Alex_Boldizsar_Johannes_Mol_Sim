@@ -12,6 +12,7 @@
 #include <iterator>
 #include <functional>
 #include <unordered_set>
+#include <iostream>
 
 /**
  * @brief wrapper class that stores and manages access to the particles
@@ -1167,9 +1168,12 @@ public:
      * */
     template<typename F>
     void forAllCells(F fun) {
+        size_t ps = 0;
         for (auto &cellItems: cells) {
+            ps += cellItems.size()*cellItems.size();
             fun(force, oldForce, x, v, m, type, count, cellItems, eps, sig);
         }
+        std::cout << "Inter: " << ps << std::endl;
     }
 
     /**
@@ -1201,7 +1205,7 @@ public:
     void initAlternativeTaskModel();
 private:
     std::vector<std::vector<std::vector<std::pair<unsigned long, unsigned long>>>> taskModelCache;
-    std::vector<std::pair<unsigned long, unsigned long>> alternativeTaskModelCache;
+    std::vector<std::vector<std::pair<unsigned long, unsigned long>>> alternativeTaskModelCache;
 
 
 public:
@@ -1217,7 +1221,7 @@ public:
      * */
     const std::vector<std::vector<std::vector<std::pair<unsigned long, unsigned long>>>>& generateDistinctCellNeighbours();
 
-    const std::vector<std::pair<unsigned long, unsigned long>>& generateDistinctAlternativeCellNeighbours();
+    const std::vector<std::vector<std::pair<unsigned long, unsigned long>>>& generateDistinctAlternativeCellNeighbours();
 
 
     /**

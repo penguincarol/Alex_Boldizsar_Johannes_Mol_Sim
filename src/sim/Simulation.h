@@ -177,11 +177,13 @@ namespace sim {
 
                 iteration++;
                 if (iteration % 10 == 0) {
-                    ioWrapper.writeParticlesVTK(particleContainer, outputFolder, outputBaseName, iteration);
+                    //ioWrapper.writeParticlesVTK(particleContainer, outputFolder, outputBaseName, iteration);
                 }
-                if (iteration % 1000 == 0) {
-                    if(checkpointingEnable) ioWrapper.writeCheckpoint(particleContainer, config, iteration, current_time);
+                if (iteration % 100 == 0)
                     io::output::loggers::simulation->info("Progress: {:03.2f}%", current_time / end_time * 100);
+                if (iteration % 1000 == 0) {
+                    //if(checkpointingEnable) ioWrapper.writeCheckpoint(particleContainer, config, iteration, current_time);
+
                     io::output::loggers::simulation->trace("Iteration {} finished.", iteration);
                 }
 //                if (iteration % 10000 == 0) {

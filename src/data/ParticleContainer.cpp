@@ -693,9 +693,9 @@ void ParticleContainer::initTaskModel() {
         std::vector<std::vector<std::pair<unsigned long, unsigned long>>> independentTasksBlock2{maxThreads, std::vector<std::pair<unsigned long, unsigned long>>{}};
         roundRobinIndex = 0;
         roundRobinAccumulator = 0;
-        for(unsigned int x0 = lowerBounds[c][0] ; x0 < upperBounds[c][0]; x0+= 1 + additionalIncrement[0]){
-            for(unsigned int x1 = lowerBounds[c][1]; x1 < upperBounds[c][1]; x1+= 1 + additionalIncrement[1]){
-                for(unsigned int x2 = lowerBounds[c][2]; x2 < upperBounds[c][2]; x2+= 1 + additionalIncrement[2]){
+        for(unsigned int x0 = lowerBounds[c][0] + additionalIncrement[0] ; x0 < upperBounds[c][0]; x0+= 1 + additionalIncrement[0]){
+            for(unsigned int x1 = lowerBounds[c][1] + additionalIncrement[1]; x1 < upperBounds[c][1]; x1+= 1 + additionalIncrement[1]){
+                for(unsigned int x2 = lowerBounds[c][2] + additionalIncrement[2]; x2 < upperBounds[c][2]; x2+= 1 + additionalIncrement[2]){
                     auto cell1 = cellIndexFromCellCoordinatesFast(x0, x1, x2);
                     auto cell2 = cellIndexFromCellCoordinatesFast(x0 + offsets[c][0], x1 + offsets[c][1], x2 + offsets[c][2]);
                     independentTasksBlock2[roundRobinIndex].emplace_back(cell1,cell2);

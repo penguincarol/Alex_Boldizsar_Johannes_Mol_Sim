@@ -9,6 +9,112 @@
 
 namespace sim::physics::force {
     /**
+     * @brief Calculates the using the Linked-Cell algorithm. The linked cell algorithm has a much better runtime than the All-Pairs algorithm (see plot)
+     * \image html plot.png width=800px
+     * \image latex plot.eps "Runtime comparison of All-Pairs algorithm with Linked-Cell algorithm" width=5cm
+     */
+    void FLennardJonesCellsOMP::operator()() {
+        /*
+        particleContainer.forAllCells([this](std::vector<double> &force,
+                                             std::vector<double> &oldForce,
+                                             std::vector<double> &x,
+                                             std::vector<double> &v,
+                                             std::vector<double> &m,
+                                             std::vector<int> &type,
+                                             unsigned long count,
+                                             std::vector<unsigned long> &cellItems,
+                                             std::vector<double> &eps,
+                                             std::vector<double> &sig){
+            for(unsigned long indexX = 0; indexX < cellItems.size(); indexX++){
+                for(unsigned long indexY = indexX + 1; indexY < cellItems.size(); indexY++) {
+                    unsigned long indexI = cellItems[indexX];
+                    unsigned long indexJ = cellItems[indexY];
+                    this->fpairFun(force, x, eps, sig, m, type, indexI, indexJ);
+                }
+            }
+        });*/
+        particleContainer.runOnDataCell([&](std::vector<double> &force,
+                                            std::vector<double> &oldForce,
+                                            std::vector<double> &x,
+                                            std::vector<double> &v,
+                                            std::vector<double> &m,
+                                            std::vector<int> &type,
+                                            unsigned long count,
+                                            ParticleContainer::VectorCoordWrapper& cells,
+                                            std::vector<double> &eps,
+                                            std::vector<double> &sig){
+            size_t interactions{0};
+            #pragma omp parallel for reduction(+:interactions)
+            for(size_t cellIndex=0; cellIndex < cells.size(); cellIndex++){
+                auto& cell = cells[cellIndex];
+                for(size_t i = 0; i < cell.size(); i++){
+                    for(size_t j = i+1; j < cell.size(); j++){
+                        interactions++;
+                        this->fpairFun(force, x, eps, sig, m, type, i, j);
+                    }
+                }
+            }
+            #pragma omp barrier
+            std::cout<<"Inter Cells with themselves: " << interactions << std::endl;
+        });
+
+        size_t interactionsDistinctCells_st{0};
+        particleContainer.forAllDistinctCellNeighbours([this, &interactionsDistinctCells_st](std::vector<double> &force,
+                                                              std::vector<double> &oldForce,
+                                                              std::vector<double> &x,
+                                                              std::vector<double> &v,
+                                                              std::vector<double> &m,
+                                                              std::vector<int> &type,
+                                                              unsigned long count,
+                                                              std::vector<unsigned long> &cell0Items,
+                                                              std::vector<unsigned long> &cell1Items,
+                                                              std::vector<double> &eps,
+                                                              std::vector<double> &sig){
+            for(unsigned long indexI : cell0Items){
+                for(unsigned long indexJ : cell1Items) {
+                    //this->fpairFun(force, x, eps, sig, m, type, indexI, indexJ);
+                    interactionsDistinctCells_st++;
+                }
+            }
+        });
+
+        size_t interactionsDistinctCells{0};
+
+        std::vector<std::vector<std::vector<std::pair<unsigned long, unsigned long>>>> taskBlocks = particleContainer.generateDistinctCellNeighbours();
+        for(auto& tasks: taskBlocks){
+            //the previous taskBlock needs to be finished before the next taskBlock can start>
+            #pragma omp parallel for reduction(+:interactionsDistinctCells)
+            for(auto& task: tasks){
+                for(auto &[cellIndexI, cellIndexJ]:task){
+                    size_t cII= cellIndexI;     //openMP problems with the other variant
+                    size_t cIJ= cellIndexJ;
+
+                    particleContainer.runOnDataCell([&](std::vector<double> &force,
+                                                        std::vector<double> &oldForce,
+                                                        std::vector<double> &x,
+                                                        std::vector<double> &v,
+                                                        std::vector<double> &m,
+                                                        std::vector<int> &type,
+                                                        unsigned long count,
+                                                        ParticleContainer::VectorCoordWrapper& cells,
+                                                        std::vector<double> &eps,
+                                                        std::vector<double> &sig){
+                        for(auto pIndexI : cells[cII]){
+                            for(auto pIndexJ : cells[cIJ]){
+                                this->fpairFun(force, x, eps, sig, m, type, pIndexI, pIndexJ);
+                                interactionsDistinctCells++;
+                            }
+                        }
+                    });
+                }
+            }
+            #pragma omp barrier
+        }
+
+        std::cout<<"Inter between cells old version: " << interactionsDistinctCells_st << " new version: "<< interactionsDistinctCells << std::endl;
+    }
+
+    /**
      * @brief Returns the force function used
      *
      * @return pair_fun_t&
@@ -36,157 +142,4 @@ namespace sim::physics::force {
     fpair_fun_t FLennardJonesCellsOMP::getFastForceFunction() {
         return fpairFun;
     }
-
-    void FLennardJonesCellsOMP::operator()() {
-        particleContainer.runOnDataCell([&](std::vector<double> &force,
-                                            std::vector<double> &oldForce,
-                                            std::vector<double> &x,
-                                            std::vector<double> &v,
-                                            std::vector<double> &m,
-                                            std::vector<int> &t,
-                                            unsigned long count,
-                                            ParticleContainer::VectorCoordWrapper &cells,
-                                            std::vector<double> &eps,
-                                            std::vector<double> &sig) {
-            using cell_ptr = std::vector<unsigned long> *;
-            std::vector<std::vector<cell_ptr>> tasks;
-            size_t buffer_size = 0;
-            auto fpairFun = this->fpairFun;
-            cell_ptr c_ptr;
-            static const double rt3_2 = std::pow(2, 1 / 3);
-            const std::vector<std::vector<std::vector<std::pair<unsigned long, unsigned long>>>>& taskGroups = particleContainer.generateDistinctCellNeighbours();
-            const std::vector<std::vector<std::pair<unsigned long, unsigned long>>>& alternativeTaskGroups = particleContainer.generateDistinctAlternativeCellNeighbours();
-            double *f = force.data();
-            size_t size = force.size();
-            double sigma, sigma2, sigma6, epsilon, d0, d1, d2, dsqr, l2NInvSquare, fac0, l2NInvPow6, fac1_sum1, fac1;
-            unsigned long indexI;
-            unsigned long indexJ;
-            unsigned long indexII;
-            unsigned long indexJJ;
-            unsigned long indexX;
-            unsigned long indexY;
-            unsigned long indexZ;
-            unsigned long indexC0;
-            unsigned long indexC1;
-
-            size_t maxThreads = omp_get_max_threads();
-            std::vector<size_t> interactions;
-            interactions.clear();
-            tasks.clear();
-            interactions.resize(maxThreads,0);
-            tasks.resize(maxThreads);
-            size_t rrIndex = 0;
-            size_t rrAcc = 0;
-            size_t rrThreshold = 500'000;
-
-            size_t ps = 0;
-            for (auto &cell: cells) {
-                size_t indexMin = 0;
-                size_t last_count = interactions[indexMin];
-                for(size_t i = 1; i < maxThreads; i++) {
-                    if(interactions[i] <= last_count) {
-                        last_count = interactions[i];
-                        indexMin = i;
-                    }
-                }
-
-                tasks[indexMin].emplace_back(&cell);
-                interactions[indexMin] += cell.size()*(cell.size()-1)/2;
-                ps += cell.size()*(cell.size()-1)/2;
-            }
-            std::cout << "Interactions: " << ps << " Yeet " << omp_get_num_threads() << std::endl;
-
-            for(size_t i= 0; i < maxThreads; i++) {
-                size_t inter=0;
-                for(auto & j : tasks[i]) {
-                    inter += j->size() * (j->size()-1)/2;
-                }
-                std::cout << "Task " << i << ": " << inter << std::endl;
-            }
-            #pragma omp parallel default(none) shared(force, x, m, t, eps, sig, tasks, fpairFun) private(c_ptr, indexI, indexJ,indexII,indexJJ,indexX,indexY)
-            //#pragma omp parallel default(none) shared(size, force, x, v, m, t, count, cells, eps, sig, tasks, buffer_size, fpairFun, rt3_2, taskGroups) private(c_ptr, sigma, sigma2, sigma6, epsilon, d0, d1, d2, dsqr, l2NInvSquare, fac0, l2NInvPow6, fac1_sum1, fac1, indexI, indexJ,indexII,indexJJ,indexX,indexY,indexC0,indexC1,indexZ)
-            {
-                #pragma omp for
-                for (indexII = 0; indexII < omp_get_max_threads(); indexII++) {
-                    for (indexJJ = 0; indexJJ < tasks[indexII].size(); indexJJ++) {
-                        c_ptr = tasks[indexII][indexJJ];
-                        for (indexX = 0; indexX < c_ptr->size(); indexX++) {
-                            for (indexY = indexX + 1; indexY < c_ptr->size(); indexY++) {
-                                indexI = (*c_ptr)[indexX];
-                                indexJ = (*c_ptr)[indexY];
-                                fpairFun(force, x, eps, sig, m, t, indexI, indexJ);
-                            }
-                        }
-                    }
-                }
-
-                #pragma omp barrier
-            }
-
-//            for(indexX = 0; indexX < 26; indexX++) { //task group index: indexX
-//                #pragma omp parallel default(none) shared(force, x, m, t, cells, eps, sig, fpairFun, taskGroups) private(indexI, indexJ,indexII,indexJJ,indexX,indexY,indexC0,indexC1,indexZ)
-//                {
-//                    #pragma omp for schedule(static,1)
-//                    for (indexY = 0; indexY < taskGroups[indexX].size(); indexY++) { //task index: indexY - each thread gets one task
-//                        for (indexZ = 0; indexZ < taskGroups[indexX][indexY].size(); indexZ++) { //pair index: indexII
-//                            indexC0 = taskGroups[indexX][indexY][indexZ].first;
-//                            indexC1 = taskGroups[indexX][indexY][indexZ].second;
-//                            for (indexII = 0; indexII < cells[indexC0].size(); indexII++) {
-//                                for (indexJJ = 0; indexJJ < cells[indexC1].size(); indexJJ++) {
-//                                    indexI = cells[indexC0][indexII];
-//                                    indexJ = cells[indexC1][indexJJ];
-//                                    fpairFun(force, x, eps, sig, m, t, indexI, indexJ);
-//                                }
-//                            }
-//                        }
-//                    }
-//                    #pragma omp barrier
-//                }
-//            }
-
-            #pragma omp parallel default(none) shared(size, force, x, v, m, t, count, cells, eps, sig, tasks, buffer_size, fpairFun, rt3_2, taskGroups,alternativeTaskGroups) private(c_ptr, sigma, sigma2, sigma6, epsilon, d0, d1, d2, dsqr, l2NInvSquare, fac0, l2NInvPow6, fac1_sum1, fac1, indexI, indexJ,indexII,indexJJ,indexX,indexY,indexC0,indexC1,indexZ) reduction(+:f[:size])
-            {
-                //generate tasks: for all distinct cell neighbours
-                #pragma omp for
-                for(indexX = 0; indexX < omp_get_max_threads(); indexX++) {
-                    for(indexY = 0; indexY < alternativeTaskGroups[indexX].size(); indexY++){
-                        indexC0 = alternativeTaskGroups[indexX][indexY].first;
-                        indexC1 = alternativeTaskGroups[indexX][indexY].second;
-                        for (indexII = 0; indexII < cells[indexC0].size(); indexII++) {
-                            for (indexJJ = 0; indexJJ < cells[indexC1].size(); indexJJ++) {
-                                indexI = cells[indexC0][indexII];
-                                indexJ = cells[indexC1][indexJJ];
-                                sigma = (sig[indexI] + sig[indexJ]) / 2;
-                                sigma2 = sigma * sigma;
-                                sigma6 = sigma2 * sigma2 * sigma2;
-                                epsilon = std::sqrt(eps[indexI] * eps[indexJ]); // TODO this can be cached
-                                d0 = x[indexI * 3 + 0] - x[indexJ * 3 + 0];
-                                d1 = x[indexI * 3 + 1] - x[indexJ * 3 + 1];
-                                d2 = x[indexI * 3 + 2] - x[indexJ * 3 + 2];
-                                dsqr = d0 * d0 + d1 * d1 + d2 * d2;
-                                //check if is membrane -> need to skip attractive forces
-                                if (t[indexI] & 0x80000000 || t[indexJ] & 0x80000000) {
-                                    if (dsqr >= rt3_2 * sigma2) continue;
-                                }
-
-                                l2NInvSquare = 1 / (dsqr);
-                                fac0 = 24 * epsilon * l2NInvSquare;
-                                l2NInvPow6 = l2NInvSquare * l2NInvSquare * l2NInvSquare;
-                                fac1_sum1 = sigma6 * l2NInvPow6;
-                                fac1 = (fac1_sum1) - 2 * (fac1_sum1 * fac1_sum1);
-
-                                f[indexI * 3 + 0] -= fac0 * fac1 * d0;
-                                f[indexI * 3 + 1] -= fac0 * fac1 * d1;
-                                f[indexI * 3 + 2] -= fac0 * fac1 * d2;
-                                f[indexJ * 3 + 0] += fac0 * fac1 * d0;
-                                f[indexJ * 3 + 1] += fac0 * fac1 * d1;
-                                f[indexJ * 3 + 2] += fac0 * fac1 * d2;
-                            }
-                        }
-                    }
-
-                }
-            }
-        });
-    }
-} // force
+} // sim::physics::force

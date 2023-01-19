@@ -25,8 +25,9 @@ namespace sim::physics::position {
     PhysicsFunctorBase *
     generatePosition(type t, double st, double et, double dt, double eps, double sig, ParticleContainer &pc) {
         switch (t) {
-            case stoermerVelvet: return new XStoermerVelvet(st, et ,dt, eps, sig, pc);
-            case stoermerVelvetOMP: return new XStoermerVelvetOMP(st, et ,dt, eps, sig, pc);
+            //case stoermerVelvet: return new XStoermerVelvet(st, et ,dt, eps, sig, pc);
+            //case stoermerVelvetOMP: return new XStoermerVelvetOMP(st, et ,dt, eps, sig, pc);
+            case stoermerVelvetOMP: return new XStoermerVelvet(st, et ,dt, eps, sig, pc);
             default: return new XStoermerVelvet(st, et ,dt, eps, sig, pc);
         }
     }

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Simulation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="../input/XMLFormat.xsd">
+    <OutputFile OutputFileName="debugInput"/>
+    <EndTime>100.0</EndTime>
+    <TimeStepSize>0.0005</TimeStepSize>
+    <ForceCalculation>
+        <LennardJones Epsilon="1.0" Sigma="1.0"/>
+        <EnableLC>
+            <BoundaryBox>
+                <BoxSize X="8.9" Y="8.9" Z="8.9"/>
+                <Front>Periodic</Front>
+                <Rear>Periodic</Rear>
+                <Left>Periodic</Left>
+                <Right>Periodic</Right>
+                <Top>Reflecting</Top>
+                <Bottom>Reflecting</Bottom>
+            </BoundaryBox>
+            <CutoffRadius>4.5</CutoffRadius>
+        </EnableLC>
+        <EnableOMP/>
+    </ForceCalculation>
+    <AverageBrownianMotion>0.0</AverageBrownianMotion>
+    <Dimensions>3</Dimensions>
+    <Thermostat>
+        <T_Init>40</T_Init>
+        <N_Term>1000</N_Term>
+    </Thermostat>
+    <FileType>
+        <Input>
+            <ShapeList>
+                <Shape>
+                    <Cuboid Spacing="0.5" Mass="0.1" Sigma="0.6" Epsilon="0.5">
+                        <Position X="0.5" Y="0.5" Z="0.5"/>
+                        <Velocity X="0.0" Y="0.0" Z="0.0"/>
+                        <Dimensions X="16" Y="16" Z="16"/>
+                    </Cuboid>
+                </Shape>
+            </ShapeList>
+        </Input>
+    </FileType>
+</Simulation>

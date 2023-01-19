@@ -124,18 +124,25 @@ namespace sim::physics::force {
                 #pragma omp barrier
             }
 
-//            #pragma omp parallel default(none) shared(size, force, x, v, m, t, count, cells, eps, sig, tasks, buffer_size, fpairFun, rt3_2, taskGroups,alternativeTaskGroups) private(c_ptr, sigma, sigma2, sigma6, epsilon, d0, d1, d2, dsqr, l2NInvSquare, fac0, l2NInvPow6, fac1_sum1, fac1, indexI, indexJ,indexII,indexJJ,indexX,indexY,indexC0,indexC1,indexZ) reduction(+:f[:size])
-//            {
-//                //generate tasks: for all distinct cell neighbours
-//                #pragma omp for
-//                for(indexX = 0; indexX < omp_get_max_threads(); indexX++) {
-//                    for(indexY = 0; indexY < alternativeTaskGroups[indexX].size(); indexY++){
-//                        indexC0 = alternativeTaskGroups[indexX][indexY].first;
-//                        indexC1 = alternativeTaskGroups[indexX][indexY].second;
-//                        for (indexII = 0; indexII < cells[indexC0].size(); indexII++) {
-//                            for (indexJJ = 0; indexJJ < cells[indexC1].size(); indexJJ++) {
-//                                indexI = cells[indexC0][indexII];
-//                                indexJ = cells[indexC1][indexJJ];
+//            #pragma omp parallel \
+//                default(none) \
+//                shared(size, x, t, cells, eps, sig,alternativeTaskGroups) \
+//                private(sigma, sigma2, sigma6, epsilon, d0, d1, d2, dsqr, l2NInvSquare, \
+//                        fac0, l2NInvPow6, fac1_sum1, fac1, indexI, indexJ,indexII,indexJJ,indexY,indexC0,indexC1) \
+//                firstprivate(indexX, rt3_2) \
+//                reduction(+:f[:size])
+            {
+                //generate tasks: for all distinct cell neighbours
+                //#pragma omp for
+                for(indexX = 0; indexX < omp_get_max_threads(); indexX++) {
+                    for(indexY = 0; indexY < alternativeTaskGroups[indexX].size(); indexY++){
+                        indexC0 = alternativeTaskGroups[indexX][indexY].first;
+                        indexC1 = alternativeTaskGroups[indexX][indexY].second;
+                        for (indexII = 0; indexII < cells[indexC0].size(); indexII++) {
+                            for (indexJJ = 0; indexJJ < cells[indexC1].size(); indexJJ++) {
+                                indexI = cells[indexC0][indexII];
+                                indexJ = cells[indexC1][indexJJ];
+                                fpairFun(force, x, eps, sig, m, t, indexI, indexJ);
 //                                sigma = (sig[indexI] + sig[indexJ]) / 2;
 //                                sigma2 = sigma * sigma;
 //                                sigma6 = sigma2 * sigma2 * sigma2;
@@ -161,29 +168,37 @@ namespace sim::physics::force {
 //                                f[indexJ * 3 + 0] += fac0 * fac1 * d0;
 //                                f[indexJ * 3 + 1] += fac0 * fac1 * d1;
 //                                f[indexJ * 3 + 2] += fac0 * fac1 * d2;
+                            }
+                        }
+                    }
+
+                }
+            }
+            {
+//            for(indexX = 0; indexX < 26; indexX++) { //task group index: indexX
+//                #pragma omp parallel default(none) \
+//                shared(force, x, m, t, cells, eps, sig, fpairFun, taskGroups) \
+//                private(indexI, indexJ,indexII,indexJJ,indexX,indexC0,indexC1,indexZ) \
+//                firstprivate(maxThreads, indexY)
+//                {
+//                    #pragma omp for schedule(static,1)
+//                    for (indexY = 0; indexY < maxThreads; indexY++) { //task index: indexY - each thread gets one task
+//                        for (indexZ = 0; indexZ < taskGroups[indexX][indexY].size(); indexZ++) {
+//                            indexC0 = taskGroups[indexX][indexY][indexZ].first;
+//                            indexC1 = taskGroups[indexX][indexY][indexZ].second;
+//                            for (indexII = 0; indexII < cells[indexC0].size(); indexII++) {
+//                                for (indexJJ = 0; indexJJ < cells[indexC1].size(); indexJJ++) {
+//                                    indexI = cells[indexC0][indexII];
+//                                    indexJ = cells[indexC1][indexJJ];
+//                                    fpairFun(force, x, eps, sig, m, t, indexI, indexJ);
+//                                }
 //                            }
 //                        }
 //                    }
 //
+//                    #pragma omp barrier
 //                }
 //            }
-        });
-
-        particleContainer.forAllDistinctCellNeighbours([this](std::vector<double> &force,
-                                                              std::vector<double> &oldForce,
-                                                              std::vector<double> &x,
-                                                              std::vector<double> &v,
-                                                              std::vector<double> &m,
-                                                              std::vector<int> &type,
-                                                              unsigned long count,
-                                                              std::vector<unsigned long> &cell0Items,
-                                                              std::vector<unsigned long> &cell1Items,
-                                                              std::vector<double> &eps,
-                                                              std::vector<double> &sig){
-            for(unsigned long indexI : cell0Items){
-                for(unsigned long indexJ : cell1Items) {
-                    this->fpairFun(force, x, eps, sig, m, type, indexI, indexJ);
-                }
             }
         });
     }

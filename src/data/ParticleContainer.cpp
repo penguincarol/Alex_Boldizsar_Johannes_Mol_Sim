@@ -590,8 +590,8 @@ void ParticleContainer::initAlternativeTaskModel(){
         size_t roundRobinAccumulator{0};
         size_t roundRobinIndex{0};
         for(unsigned int x0 = lowerBounds[c][0]; x0 < upperBounds[c][0]; x0+=2){
-            for(unsigned int x1 = lowerBounds[c][1]; x1 < upperBounds[c][1]; x1+=2){
-                for(unsigned int x2 = lowerBounds[c][2]; x2 < upperBounds[c][2]; x2+=2){
+            for(unsigned int x1 = lowerBounds[c][1]; x1 < upperBounds[c][1]; x1+=1){
+                for(unsigned int x2 = lowerBounds[c][2]; x2 < upperBounds[c][2]; x2+=1){
                     auto cell1 = cellIndexFromCellCoordinatesFast(x0, x1, x2);
                     auto cell2 = cellIndexFromCellCoordinatesFast(x0 + offsets[c][0], x1 + offsets[c][1], x2 + offsets[c][2]);
                     alternativeTaskModelCache[roundRobinIndex].emplace_back(cell1,cell2);
@@ -608,8 +608,8 @@ void ParticleContainer::initAlternativeTaskModel(){
 
         //yes you could cut this down to 2 lines with another helper array but this more verbose version seems much easier to understand
         for(unsigned int x0 = lowerBounds[c][0] + 1; x0 < upperBounds[c][0]; x0+=2){
-            for(unsigned int x1 = lowerBounds[c][1] + 1; x1 < upperBounds[c][1]; x1+=2){
-                for(unsigned int x2 = lowerBounds[c][2] + 1; x2 < upperBounds[c][2]; x2+=2){
+            for(unsigned int x1 = lowerBounds[c][1]; x1 < upperBounds[c][1]; x1+=1){
+                for(unsigned int x2 = lowerBounds[c][2]; x2 < upperBounds[c][2]; x2+=1){
                     auto cell1 = cellIndexFromCellCoordinatesFast(x0, x1, x2);
                     auto cell2 = cellIndexFromCellCoordinatesFast(x0 + offsets[c][0], x1 + offsets[c][1], x2 + offsets[c][2]);
                     alternativeTaskModelCache[roundRobinIndex].emplace_back(cell1,cell2);
@@ -660,10 +660,9 @@ void ParticleContainer::initTaskModel() {
         size_t roundRobinIndex{0};
 
         std::vector<std::vector<std::pair<unsigned long, unsigned long>>> independentTasksBlock{maxThreads, std::vector<std::pair<unsigned long, unsigned long>>{}};
-
         for(unsigned int x0 = lowerBounds[c][0]; x0 < upperBounds[c][0]; x0+=2){
-            for(unsigned int x1 = lowerBounds[c][1]; x1 < upperBounds[c][1]; x1+=2){
-                for(unsigned int x2 = lowerBounds[c][2]; x2 < upperBounds[c][2]; x2+=2){
+            for(unsigned int x1 = lowerBounds[c][1]; x1 < upperBounds[c][1]; x1+=1){
+                for(unsigned int x2 = lowerBounds[c][2]; x2 < upperBounds[c][2]; x2+=1){
 
                     auto cell1 = cellIndexFromCellCoordinatesFast(x0, x1, x2);
                     auto cell2 = cellIndexFromCellCoordinatesFast(x0 + offsets[c][0], x1 + offsets[c][1], x2 + offsets[c][2]);
@@ -686,8 +685,8 @@ void ParticleContainer::initTaskModel() {
         roundRobinIndex = 0;
         roundRobinAccumulator = 0;
         for(unsigned int x0 = lowerBounds[c][0] + 1; x0 < upperBounds[c][0]; x0+=2){
-            for(unsigned int x1 = lowerBounds[c][1] + 1; x1 < upperBounds[c][1]; x1+=2){
-                for(unsigned int x2 = lowerBounds[c][2] + 1; x2 < upperBounds[c][2]; x2+=2){
+            for(unsigned int x1 = lowerBounds[c][1] + 1; x1 < upperBounds[c][1]; x1+=1){
+                for(unsigned int x2 = lowerBounds[c][2] + 1; x2 < upperBounds[c][2]; x2+=1){
                     auto cell1 = cellIndexFromCellCoordinatesFast(x0, x1, x2);
                     auto cell2 = cellIndexFromCellCoordinatesFast(x0 + offsets[c][0], x1 + offsets[c][1], x2 + offsets[c][2]);
                     independentTasksBlock2[roundRobinIndex].emplace_back(cell1,cell2);

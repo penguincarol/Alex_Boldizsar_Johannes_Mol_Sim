@@ -235,7 +235,7 @@ void ParticleContainer::updateCells() {
         this->cells[cellIndexFromCellCoordinates(cellCoordinate)].emplace_back(id);
     } // now cells contain ID of particle -> need sort particles and replace ID in cell with index
 
-    if(!false) return;
+    if(!eOMP) return;
 
     const unsigned long cellCount = cells.size();
     unsigned long vecIndex = 0;

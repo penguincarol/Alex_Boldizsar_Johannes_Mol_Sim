@@ -593,22 +593,40 @@ void ParticleContainer::initAlternativeTaskModel(){
 
     for(auto c = 0; c < numCases; c++){ //pun intended
 
+        #ifdef TASK_ROUND_ROBIN
         constexpr unsigned long roundRobinMolUpdateThreshold = 1'000'000;
         size_t roundRobinAccumulator{0};
-        size_t roundRobinIndex{0};
+        #else
+        std::vector<size_t> interactions;
+        interactions.resize(maxThreads);
+        #endif
+        size_t nextIndex{0};
+
         for(unsigned int x0 = lowerBounds[c][0]; x0 < upperBounds[c][0]; x0++){
             for(unsigned int x1 = lowerBounds[c][1]; x1 < upperBounds[c][1]; x1++){
                 for(unsigned int x2 = lowerBounds[c][2]; x2 < upperBounds[c][2]; x2++){
                     auto cell1 = cellIndexFromCellCoordinatesFast(x0, x1, x2);
                     auto cell2 = cellIndexFromCellCoordinatesFast(x0 + offsets[c][0], x1 + offsets[c][1], x2 + offsets[c][2]);
-                    alternativeTaskModelCache[roundRobinIndex].emplace_back(cell1,cell2);
-                    roundRobinAccumulator += cells[cell1].size() * cells[cell2].size();
+                    alternativeTaskModelCache[nextIndex].emplace_back(cell1,cell2);
+                    SPDLOG_TRACE("Added CellInteraction (({} {} {}), ({} {} {})) to taskBlock {} ", x0, x1, x2, x0 + offsets[c][0], x1 + offsets[c][1], x2 + offsets[c][2], 2*c+0);
 
+                    #ifdef TASK_ROUND_ROBIN
+                    roundRobinAccumulator += cells[cell1].size() * cells[cell2].size();
                     if(roundRobinAccumulator >= roundRobinMolUpdateThreshold){
-                        roundRobinIndex = (roundRobinIndex+1)%maxThreads;
+                        nextIndex = (nextIndex+1)%maxThreads;
                         roundRobinAccumulator = 0;
                     }
-                    SPDLOG_TRACE("Added CellInteraction (({} {} {}), ({} {} {})) to taskBlock {} ", x0, x1, x2, x0 + offsets[c][0], x1 + offsets[c][1], x2 + offsets[c][2], 2*c+0);
+                    #else
+                    interactions[nextIndex] += cells[cell1].size()*cells[cell2].size();
+                    nextIndex = 0;
+                    size_t last_count = interactions[nextIndex];
+                    for(size_t i = 1; i < maxThreads; i++){
+                        if(interactions[i] <= last_count){
+                            last_count = interactions[i];
+                            nextIndex = i;
+                        }
+                    }
+                    #endif
                 }
             }
         }
@@ -651,9 +669,15 @@ void ParticleContainer::initTaskModel() {
 
         //const std::vector<std::vector<std::vector<std::pair<unsigned long, unsigned long>>>>& generateDistinctCellNeighbours()
         const unsigned long maxThreads{static_cast<unsigned long>(omp_get_max_threads())};
-        constexpr unsigned long roundRobinMolUpdateThreshold = 2'000'000;
+
+        #ifdef TASK_ROUND_ROBIN
+        constexpr unsigned long roundRobinMolUpdateThreshold = 1'000'000;
         size_t roundRobinAccumulator{0};
-        size_t roundRobinIndex{0};
+        #else
+        std::vector<size_t> interactions;
+        interactions.resize(maxThreads);
+        #endif
+        size_t nextIndex{0};
 
         std::vector<std::vector<std::pair<unsigned long, unsigned long>>> independentTasksBlock{maxThreads, std::vector<std::pair<unsigned long, unsigned long>>{}};
 
@@ -663,15 +687,27 @@ void ParticleContainer::initTaskModel() {
 
                     auto cell1 = cellIndexFromCellCoordinatesFast(x0, x1, x2);
                     auto cell2 = cellIndexFromCellCoordinatesFast(x0 + offsets[c][0], x1 + offsets[c][1], x2 + offsets[c][2]);
-                    independentTasksBlock[roundRobinIndex].emplace_back(cell1,cell2);
-                    roundRobinAccumulator += cells[cell1].size() * (cells[cell2].size()-1)/2;
+                    independentTasksBlock[nextIndex].emplace_back(cell1,cell2);
                     SPDLOG_TRACE("Added CellInteraction (({} {} {}), ({} {} {})) to taskBlock {} and job {} ", x0, x1, x2, x0 + offsets[c][0], x1 + offsets[c][1], x2 + offsets[c][2], 2*c+0, roundRobinIndex);
                     //std::cout<< "Added CellInteraction (("<< x0<<" "<<x1<<" "<< x2 << ") ("<< x0 + offsets[c][0] << " " << x1 + offsets[c][1] <<" "<< x2 + offsets[c][2]<< ")) to taskBlock " << 2*c+0<< " and job " << roundRobinIndex << std::endl;
 
+                    #ifdef TASK_ROUND_ROBIN
+                    roundRobinAccumulator += cells[cell1].size() * cells[cell2].size();
+
                     if(roundRobinAccumulator >= roundRobinMolUpdateThreshold){
-                        roundRobinIndex = (roundRobinIndex+1)%maxThreads;
+                        nextIndex = (nextIndex+1)%maxThreads;
                         roundRobinAccumulator = 0;
                     }
+                    #else
+                    nextIndex = 0;
+                    size_t last_count = interactions[nextIndex];
+                    for(size_t i = 1; i < maxThreads; i++){
+                        if(interactions[i] <= last_count){
+                            last_count = interactions[i];
+                            nextIndex = i;
+                        }
+                    }
+                    #endif
 
                 }
             }
@@ -681,23 +717,40 @@ void ParticleContainer::initTaskModel() {
 
         //yes you could cut this down to 2 lines with another helper array but this more verbose version seems much easier to understand
         std::vector<std::vector<std::pair<unsigned long, unsigned long>>> independentTasksBlock2{maxThreads, std::vector<std::pair<unsigned long, unsigned long>>{}};
-        roundRobinIndex = 0;
+
+        #ifdef TASK_ROUND_ROBIN
+        nextIndex = 0;
         roundRobinAccumulator = 0;
+        #else
+        interactions.clear();
+        interactions.resize(maxThreads);
+        #endif
         for(unsigned int x0 = lowerBounds[c][0] + additionalIncrement[0] ; x0 < upperBounds[c][0]; x0+= 1 + additionalIncrement[0]){
             for(unsigned int x1 = lowerBounds[c][1] + additionalIncrement[1]; x1 < upperBounds[c][1]; x1+= 1 + additionalIncrement[1]){
                 for(unsigned int x2 = lowerBounds[c][2] + additionalIncrement[2]; x2 < upperBounds[c][2]; x2+= 1 + additionalIncrement[2]){
                     auto cell1 = cellIndexFromCellCoordinatesFast(x0, x1, x2);
                     auto cell2 = cellIndexFromCellCoordinatesFast(x0 + offsets[c][0], x1 + offsets[c][1], x2 + offsets[c][2]);
-                    independentTasksBlock2[roundRobinIndex].emplace_back(cell1,cell2);
-                    roundRobinAccumulator += cells[cell1].size() * (cells[cell2].size()-1)/2;
+                    independentTasksBlock2[nextIndex].emplace_back(cell1,cell2);
                     SPDLOG_TRACE("Added CellInteraction (({} {} {}), ({} {} {})) to taskBlock {} and job {}", x0, x1, x2, x0 + offsets[c][0], x1 + offsets[c][1], x2 + offsets[c][2], 2*c+1, roundRobinIndex);
                     //std::cout<< "Added CellInteraction (("<< x0<<" "<<x1<<" "<< x2 << ") ("<< x0 + offsets[c][0] << " " << x1 + offsets[c][1] <<" "<< x2 + offsets[c][2]<< ")) to taskBlock " << 2*c+1<< " and job " << roundRobinIndex << std::endl;
 
+                    #ifdef TASK_ROUND_ROBIN
+                    roundRobinAccumulator += cells[cell1].size() * cells[cell2].size();
                     if(roundRobinAccumulator >= roundRobinMolUpdateThreshold){
-                        roundRobinIndex = (roundRobinIndex+1)%maxThreads;
+                        nextIndex = (nextIndex+1)%maxThreads;
                         roundRobinAccumulator = 0;
                         roundRobinAccumulator = 0;
                     }
+                    #else
+                    nextIndex = 0;
+                    size_t last_count = interactions[nextIndex];
+                    for(size_t i = 1; i < maxThreads; i++){
+                        if(interactions[i] <= last_count){
+                            last_count = interactions[i];
+                            nextIndex = i;
+                        }
+                    }
+                    #endif
 
                 }
             }

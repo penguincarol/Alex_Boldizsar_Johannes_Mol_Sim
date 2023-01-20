@@ -13,9 +13,13 @@ namespace sim::physics::force {
     private:
         pair_fun_t pairFun;
         fpair_fun_t fpairFun;
+        fpair_fun_alt_t fpairFunAlt;
         FLennardJones forceDelegate;
 
         void setPairFun();
+
+    public:
+        fpair_fun_alt_t getFastForceAltFunction() override;
 
     public:
         FLennardJonesCellsOMP(double st,

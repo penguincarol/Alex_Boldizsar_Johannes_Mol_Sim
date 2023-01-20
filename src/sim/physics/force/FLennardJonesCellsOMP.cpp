@@ -31,10 +31,15 @@ namespace sim::physics::force {
     void FLennardJonesCellsOMP::setPairFun() {
         pairFun = forceDelegate.getForceFunction();
         fpairFun = forceDelegate.getFastForceFunction();
+        fpairFunAlt = forceDelegate.getFastForceAltFunction();
     }
 
     fpair_fun_t FLennardJonesCellsOMP::getFastForceFunction() {
         return fpairFun;
+    }
+
+    fpair_fun_alt_t FLennardJonesCellsOMP::getFastForceAltFunction() {
+        return fpairFunAlt;
     }
 
     void FLennardJonesCellsOMP::operator()() {
@@ -53,7 +58,7 @@ namespace sim::physics::force {
             auto fpairFun = this->fpairFun;
             cell_ptr c_ptr;
             static const double rt3_2 = std::pow(2, 1 / 3);
-            const std::vector<std::vector<std::vector<std::pair<unsigned long, unsigned long>>>>& taskGroups = particleContainer.generateDistinctCellNeighbours();
+            //const std::vector<std::vector<std::vector<std::pair<unsigned long, unsigned long>>>>& taskGroups = particleContainer.generateDistinctCellNeighbours();
             const std::vector<std::vector<std::pair<unsigned long, unsigned long>>>& alternativeTaskGroups = particleContainer.generateDistinctAlternativeCellNeighbours();
             double *f = force.data();
             size_t size = force.size();

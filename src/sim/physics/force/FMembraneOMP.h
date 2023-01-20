@@ -23,6 +23,8 @@ namespace sim::physics::force {
 
         pair_fun_t& getForceFunction() override;
 
+        fpair_fun_alt_t getFastForceAltFunction() override;
+
         fpair_fun_t getFastForceFunction() override;
     };
 }

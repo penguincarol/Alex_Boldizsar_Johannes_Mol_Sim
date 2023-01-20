@@ -37,3 +37,7 @@ void sim::physics::force::FGlobalGravity::setParticleContainer(ParticleContainer
 sim::physics::force::pair_fun_t &sim::physics::force::FGlobalGravity::getForceFunction() {
     throw std::runtime_error{"This should not be called. Not supported."};
 }
+
+sim::physics::force::fpair_fun_alt_t sim::physics::force::FGlobalGravity::getFastForceAltFunction() {
+    throw std::runtime_error{"This should not be called. Not supported"};
+}

@@ -75,9 +75,14 @@ namespace sim::physics::force {
     void FLennardJonesOMP::setPairFun() {
         pairFun = forceDelegate.getForceFunction();
         fpairFun = forceDelegate.getFastForceFunction();
+        fpairFunAlt = forceDelegate.getFastForceAltFunction();
     }
 
     fpair_fun_t FLennardJonesOMP::getFastForceFunction() {
         return fpairFun;
+    }
+
+    fpair_fun_alt_t FLennardJonesOMP::getFastForceAltFunction() {
+        return fpairFunAlt;
     }
 } // sim::physics::force

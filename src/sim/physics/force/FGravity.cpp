@@ -58,4 +58,30 @@ namespace sim::physics::force {
     fpair_fun_t FGravity::getFastForceFunction() {
         return fpairFun;
     }
+
+    static void fastForeAlt(std::vector<double> &force,
+                     std::vector<double> &x,
+                     std::vector<double> &eps,
+                     std::vector<double> &sig,
+                     std::vector<double> &m,
+                     std::vector<int> &t,
+                     unsigned long indexI,
+                     double xJ0, double xJ1, double xJ2,
+                     double, double, double mJ, int) {
+        double d0, d1, d2, s, df0, df1, df2;
+        d0 = x[3*indexI + 0] - xJ0;
+        d1 = x[3*indexI + 1] - xJ1;
+        d2 = x[3*indexI + 2] - xJ2;
+        s = m[indexI] * mJ * std::pow(1 / std::sqrt(d0 * d0 + d1 * d1 + d2 * d2), 3);
+        df0 = d0 * s;
+        df1 = d1 * s;
+        df2 = d2 * s;
+        force[3*indexI + 0] -= df0;
+        force[3*indexI + 1] -= df1;
+        force[3*indexI + 2] -= df2;
+    }
+
+    fpair_fun_alt_t FGravity::getFastForceAltFunction() {
+        return fastForeAlt;
+    }
 } // sim::physics::force

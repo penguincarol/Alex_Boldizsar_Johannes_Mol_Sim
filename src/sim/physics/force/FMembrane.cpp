@@ -99,4 +99,8 @@ namespace sim::physics::force {
     fpair_fun_t FMembrane::getFastForceFunction() {
         throw std::runtime_error{"This should not be called. Not supported."};
     }
+
+    fpair_fun_alt_t FMembrane::getFastForceAltFunction() {
+        throw std::runtime_error{"This should not be called. Not supported."};
+    }
 } // sim::physics::force

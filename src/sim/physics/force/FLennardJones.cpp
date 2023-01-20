@@ -98,4 +98,42 @@ namespace sim::physics::force {
     fpair_fun_t FLennardJones::getFastForceFunction() {
         return fpairFun;
     }
+
+    static void fastPairAlt(std::vector<double> &force,
+                            std::vector<double> &x,
+                            std::vector<double> &eps,
+                            std::vector<double> &sig,
+                            std::vector<double> &m,
+                            std::vector<int> &t,
+                            unsigned long indexI,
+                            double xJ0, double xJ1, double xJ2,
+                            double epsJ, double sigJ, double mJ, int tJ) {
+        double sigma, sigma2, sigma6, epsilon, d0, d1, d2, dsqr, l2NInvSquare, fac0, l2NInvPow6, fac1_sum1, fac1;
+        sigma = (sig[indexI] + sigJ) / 2;
+        sigma2 = sigma * sigma;
+        sigma6 = sigma2 * sigma2 * sigma2;
+        epsilon = std::sqrt(eps[indexI] * epsJ); // TODO this can be cached
+        d0 = x[indexI*3 + 0] - xJ0;
+        d1 = x[indexI*3 + 1] - xJ1;
+        d2 = x[indexI*3 + 2] - xJ2;
+        dsqr = d0*d0 + d1*d1 + d2*d2;
+        //check if is membrane -> need to skip attractive forces
+        if (t[indexI] & 0x80000000 || tJ & 0x80000000) {
+            if (dsqr >= rt3_2 * sigma2) return;
+        }
+
+        l2NInvSquare = 1 / (dsqr);
+        fac0 = 24 * epsilon * l2NInvSquare;
+        l2NInvPow6 = l2NInvSquare * l2NInvSquare * l2NInvSquare;
+        fac1_sum1 = sigma6 * l2NInvPow6;
+        fac1 = (fac1_sum1) - 2 * (fac1_sum1 * fac1_sum1);
+
+        force[indexI*3 + 0] -= fac0 * fac1 * d0;
+        force[indexI*3 + 1] -= fac0 * fac1 * d1;
+        force[indexI*3 + 2] -= fac0 * fac1 * d2;
+    }
+
+    fpair_fun_alt_t FLennardJones::getFastForceAltFunction() {
+        return fastPairAlt;
+    }
 } // sim::physics::force

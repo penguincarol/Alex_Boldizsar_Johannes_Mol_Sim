@@ -451,9 +451,9 @@ s    * right corresponding cell-vector
     /**
      * @brief Generates all halo particles, that are not stored yet
      * */
-    template<sim::physics::bounds::side S>
+    template<sim::physics::bounds::side S, typename F>
     void
-    forEachParticleHaloPairInSide(const double sigma, const std::function<void(Particle &, Particle &)> &function) {
+    forEachParticleHaloPairInSide(const double sigma, F function) {
         double maxBorderDistance = root6_of_2 * sigma / 2;
         if constexpr (S == sim::physics::bounds::side::left) {
             // left x = x_0 = min
@@ -462,14 +462,7 @@ s    * right corresponding cell-vector
                     auto &cell_indices_left = cells[cellIndexFromCellCoordinates({0, x_1, x_2})];
                     for (auto i: cell_indices_left) {
                         if (x[3 * i + 0] != 0 && x[3 * i + 0] < maxBorderDistance) {
-                            Particle p_real;
-                            loadParticle(p_real, i);
-                            auto &pos = p_real.getX();
-                            Particle p_halo = p_real;
-                            p_halo.setX({(-1) * pos[0], pos[1], pos[2]});
-
-                            function(p_real, p_halo);
-                            storeParticle(p_real, i);
+                            function(force, x, eps, sig, m, type, i, x[3*i+0] * (-1), x[3*i+1],x[3*i+2], eps[i], sig[i], m[i], type[i]);
                         }
                     }
                 }
@@ -482,13 +475,7 @@ s    * right corresponding cell-vector
                     for (auto i: cell_indices_right) {
                         double distance = domainSize[0] - x[3 * i + 0];
                         if (distance < maxBorderDistance) {
-                            Particle p_real;
-                            loadParticle(p_real, i);
-                            Particle p_halo = p_real;
-                            p_halo.add_to_X({distance * 2, 0, 0});
-
-                            function(p_real, p_halo);
-                            storeParticle(p_real, i);
+                            function(force, x, eps, sig, m, type, i, x[3*i+0] + 2*distance, x[3*i+1],x[3*i+2], eps[i], sig[i], m[i], type[i]);
                         }
                     }
                 }
@@ -500,14 +487,7 @@ s    * right corresponding cell-vector
                     auto &cell_indices_bot = cells[cellIndexFromCellCoordinates({x_0, 0, x_2})];
                     for (auto i: cell_indices_bot) {
                         if (x[3 * i + 1] != 0 && x[3 * i + 1] < maxBorderDistance) {
-                            Particle p_real;
-                            loadParticle(p_real, i);
-                            auto &pos = p_real.getX();
-                            Particle p_halo = p_real;
-                            p_halo.setX({pos[0], (-1) * pos[1], pos[2]});
-
-                            function(p_real, p_halo);
-                            storeParticle(p_real, i);
+                            function(force, x, eps, sig, m, type, i, x[3*i+0], x[3*i+1] * (-1),x[3*i+2], eps[i], sig[i], m[i], type[i]);
                         }
                     }
                 }
@@ -520,13 +500,7 @@ s    * right corresponding cell-vector
                     for (auto i: cell_indices_top) {
                         double distance = domainSize[1] - x[3 * i + 1];
                         if (distance < maxBorderDistance) {
-                            Particle p_real;
-                            loadParticle(p_real, i);
-                            Particle p_halo = p_real;
-                            p_halo.add_to_X({0, distance * 2, 0});
-
-                            function(p_real, p_halo);
-                            storeParticle(p_real, i);
+                            function(force, x, eps, sig, m, type, i, x[3*i+0], x[3*i+1] + 2*distance,x[3*i+2], eps[i], sig[i], m[i], type[i]);
                         }
                     }
                 }
@@ -538,14 +512,7 @@ s    * right corresponding cell-vector
                     auto &cell_indices_front = cells[cellIndexFromCellCoordinates({x_0, x_1, 0})];
                     for (auto i: cell_indices_front) {
                         if (x[3 * i + 2] != 0 && x[3 * i + 2] < maxBorderDistance) {
-                            Particle p_real;
-                            loadParticle(p_real, i);
-                            auto &pos = p_real.getX();
-                            Particle p_halo = p_real;
-                            p_halo.setX({pos[0], pos[1], (-1) * pos[2]});
-
-                            function(p_real, p_halo);
-                            storeParticle(p_real, i);
+                            function(force, x, eps, sig, m, type, i, x[3*i+0], x[3*i+1],x[3*i+2] * (-1), eps[i], sig[i], m[i], type[i]);
                         }
                     }
                 }
@@ -558,13 +525,7 @@ s    * right corresponding cell-vector
                     for (auto i: cell_indices_back) {
                         double distance = domainSize[2] - x[3 * i + 2];
                         if (distance < maxBorderDistance) {
-                            Particle p_real;
-                            loadParticle(p_real, i);
-                            Particle p_halo = p_real;
-                            p_halo.add_to_X({0, 0, distance * 2});
-
-                            function(p_real, p_halo);
-                            storeParticle(p_real, i);
+                            function(force, x, eps, sig, m, type, i, x[3*i+0], x[3*i+1],x[3*i+2] + 2*distance, eps[i], sig[i], m[i], type[i]);
                         }
                     }
                 }

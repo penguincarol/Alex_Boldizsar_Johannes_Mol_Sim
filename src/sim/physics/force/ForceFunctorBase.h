@@ -17,6 +17,15 @@ namespace sim::physics::force {
                                    std::vector<double> &m,
                                    std::vector<int> &t,
                                    unsigned long indexI, unsigned long indexJ);
+    using fpair_fun_alt_t = void(*)(std::vector<double> &force,
+                                    std::vector<double> &x,
+                                    std::vector<double> &eps,
+                                    std::vector<double> &sig,
+                                    std::vector<double> &m,
+                                    std::vector<int> &t,
+                                    unsigned long indexI,
+                                    double xJ0, double xJ1, double xJ2,
+                                    double epsJ, double sigJ, double mJ, int tJ);
 
     class ForceFunctorBase : public PhysicsFunctorBase {
     public:
@@ -32,6 +41,11 @@ namespace sim::physics::force {
          * Returns the fast version of the pairwise force function
          * */
         virtual fpair_fun_t getFastForceFunction() = 0;
+
+        /**
+         * Returns the fast version of the pairwise force function, in which the second particle is a temporary particle
+         * */
+         virtual fpair_fun_alt_t getFastForceAltFunction() = 0;
     };
 } // sim::physics::force
 

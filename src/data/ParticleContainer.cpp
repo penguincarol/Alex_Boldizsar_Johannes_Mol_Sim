@@ -641,7 +641,6 @@ void ParticleContainer::initTaskModel() {
 
     //All these variables could be const attributes of class
     const auto numCases = 13;
-
     using a = std::array<int, 3>;
     constexpr std::array<a, numCases> offsets{a{1,0,0}, a{0,1,0}, a{0,0,1},
                                               a{1,1,0}, a{1,-1,0},

@@ -584,23 +584,27 @@ void ParticleContainer::initAlternativeTaskModel(){
                                                   b{0,0,0}, b{0,0,1}, b{0,0,0}, b{0,0,1},
                                                   b{0,0,0}, b{0,1,0}, b{0,0,1}, b{0,1,1}};
 
-    for(auto c = 0; c < numCases; c++){ //pun intended
+    std::vector<size_t> interactions;
+    interactions.resize(maxThreads);
 
-        constexpr unsigned long roundRobinMolUpdateThreshold = 500'000;
-        size_t roundRobinAccumulator{0};
-        size_t roundRobinIndex{0};
+    for(auto c = 0; c < numCases; c++){ //pun intended
         for(unsigned int x0 = lowerBounds[c][0]; x0 < upperBounds[c][0]; x0+=2){
             for(unsigned int x1 = lowerBounds[c][1]; x1 < upperBounds[c][1]; x1+=1){
                 for(unsigned int x2 = lowerBounds[c][2]; x2 < upperBounds[c][2]; x2+=1){
                     auto cell1 = cellIndexFromCellCoordinatesFast(x0, x1, x2);
                     auto cell2 = cellIndexFromCellCoordinatesFast(x0 + offsets[c][0], x1 + offsets[c][1], x2 + offsets[c][2]);
-                    alternativeTaskModelCache[roundRobinIndex].emplace_back(cell1,cell2);
-                    roundRobinAccumulator += cells[cell1].size() * cells[cell2].size();
 
-                    if(roundRobinAccumulator >= roundRobinMolUpdateThreshold){
-                        roundRobinIndex = (roundRobinIndex+1)%maxThreads;
-                        roundRobinAccumulator = 0;
+                    size_t indexMin = 0;
+                    size_t last_count = interactions[indexMin];
+                    for(size_t i = 1; i < maxThreads; i++) {
+                        if(interactions[i] <= last_count) {
+                            last_count = interactions[i];
+                            indexMin = i;
+                        }
                     }
+
+                    alternativeTaskModelCache[indexMin].emplace_back(cell1,cell2);
+                    interactions[indexMin] += cells[cell1].size()*cells[cell2].size();
                     SPDLOG_TRACE("Added CellInteraction (({} {} {}), ({} {} {})) to taskBlock {}", x0, x1, x2, x0 + offsets[c][0], x1 + offsets[c][1], x2 + offsets[c][2], 2*c+0);
                 }
             }
@@ -612,13 +616,18 @@ void ParticleContainer::initAlternativeTaskModel(){
                 for(unsigned int x2 = lowerBounds[c][2]; x2 < upperBounds[c][2]; x2+=1){
                     auto cell1 = cellIndexFromCellCoordinatesFast(x0, x1, x2);
                     auto cell2 = cellIndexFromCellCoordinatesFast(x0 + offsets[c][0], x1 + offsets[c][1], x2 + offsets[c][2]);
-                    alternativeTaskModelCache[roundRobinIndex].emplace_back(cell1,cell2);
-                    roundRobinAccumulator += cells[cell1].size() * cells[cell2].size();
 
-                    if(roundRobinAccumulator >= roundRobinMolUpdateThreshold){
-                        roundRobinIndex = (roundRobinIndex+1)%maxThreads;
-                        roundRobinAccumulator = 0;
+                    size_t indexMin = 0;
+                    size_t last_count = interactions[indexMin];
+                    for(size_t i = 1; i < maxThreads; i++) {
+                        if(interactions[i] <= last_count) {
+                            last_count = interactions[i];
+                            indexMin = i;
+                        }
                     }
+
+                    alternativeTaskModelCache[indexMin].emplace_back(cell1,cell2);
+                    interactions[indexMin] += cells[cell1].size()*cells[cell2].size();
                     SPDLOG_TRACE("Added CellInteraction (({} {} {}), ({} {} {})) to taskBlock {}", x0, x1, x2, x0 + offsets[c][0], x1 + offsets[c][1], x2 + offsets[c][2], 2*c+1);
                 }
             }

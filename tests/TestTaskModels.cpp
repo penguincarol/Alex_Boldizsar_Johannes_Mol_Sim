@@ -47,6 +47,45 @@ void performTaskModelTest(ParticleContainer& pc){
 
 }
 
+void performAlternativeTaskModelTest(ParticleContainer& pc){
+
+    std::vector<std::vector<std::pair<unsigned long, unsigned long>>> taskGroup = pc.generateDistinctAlternativeCellNeighbours();
+
+    ASSERT_EQ(taskGroup.size(), 26);
+
+    size_t sumCellInteractions{0};
+    for(const auto& task: taskGroup){
+        std::unordered_set<unsigned int> cellsVisited{};
+
+        for(auto& [i,j]: task){
+            ASSERT_FALSE(cellsVisited.contains(i)) << "The cell with index " << i << " got accessed multiple times in the same task";
+            ASSERT_FALSE(cellsVisited.contains(j)) << "The cell with index " << j << " got accessed multiple times in the same task";
+            cellsVisited.emplace(i);
+            cellsVisited.emplace(j);
+            sumCellInteractions++;
+        }
+
+    }
+
+    size_t cellInteractionReference{0};
+    pc.forAllDistinctCellNeighbours([&cellInteractionReference](std::vector<double> &force,
+                                                                std::vector<double> &oldForce,
+                                                                std::vector<double> &x,
+                                                                std::vector<double> &v,
+                                                                std::vector<double> &m,
+                                                                std::vector<int> &type,
+                                                                unsigned long count,
+                                                                std::vector<unsigned long> &cell0Items,
+                                                                std::vector<unsigned long> &cell1Items,
+                                                                std::vector<double> &eps,
+                                                                std::vector<double> &sig){
+        cellInteractionReference++;
+    });
+
+    ASSERT_EQ(cellInteractionReference, sumCellInteractions) << "forAllDistinctCellNeighbours had" << cellInteractionReference << " Neighbouring Cell interactions whereas the taskModel produced " << sumCellInteractions;
+
+}
+
 /**
  * Check if
  * -Tasks created cover all the interactions
@@ -73,6 +112,7 @@ TEST(ParticleContainer, initTaskModel) {
     ParticleContainer pc(bufVec, domainSize, 1, {}, true);
 
     performTaskModelTest(pc);
+    performAlternativeTaskModelTest(pc);
 
 
     //second larger test
@@ -90,6 +130,3 @@ TEST(ParticleContainer, initTaskModel) {
     performTaskModelTest(pc);
 }
 
-TEST(ParticleContainer, initAlternativeTaskModel){
-
-}

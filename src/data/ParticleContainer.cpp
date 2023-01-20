@@ -561,7 +561,7 @@ void ParticleContainer::initAlternativeTaskModel(){
     alternativeTaskModelCache.clear();
     alternativeTaskModelCache.resize(maxThreads);
     //26 TaskGroups (for the 13 cases*2)
-    //every taskGroup has the pairs of CellIndices that are independently doable split up into numThreads packages
+    //every taskGroup has the pairs of CellIndices that are independently doable
 
     //All these variables could be const attributes of class
     const auto numCases = 13;
@@ -584,9 +584,16 @@ void ParticleContainer::initAlternativeTaskModel(){
                                                   b{0,0,0}, b{0,0,1}, b{0,0,0}, b{0,0,1},
                                                   b{0,0,0}, b{0,1,0}, b{0,0,1}, b{0,1,1}};
 
+    /*
+    std::array<unsigned int, 3> additionalIncrement{0,0,0};
+    for(auto c = 0; c < numCases; c++){ //pun intended
+        if(offsets[c][0] == 1){additionalIncrement = std::array<unsigned int, 3>{1,0,0};}
+        else if(offsets[c][1] == 1){additionalIncrement = std::array<unsigned int, 3>{0,1,0};}
+        else{additionalIncrement = std::array<unsigned int, 3>{0,0,1}*/
+
     for(auto c = 0; c < numCases; c++){ //pun intended
 
-        constexpr unsigned long roundRobinMolUpdateThreshold = 500'000;
+        constexpr unsigned long roundRobinMolUpdateThreshold = 1'000'000;
         size_t roundRobinAccumulator{0};
         size_t roundRobinIndex{0};
         for(unsigned int x0 = lowerBounds[c][0]; x0 < upperBounds[c][0]; x0+=2){

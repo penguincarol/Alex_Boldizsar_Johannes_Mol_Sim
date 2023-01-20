@@ -7,6 +7,15 @@
 
 #include <iostream>
 
+template<typename T>
+std::vector<T> flatten(const std::vector<std::vector<T>> &orig)
+{
+    std::vector<T> ret;
+    for(const auto &v: orig)
+        ret.insert(ret.end(), v.begin(), v.end());
+    return ret;
+}
+
 namespace sim::physics::force {
     /**
      * @brief Calculates the using the Linked-Cell algorithm. The linked cell algorithm has a much better runtime than the All-Pairs algorithm (see plot)
@@ -59,39 +68,37 @@ namespace sim::physics::force {
         });
 
         //size_t interactionsDistinctCells{0};
-        std::vector<std::vector<std::vector<std::pair<unsigned long, unsigned long>>>> taskBlocks = particleContainer.generateDistinctCellNeighbours();
-        for(auto& tasks: taskBlocks){
-            //the previous taskBlock needs to be finished before the next taskBlock can start>
-            /*if(tasks.size() != omp_get_max_threads()) {
-                io::output::loggers::simulation->debug("Task creation for force calculation didn't result in appropriate amount of tasks");
-            }*/
-            #pragma omp parallel for schedule(static,1) //reduction(+:interactionsDistinctCells)
-            for(auto& task: tasks){
-                for(auto &[cellIndexI, cellIndexJ]:task){
-                    size_t cII= cellIndexI;     //openMP problems with the other variant
-                    size_t cIJ= cellIndexJ;
 
-                    particleContainer.runOnDataCell([&](std::vector<double> &force,
-                                                        std::vector<double> &oldForce,
-                                                        std::vector<double> &x,
-                                                        std::vector<double> &v,
-                                                        std::vector<double> &m,
-                                                        std::vector<int> &type,
-                                                        unsigned long count,
-                                                        ParticleContainer::VectorCoordWrapper& cells,
-                                                        std::vector<double> &eps,
-                                                        std::vector<double> &sig){
-                        for(auto pIndexI : cells[cII]){
-                            for(auto pIndexJ : cells[cIJ]){
-                                this->fpairFun(force, x, eps, sig, m, type, pIndexI, pIndexJ);
-                                //interactionsDistinctCells++;
-                            }
+        std::vector<std::vector<std::pair<unsigned long, unsigned long>>> taskBlocks = particleContainer.generateDistinctAlternativeCellNeighbours();
+        std::vector<std::pair<unsigned long, unsigned long>> tasks = flatten(taskBlocks);
+
+            particleContainer.runOnDataCell([&tasks, this](std::vector<double> &force,
+                                                std::vector<double> &oldForce,
+                                                std::vector<double> &x,
+                                                std::vector<double> &v,
+                                                std::vector<double> &m,
+                                                std::vector<int> &type,
+                                                unsigned long count,
+                                                ParticleContainer::VectorCoordWrapper& cells,
+                                                std::vector<double> &eps,
+                                                std::vector<double> &sig){
+            #pragma omp declare reduction(vec_double_plus : std::vector<double> : \
+                              std::transform(omp_out.begin(), omp_out.end(), omp_in.begin(), omp_out.begin(), std::plus<double>())) \
+                    initializer(omp_priv = decltype(omp_orig)(omp_orig.size()))
+
+            #pragma omp parallel for reduction(vec_double_plus : force)
+                for(auto& [cellIndexI, cellIndexJ]: tasks) {
+                    size_t cII = cellIndexI;     //openMP problems with the other variant
+                    size_t cIJ = cellIndexJ;
+
+                    for (auto pIndexI: cells[cII]) {
+                        for (auto pIndexJ: cells[cIJ]) {
+                            this->fpairFun(force, x, eps, sig, m, type, pIndexI, pIndexJ);
+                            //interactionsDistinctCells++;
                         }
-                    });
+                    }
                 }
-            }
-            #pragma omp barrier
-        }
+            });
 
         /*
         size_t interactionsDistinctCells_st{0};

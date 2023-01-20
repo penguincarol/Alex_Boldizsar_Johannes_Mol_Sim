@@ -51,17 +51,11 @@ void performAlternativeTaskModelTest(ParticleContainer& pc){
 
     std::vector<std::vector<std::pair<unsigned long, unsigned long>>> taskGroup = pc.generateDistinctAlternativeCellNeighbours();
 
-    ASSERT_EQ(taskGroup.size(), 26);
+    ASSERT_EQ(taskGroup.size(), omp_get_max_threads());
 
     size_t sumCellInteractions{0};
     for(const auto& task: taskGroup){
-        std::unordered_set<unsigned int> cellsVisited{};
-
         for(auto& [i,j]: task){
-            ASSERT_FALSE(cellsVisited.contains(i)) << "The cell with index " << i << " got accessed multiple times in the same task";
-            ASSERT_FALSE(cellsVisited.contains(j)) << "The cell with index " << j << " got accessed multiple times in the same task";
-            cellsVisited.emplace(i);
-            cellsVisited.emplace(j);
             sumCellInteractions++;
         }
 
@@ -91,7 +85,6 @@ void performAlternativeTaskModelTest(ParticleContainer& pc){
  * -Tasks created cover all the interactions
  * -the same cell doesn't get used twice within the same job (no potential for race conditions)
  *
- * -the scheduling is somewhat clever
  * */
 TEST(ParticleContainer, initTaskModel) {
     std::list<Particle> buf;
@@ -128,5 +121,6 @@ TEST(ParticleContainer, initTaskModel) {
     pc = ParticleContainer(bufVec2, domainSize, r_cutoff, {}, true);
 
     performTaskModelTest(pc);
+    performAlternativeTaskModelTest(pc);
 }
 

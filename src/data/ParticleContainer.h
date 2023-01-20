@@ -943,6 +943,184 @@ public:
      */
     [[maybe_unused]] void forAllMembraneSprings(const std::function<void(Particle &p1, Particle &p2, double desiredDistance, double springStrength)> &function);
 
+    using cell_ptr = std::vector<unsigned long>*;
+    /**
+     * Generates all halo and border cell pairs.
+     * The three double values are the offset which need to be applied to the halo particle
+     * Tasks are split into omp_get_max_threads() groups.
+     * */
+    template<sim::physics::bounds::side S>
+    std::vector<std::vector<std::vector<std::tuple<cell_ptr, cell_ptr, double, double, double>>>> generateHaloBorderTasks() {
+        using i3 = std::array<int, 3>;
+        using i4 = std::array<int, 4>;
+        std::vector<std::vector<std::vector<std::tuple<cell_ptr, cell_ptr, double, double, double>>>> tasks;
+        using halo_buf_t = std::vector<std::tuple<cell_ptr, cell_ptr, double, double, double>>;
+        std::vector<size_t> interactions;
+        size_t maxThreads = omp_get_max_threads();
+        tasks.resize(maxThreads);
+        interactions.resize(maxThreads);
+        auto getMin = [&](){
+            size_t indexMin = 0;
+            size_t countMin = interactions[indexMin];
+
+            for(size_t i = 1; i < maxThreads; i++) {
+                if(interactions[i] <= countMin) {
+                    indexMin = i;
+                    countMin = interactions[i];
+                }
+            }
+
+            return indexMin;
+        };
+
+        // corner
+        {
+            using p = std::array<unsigned int, 3>;
+            using o = std::array<int, 3>;
+            //     6 -- 7
+            //  2 -- 3  |
+            //  |  4 |  5
+            //  0 -- 1
+            std::array<p, 8> hcCoords = {p{0, 0, 0}, p{gridDimensions[0] + 1, 0, 0}, p{0, gridDimensions[1] + 1, 0}, p{gridDimensions[0] + 1, gridDimensions[1] + 1, 0},
+                                         p{0,0,gridDimensions[2]+1}, p{gridDimensions[0]+1, 0, gridDimensions[2]+1}, p{0, gridDimensions[1]+1, gridDimensions[2]+1}, p{gridDimensions[0]+1, gridDimensions[1]+1, gridDimensions[2]+1}};
+            constexpr std::array<o, 8> bcOffset = {o{1,1,1}, o{-1,1,1}, o{1,-1,1},o{-1,-1,1}, o{1,1,-1}, o{-1,1,-1}, o{1,-1,-1},o{-1,-1,-1}};
+            // index into sideCIndices is S
+            constexpr std::array<i4, 6> sideCIndices = {i4{0, 2, 4, 6}, i4{1,3,5,7}, i4{2,3,6,7}, i4{0,1,4,5}, i4{0,1,2,3}, i4{4,5,6,7}};
+            for(auto cIndex : sideCIndices[S]) {
+                double off0 = (std::min(hcCoords[cIndex][0], 1u)) * domainSize[0] - (1 - std::min(hcCoords[cIndex][0], 1u)) * domainSize[0];
+                double off1 = (std::min(hcCoords[cIndex][1], 1u)) * domainSize[1] - (1 - std::min(hcCoords[cIndex][1], 1u)) * domainSize[1];
+                double off2 = (std::min(hcCoords[cIndex][2], 1u)) * domainSize[2] - (1 - std::min(hcCoords[cIndex][2], 1u)) * domainSize[2];
+
+                auto& hCell = cells.getOuter(hcCoords[cIndex][0], hcCoords[cIndex][1], hcCoords[cIndex][2]);
+                halo_buf_t buf;
+                auto i = getMin();
+                for (int scale0{1}; scale0 < 3; scale0++) {
+                    for (int scale1{1}; scale1 < 3; scale1++) {
+                        for (int scale2{1}; scale2 < 3; scale2++) {
+                            auto &bCell = cells.getOuter(hcCoords[cIndex][0] + bcOffset[cIndex][0] * scale0,
+                                                         hcCoords[cIndex][1] + bcOffset[cIndex][1] * scale1,
+                                                         hcCoords[cIndex][2] + bcOffset[cIndex][2] * scale2);
+
+                            buf.template emplace_back(&hCell, &bCell, off0, off1, off2);
+                            interactions[i] += hCell.size() * bCell.size();
+                        }
+                    }
+                }
+                tasks[i].template emplace_back(buf);
+            }
+        }
+        // edge
+        {
+            using d = std::array<i3, 3>;
+            // tuple<starting_point, dimension, check_directions>
+            using t = const std::tuple<std::array<unsigned int, 3>, std::array<unsigned int, 3>, d>;
+            const std::array<t, 12> edges {
+                    //left to right
+                    t{{1,0,0},{gridDimensions[0],1,1},d{i3{0,1,1}, i3{-1,1,1}, i3{1,1,1}}},
+                    t{{1,gridDimensions[1]+1,0},{gridDimensions[0],1,1},d{i3{0,-1,1},{-1,-1,1},{1,-1,1}}},
+                    t{{1,0,gridDimensions[2]+1},{gridDimensions[0],1,1},d{i3{0,1,-1},{-1,1,-1},{1,1,-1}}},
+                    t{{1,gridDimensions[1]+1,gridDimensions[2]+1},{gridDimensions[0],1,1},d{i3{0,-1,-1},{-1,-1,-1},{1,-1,-1}}},
+                    //bottom to top
+                    t{{0,1,0},{1,gridDimensions[1],1},d{i3{1,0,1},{1,-1,1},{1,1,1}}},
+                    t{{gridDimensions[0]+1,1,0},{1,gridDimensions[1],1},d{i3{-1,0,1},{-1,-1,1},{-1,1,1}}},
+                    t{{0,1,gridDimensions[2]+1},{1,gridDimensions[1],1},d{i3{1,0,-1},{1,-1,-1},{1,1,-1}}},
+                    t{{gridDimensions[0]+1,1,gridDimensions[2]+1},{1,gridDimensions[1],1},d{i3{-1,0,-1},{-1,-1,-1},{-1,1,-1}}},
+                    //front to rear
+                    t{{0,0,1},{1,1,gridDimensions[2]},d{i3{1,1,0},{1,1,-1},{1,1,1}}},
+                    t{{gridDimensions[0]+1,0,1},{1,1,gridDimensions[2]},d{i3{-1,1,0},{-1,1,-1},{-1,1,1}}},
+                    t{{0,gridDimensions[1]+1,1},{1,1,gridDimensions[2]},d{i3{1,-1,0},{1,-1,-1},{1,-1,1}}},
+                    t{{gridDimensions[0]+1,gridDimensions[1]+1,1},{1,1,gridDimensions[2]},d{i3{-1,-1,0},{-1,-1,-1},{-1,-1,1}}}
+            };
+            constexpr std::array<i4, 6> sideEIndices = {i4{4,6,8,10}, {5,7,9,11}, {1,3,10,11}, {0,2,8,9}, {0,1,4,5}, {2,3,6,7}};
+            for(auto indexE : sideEIndices[S]) {
+                auto& [start, dim, dirs] = edges[indexE];
+
+                double off0 = -domainSize[0] * dirs[0][0];
+                double off1 = -domainSize[1] * dirs[0][1];
+                double off2 = -domainSize[2] * dirs[0][2];
+
+                for(unsigned long x_0 {start[0]}; x_0 < start[0] + dim[0]; x_0++) {
+                    for (unsigned long x_1{start[1]}; x_1 < start[1] + dim[1]; x_1++) {
+                        for (unsigned long x_2{start[2]}; x_2 < start[2] + dim[2]; x_2++) {
+                            auto &hCell = cells.getOuter(x_0, x_1, x_2);
+                            halo_buf_t buf;
+                            auto i = getMin();
+                            for (auto &dir: dirs) {
+                                for(int scale0{0}; scale0 < 2; scale0++) {
+                                    for(int scale1{0}; scale1 < 2; scale1++) {
+                                        for(int scale2{0}; scale2 < 2; scale2++) {
+                                            auto &bCell = cells.getInnerGlobal(x_0 + dir[0] + dirs[0][0]*scale0, x_1 + dir[1] + dirs[0][1]*scale1, x_2 + dir[2] + dirs[0][2]*scale2);
+                                            buf.template emplace_back(&hCell, &bCell, off0, off1, off2);
+                                            interactions[i] += hCell.size() * bCell.size();
+                                        }
+                                    }
+                                }
+                            }
+                            tasks[i].template emplace_back(buf);
+                        }
+                    }
+                }
+            }
+        }
+        //handle planes
+        {
+            // tuple<starting_point, dimension, check_direction>
+            using ma = std::array<i3, 9>;
+            using t = const std::tuple<std::array<unsigned int, 3>, std::array<unsigned int, 3>, ma>;
+            const std::array<t, 6> planes {
+                    //left
+                    t{{0,1,1},{1,gridDimensions[1],gridDimensions[2]},ma{i3{1,1,1}, {1,1,0}, {1,1,-1},
+                                                                         i3{1,0,1}, {1,0,0}, {1,0,-1},
+                                                                         i3{1,-1,1},{1,-1,0},{1,-1,-1}}},
+                    //right
+                    t{{gridDimensions[0]+1,1,1},{1,gridDimensions[1],gridDimensions[2]},ma{i3{-1,1,1}, {-1,1,0}, {-1,1,-1},
+                                                                                           i3{-1,0,1}, {-1,0,0}, {-1,0,-1},
+                                                                                           i3{-1,-1,1},{-1,-1,0},{-1,-1,-1}}},
+                    //top
+                    t{{1,gridDimensions[1]+1,1},{gridDimensions[0],1,gridDimensions[2]},ma{i3{-1,-1,1}, {0,-1,1}, {1,-1,1},
+                                                                                           i3{-1,-1,0}, {0,-1,0}, {1,-1,0},
+                                                                                           i3{-1,-1,-1},{0,-1,-1},{1,-1,-1}}},
+                    //bottom
+                    t{{1,0,1},{gridDimensions[0],1,gridDimensions[2]},ma{i3{-1,1,1}, {0,1,1}, {1,1,1},
+                                                                         i3{-1,1,0}, {0,1,0}, {1,1,0},
+                                                                         i3{-1,1,-1},{0,1,-1},{1,1,-1}}},
+                    //front
+                    t{{1,1,0},{gridDimensions[0],gridDimensions[1],1},ma{i3{-1,1,1}, {0,1,1}, {1,1,1},
+                                                                         i3{-1,0,1}, {0,0,1}, {1,0,1},
+                                                                         i3{-1,-1,1},{0,-1,1},{1,-1,1}}},
+                    //rear
+                    t{{1,1,gridDimensions[2]+1},{gridDimensions[0],gridDimensions[1],1},ma{i3{-1,1,-1}, {0,1,-1}, {1,1,-1},
+                                                                                           i3{-1,0,-1}, {0,0,-1}, {1,0,-1},
+                                                                                           i3{-1,-1,-1},{0,-1,-1},{1,-1,-1}}}
+            };
+
+            auto& [start, dim, dirs] = planes[S];
+            double off0 = -domainSize[0] * dirs[4][0];
+            double off1 = -domainSize[1] * dirs[4][1];
+            double off2 = -domainSize[2] * dirs[4][2];
+            for(unsigned long x_0 {start[0]}; x_0 < start[0] + dim[0]; x_0++) {
+                for(unsigned long x_1 {start[1]}; x_1 < start[1] + dim[1]; x_1++){
+                    for(unsigned long x_2 {start[2]}; x_2 < start[2] + dim[2]; x_2++){
+                        auto& hCell = cells.getOuter(x_0, x_1, x_2);
+                        halo_buf_t buf;
+                        auto i = getMin();
+                        //go in check direction
+                        for (int scaleOffset{0}; scaleOffset < 2; scaleOffset++) {
+                            for (auto &dir: dirs) {
+                                auto &bCell = cells.getInnerGlobal(x_0 + dir[0] + scaleOffset * dirs[4][0], x_1 + dir[1] + scaleOffset * dirs[4][1], x_2 + dir[2] + scaleOffset * dirs[4][2]);
+                                buf.template emplace_back(&hCell, &bCell, off0, off1, off2);
+                                interactions[i] += hCell.size() * bCell.size();
+                            }
+                        }
+                        tasks[i].template emplace_back(buf);
+                    }
+                }
+            }
+        }//handle planes
+
+        return tasks;
+    }
+
     /**
      * Handles interactions between halo and border cells.
      * Runs fun on ever particle pair with one particle being in the halo and the other in the border.

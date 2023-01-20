@@ -12,6 +12,7 @@ namespace sim::physics::force {
         pair_fun_t pairFun;
         fpair_fun_t fpairFun;
         fpair_fun_alt_t fpairFunAlt;
+        fpair_fun_ret_t fpairFunRet;
         FLennardJones forceDelegate;
 
         void setPairFun();
@@ -36,6 +37,8 @@ namespace sim::physics::force {
         fpair_fun_t getFastForceFunction() override;
 
         fpair_fun_alt_t getFastForceAltFunction() override;
+
+        fpair_fun_ret_t getFastForceRetFunction() override;
     };
 
 } // sim::physics::force

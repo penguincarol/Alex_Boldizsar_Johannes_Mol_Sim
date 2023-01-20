@@ -9,14 +9,14 @@ namespace sim::physics::bounds {
     BoundsHandler::BoundsHandler(bound_t let, bound_t rit, bound_t tot,
                                  bound_t bot, bound_t frt, bound_t ret,
                                  force::ForceHandler &fh, double st, double et, double dt, double eps, double sig,
-                                 ParticleContainer &pc) :
-            handleLeft(generateBound<side_t::left>(let, fh, st, et, dt, eps, sig, pc, let, rit, bot, tot, frt, ret)),
-            handleRight(generateBound<side_t::right>(rit, fh, st, et, dt, eps, sig, pc, let, rit, bot, tot, frt, ret)),
-            handleTop(generateBound<side_t::top>(tot, fh, st, et, dt, eps, sig, pc, let, rit, bot, tot, frt, ret)),
-            handleBottom(generateBound<side_t::bottom>(bot, fh, st, et, dt, eps, sig, pc, let, rit, bot, tot, frt, ret)),
-            handleFront(generateBound<side_t::front>(frt, fh, st, et, dt, eps, sig, pc, let, rit, bot, tot, frt, ret)),
-            handleRear(generateBound<side_t::rear>(ret, fh, st, et, dt, eps, sig, pc, let, rit, bot, tot, frt, ret)),
-            periodicActive(false), particleContainer(pc) {
+                                 ParticleContainer &pc, bool eOMP) :
+            handleLeft(generateBound<side_t::left>(let, fh, st, et, dt, eps, sig, pc, let, rit, bot, tot, frt, ret, eOMP)),
+            handleRight(generateBound<side_t::right>(rit, fh, st, et, dt, eps, sig, pc, let, rit, bot, tot, frt, ret, eOMP)),
+            handleTop(generateBound<side_t::top>(tot, fh, st, et, dt, eps, sig, pc, let, rit, bot, tot, frt, ret, eOMP)),
+            handleBottom(generateBound<side_t::bottom>(bot, fh, st, et, dt, eps, sig, pc, let, rit, bot, tot, frt, ret, eOMP)),
+            handleFront(generateBound<side_t::front>(frt, fh, st, et, dt, eps, sig, pc, let, rit, bot, tot, frt, ret, eOMP)),
+            handleRear(generateBound<side_t::rear>(ret, fh, st, et, dt, eps, sig, pc, let, rit, bot, tot, frt, ret, eOMP)),
+            periodicActive(false), particleContainer(pc), enableOMP(eOMP) {
         //check for null pointers
         if (handleLeft == nullptr || handleRight == nullptr || handleTop == nullptr ||
             handleBottom == nullptr || handleFront == nullptr || handleRear == nullptr) {
@@ -67,7 +67,7 @@ namespace sim::physics::bounds {
         if(handleBottom->isPeriodic()) handleBottom->operator()();
         if(handleFront->isPeriodic()) handleFront->operator()();
         if(handleRear->isPeriodic()) handleRear->operator()();
-        particleContainer.updateCells();
+        //particleContainer.updateCells();
 
         //construct halo - only need to do 3 sides as rest is symmetric
         if(handleLeft->isPeriodic()) handleLeft->generateHalo();

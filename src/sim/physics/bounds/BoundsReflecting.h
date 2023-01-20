@@ -26,8 +26,8 @@ namespace sim::physics::bounds {
          * @param pc
          * @param ff
          */
-        BoundsReflecting(double st, double et, double dt, double eps, double sig, ParticleContainer &pc, sim::physics::force::ForceHandler& fh)
-                : BoundsFunctorBase<S>(st, et, dt, eps, sig, pc), forceHandler(fh) {}
+        BoundsReflecting(double st, double et, double dt, double eps, double sig, ParticleContainer &pc, sim::physics::force::ForceHandler& fh, bool eOMP)
+                : BoundsFunctorBase<S>(st, et, dt, eps, sig, pc, eOMP), forceHandler(fh) {}
 
         /**Reflects particle upon nearing the border.*/
         void operator()() override {

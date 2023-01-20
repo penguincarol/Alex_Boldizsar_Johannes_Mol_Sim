@@ -15,8 +15,8 @@ namespace sim::physics::bounds {
     public:
         ~BoundsOutflow() override = default;
 
-        BoundsOutflow(double st, double et, double dt, double eps, double sig, ParticleContainer &pc)
-                : BoundsFunctorBase<S>(st, et, dt, eps, sig, pc) {}
+        BoundsOutflow(double st, double et, double dt, double eps, double sig, ParticleContainer &pc, bool eOMP)
+                : BoundsFunctorBase<S>(st, et, dt, eps, sig, pc, eOMP) {}
 
         /**Removes particles upon crossing the boundary.*/
         void operator()() override {

@@ -32,6 +32,11 @@ namespace sim::physics::force {
         pairFun = forceDelegate.getForceFunction();
         fpairFun = forceDelegate.getFastForceFunction();
         fpairFunAlt = forceDelegate.getFastForceAltFunction();
+        fpairFunRet = forceDelegate.getFastForceRetFunction();
+    }
+
+    fpair_fun_ret_t FLennardJonesCellsOMP::getFastForceRetFunction() {
+        return fpairFunRet;
     }
 
     fpair_fun_t FLennardJonesCellsOMP::getFastForceFunction() {
@@ -69,7 +74,7 @@ namespace sim::physics::force {
             unsigned long indexJJ;
             unsigned long indexX;
             unsigned long indexY;
-            unsigned long indexZ;
+            //unsigned long indexZ;
             unsigned long indexC0;
             unsigned long indexC1;
 
@@ -97,11 +102,11 @@ namespace sim::physics::force {
 //            for(size_t i= 0; i < maxThreads; i++) {
 //                std::cout << "Task " << i << ": " << interactions[i] << std::endl;
 //            }
-            #pragma omp parallel default(none) shared(force, x, m, t, eps, sig, tasks, fpairFun) private(c_ptr, indexI, indexJ,indexII,indexJJ,indexX,indexY)
+            #pragma omp parallel default(none) shared(force, x, m, t, eps, sig, tasks, fpairFun, maxThreads) private(c_ptr, indexI, indexJ,indexII,indexJJ,indexX,indexY)
             //#pragma omp parallel default(none) shared(size, force, x, v, m, t, count, cells, eps, sig, tasks, buffer_size, fpairFun, rt3_2, taskGroups) private(c_ptr, sigma, sigma2, sigma6, epsilon, d0, d1, d2, dsqr, l2NInvSquare, fac0, l2NInvPow6, fac1_sum1, fac1, indexI, indexJ,indexII,indexJJ,indexX,indexY,indexC0,indexC1,indexZ)
             {
                 #pragma omp for
-                for (indexII = 0; indexII < omp_get_max_threads(); indexII++) {
+                for (indexII = 0; indexII < maxThreads; indexII++) {
                     for (indexJJ = 0; indexJJ < tasks[indexII].size(); indexJJ++) {
                         c_ptr = tasks[indexII][indexJJ];
                         for (indexX = 0; indexX < c_ptr->size(); indexX++) {
@@ -123,7 +128,7 @@ namespace sim::physics::force {
 
             #pragma omp parallel \
                 default(none) \
-                shared(size, x, t, cells, eps, sig,alternativeTaskGroups,fpairFun,force,m) \
+                shared(size, x, t, cells, eps, sig,alternativeTaskGroups,fpairFun,force,m, maxThreads) \
                 private(sigma, sigma2, sigma6, epsilon, d0, d1, d2, dsqr, l2NInvSquare, \
                         fac0, l2NInvPow6, fac1_sum1, fac1, indexI, indexJ,indexII,indexJJ,indexY,indexC0,indexC1) \
                 firstprivate(indexX, rt3_2) \
@@ -131,7 +136,7 @@ namespace sim::physics::force {
             {
                 //generate tasks: for all distinct cell neighbours
                 #pragma omp for
-                for(indexX = 0; indexX < omp_get_max_threads(); indexX++) {
+                for(indexX = 0; indexX < maxThreads; indexX++) {
                     for(indexY = 0; indexY < alternativeTaskGroups[indexX].size(); indexY++){
                         indexC0 = alternativeTaskGroups[indexX][indexY].first;
                         indexC1 = alternativeTaskGroups[indexX][indexY].second;

@@ -10,6 +10,8 @@
 namespace sim::physics::bounds {
     template<sim::physics::bounds::side>
     class BoundsFunctorBase : public PhysicsFunctorBase {
+    protected:
+        bool enableOMP;
     public:
         virtual ~BoundsFunctorBase() = default;
 
@@ -22,8 +24,8 @@ namespace sim::physics::bounds {
          * @param sig
          * @param pc
          */
-        BoundsFunctorBase(double st, double et, double dt, double eps, double sig, ParticleContainer &pc)
-                : PhysicsFunctorBase(st, et, dt, eps, sig, pc) {}
+        BoundsFunctorBase(double st, double et, double dt, double eps, double sig, ParticleContainer &pc, bool eOMP)
+                : PhysicsFunctorBase(st, et, dt, eps, sig, pc), enableOMP(eOMP) {}
 
         /**Do nothing, sub classes should still override*/
         void operator()() override {}

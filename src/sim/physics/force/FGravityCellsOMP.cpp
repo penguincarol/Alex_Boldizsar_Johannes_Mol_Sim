@@ -10,6 +10,7 @@ namespace sim::physics::force {
         pairFun = forceDelegate.getForceFunction();
         fpairFun = forceDelegate.getFastForceFunction();
         fpairFunAlt = forceDelegate.getFastForceAltFunction();
+        fpairFunRet = forceDelegate.getFastForceRetFunction();
     }
 
     void FGravityCellsOMP::setParticleContainer(ParticleContainer &pc) {
@@ -43,5 +44,9 @@ namespace sim::physics::force {
 
     fpair_fun_alt_t FGravityCellsOMP::getFastForceAltFunction() {
         return fpairFunAlt;
+    }
+
+    fpair_fun_ret_t FGravityCellsOMP::getFastForceRetFunction() {
+        return fpairFunRet;
     }
 } // force

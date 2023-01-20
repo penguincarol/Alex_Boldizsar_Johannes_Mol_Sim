@@ -70,6 +70,11 @@ namespace sim::physics::force {
         pairFun = forceDelegate.getForceFunction();
         fpairFun = forceDelegate.getFastForceFunction();
         fpairFunAlt = forceDelegate.getFastForceAltFunction();
+        fpairFunRet = forceDelegate.getFastForceRetFunction();
+    }
+
+    fpair_fun_ret_t FLennardJonesCells::getFastForceRetFunction() {
+        return fpairFunRet;
     }
 
     fpair_fun_t FLennardJonesCells::getFastForceFunction() {

@@ -97,7 +97,7 @@ namespace sim {
                 calcX(*p_calcX),
                 calcV(*p_calcV),
                 handleBounds(leftBound, rightBound, topBound, botBound, frontBound, rearBound,
-                             calcF, st, et, dt, eps, sig, pc) {
+                             calcF, st, et, dt, eps, sig, pc, eOMP) {
             if (p_calcX == nullptr || p_calcV == nullptr) {
                 io::output::loggers::general->error("Failed to initialize simulation. Malloc failed.");
                 exit(-1);

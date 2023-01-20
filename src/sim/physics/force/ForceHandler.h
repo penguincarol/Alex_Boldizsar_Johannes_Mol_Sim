@@ -90,6 +90,13 @@ namespace sim::physics::force {
         }
 
         /**
+         * Returns the fast version of the primary pairwise force function, with the second particle being temporary and no write back
+         * */
+        fpair_fun_ret_t getFastForceRetFunction(){
+            return primaryFF->getFastForceRetFunction();
+        }
+
+        /**
          * Sets the particle container for all FFs.
          * */
          void setParticleContainer(ParticleContainer& pc) {

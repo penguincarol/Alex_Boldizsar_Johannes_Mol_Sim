@@ -31,15 +31,4 @@ namespace sim::physics::force {
         PhysicsFunctorBase::setParticleContainer(pc);
     }
 
-    pair_fun_t &FMembranePullOMP::getForceFunction() {
-        throw std::runtime_error{"This should not be called. Not supported."};;
-    }
-
-    fpair_fun_t FMembranePullOMP::getFastForceFunction() {
-        throw std::runtime_error{"This should not be called. Not supported."};;
-    }
-
-    fpair_fun_alt_t FMembranePullOMP::getFastForceAltFunction() {
-        throw std::runtime_error{"This should not be called. Not supported."};
-    }
 } // force

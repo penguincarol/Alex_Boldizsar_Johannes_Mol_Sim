@@ -11,18 +11,6 @@ namespace sim::physics::force {
         PhysicsFunctorBase::setParticleContainer(pc);
     }
 
-    pair_fun_t &FGlobalGravityOMP::getForceFunction() {
-        throw std::runtime_error{"This should not be called. Not supported."};
-    }
-
-    fpair_fun_t FGlobalGravityOMP::getFastForceFunction() {
-        throw std::runtime_error{"This should not be called. Not supported."};
-    }
-
-    fpair_fun_alt_t FGlobalGravityOMP::getFastForceAltFunction() {
-        throw std::runtime_error{"This should not be called. Not supported."};
-    }
-
     void FGlobalGravityOMP::operator()() {
         particleContainer.runOnActiveData([&](std::vector<double> &force,
                                               std::vector<double> &oldForce,

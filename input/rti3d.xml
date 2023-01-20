@@ -2,7 +2,7 @@
 <Simulation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
             xsi:noNamespaceSchemaLocation="../input/XMLFormat.xsd">
     <OutputFile OutputFileName="rti3d"/>
-    <EndTime>100.0</EndTime>
+    <EndTime>2.5</EndTime>
     <TimeStepSize>0.0005</TimeStepSize>
     <ForceCalculation>
         <LennardJones Epsilon="1.0" Sigma="1.0"/>

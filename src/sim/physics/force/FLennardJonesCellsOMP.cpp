@@ -58,14 +58,14 @@ namespace sim::physics::force {
             //std::cout<<"Inter Cells with themselves: " << interactions << std::endl;
         });
 
-        size_t interactionsDistinctCells{0};
+        //size_t interactionsDistinctCells{0};
         std::vector<std::vector<std::vector<std::pair<unsigned long, unsigned long>>>> taskBlocks = particleContainer.generateDistinctCellNeighbours();
         for(auto& tasks: taskBlocks){
             //the previous taskBlock needs to be finished before the next taskBlock can start>
-            if(tasks.size() != omp_get_max_threads()) {
+            /*if(tasks.size() != omp_get_max_threads()) {
                 io::output::loggers::simulation->debug("Task creation for force calculation didn't result in appropriate amount of tasks");
-            }
-            #pragma omp parallel for schedule(static,1) reduction(+:interactionsDistinctCells)
+            }*/
+            #pragma omp parallel for schedule(static,1) //reduction(+:interactionsDistinctCells)
             for(auto& task: tasks){
                 for(auto &[cellIndexI, cellIndexJ]:task){
                     size_t cII= cellIndexI;     //openMP problems with the other variant
@@ -84,7 +84,7 @@ namespace sim::physics::force {
                         for(auto pIndexI : cells[cII]){
                             for(auto pIndexJ : cells[cIJ]){
                                 this->fpairFun(force, x, eps, sig, m, type, pIndexI, pIndexJ);
-                                interactionsDistinctCells++;
+                                //interactionsDistinctCells++;
                             }
                         }
                     });
@@ -93,7 +93,7 @@ namespace sim::physics::force {
             #pragma omp barrier
         }
 
-
+        /*
         size_t interactionsDistinctCells_st{0};
         particleContainer.forAllDistinctCellNeighbours([this, &interactionsDistinctCells_st](std::vector<double> &force,
                                                                                              std::vector<double> &oldForce,
@@ -112,9 +112,9 @@ namespace sim::physics::force {
                     interactionsDistinctCells_st++;
                 }
             }
-        });
+        });*/
 
-        std::cout<<"Inter between cells old version: " << interactionsDistinctCells_st << " new version: "<< interactionsDistinctCells << std::endl;
+        //std::cout<<"Inter between cells old version: " << interactionsDistinctCells_st << " new version: "<< interactionsDistinctCells << std::endl;
     }
 
     /**

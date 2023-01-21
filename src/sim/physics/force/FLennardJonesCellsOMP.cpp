@@ -162,6 +162,9 @@ namespace sim::physics::force {
                         indexJJ = 0;
                         static const __m256i xMask = _mm256_set_epi64x(0, -1, -1, -1);
                         static const __m256d half = _mm256_set1_pd(0.5);
+                        static const __m256d one = _mm256_set1_pd(1.0);
+                        static const __m256d two = _mm256_set1_pd(2.0);
+                        static const __m256d fac24 = _mm256_set1_pd(24.0);
 
                         // make cellI size divisible by 4
                         for(; indexII < cells[indexC0].size() % 4; indexII++) {
@@ -222,23 +225,58 @@ namespace sim::physics::force {
                                 __m256d d1 = _mm256_sub_pd(xI, xJ1);
                                 __m256d d2 = _mm256_sub_pd(xI, xJ2);
                                 __m256d d3 = _mm256_sub_pd(xI, xJ3);
+                                __m256d d0_sqr = _mm256_mul_pd(d0,d0);
+                                __m256d d1_sqr = _mm256_mul_pd(d1,d1);
+                                __m256d d2_sqr = _mm256_mul_pd(d2,d2);
+                                __m256d d3_sqr = _mm256_mul_pd(d3,d3);
+                                __m256d hadd10 = _mm256_hadd_pd(d1_sqr, d0_sqr); //(a,b) -> b3+b2, a3+a2, b1+b0, a1+a0
+                                __m256d hadd32 = _mm256_hadd_pd(d3_sqr, d2_sqr); //(a,b) -> b3+b2, a3+a2, b1+b0, a1+a0
+                                __m128d upper10 = _mm256_extractf128_pd(hadd10, 1);
+                                __m128d upper32 = _mm256_extractf128_pd(hadd32, 1);
+                                __m128d d10 = _mm_add_pd(upper10, _mm256_castpd256_pd128(hadd10));
+                                __m128d d32 = _mm_add_pd(upper32, _mm256_castpd256_pd128(hadd32));
+                                __m256d d3210 = _mm256_set_m128d(d32, d10); // this is dsqr for all 4 particles
 
-                                __m256d d = _mm256_sub_pd(xI, xJ);
-                                __m256d d_sqr = _mm256_mul_pd(d,d);
-                                __m256d hadd = _mm256_hadd_pd(d_sqr, d_sqr); //dq0+dq1 -> [63:0], dq2+0 -> [191:128]
-                                __m128d upper = _mm256_extractf128_pd(hadd, 1);
-                                __m128d d_sum = _mm_add_pd(upper, _mm256_castpd256_pd128(hadd));
+                                __m256d l2inv_dsqr_3210 = _mm256_div_pd(one, d3210);
+                                __m256d fac0_3210 = _mm256_mul_pd(fac24, eps);
+                                        fac0_3210 = _mm256_mul_pd(fac0_3210, l2inv_dsqr_3210);
+                                __m256d l2inv_pow6_3210 = _mm256_mul_pd(l2inv_dsqr_3210, _mm256_mul_pd(l2inv_dsqr_3210,l2inv_dsqr_3210));
+                                __m256d sigP2 = _mm256_mul_pd(sig, sig);
+                                __m256d sigP6 = _mm256_mul_pd(sigP2, _mm256_mul_pd(sigP2, sigP2));
+                                __m256d fac1_tmp_3210 = _mm256_mul_pd(sigP6, l2inv_pow6_3210);
+                                __m256d fac1_3210 = _mm256_sub_pd(fac1_tmp_3210, _mm256_mul_pd(two, _mm256_mul_pd(fac1_tmp_3210,fac1_tmp_3210)));
+                                __m256d scale_3210 = _mm256_mul_pd(fac0_3210, fac1_3210);
+                                __m128d scale_32 = _mm256_extractf128_pd(scale_3210, 1);
+                                __m128d scale_10  = _mm256_castpd256_pd128(scale_3210);
+                                __m256d scale_0 = _mm256_broadcastsd_pd(scale_10);
+                                __m256d scale_1 = _mm256_broadcastsd_pd(_mm_permute_pd(scale_10, 1));
+                                __m256d scale_2 = _mm256_broadcastsd_pd(scale_32);
+                                __m256d scale_3 = _mm256_broadcastsd_pd(_mm_permute_pd(scale_32, 1));
+                                __m256d res0 = _mm256_mul_pd(scale_0, d0);
+                                __m256d res1 = _mm256_mul_pd(scale_1, d1);
+                                __m256d res2 = _mm256_mul_pd(scale_2, d2);
+                                __m256d res3 = _mm256_mul_pd(scale_3, d3);
+                                *reinterpret_cast<__m256d*>(&_force[indexI * 3]) -= res0;
+                                *reinterpret_cast<__m256d*>(&_force[indexI * 3]) -= res1;
+                                *reinterpret_cast<__m256d*>(&_force[indexI * 3]) -= res2;
+                                *reinterpret_cast<__m256d*>(&_force[indexI * 3]) -= res3;
+                                *reinterpret_cast<__m256d*>(&_force[indexJ * 3 + 0]) += res0;
+                                *reinterpret_cast<__m256d*>(&_force[indexJ * 3 + 2 + 1]) += res1;
+                                *reinterpret_cast<__m256d*>(&_force[indexJ * 3 + 4 + 2]) += res2;
+                                *reinterpret_cast<__m256d*>(&_force[indexJ * 3 + 8 + 1]) += res3;
                             }
                         }
                         // cellI is divisible by 4 now
                         for(; indexII < cells[indexC0].size(); indexII += 4){
+                            indexI = cells[indexC0][indexII];
+
                             //I is vector, J is not necessarily vector
                             for(; indexJJ < cells[indexC1].size() % 4; indexJJ++) {
-                                //do calc
+                                indexJ = cells[indexC1][indexJJ];
                             }
                             //I not vector, J is vector
                             for(; indexJJ < cells[indexC1].size(); indexJJ += 4) {
-                                //do calc
+                                indexJ = cells[indexC1][indexJJ];
                             }
                         }
 

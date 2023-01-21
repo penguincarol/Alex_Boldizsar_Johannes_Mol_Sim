@@ -6,6 +6,7 @@
 #include "defaults.h"
 
 #include <iostream>
+#include <immintrin.h>
 
 namespace sim::physics::force {
     /**
@@ -65,7 +66,10 @@ namespace sim::physics::force {
             static const double rt3_2 = std::pow(2, 1 / 3);
             //const std::vector<std::vector<std::vector<std::pair<unsigned long, unsigned long>>>>& taskGroups = particleContainer.generateDistinctCellNeighbours();
             const std::vector<std::vector<std::pair<unsigned long, unsigned long>>>& alternativeTaskGroups = particleContainer.generateDistinctAlternativeCellNeighbours();
-            double *f = force.data();
+            double *_force = force.data();
+            double *_x = x.data();
+            double *_sig = sig.data();
+            double *_eps = eps.data();
             size_t size = force.size();
             double sigma, sigma2, sigma6, epsilon, d0, d1, d2, dsqr, l2NInvSquare, fac0, l2NInvPow6, fac1_sum1, fac1;
             unsigned long indexI;
@@ -128,11 +132,11 @@ namespace sim::physics::force {
 
             #pragma omp parallel \
                 default(none) \
-                shared(size, x, t, cells, eps, sig,alternativeTaskGroups,fpairFun,force,m, maxThreads) \
+                shared(size, _x, x, t, cells, _eps, eps, _sig, sig,alternativeTaskGroups,fpairFun,force,m, maxThreads) \
                 private(sigma, sigma2, sigma6, epsilon, d0, d1, d2, dsqr, l2NInvSquare, \
                         fac0, l2NInvPow6, fac1_sum1, fac1, indexI, indexJ,indexII,indexJJ,indexY,indexC0,indexC1) \
                 firstprivate(indexX, rt3_2) \
-                reduction(+:f[:size])
+                reduction(+:_force[:size])
             {
                 //generate tasks: for all distinct cell neighbours
                 #pragma omp for
@@ -140,6 +144,104 @@ namespace sim::physics::force {
                     for(indexY = 0; indexY < alternativeTaskGroups[indexX].size(); indexY++){
                         indexC0 = alternativeTaskGroups[indexX][indexY].first;
                         indexC1 = alternativeTaskGroups[indexX][indexY].second;
+                        //TASK:
+                        //first do 0-3 iterations for cellI s.t. its size%4==0
+                        //handle cellJ: do make size%4==0, then vectorize
+                        //then handle rest of cellI vectorized
+                        //handle cellJ in the same way
+                        /*
+                         * static const __m256i xMask = _mm256_set_epi64x(0, -1, -1, -1);
+                                __m256d xI = _mm256_maskload_pd(_x + 2*indexI + indexI, xMask);
+                                __m256d xJ = _mm256_maskload_pd(_x + 2*indexJ + indexJ, xMask);
+                                __m256d d = _mm256_sub_pd(xI, xJ);
+                                //for sigma/epsilon to permute: _mm256_permute_pd -> for 4 particles once load all values
+                         * */
+
+                        //init
+                        indexII = 0;
+                        indexJJ = 0;
+                        static const __m256i xMask = _mm256_set_epi64x(0, -1, -1, -1);
+                        static const __m256d half = _mm256_set1_pd(0.5);
+
+                        // make cellI size divisible by 4
+                        for(; indexII < cells[indexC0].size() % 4; indexII++) {
+                            indexI = cells[indexC0][indexII];
+                            double sigIs = sig[indexI];
+                            double epsIs = eps[indexI];
+                            __m256d xI = _mm256_maskload_pd(_x + 2 * indexI + indexI, xMask);
+                            __m256d sigI = _mm256_set1_pd(sigIs); //sigma of I in all positions
+                            __m256d epsI = _mm256_set1_pd(epsIs); //epsilon of I in all positions
+
+                            //I is not vector, J is not vector
+                            for(; indexJJ < cells[indexC1].size() % 4; indexJJ++) {
+                                indexJ = cells[indexC1][indexJJ];
+                                sigma = (sigIs + sig[indexJ]) / 2;
+                                epsilon = std::sqrt(epsIs * eps[indexJ]);
+                                sigma6 = std::pow(sigma,6);
+
+                                __m256d xJ = _mm256_maskload_pd(_x + 2 * indexJ + indexJ, xMask);
+                                __m256d d = _mm256_sub_pd(xI, xJ);
+                                __m256d d_sqr = _mm256_mul_pd(d,d);
+                                __m256d hadd = _mm256_hadd_pd(d_sqr, d_sqr); //dq0+dq1 -> [63:0], dq2+0 -> [191:128]
+                                __m128d upper = _mm256_extractf128_pd(hadd, 1);
+                                __m128d d_sum = _mm_add_pd(upper, _mm256_castpd256_pd128(hadd));
+                                dsqr = _mm_cvtsd_f64(d_sum);
+                                if (t[indexI] & 0x80000000 || t[indexJ] & 0x80000000) {
+                                    if (dsqr >= rt3_2 * sigma2) continue;
+                                }
+
+                                l2NInvSquare = 1 / (dsqr);
+                                fac0 = 24 * epsilon * l2NInvSquare;
+                                l2NInvPow6 = l2NInvSquare * l2NInvSquare * l2NInvSquare;
+                                fac1_sum1 = sigma6 * l2NInvPow6;
+                                fac1 = (fac1_sum1) - 2 * (fac1_sum1 * fac1_sum1);
+                                _force[indexI * 3 + 0] -= fac0 * fac1 * d0;
+                                _force[indexI * 3 + 1] -= fac0 * fac1 * d1;
+                                _force[indexI * 3 + 2] -= fac0 * fac1 * d2;
+                                _force[indexJ * 3 + 0] += fac0 * fac1 * d0;
+                                _force[indexJ * 3 + 1] += fac0 * fac1 * d1;
+                                _force[indexJ * 3 + 2] += fac0 * fac1 * d2;
+
+                            }
+                            //I is not vector, J is vector now
+                            for(; indexJJ < cells[indexC1].size(); indexJJ += 4) {
+                                indexJ = cells[indexC1][indexJJ];
+                                __m256d sigJ = _mm256_loadu_pd(_sig + indexJ); // sigma of all 4 particles
+                                __m256d epsJ = _mm256_loadu_pd(_eps + indexJ); // epsilon of all 4 particles
+                                __m256d xJ0 = _mm256_maskload_pd(_x + 2 * indexJ + indexJ, xMask);
+                                __m256d xJ1 = _mm256_maskload_pd(_x + 2 * indexJ + indexJ + 2 + 1, xMask);
+                                __m256d xJ2 = _mm256_maskload_pd(_x + 2 * indexJ + indexJ + 4 + 2, xMask);
+                                __m256d xJ3 = _mm256_maskload_pd(_x + 2 * indexJ + indexJ + 8 + 1, xMask);
+
+                                __m256d tmpSig = _mm256_add_pd(sigI, sigJ);
+                                __m256d sig = _mm256_mul_pd(tmpSig, half);
+                                __m256d tmpEps = _mm256_mul_pd(epsI, epsJ);
+                                __m256d eps = _mm256_sqrt_pd(tmpEps);
+
+                                __m256d d0 = _mm256_sub_pd(xI, xJ0);
+                                __m256d d1 = _mm256_sub_pd(xI, xJ1);
+                                __m256d d2 = _mm256_sub_pd(xI, xJ2);
+                                __m256d d3 = _mm256_sub_pd(xI, xJ3);
+
+                                __m256d d = _mm256_sub_pd(xI, xJ);
+                                __m256d d_sqr = _mm256_mul_pd(d,d);
+                                __m256d hadd = _mm256_hadd_pd(d_sqr, d_sqr); //dq0+dq1 -> [63:0], dq2+0 -> [191:128]
+                                __m128d upper = _mm256_extractf128_pd(hadd, 1);
+                                __m128d d_sum = _mm_add_pd(upper, _mm256_castpd256_pd128(hadd));
+                            }
+                        }
+                        // cellI is divisible by 4 now
+                        for(; indexII < cells[indexC0].size(); indexII += 4){
+                            //I is vector, J is not necessarily vector
+                            for(; indexJJ < cells[indexC1].size() % 4; indexJJ++) {
+                                //do calc
+                            }
+                            //I not vector, J is vector
+                            for(; indexJJ < cells[indexC1].size(); indexJJ += 4) {
+                                //do calc
+                            }
+                        }
+
                         for (indexII = 0; indexII < cells[indexC0].size(); indexII++) {
                             for (indexJJ = 0; indexJJ < cells[indexC1].size(); indexJJ++) {
                                 indexI = cells[indexC0][indexII];
@@ -164,12 +266,12 @@ namespace sim::physics::force {
                                 fac1_sum1 = sigma6 * l2NInvPow6;
                                 fac1 = (fac1_sum1) - 2 * (fac1_sum1 * fac1_sum1);
 
-                                f[indexI * 3 + 0] -= fac0 * fac1 * d0;
-                                f[indexI * 3 + 1] -= fac0 * fac1 * d1;
-                                f[indexI * 3 + 2] -= fac0 * fac1 * d2;
-                                f[indexJ * 3 + 0] += fac0 * fac1 * d0;
-                                f[indexJ * 3 + 1] += fac0 * fac1 * d1;
-                                f[indexJ * 3 + 2] += fac0 * fac1 * d2;
+                                _force[indexI * 3 + 0] -= fac0 * fac1 * d0;
+                                _force[indexI * 3 + 1] -= fac0 * fac1 * d1;
+                                _force[indexI * 3 + 2] -= fac0 * fac1 * d2;
+                                _force[indexJ * 3 + 0] += fac0 * fac1 * d0;
+                                _force[indexJ * 3 + 1] += fac0 * fac1 * d1;
+                                _force[indexJ * 3 + 2] += fac0 * fac1 * d2;
                             }
                         }
                     }

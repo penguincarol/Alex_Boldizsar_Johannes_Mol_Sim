@@ -53,13 +53,14 @@ namespace sim::physics::force {
                                             std::vector<double> &eps,
                                             std::vector<double> &sig){
             //size_t interactions{0};
-            #pragma omp parallel for default(none) shared(cells, x, eps, sig, m, type, force)
+            auto fpairFun = this->fpairFun;
+            #pragma omp parallel for default(none) shared(cells, x, eps, sig, m, type, force, fpairFun)
             for(size_t cellIndex=0; cellIndex < cells.size(); cellIndex++){
                 auto& cell = cells[cellIndex];
                 for(size_t i = 0; i < cell.size(); i++){
                     for(size_t j = i+1; j < cell.size(); j++){
                         //interactions++;
-                        this->fpairFun(force, x, eps, sig, m, type, i, j);
+                        fpairFun(force, x, eps, sig, m, type, i, j);
                     }
                 }
             }
@@ -85,14 +86,15 @@ namespace sim::physics::force {
                               std::transform(omp_out.begin(), omp_out.end(), omp_in.begin(), omp_out.begin(),std::plus<double>())) \
                     initializer(omp_priv = decltype(omp_orig)(omp_orig.size()))
 
-            #pragma omp parallel for default(none) shared(tasks, cells, x, eps, sig, m, type) reduction(vec_double_plus : force)
+                auto fpairFun = this->fpairFun;
+            #pragma omp parallel for default(none) shared(tasks, cells, x, eps, sig, m, type, fpairFun) reduction(vec_double_plus : force)
                 for(auto& [cellIndexI, cellIndexJ]: tasks) {
                     size_t cII = cellIndexI;     //openMP problems with the other variant
                     size_t cIJ = cellIndexJ;
 
                     for (auto pIndexI: cells[cII]) {
                         for (auto pIndexJ: cells[cIJ]) {
-                            this->fpairFun(force, x, eps, sig, m, type, pIndexI, pIndexJ);
+                            fpairFun(force, x, eps, sig, m, type, pIndexI, pIndexJ);
                             //interactionsDistinctCells++;
                         }
                     }

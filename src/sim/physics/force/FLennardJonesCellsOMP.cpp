@@ -191,6 +191,7 @@ namespace sim::physics::force {
                                 __m128d d_sum = _mm_add_pd(upper, _mm256_castpd256_pd128(hadd));
                                 dsqr = _mm_cvtsd_f64(d_sum);
                                 if (t[indexI] & 0x80000000 || t[indexJ] & 0x80000000) {
+                                    sigma2 = sigma * sigma;
                                     if (dsqr >= rt3_2 * sigma2) continue;
                                 }
 
@@ -199,8 +200,8 @@ namespace sim::physics::force {
                                 l2NInvPow6 = l2NInvSquare * l2NInvSquare * l2NInvSquare;
                                 fac1_sum1 = sigma6 * l2NInvPow6;
                                 fac1 = (fac1_sum1) - 2 * (fac1_sum1 * fac1_sum1);
-                                __m256 scalar = _mm256_set1_pd(fac0 * fac1);
-                                __m256 result = _mm256_mul_pd(scalar, d);
+                                __m256d scalar = _mm256_set1_pd(fac0 * fac1);
+                                __m256d result = _mm256_mul_pd(scalar, d);
                                 *reinterpret_cast<__m256d*>(&_force[indexI * 3]) -= result;
                                 *reinterpret_cast<__m256d*>(&_force[indexJ * 3]) += result;
                             }
@@ -349,8 +350,12 @@ namespace sim::physics::force {
                                     __m256d dI0J1 = _mm256_sub_pd(xI0, xJ1);
                                     __m256d dI0J2 = _mm256_sub_pd(xI0, xJ2);
                                     __m256d dI0J3 = _mm256_sub_pd(xI0, xJ3);
-                                    __m256d sig;
-                                    __m256d eps; // TODO compute values
+                                    __m256d sigI_tmp = _mm256_set1_pd(_mm256_cvtsd_f64(sigI));
+                                    __m256d sig_tmp = _mm256_add_pd(sigI_tmp, sigJ);
+                                    __m256d sig = _mm256_mul_pd(sig_tmp, half);
+                                    __m256d epsI_tmp = _mm256_set1_pd(_mm256_cvtsd_f64(epsI));
+                                    __m256d eps_tmp = _mm256_mul_pd(epsI_tmp, epsJ);
+                                    __m256d eps = _mm256_sqrt_pd(eps_tmp);
 
                                     __m256d dI0J0_sqr = _mm256_mul_pd(dI0J0, dI0J0); //0
                                     __m256d dI0J1_sqr = _mm256_mul_pd(dI0J1, dI0J1); //1
@@ -393,13 +398,18 @@ namespace sim::physics::force {
                                     *reinterpret_cast<__m256d*>(&_force[indexJ * 3 + 8 + 1]) += res3;
                                 }
 
+                                //I1
                                 {
                                     __m256d dI1J0 = _mm256_sub_pd(xI1, xJ0);
                                     __m256d dI1J1 = _mm256_sub_pd(xI1, xJ1);
                                     __m256d dI1J2 = _mm256_sub_pd(xI1, xJ2);
                                     __m256d dI1J3 = _mm256_sub_pd(xI1, xJ3);
-                                    __m256d sig;
-                                    __m256d eps; // TODO compute values
+                                    __m256d sigI_tmp = _mm256_set1_pd(_mm256_cvtsd_f64(sigI));
+                                    __m256d sig_tmp = _mm256_add_pd(sigI_tmp, sigJ);
+                                    //__m256d sig = _mm256_mul_pd(sig_tmp, half);
+                                    __m256d epsI_tmp = _mm256_set1_pd(_mm256_cvtsd_f64(epsI));
+                                    __m256d eps_tmp = _mm256_mul_pd(epsI_tmp, epsJ);
+                                    __m256d eps = _mm256_sqrt_pd(eps_tmp);
 
                                     __m256d dI1J0_sqr = _mm256_mul_pd(dI1J0, dI1J0); //0
                                     __m256d dI1J1_sqr = _mm256_mul_pd(dI1J1, dI1J1); //1
@@ -442,6 +452,7 @@ namespace sim::physics::force {
                                     *reinterpret_cast<__m256d*>(&_force[indexJ * 3 + 8 + 1]) += res3;
                                 }
 
+                                //I2
                                 {
                                     __m256d dI2J0 = _mm256_sub_pd(xI2, xJ0);
                                     __m256d dI2J1 = _mm256_sub_pd(xI2, xJ1);
@@ -491,7 +502,7 @@ namespace sim::physics::force {
                                     *reinterpret_cast<__m256d*>(&_force[indexJ * 3 + 8 + 1]) += res3;
                                 }
 
-
+                                //I3
                                 {
                                     __m256d dI3J0 = _mm256_sub_pd(xI3, xJ0);
                                     __m256d dI3J1 = _mm256_sub_pd(xI3, xJ1);

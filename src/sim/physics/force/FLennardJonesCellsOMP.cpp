@@ -171,7 +171,7 @@ namespace sim::physics::force {
                             indexI = cells[indexC0][indexII];
                             double sigIs = sig[indexI];
                             double epsIs = eps[indexI];
-                            __m256d xI = _mm256_maskload_pd(_x + 2 * indexI + indexI, xMask);
+                            __m256d xI = _mm256_and_pd(_mm256_castsi256_pd(xMask),_mm256_loadu_pd(_x + 2 * indexI + indexI));
                             __m256d sigI = _mm256_set1_pd(sigIs); //sigma of I in all positions
                             __m256d epsI = _mm256_set1_pd(epsIs); //epsilon of I in all positions
 
@@ -269,6 +269,8 @@ namespace sim::physics::force {
                         // cellI is divisible by 4 now
                         for(; indexII < cells[indexC0].size(); indexII += 4){
                             indexI = cells[indexC0][indexII];
+                            __m256d sigI = _mm256_loadu_pd(_sig + 2 * indexI + indexI); // 4 diff. sigma values for I
+                            __m256d epsI = _mm256_loadu_pd(_eps + 2 * indexI + indexI); // 4 diff. epsilon values for I
 
                             //I is vector, J is not necessarily vector
                             for(; indexJJ < cells[indexC1].size() % 4; indexJJ++) {

@@ -53,7 +53,7 @@ namespace sim::physics::force {
                                             std::vector<double> &eps,
                                             std::vector<double> &sig){
             //size_t interactions{0};
-            #pragma omp parallel for //reduction(+:interactions)
+            #pragma omp parallel for default(none) shared(cells, x, eps, sig, m, type, force)
             for(size_t cellIndex=0; cellIndex < cells.size(); cellIndex++){
                 auto& cell = cells[cellIndex];
                 for(size_t i = 0; i < cell.size(); i++){
@@ -63,7 +63,6 @@ namespace sim::physics::force {
                     }
                 }
             }
-            #pragma omp barrier
             //std::cout<<"Inter Cells with themselves: " << interactions << std::endl;
         });
 
@@ -83,10 +82,10 @@ namespace sim::physics::force {
                                                 std::vector<double> &eps,
                                                 std::vector<double> &sig){
             #pragma omp declare reduction(vec_double_plus : std::vector<double> : \
-                              std::transform(omp_out.begin(), omp_out.end(), omp_in.begin(), omp_out.begin(), std::plus<double>())) \
+                              std::transform(omp_out.begin(), omp_out.end(), omp_in.begin(), omp_out.begin(),std::plus<double>())) \
                     initializer(omp_priv = decltype(omp_orig)(omp_orig.size()))
 
-            #pragma omp parallel for reduction(vec_double_plus : force)
+            #pragma omp parallel for default(none) shared(tasks, cells, x, eps, sig, m, type) reduction(vec_double_plus : force)
                 for(auto& [cellIndexI, cellIndexJ]: tasks) {
                     size_t cII = cellIndexI;     //openMP problems with the other variant
                     size_t cIJ = cellIndexJ;

@@ -60,7 +60,7 @@ namespace sim::physics::force {
                 for(size_t i = 0; i < cell.size(); i++){
                     for(size_t j = i+1; j < cell.size(); j++){
                         //interactions++;
-                        fpairFun(force, x, eps, sig, m, type, i, j);
+                        fpairFun(force, x, eps, sig, m, type, cell[i], cell[j]);
                     }
                 }
             }

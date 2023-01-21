@@ -48,6 +48,7 @@ void performTaskModelTest(ParticleContainer& pc){
 }
 
 void performAlternativeTaskModelTest(ParticleContainer& pc){
+    std::map<unsigned long, std::unordered_set<unsigned long>> edgesTaken{};
 
     std::vector<std::vector<std::pair<unsigned long, unsigned long>>> taskGroup = pc.generateDistinctAlternativeCellNeighbours();
 
@@ -57,8 +58,24 @@ void performAlternativeTaskModelTest(ParticleContainer& pc){
     for(const auto& task: taskGroup){
         for(auto& [i,j]: task){
             sumCellInteractions++;
-        }
 
+            if(edgesTaken.contains(i)){
+                ASSERT_FALSE(edgesTaken.at(i).contains(j));
+                auto jc = j;
+                edgesTaken.at(i).emplace(jc);
+            }else{
+                auto ic = i;
+                edgesTaken.emplace(ic, std::unordered_set<unsigned long>{j});
+            }
+            if(edgesTaken.contains(j)){
+                ASSERT_FALSE(edgesTaken.at(j).contains(i));
+                auto ic = i;
+                edgesTaken.at(j).emplace(ic);
+            }else{
+                auto jc = j;
+                edgesTaken.emplace(jc, std::unordered_set<unsigned long>{i});
+            }
+        }
     }
 
     size_t cellInteractionReference{0};

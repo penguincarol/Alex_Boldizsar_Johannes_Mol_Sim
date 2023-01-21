@@ -54,86 +54,56 @@ namespace sim::physics::force {
                                             std::vector<double> &x,
                                             std::vector<double> &v,
                                             std::vector<double> &m,
+                                            std::vector<int> &type,
+                                            unsigned long count,
+                                            ParticleContainer::VectorCoordWrapper& cells,
+                                            std::vector<double> &eps,
+                                            std::vector<double> &sig){
+            auto fpairFun = this->fpairFun;
+            #pragma omp parallel for default(none) shared(cells, x, eps, sig, m, type, force, fpairFun) //reduction(+:interactions)
+            for(size_t cellIndex=0; cellIndex < cells.size(); cellIndex++){
+                auto& cell = cells[cellIndex];
+                for(size_t i = 0; i < cell.size(); i++){
+                    for(size_t j = i+1; j < cell.size(); j++){
+                        fpairFun(force, x, eps, sig, m, type, cell[i], cell[j]);
+                    }
+                }
+            }
+        });
+
+        particleContainer.runOnDataCell([&](std::vector<double> &force,
+                                            std::vector<double> &oldForce,
+                                            std::vector<double> &x,
+                                            std::vector<double> &v,
+                                            std::vector<double> &m,
                                             std::vector<int> &t,
                                             unsigned long count,
                                             ParticleContainer::VectorCoordWrapper &cells,
                                             std::vector<double> &eps,
                                             std::vector<double> &sig) {
-            using cell_ptr = std::vector<unsigned long> *;
-            std::vector<std::vector<cell_ptr>> tasks;
-            auto fpairFun = this->fpairFun;
-            cell_ptr c_ptr;
             static const double rt3_2 = std::pow(2, 1 / 3);
-            //const std::vector<std::vector<std::vector<std::pair<unsigned long, unsigned long>>>>& taskGroups = particleContainer.generateDistinctCellNeighbours();
             const std::vector<std::vector<std::pair<unsigned long, unsigned long>>>& alternativeTaskGroups = particleContainer.generateDistinctAlternativeCellNeighbours();
             double *_force = force.data();
             double *_x = x.data();
             double *_sig = sig.data();
             double *_eps = eps.data();
             size_t size = force.size();
-            double sigma, sigma2, sigma6, epsilon, d0, d1, d2, dsqr, l2NInvSquare, fac0, l2NInvPow6, fac1_sum1, fac1;
+            double sigma, sigma2, sigma6, epsilon, dsqr, l2NInvSquare, fac0, l2NInvPow6, fac1_sum1, fac1;
             unsigned long indexI;
             unsigned long indexJ;
             unsigned long indexII;
             unsigned long indexJJ;
             unsigned long indexX;
             unsigned long indexY;
-            //unsigned long indexZ;
             unsigned long indexC0;
             unsigned long indexC1;
 
             size_t maxThreads = omp_get_max_threads();
-            std::vector<size_t> interactions;
-            interactions.clear();
-            tasks.clear();
-            interactions.resize(maxThreads,0);
-            tasks.resize(maxThreads);
-
-            for (auto &cell: cells) {
-                size_t indexMin = 0;
-                size_t last_count = interactions[indexMin];
-                for(size_t i = 1; i < maxThreads; i++) {
-                    if(interactions[i] <= last_count) {
-                        last_count = interactions[i];
-                        indexMin = i;
-                    }
-                }
-
-                tasks[indexMin].emplace_back(&cell);
-                interactions[indexMin] += cell.size()*(cell.size()-1)/2;
-            }
-
-//            for(size_t i= 0; i < maxThreads; i++) {
-//                std::cout << "Task " << i << ": " << interactions[i] << std::endl;
-//            }
-            #pragma omp parallel default(none) shared(force, x, m, t, eps, sig, tasks, fpairFun, maxThreads) private(c_ptr, indexI, indexJ,indexII,indexJJ,indexX,indexY)
-            //#pragma omp parallel default(none) shared(size, force, x, v, m, t, count, cells, eps, sig, tasks, buffer_size, fpairFun, rt3_2, taskGroups) private(c_ptr, sigma, sigma2, sigma6, epsilon, d0, d1, d2, dsqr, l2NInvSquare, fac0, l2NInvPow6, fac1_sum1, fac1, indexI, indexJ,indexII,indexJJ,indexX,indexY,indexC0,indexC1,indexZ)
-            {
-                #pragma omp for
-                for (indexII = 0; indexII < maxThreads; indexII++) {
-                    for (indexJJ = 0; indexJJ < tasks[indexII].size(); indexJJ++) {
-                        c_ptr = tasks[indexII][indexJJ];
-                        for (indexX = 0; indexX < c_ptr->size(); indexX++) {
-                            for (indexY = indexX + 1; indexY < c_ptr->size(); indexY++) {
-                                indexI = (*c_ptr)[indexX];
-                                indexJ = (*c_ptr)[indexY];
-                                fpairFun(force, x, eps, sig, m, t, indexI, indexJ);
-                            }
-                        }
-                    }
-                }
-
-                #pragma omp barrier
-            }
-
-//            for(size_t i= 0; i < maxThreads; i++) {
-//                std::cout << "Task " << i << ": " << alternativeTaskGroups[i].size() << std::endl;
-//            }
 
             #pragma omp parallel \
                 default(none) \
                 shared(size, _x, x, t, cells, _eps, eps, _sig, sig,alternativeTaskGroups,fpairFun,force,m, maxThreads) \
-                private(sigma, sigma2, sigma6, epsilon, d0, d1, d2, dsqr, l2NInvSquare, \
+                private(sigma, sigma2, sigma6, epsilon, dsqr, l2NInvSquare, \
                         fac0, l2NInvPow6, fac1_sum1, fac1, indexI, indexJ,indexII,indexJJ,indexY,indexC0,indexC1) \
                 firstprivate(indexX, rt3_2) \
                 reduction(+:_force[:size])
@@ -149,13 +119,6 @@ namespace sim::physics::force {
                         //handle cellJ: do make size%4==0, then vectorize
                         //then handle rest of cellI vectorized
                         //handle cellJ in the same way
-                        /*
-                         * static const __m256i xMask = _mm256_set_epi64x(0, -1, -1, -1);
-                                __m256d xI = _mm256_maskload_pd(_x + 2*indexI + indexI, xMask);
-                                __m256d xJ = _mm256_maskload_pd(_x + 2*indexJ + indexJ, xMask);
-                                __m256d d = _mm256_sub_pd(xI, xJ);
-                                //for sigma/epsilon to permute: _mm256_permute_pd -> for 4 particles once load all values
-                         * */
 
                         //intentionally doing loop unrolling -> more performance but more code
                         //init
@@ -404,10 +367,10 @@ namespace sim::physics::force {
                                     __m256d dI1J1 = _mm256_sub_pd(xI1, xJ1);
                                     __m256d dI1J2 = _mm256_sub_pd(xI1, xJ2);
                                     __m256d dI1J3 = _mm256_sub_pd(xI1, xJ3);
-                                    __m256d sigI_tmp = _mm256_set1_pd(_mm256_cvtsd_f64(sigI));
+                                    __m256d sigI_tmp = _mm256_set1_pd(_mm256_cvtsd_f64(_mm256_permute_pd(sigI, 1)));
                                     __m256d sig_tmp = _mm256_add_pd(sigI_tmp, sigJ);
-                                    //__m256d sig = _mm256_mul_pd(sig_tmp, half);
-                                    __m256d epsI_tmp = _mm256_set1_pd(_mm256_cvtsd_f64(epsI));
+                                    __m256d sig = _mm256_mul_pd(sig_tmp, half);
+                                    __m256d epsI_tmp = _mm256_set1_pd(_mm256_cvtsd_f64(_mm256_permute_pd(epsI, 1)));
                                     __m256d eps_tmp = _mm256_mul_pd(epsI_tmp, epsJ);
                                     __m256d eps = _mm256_sqrt_pd(eps_tmp);
 
@@ -458,8 +421,12 @@ namespace sim::physics::force {
                                     __m256d dI2J1 = _mm256_sub_pd(xI2, xJ1);
                                     __m256d dI2J2 = _mm256_sub_pd(xI2, xJ2);
                                     __m256d dI2J3 = _mm256_sub_pd(xI2, xJ3);
-                                    __m256d sig;
-                                    __m256d eps; // TODO compute values
+                                    __m256d sigI_tmp = _mm256_set1_pd(_mm_cvtsd_f64(_mm256_extractf128_pd(sigI, 1)));
+                                    __m256d sig_tmp = _mm256_add_pd(sigI_tmp, sigJ);
+                                    __m256d sig = _mm256_mul_pd(sig_tmp, half);
+                                    __m256d epsI_tmp = _mm256_set1_pd(_mm_cvtsd_f64(_mm256_extractf128_pd(epsI, 1)));
+                                    __m256d eps_tmp = _mm256_mul_pd(epsI_tmp, epsJ);
+                                    __m256d eps = _mm256_sqrt_pd(eps_tmp);
 
                                     __m256d dI2J0_sqr = _mm256_mul_pd(dI2J0, dI2J0); //0
                                     __m256d dI2J1_sqr = _mm256_mul_pd(dI2J1, dI2J1); //1
@@ -508,8 +475,12 @@ namespace sim::physics::force {
                                     __m256d dI3J1 = _mm256_sub_pd(xI3, xJ1);
                                     __m256d dI3J2 = _mm256_sub_pd(xI3, xJ2);
                                     __m256d dI3J3 = _mm256_sub_pd(xI3, xJ3);
-                                    __m256d sig;
-                                    __m256d eps; // TODO compute values
+                                    __m256d sigI_tmp = _mm256_set1_pd(_mm_cvtsd_f64(_mm_permute_pd(_mm256_extractf128_pd(sigI, 1),1)));
+                                    __m256d sig_tmp = _mm256_add_pd(sigI_tmp, sigJ);
+                                    __m256d sig = _mm256_mul_pd(sig_tmp, half);
+                                    __m256d epsI_tmp = _mm256_set1_pd(_mm_cvtsd_f64(_mm_permute_pd(_mm256_extractf128_pd(epsI, 1),1)));
+                                    __m256d eps_tmp = _mm256_mul_pd(epsI_tmp, epsJ);
+                                    __m256d eps = _mm256_sqrt_pd(eps_tmp);
 
                                     __m256d dI3J0_sqr = _mm256_mul_pd(dI3J0, dI3J0); //0
                                     __m256d dI3J1_sqr = _mm256_mul_pd(dI3J1, dI3J1); //1

@@ -16,6 +16,8 @@ TEST(BoundsHandler, outflow){
     std::vector<Particle> particles{};
     Particle p1{std::array<double, 3>{4.,4.,4.},{0,0,0}, 1, 0};
     Particle p2{std::array<double, 3>{3.2,1.,1.},{0,0,0}, 1, 0};
+    p1.setID(0);
+    p2.setID(1);
     particles.emplace_back(p1);
     particles.emplace_back(p2);
     ParticleContainer pc{particles, {3.0,3.0,3.0}, 1.0};
@@ -41,6 +43,7 @@ TEST(BoundsHandler, reflecting){
     double newSigma{1/(std::pow(2,1/6))};
     std::vector<Particle> particles{};
     Particle p1{std::array<double, 3>{2.01,1.01,1.01},{0,0,0}, 1, 0};
+    //p1.setID(0);
     Particle p1Copy{p1};
 
     particles.emplace_back(p1);
@@ -98,6 +101,7 @@ TEST(BoundsHandler, periodicMovement){
     //initializing outside inside of domain and moving it out afterwards because i am not sure whether the pc might see it as invalid input
     Particle outside{std::array<double, 3>{1., 1., 1.}, {0.,0.,0.}, 1, 0};
     std::vector<Particle> particles{outside};
+    for(auto i=0; i < particles.size(); i++){particles[i].setID(i);}
     std::array<double, 3> domainSize{4., 3.5, 3.6};
     ParticleContainer pc{particles, domainSize, 1.2};
     pc.updateCells();
@@ -133,6 +137,7 @@ TEST(BoundsHandler, periodicForces){
     rightSide.setEpsilon(1);
     rightSide.setSigma(1);
     std::vector<Particle> particles{leftSide, rightSide};
+    for(auto i=0; i < particles.size(); i++){particles[i].setID(i);}
     std::array<double, 3> domainSize{5., 3.5, 3.6};
     ParticleContainer pc{particles, domainSize, 1.5};   //rightSide is within r_cutoff of leftSide but 2 cells apart
     pc.forAllParticles([&](Particle& p){

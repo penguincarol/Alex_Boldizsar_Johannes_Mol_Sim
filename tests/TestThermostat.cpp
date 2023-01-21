@@ -16,11 +16,14 @@ TEST(Thermostat, helperFunctionsAndCooling) {
     Particle p1{std::array<double, 3> {1.,1.,1.}, velocities[0], 4., 0};
     Particle p2{std::array<double, 3> {2.,2.,2.}, velocities[1], 1., 0};
     Particle p3{std::array<double, 3> {2.,1.,1.}, velocities[2], 5., 0};
+    p1.setID(0);
+    p2.setID(1);
+    p3.setID(2);
     buffer.emplace_back(p1);
     buffer.emplace_back(p2);
     buffer.emplace_back(p3);
 
-    ParticleContainer pc(buffer, {4.,4.,4.}, 1.0);
+    ParticleContainer pc(buffer, {4.,4.,4.}, 1.0, {}, false);
     //Thermostat(ParticleContainer& particleContainer, double T_t, 
     //unsigned int cT = 100, unsigned int dimensions = 2, double dT = std::numeric_limits<double>::infinity()):
     Thermostat ts(pc, 22, 2, 3, 2, 25, true);
@@ -65,6 +68,9 @@ TEST(Thermostat, Heating) {
     Particle p1{std::array<double, 3> {1.,1.,1.}, velocities[0], 4., 0};
     Particle p2{std::array<double, 3> {2.,2.,2.}, velocities[1], 1., 0};
     Particle p3{std::array<double, 3> {2.,1.,1.}, velocities[2], 5., 0};
+    p1.setID(0);
+    p2.setID(1);
+    p3.setID(2);
     buffer.emplace_back(p1);
     buffer.emplace_back(p2);
     buffer.emplace_back(p3);
@@ -102,6 +108,9 @@ TEST(Thermostat, deltaTInf) {
     Particle p1{std::array<double, 3> {1.,1.,1.}, velocities[0], 4., 0};
     Particle p2{std::array<double, 3> {2.,2.,2.}, velocities[1], 1., 0};
     Particle p3{std::array<double, 3> {2.,1.,1.}, velocities[2], 5., 0};
+    p1.setID(0);
+    p2.setID(1);
+    p3.setID(2);
     buffer.emplace_back(p1);
     buffer.emplace_back(p2);
     buffer.emplace_back(p3);

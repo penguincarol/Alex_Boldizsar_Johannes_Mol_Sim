@@ -157,6 +157,7 @@ namespace sim::physics::force {
                                 //for sigma/epsilon to permute: _mm256_permute_pd -> for 4 particles once load all values
                          * */
 
+                        //intentionally doing loop unrolling -> more performance but more code
                         //init
                         indexII = 0;
                         indexJJ = 0;
@@ -198,13 +199,10 @@ namespace sim::physics::force {
                                 l2NInvPow6 = l2NInvSquare * l2NInvSquare * l2NInvSquare;
                                 fac1_sum1 = sigma6 * l2NInvPow6;
                                 fac1 = (fac1_sum1) - 2 * (fac1_sum1 * fac1_sum1);
-                                _force[indexI * 3 + 0] -= fac0 * fac1 * d0;
-                                _force[indexI * 3 + 1] -= fac0 * fac1 * d1;
-                                _force[indexI * 3 + 2] -= fac0 * fac1 * d2;
-                                _force[indexJ * 3 + 0] += fac0 * fac1 * d0;
-                                _force[indexJ * 3 + 1] += fac0 * fac1 * d1;
-                                _force[indexJ * 3 + 2] += fac0 * fac1 * d2;
-
+                                __m256 scalar = _mm256_set1_pd(fac0 * fac1);
+                                __m256 result = _mm256_mul_pd(scalar, d);
+                                *reinterpret_cast<__m256d*>(&_force[indexI * 3]) -= result;
+                                *reinterpret_cast<__m256d*>(&_force[indexJ * 3]) += result;
                             }
                             //I is not vector, J is vector now
                             for(; indexJJ < cells[indexC1].size(); indexJJ += 4) {
@@ -269,51 +267,314 @@ namespace sim::physics::force {
                         // cellI is divisible by 4 now
                         for(; indexII < cells[indexC0].size(); indexII += 4){
                             indexI = cells[indexC0][indexII];
-                            __m256d sigI = _mm256_loadu_pd(_sig + 2 * indexI + indexI); // 4 diff. sigma values for I
-                            __m256d epsI = _mm256_loadu_pd(_eps + 2 * indexI + indexI); // 4 diff. epsilon values for I
+                            __m256d sigI = _mm256_loadu_pd(_sig + indexI); // 4 diff. sigma values for I
+                            __m256d epsI = _mm256_loadu_pd(_eps + indexI); // 4 diff. epsilon values for I
+                            __m256d xI0 = _mm256_maskload_pd(_x + 2 * indexI + indexI, xMask);
+                            __m256d xI1 = _mm256_maskload_pd(_x + 2 * indexI + indexI + 2 + 1, xMask);
+                            __m256d xI2 = _mm256_maskload_pd(_x + 2 * indexI + indexI + 4 + 2, xMask);
+                            __m256d xI3 = _mm256_maskload_pd(_x + 2 * indexI + indexI + 8 + 1, xMask);
 
                             //I is vector, J is not necessarily vector
                             for(; indexJJ < cells[indexC1].size() % 4; indexJJ++) {
                                 indexJ = cells[indexC1][indexJJ];
+                                __m256d sigJ = _mm256_set1_pd(_sig[indexJ]);
+                                __m256d epsJ = _mm256_set1_pd(_eps[indexJ]);
+                                __m256d xJ = _mm256_maskload_pd(_x + 2 * indexJ + indexJ, xMask);
+
+                                __m256d tmpSig = _mm256_add_pd(sigI, sigJ);
+                                __m256d sig = _mm256_mul_pd(tmpSig, half);
+                                __m256d tmpEps = _mm256_mul_pd(epsI, epsJ);
+                                __m256d eps = _mm256_sqrt_pd(tmpEps);
+
+                                __m256d d0 = _mm256_sub_pd(xI0, xJ);
+                                __m256d d1 = _mm256_sub_pd(xI1, xJ);
+                                __m256d d2 = _mm256_sub_pd(xI2, xJ);
+                                __m256d d3 = _mm256_sub_pd(xI3, xJ);
+                                __m256d d0_sqr = _mm256_mul_pd(d0,d0);
+                                __m256d d1_sqr = _mm256_mul_pd(d1,d1);
+                                __m256d d2_sqr = _mm256_mul_pd(d2,d2);
+                                __m256d d3_sqr = _mm256_mul_pd(d3,d3);
+                                __m256d hadd10 = _mm256_hadd_pd(d1_sqr, d0_sqr); //(a,b) -> b3+b2, a3+a2, b1+b0, a1+a0
+                                __m256d hadd32 = _mm256_hadd_pd(d3_sqr, d2_sqr); //(a,b) -> b3+b2, a3+a2, b1+b0, a1+a0
+                                __m128d upper10 = _mm256_extractf128_pd(hadd10, 1);
+                                __m128d upper32 = _mm256_extractf128_pd(hadd32, 1);
+                                __m128d d10 = _mm_add_pd(upper10, _mm256_castpd256_pd128(hadd10));
+                                __m128d d32 = _mm_add_pd(upper32, _mm256_castpd256_pd128(hadd32));
+                                __m256d d3210 = _mm256_set_m128d(d32, d10); // this is dsqr for all 4 particles
+
+                                __m256d l2inv_dsqr_3210 = _mm256_div_pd(one, d3210);
+                                __m256d fac0_3210 = _mm256_mul_pd(fac24, eps);
+                                fac0_3210 = _mm256_mul_pd(fac0_3210, l2inv_dsqr_3210);
+                                __m256d l2inv_pow6_3210 = _mm256_mul_pd(l2inv_dsqr_3210, _mm256_mul_pd(l2inv_dsqr_3210,l2inv_dsqr_3210));
+                                __m256d sigP2 = _mm256_mul_pd(sig, sig);
+                                __m256d sigP6 = _mm256_mul_pd(sigP2, _mm256_mul_pd(sigP2, sigP2));
+                                __m256d fac1_tmp_3210 = _mm256_mul_pd(sigP6, l2inv_pow6_3210);
+                                __m256d fac1_3210 = _mm256_sub_pd(fac1_tmp_3210, _mm256_mul_pd(two, _mm256_mul_pd(fac1_tmp_3210,fac1_tmp_3210)));
+                                __m256d scale_3210 = _mm256_mul_pd(fac0_3210, fac1_3210);
+                                __m128d scale_32 = _mm256_extractf128_pd(scale_3210, 1);
+                                __m128d scale_10  = _mm256_castpd256_pd128(scale_3210);
+                                __m256d scale_0 = _mm256_broadcastsd_pd(scale_10);
+                                __m256d scale_1 = _mm256_broadcastsd_pd(_mm_permute_pd(scale_10, 1));
+                                __m256d scale_2 = _mm256_broadcastsd_pd(scale_32);
+                                __m256d scale_3 = _mm256_broadcastsd_pd(_mm_permute_pd(scale_32, 1));
+                                __m256d res0 = _mm256_mul_pd(scale_0, d0);
+                                __m256d res1 = _mm256_mul_pd(scale_1, d1);
+                                __m256d res2 = _mm256_mul_pd(scale_2, d2);
+                                __m256d res3 = _mm256_mul_pd(scale_3, d3);
+                                *reinterpret_cast<__m256d*>(&_force[indexI * 3 + 0]) -= res0;
+                                *reinterpret_cast<__m256d*>(&_force[indexI * 3 + 2 + 1]) -= res1;
+                                *reinterpret_cast<__m256d*>(&_force[indexI * 3 + 4 + 2]) -= res2;
+                                *reinterpret_cast<__m256d*>(&_force[indexI * 3 + 8 + 1]) -= res3;
+                                *reinterpret_cast<__m256d*>(&_force[indexJ * 3]) += res0;
+                                *reinterpret_cast<__m256d*>(&_force[indexJ * 3]) += res1;
+                                *reinterpret_cast<__m256d*>(&_force[indexJ * 3]) += res2;
+                                *reinterpret_cast<__m256d*>(&_force[indexJ * 3]) += res3;
                             }
-                            //I not vector, J is vector
+                            //I is vector, J is vector -> need to let 4x4 particles interact with each other
                             for(; indexJJ < cells[indexC1].size(); indexJJ += 4) {
                                 indexJ = cells[indexC1][indexJJ];
-                            }
-                        }
+                                __m256d sigJ = _mm256_loadu_pd(_sig + indexJ);
+                                __m256d epsJ = _mm256_loadu_pd(_eps + indexJ);
+                                //rotate sigI right etc and generate 16 diff. pairs
 
-                        for (indexII = 0; indexII < cells[indexC0].size(); indexII++) {
-                            for (indexJJ = 0; indexJJ < cells[indexC1].size(); indexJJ++) {
-                                indexI = cells[indexC0][indexII];
-                                indexJ = cells[indexC1][indexJJ];
-                                //fpairFun(force, x, eps, sig, m, t, indexI, indexJ);
-                                sigma = (sig[indexI] + sig[indexJ]) / 2;
-                                sigma2 = sigma * sigma;
-                                sigma6 = sigma2 * sigma2 * sigma2;
-                                epsilon = std::sqrt(eps[indexI] * eps[indexJ]); // TODO this can be cached
-                                d0 = x[indexI * 3 + 0] - x[indexJ * 3 + 0];
-                                d1 = x[indexI * 3 + 1] - x[indexJ * 3 + 1];
-                                d2 = x[indexI * 3 + 2] - x[indexJ * 3 + 2];
-                                dsqr = d0 * d0 + d1 * d1 + d2 * d2;
-                                //check if is membrane -> need to skip attractive forces
-                                if (t[indexI] & 0x80000000 || t[indexJ] & 0x80000000) {
-                                    if (dsqr >= rt3_2 * sigma2) continue;
+                                __m256d xJ0 = _mm256_maskload_pd(_x + 2 * indexJ + indexJ, xMask);
+                                __m256d xJ1 = _mm256_maskload_pd(_x + 2 * indexJ + indexJ + 2 + 1, xMask);
+                                __m256d xJ2 = _mm256_maskload_pd(_x + 2 * indexJ + indexJ + 4 + 2, xMask);
+                                __m256d xJ3 = _mm256_maskload_pd(_x + 2 * indexJ + indexJ + 8 + 1, xMask);
+
+                                //handle different pairs sequentially in blocks of 4 to not overuse registers
+                                //I0
+                                {
+                                    __m256d dI0J0 = _mm256_sub_pd(xI0, xJ0);
+                                    __m256d dI0J1 = _mm256_sub_pd(xI0, xJ1);
+                                    __m256d dI0J2 = _mm256_sub_pd(xI0, xJ2);
+                                    __m256d dI0J3 = _mm256_sub_pd(xI0, xJ3);
+                                    __m256d sig;
+                                    __m256d eps; // TODO compute values
+
+                                    __m256d dI0J0_sqr = _mm256_mul_pd(dI0J0, dI0J0); //0
+                                    __m256d dI0J1_sqr = _mm256_mul_pd(dI0J1, dI0J1); //1
+                                    __m256d dI0J2_sqr = _mm256_mul_pd(dI0J2, dI0J2); //2
+                                    __m256d dI0J3_sqr = _mm256_mul_pd(dI0J3, dI0J3); //3
+                                    __m256d hadd10 = _mm256_hadd_pd(dI0J1_sqr, dI0J0_sqr); //(a,b) -> b3+b2, a3+a2, b1+b0, a1+a0
+                                    __m256d hadd32 = _mm256_hadd_pd(dI0J3_sqr, dI0J2_sqr); //(a,b) -> b3+b2, a3+a2, b1+b0, a1+a0
+                                    __m128d upper10 = _mm256_extractf128_pd(hadd10, 1);
+                                    __m128d upper32 = _mm256_extractf128_pd(hadd32, 1);
+                                    __m128d d10 = _mm_add_pd(upper10, _mm256_castpd256_pd128(hadd10));
+                                    __m128d d32 = _mm_add_pd(upper32, _mm256_castpd256_pd128(hadd32));
+                                    __m256d d3210 = _mm256_set_m128d(d32, d10); // this is dsqr for all 4 particles
+
+                                    __m256d l2inv_dsqr_3210 = _mm256_div_pd(one, d3210);
+                                    __m256d fac0_3210 = _mm256_mul_pd(fac24, eps);
+                                    fac0_3210 = _mm256_mul_pd(fac0_3210, l2inv_dsqr_3210);
+                                    __m256d l2inv_pow6_3210 = _mm256_mul_pd(l2inv_dsqr_3210, _mm256_mul_pd(l2inv_dsqr_3210,l2inv_dsqr_3210));
+                                    __m256d sigP2 = _mm256_mul_pd(sig, sig);
+                                    __m256d sigP6 = _mm256_mul_pd(sigP2, _mm256_mul_pd(sigP2, sigP2));
+                                    __m256d fac1_tmp_3210 = _mm256_mul_pd(sigP6, l2inv_pow6_3210);
+                                    __m256d fac1_3210 = _mm256_sub_pd(fac1_tmp_3210, _mm256_mul_pd(two, _mm256_mul_pd(fac1_tmp_3210,fac1_tmp_3210)));
+                                    __m256d scale_3210 = _mm256_mul_pd(fac0_3210, fac1_3210);
+                                    __m128d scale_32 = _mm256_extractf128_pd(scale_3210, 1);
+                                    __m128d scale_10  = _mm256_castpd256_pd128(scale_3210);
+                                    __m256d scale_0 = _mm256_broadcastsd_pd(scale_10);
+                                    __m256d scale_1 = _mm256_broadcastsd_pd(_mm_permute_pd(scale_10, 1));
+                                    __m256d scale_2 = _mm256_broadcastsd_pd(scale_32);
+                                    __m256d scale_3 = _mm256_broadcastsd_pd(_mm_permute_pd(scale_32, 1));
+                                    __m256d res0 = _mm256_mul_pd(scale_0, dI0J0);
+                                    __m256d res1 = _mm256_mul_pd(scale_1, dI0J1);
+                                    __m256d res2 = _mm256_mul_pd(scale_2, dI0J2);
+                                    __m256d res3 = _mm256_mul_pd(scale_3, dI0J3);
+                                    *reinterpret_cast<__m256d*>(&_force[indexI * 3]) -= res0;
+                                    *reinterpret_cast<__m256d*>(&_force[indexI * 3]) -= res1;
+                                    *reinterpret_cast<__m256d*>(&_force[indexI * 3]) -= res2;
+                                    *reinterpret_cast<__m256d*>(&_force[indexI * 3]) -= res3;
+                                    *reinterpret_cast<__m256d*>(&_force[indexJ * 3 + 0]) += res0;
+                                    *reinterpret_cast<__m256d*>(&_force[indexJ * 3 + 2 + 1]) += res1;
+                                    *reinterpret_cast<__m256d*>(&_force[indexJ * 3 + 4 + 2]) += res2;
+                                    *reinterpret_cast<__m256d*>(&_force[indexJ * 3 + 8 + 1]) += res3;
                                 }
 
-                                l2NInvSquare = 1 / (dsqr);
-                                fac0 = 24 * epsilon * l2NInvSquare;
-                                l2NInvPow6 = l2NInvSquare * l2NInvSquare * l2NInvSquare;
-                                fac1_sum1 = sigma6 * l2NInvPow6;
-                                fac1 = (fac1_sum1) - 2 * (fac1_sum1 * fac1_sum1);
+                                {
+                                    __m256d dI1J0 = _mm256_sub_pd(xI1, xJ0);
+                                    __m256d dI1J1 = _mm256_sub_pd(xI1, xJ1);
+                                    __m256d dI1J2 = _mm256_sub_pd(xI1, xJ2);
+                                    __m256d dI1J3 = _mm256_sub_pd(xI1, xJ3);
+                                    __m256d sig;
+                                    __m256d eps; // TODO compute values
 
-                                _force[indexI * 3 + 0] -= fac0 * fac1 * d0;
-                                _force[indexI * 3 + 1] -= fac0 * fac1 * d1;
-                                _force[indexI * 3 + 2] -= fac0 * fac1 * d2;
-                                _force[indexJ * 3 + 0] += fac0 * fac1 * d0;
-                                _force[indexJ * 3 + 1] += fac0 * fac1 * d1;
-                                _force[indexJ * 3 + 2] += fac0 * fac1 * d2;
+                                    __m256d dI1J0_sqr = _mm256_mul_pd(dI1J0, dI1J0); //0
+                                    __m256d dI1J1_sqr = _mm256_mul_pd(dI1J1, dI1J1); //1
+                                    __m256d dI1J2_sqr = _mm256_mul_pd(dI1J2, dI1J2); //2
+                                    __m256d dI1J3_sqr = _mm256_mul_pd(dI1J3, dI1J3); //3
+                                    __m256d hadd10 = _mm256_hadd_pd(dI1J1_sqr, dI1J0_sqr); //(a,b) -> b3+b2, a3+a2, b1+b0, a1+a0
+                                    __m256d hadd32 = _mm256_hadd_pd(dI1J3_sqr, dI1J2_sqr); //(a,b) -> b3+b2, a3+a2, b1+b0, a1+a0
+                                    __m128d upper10 = _mm256_extractf128_pd(hadd10, 1);
+                                    __m128d upper32 = _mm256_extractf128_pd(hadd32, 1);
+                                    __m128d d10 = _mm_add_pd(upper10, _mm256_castpd256_pd128(hadd10));
+                                    __m128d d32 = _mm_add_pd(upper32, _mm256_castpd256_pd128(hadd32));
+                                    __m256d d3210 = _mm256_set_m128d(d32, d10); // this is dsqr for all 4 particles
+
+                                    __m256d l2inv_dsqr_3210 = _mm256_div_pd(one, d3210);
+                                    __m256d fac0_3210 = _mm256_mul_pd(fac24, eps);
+                                    fac0_3210 = _mm256_mul_pd(fac0_3210, l2inv_dsqr_3210);
+                                    __m256d l2inv_pow6_3210 = _mm256_mul_pd(l2inv_dsqr_3210, _mm256_mul_pd(l2inv_dsqr_3210,l2inv_dsqr_3210));
+                                    __m256d sigP2 = _mm256_mul_pd(sig, sig);
+                                    __m256d sigP6 = _mm256_mul_pd(sigP2, _mm256_mul_pd(sigP2, sigP2));
+                                    __m256d fac1_tmp_3210 = _mm256_mul_pd(sigP6, l2inv_pow6_3210);
+                                    __m256d fac1_3210 = _mm256_sub_pd(fac1_tmp_3210, _mm256_mul_pd(two, _mm256_mul_pd(fac1_tmp_3210,fac1_tmp_3210)));
+                                    __m256d scale_3210 = _mm256_mul_pd(fac0_3210, fac1_3210);
+                                    __m128d scale_32 = _mm256_extractf128_pd(scale_3210, 1);
+                                    __m128d scale_10  = _mm256_castpd256_pd128(scale_3210);
+                                    __m256d scale_0 = _mm256_broadcastsd_pd(scale_10);
+                                    __m256d scale_1 = _mm256_broadcastsd_pd(_mm_permute_pd(scale_10, 1));
+                                    __m256d scale_2 = _mm256_broadcastsd_pd(scale_32);
+                                    __m256d scale_3 = _mm256_broadcastsd_pd(_mm_permute_pd(scale_32, 1));
+                                    __m256d res0 = _mm256_mul_pd(scale_0, dI1J0);
+                                    __m256d res1 = _mm256_mul_pd(scale_1, dI1J1);
+                                    __m256d res2 = _mm256_mul_pd(scale_2, dI1J2);
+                                    __m256d res3 = _mm256_mul_pd(scale_3, dI1J3);
+                                    *reinterpret_cast<__m256d*>(&_force[indexI * 3 + 2 + 1]) -= res0;
+                                    *reinterpret_cast<__m256d*>(&_force[indexI * 3 + 2 + 1]) -= res1;
+                                    *reinterpret_cast<__m256d*>(&_force[indexI * 3 + 2 + 1]) -= res2;
+                                    *reinterpret_cast<__m256d*>(&_force[indexI * 3 + 2 + 1]) -= res3;
+                                    *reinterpret_cast<__m256d*>(&_force[indexJ * 3 + 0]) += res0;
+                                    *reinterpret_cast<__m256d*>(&_force[indexJ * 3 + 2 + 1]) += res1;
+                                    *reinterpret_cast<__m256d*>(&_force[indexJ * 3 + 4 + 2]) += res2;
+                                    *reinterpret_cast<__m256d*>(&_force[indexJ * 3 + 8 + 1]) += res3;
+                                }
+
+                                {
+                                    __m256d dI2J0 = _mm256_sub_pd(xI2, xJ0);
+                                    __m256d dI2J1 = _mm256_sub_pd(xI2, xJ1);
+                                    __m256d dI2J2 = _mm256_sub_pd(xI2, xJ2);
+                                    __m256d dI2J3 = _mm256_sub_pd(xI2, xJ3);
+                                    __m256d sig;
+                                    __m256d eps; // TODO compute values
+
+                                    __m256d dI2J0_sqr = _mm256_mul_pd(dI2J0, dI2J0); //0
+                                    __m256d dI2J1_sqr = _mm256_mul_pd(dI2J1, dI2J1); //1
+                                    __m256d dI2J2_sqr = _mm256_mul_pd(dI2J2, dI2J2); //2
+                                    __m256d dI2J3_sqr = _mm256_mul_pd(dI2J3, dI2J3); //3
+                                    __m256d hadd10 = _mm256_hadd_pd(dI2J1_sqr, dI2J0_sqr); //(a,b) -> b3+b2, a3+a2, b1+b0, a1+a0
+                                    __m256d hadd32 = _mm256_hadd_pd(dI2J3_sqr, dI2J2_sqr); //(a,b) -> b3+b2, a3+a2, b1+b0, a1+a0
+                                    __m128d upper10 = _mm256_extractf128_pd(hadd10, 1);
+                                    __m128d upper32 = _mm256_extractf128_pd(hadd32, 1);
+                                    __m128d d10 = _mm_add_pd(upper10, _mm256_castpd256_pd128(hadd10));
+                                    __m128d d32 = _mm_add_pd(upper32, _mm256_castpd256_pd128(hadd32));
+                                    __m256d d3210 = _mm256_set_m128d(d32, d10); // this is dsqr for all 4 particles
+
+                                    __m256d l2inv_dsqr_3210 = _mm256_div_pd(one, d3210);
+                                    __m256d fac0_3210 = _mm256_mul_pd(fac24, eps);
+                                    fac0_3210 = _mm256_mul_pd(fac0_3210, l2inv_dsqr_3210);
+                                    __m256d l2inv_pow6_3210 = _mm256_mul_pd(l2inv_dsqr_3210, _mm256_mul_pd(l2inv_dsqr_3210,l2inv_dsqr_3210));
+                                    __m256d sigP2 = _mm256_mul_pd(sig, sig);
+                                    __m256d sigP6 = _mm256_mul_pd(sigP2, _mm256_mul_pd(sigP2, sigP2));
+                                    __m256d fac1_tmp_3210 = _mm256_mul_pd(sigP6, l2inv_pow6_3210);
+                                    __m256d fac1_3210 = _mm256_sub_pd(fac1_tmp_3210, _mm256_mul_pd(two, _mm256_mul_pd(fac1_tmp_3210,fac1_tmp_3210)));
+                                    __m256d scale_3210 = _mm256_mul_pd(fac0_3210, fac1_3210);
+                                    __m128d scale_32 = _mm256_extractf128_pd(scale_3210, 1);
+                                    __m128d scale_10  = _mm256_castpd256_pd128(scale_3210);
+                                    __m256d scale_0 = _mm256_broadcastsd_pd(scale_10);
+                                    __m256d scale_1 = _mm256_broadcastsd_pd(_mm_permute_pd(scale_10, 1));
+                                    __m256d scale_2 = _mm256_broadcastsd_pd(scale_32);
+                                    __m256d scale_3 = _mm256_broadcastsd_pd(_mm_permute_pd(scale_32, 1));
+                                    __m256d res0 = _mm256_mul_pd(scale_0, dI2J0);
+                                    __m256d res1 = _mm256_mul_pd(scale_1, dI2J1);
+                                    __m256d res2 = _mm256_mul_pd(scale_2, dI2J2);
+                                    __m256d res3 = _mm256_mul_pd(scale_3, dI2J3);
+                                    *reinterpret_cast<__m256d*>(&_force[indexI * 3 + 4 + 2]) -= res0;
+                                    *reinterpret_cast<__m256d*>(&_force[indexI * 3 + 4 + 2]) -= res1;
+                                    *reinterpret_cast<__m256d*>(&_force[indexI * 3 + 4 + 2]) -= res2;
+                                    *reinterpret_cast<__m256d*>(&_force[indexI * 3 + 4 + 2]) -= res3;
+                                    *reinterpret_cast<__m256d*>(&_force[indexJ * 3 + 0]) += res0;
+                                    *reinterpret_cast<__m256d*>(&_force[indexJ * 3 + 2 + 1]) += res1;
+                                    *reinterpret_cast<__m256d*>(&_force[indexJ * 3 + 4 + 2]) += res2;
+                                    *reinterpret_cast<__m256d*>(&_force[indexJ * 3 + 8 + 1]) += res3;
+                                }
+
+
+                                {
+                                    __m256d dI3J0 = _mm256_sub_pd(xI3, xJ0);
+                                    __m256d dI3J1 = _mm256_sub_pd(xI3, xJ1);
+                                    __m256d dI3J2 = _mm256_sub_pd(xI3, xJ2);
+                                    __m256d dI3J3 = _mm256_sub_pd(xI3, xJ3);
+                                    __m256d sig;
+                                    __m256d eps; // TODO compute values
+
+                                    __m256d dI3J0_sqr = _mm256_mul_pd(dI3J0, dI3J0); //0
+                                    __m256d dI3J1_sqr = _mm256_mul_pd(dI3J1, dI3J1); //1
+                                    __m256d dI3J2_sqr = _mm256_mul_pd(dI3J2, dI3J2); //2
+                                    __m256d dI3J3_sqr = _mm256_mul_pd(dI3J3, dI3J3); //3
+                                    __m256d hadd10 = _mm256_hadd_pd(dI3J1_sqr, dI3J0_sqr); //(a,b) -> b3+b2, a3+a2, b1+b0, a1+a0
+                                    __m256d hadd32 = _mm256_hadd_pd(dI3J3_sqr, dI3J2_sqr); //(a,b) -> b3+b2, a3+a2, b1+b0, a1+a0
+                                    __m128d upper10 = _mm256_extractf128_pd(hadd10, 1);
+                                    __m128d upper32 = _mm256_extractf128_pd(hadd32, 1);
+                                    __m128d d10 = _mm_add_pd(upper10, _mm256_castpd256_pd128(hadd10));
+                                    __m128d d32 = _mm_add_pd(upper32, _mm256_castpd256_pd128(hadd32));
+                                    __m256d d3210 = _mm256_set_m128d(d32, d10); // this is dsqr for all 4 particles
+
+                                    __m256d l2inv_dsqr_3210 = _mm256_div_pd(one, d3210);
+                                    __m256d fac0_3210 = _mm256_mul_pd(fac24, eps);
+                                    fac0_3210 = _mm256_mul_pd(fac0_3210, l2inv_dsqr_3210);
+                                    __m256d l2inv_pow6_3210 = _mm256_mul_pd(l2inv_dsqr_3210, _mm256_mul_pd(l2inv_dsqr_3210,l2inv_dsqr_3210));
+                                    __m256d sigP2 = _mm256_mul_pd(sig, sig);
+                                    __m256d sigP6 = _mm256_mul_pd(sigP2, _mm256_mul_pd(sigP2, sigP2));
+                                    __m256d fac1_tmp_3210 = _mm256_mul_pd(sigP6, l2inv_pow6_3210);
+                                    __m256d fac1_3210 = _mm256_sub_pd(fac1_tmp_3210, _mm256_mul_pd(two, _mm256_mul_pd(fac1_tmp_3210,fac1_tmp_3210)));
+                                    __m256d scale_3210 = _mm256_mul_pd(fac0_3210, fac1_3210);
+                                    __m128d scale_32 = _mm256_extractf128_pd(scale_3210, 1);
+                                    __m128d scale_10  = _mm256_castpd256_pd128(scale_3210);
+                                    __m256d scale_0 = _mm256_broadcastsd_pd(scale_10);
+                                    __m256d scale_1 = _mm256_broadcastsd_pd(_mm_permute_pd(scale_10, 1));
+                                    __m256d scale_2 = _mm256_broadcastsd_pd(scale_32);
+                                    __m256d scale_3 = _mm256_broadcastsd_pd(_mm_permute_pd(scale_32, 1));
+                                    __m256d res0 = _mm256_mul_pd(scale_0, dI3J0);
+                                    __m256d res1 = _mm256_mul_pd(scale_1, dI3J1);
+                                    __m256d res2 = _mm256_mul_pd(scale_2, dI3J2);
+                                    __m256d res3 = _mm256_mul_pd(scale_3, dI3J3);
+                                    *reinterpret_cast<__m256d*>(&_force[indexI * 3 + 8 + 1]) -= res0;
+                                    *reinterpret_cast<__m256d*>(&_force[indexI * 3 + 8 + 1]) -= res1;
+                                    *reinterpret_cast<__m256d*>(&_force[indexI * 3 + 8 + 1]) -= res2;
+                                    *reinterpret_cast<__m256d*>(&_force[indexI * 3 + 8 + 1]) -= res3;
+                                    *reinterpret_cast<__m256d*>(&_force[indexJ * 3 + 0]) += res0;
+                                    *reinterpret_cast<__m256d*>(&_force[indexJ * 3 + 2 + 1]) += res1;
+                                    *reinterpret_cast<__m256d*>(&_force[indexJ * 3 + 4 + 2]) += res2;
+                                    *reinterpret_cast<__m256d*>(&_force[indexJ * 3 + 8 + 1]) += res3;
+                                }
                             }
                         }
+
+//                        for (indexII = 0; indexII < cells[indexC0].size(); indexII++) {
+//                            for (indexJJ = 0; indexJJ < cells[indexC1].size(); indexJJ++) {
+//                                indexI = cells[indexC0][indexII];
+//                                indexJ = cells[indexC1][indexJJ];
+//                                //fpairFun(force, x, eps, sig, m, t, indexI, indexJ);
+//                                sigma = (sig[indexI] + sig[indexJ]) / 2;
+//                                sigma2 = sigma * sigma;
+//                                sigma6 = sigma2 * sigma2 * sigma2;
+//                                epsilon = std::sqrt(eps[indexI] * eps[indexJ]); // TODO this can be cached
+//                                d0 = x[indexI * 3 + 0] - x[indexJ * 3 + 0];
+//                                d1 = x[indexI * 3 + 1] - x[indexJ * 3 + 1];
+//                                d2 = x[indexI * 3 + 2] - x[indexJ * 3 + 2];
+//                                dsqr = d0 * d0 + d1 * d1 + d2 * d2;
+//                                //check if is membrane -> need to skip attractive forces
+//                                if (t[indexI] & 0x80000000 || t[indexJ] & 0x80000000) {
+//                                    if (dsqr >= rt3_2 * sigma2) continue;
+//                                }
+//
+//                                l2NInvSquare = 1 / (dsqr);
+//                                fac0 = 24 * epsilon * l2NInvSquare;
+//                                l2NInvPow6 = l2NInvSquare * l2NInvSquare * l2NInvSquare;
+//                                fac1_sum1 = sigma6 * l2NInvPow6;
+//                                fac1 = (fac1_sum1) - 2 * (fac1_sum1 * fac1_sum1);
+//
+//                                _force[indexI * 3 + 0] -= fac0 * fac1 * d0;
+//                                _force[indexI * 3 + 1] -= fac0 * fac1 * d1;
+//                                _force[indexI * 3 + 2] -= fac0 * fac1 * d2;
+//                                _force[indexJ * 3 + 0] += fac0 * fac1 * d0;
+//                                _force[indexJ * 3 + 1] += fac0 * fac1 * d1;
+//                                _force[indexJ * 3 + 2] += fac0 * fac1 * d2;
+//                            }
+//                        }
                     }
 
                 }

@@ -45,9 +45,9 @@ namespace sim::physics::force {
             #pragma omp parallel for default(none) shared(tasks, force, m, gGrav0, gGrav1, gGrav2)
             for (auto& task : tasks) {
                 for (unsigned long index : task) {
-                    force[index*3 + 0] += m[index] * gGrav0;
-                    force[index*3 + 1] += m[index] * gGrav1;
-                    force[index*3 + 2] += m[index] * gGrav2;
+                    force[index*3 + 0] += std::max(m[index],0.) * gGrav0;
+                    force[index*3 + 1] += std::max(m[index],0.) * gGrav1;
+                    force[index*3 + 2] += std::max(m[index],0.) * gGrav2;
                 }
             }
         });

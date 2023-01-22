@@ -55,7 +55,7 @@ namespace sim::physics::force {
             if (eGrav && !eOMP) secondaryFF.emplace_back(std::make_shared<FGlobalGravity>(st, et, dt, eps, sig, gG0, gG1, gG2,pc));
             if (eGrav &&  eOMP) secondaryFF.emplace_back(std::make_shared<FGlobalGravityOMP>(st, et, dt, eps, sig, gG0, gG1, gG2,pc));
             if (eMem && !eOMP) secondaryFF.emplace_back(std::make_shared<FMembrane>(st, et, dt, eps, sig, pc));
-            if (eMem &&  eOMP) secondaryFF.emplace_back(std::make_shared<FMembraneOMP>(st, et, dt, eps, sig, pc));
+            if (eMem &&  eOMP) secondaryFF.emplace_back(std::make_shared<FMembrane>(st, et, dt, eps, sig, pc));//secondaryFF.emplace_back(std::make_shared<FMembraneOMP>(st, et, dt, eps, sig, pc));    //we don't have an omp version and we discussed that we don't want to do one..
             if (eMem && eMemPull && !eOMP) secondaryFF.emplace_back(std::make_shared<FMembranePull>(st, et, dt, eps, sig, pc));
             if (eMem && eMemPull &&  eOMP) secondaryFF.emplace_back(std::make_shared<FMembranePullOMP>(st, et, dt, eps, sig, pc));
         }

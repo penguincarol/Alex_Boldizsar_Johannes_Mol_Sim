@@ -23,7 +23,7 @@ namespace sim::analysis {
         const double delta_x0 = domainSize[0] / bins;
         double x0 = 0;
         pc.runOnActiveData([&](auto &, auto &,
-                               std::vector<double> &x, std::vector<double> &v,
+                               vec4d_t &x, vec4d_t &v,
                                auto &, auto &, auto &, auto &, auto &,
                                std::unordered_map<unsigned long, unsigned long> &id_to_index,
                                std::vector<unsigned long> &activeParticles) {
@@ -32,12 +32,12 @@ namespace sim::analysis {
                 size_t size = activeParticles.size();
                 for(size_t j = 0; j < size; j++) {
                     size_t index = id_to_index[activeParticles[j]];
-                    if (x[3 * index + 0] < x0 || x[3 * index + 0] >= x0 + delta_x0) continue;
+                    if (x[4 * index + 0] < x0 || x[4 * index + 0] >= x0 + delta_x0) continue;
                     count++;
                     densities[i] += 1;
-                    velocities[3 * i + 0] += v[3 * index + 0];
-                    velocities[3 * i + 1] += v[3 * index + 1];
-                    velocities[3 * i + 2] += v[3 * index + 2];
+                    velocities[3 * i + 0] += v[4 * index + 0];
+                    velocities[3 * i + 1] += v[4 * index + 1];
+                    velocities[3 * i + 2] += v[4 * index + 2];
                 }
 
                 densities[i] /= delta_x0 * domainSize[1] * domainSize[2];

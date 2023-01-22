@@ -27,10 +27,10 @@ namespace sim::physics::force {
     }
 
     void FGravityCells::operator()() {
-        particleContainer.forAllCells([this](std::vector<double> &force,
-                                             std::vector<double> &oldForce,
-                                             std::vector<double> &x,
-                                             std::vector<double> &v,
+        particleContainer.forAllCells([this](vec4d_t &force,
+                                             vec4d_t &oldForce,
+                                             vec4d_t &x,
+                                             vec4d_t &v,
                                              std::vector<double> &m,
                                              std::vector<int> &type,
                                              unsigned long count,
@@ -46,10 +46,10 @@ namespace sim::physics::force {
             }
         });
 
-        particleContainer.forAllDistinctCellNeighbours([this](std::vector<double> &force,
-                                                              std::vector<double> &oldForce,
-                                                              std::vector<double> &x,
-                                                              std::vector<double> &v,
+        particleContainer.forAllDistinctCellNeighbours([this](vec4d_t &force,
+                                                              vec4d_t &oldForce,
+                                                              vec4d_t &x,
+                                                              vec4d_t &v,
                                                               std::vector<double> &m,
                                                               std::vector<int> &type,
                                                               unsigned long count,

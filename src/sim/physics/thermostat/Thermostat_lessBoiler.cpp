@@ -13,10 +13,10 @@ void Thermostat::getCooking(){
 
     //v = beta*v for all active Particles
     if(thermoMode == ThermoMode::normal){
-        pc.runOnActiveData([&](std::vector<double> &force,
-                               std::vector<double> &oldForce,
-                               std::vector<double> &x,
-                               std::vector<double> &v,
+        pc.runOnActiveData([&](vec4d_t &force,
+                               vec4d_t &oldForce,
+                               vec4d_t &x,
+                               vec4d_t &v,
                                std::vector<double> &m,
                                std::vector<int> &type,
                                unsigned long count,
@@ -25,17 +25,17 @@ void Thermostat::getCooking(){
                                std::unordered_map<unsigned long, unsigned long> &id_to_index,
                                auto&){
             for(auto [_,a]: id_to_index){
-                v[3*a] = beta * v[3*a];
-                v[3*a+1] = beta * v[3*a+1];
-                v[3*a+2] = beta * v[3*a+2];
+                v[4*a] = beta * v[4*a];
+                v[4*a+1] = beta * v[4*a+1];
+                v[4*a+2] = beta * v[4*a+2];
             }
         });
     }
     else{//ThermoMode::pipe
-        pc.runOnActiveData([&](std::vector<double> &force,
-                               std::vector<double> &oldForce,
-                               std::vector<double> &x,
-                               std::vector<double> &v,
+        pc.runOnActiveData([&](vec4d_t &force,
+                               vec4d_t &oldForce,
+                               vec4d_t &x,
+                               vec4d_t &v,
                                std::vector<double> &m,
                                std::vector<int> &type,
                                unsigned long count,
@@ -44,8 +44,8 @@ void Thermostat::getCooking(){
                                std::unordered_map<unsigned long, unsigned long> &id_to_index,
                                auto&){
             for(auto [_,a]: id_to_index){
-                v[3*a] = beta * v[3*a];
-                v[3*a+2] = beta * v[3*a+2];
+                v[4*a] = beta * v[4*a];
+                v[4*a+2] = beta * v[4*a+2];
             }
         });
     }
@@ -62,29 +62,10 @@ double Thermostat::computeCurrentTemp(){
     if(thermoMode == ThermoMode::normal){
         double sum{0};
         //pc.forAllParticles([&sum](Particle& p ){sum += p.getM() * (p.getX().dot(p.getX()));});
-        pc.runOnActiveData([&sum](std::vector<double> &force,
-                                    std::vector<double> &oldForce,
-                                    std::vector<double> &x,
-                                    std::vector<double> &v,
-                                    std::vector<double> &m,
-                                    std::vector<int> &type,
-                                    unsigned long count,
-                                    std::vector<double> &eps,
-                                    std::vector<double> &sig,
-                                    std::unordered_map<unsigned long, unsigned long> &id_to_index,
-                                    auto&){
-            for(auto [_,a]: id_to_index){
-                sum += std::max(m[a], 0.) * (v[3*a]*v[3*a] + v[3*a+1]*v[3*a+1] + v[3*a+2]*v[3*a+2]);
-            }
-        });
-        return sum/(dims*static_cast<double>(pc.activeSize()));
-    }else{  //ThermoMode::pipe
-
-        double sum{0};
-        pc.runOnActiveData([this, &sum](std::vector<double> &force,
-                                  std::vector<double> &oldForce,
-                                  std::vector<double> &x,
-                                  std::vector<double> &v,
+        pc.runOnActiveData([&sum](vec4d_t &force,
+                                  vec4d_t &oldForce,
+                                  vec4d_t &x,
+                                  vec4d_t &v,
                                   std::vector<double> &m,
                                   std::vector<int> &type,
                                   unsigned long count,
@@ -92,16 +73,35 @@ double Thermostat::computeCurrentTemp(){
                                   std::vector<double> &sig,
                                   std::unordered_map<unsigned long, unsigned long> &id_to_index,
                                   auto&){
+            for(auto [_,a]: id_to_index){
+                sum += std::max(m[a], 0.) * (v[4*a]*v[4*a] + v[4*a+1]*v[4*a+1] + v[4*a+2]*v[4*a+2]);
+            }
+        });
+        return sum/(dims*static_cast<double>(pc.activeSize()));
+    }else{  //ThermoMode::pipe
+
+        double sum{0};
+        pc.runOnActiveData([this, &sum](vec4d_t &force,
+                                        vec4d_t &oldForce,
+                                        vec4d_t &x,
+                                        vec4d_t &v,
+                                        std::vector<double> &m,
+                                        std::vector<int> &type,
+                                        unsigned long count,
+                                        std::vector<double> &eps,
+                                        std::vector<double> &sig,
+                                        std::unordered_map<unsigned long, unsigned long> &id_to_index,
+                                        auto&){
             double meanYDirection{0};
             for(auto [_,a]: id_to_index){
                 if(m[a] >= 0){
-                    meanYDirection += v[3 * a + 1];
+                    meanYDirection += v[4 * a + 1];
                 }
             }
             meanYDirection = meanYDirection / static_cast<double>(numberFlowingParticles);
 
             for(auto [_,a]: id_to_index){
-                sum += std::max(m[a], 0.) * (v[3*a]*v[3*a] + (v[3*a+1] - meanYDirection) * (v[3 * a + 1] - meanYDirection) + v[3 * a + 2] * v[3 * a + 2]);
+                sum += std::max(m[a], 0.) * (v[4*a]*v[4*a] + (v[4*a+1] - meanYDirection) * (v[4 * a + 1] - meanYDirection) + v[4 * a + 2] * v[4 * a + 2]);
             }
         });
         return sum/static_cast<double>(numberFlowingParticles);

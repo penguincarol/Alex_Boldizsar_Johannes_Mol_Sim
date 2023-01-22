@@ -13,6 +13,83 @@
 #include <functional>
 #include <unordered_set>
 #include <iostream>
+#include <limits>
+#include <new>
+
+/**
+ * From: https://stackoverflow.com/questions/60169819/modern-approach-to-making-stdvector-allocate-aligned-memory
+ * Returns aligned pointers when allocations are requested. Default alignment
+ * is 64B = 512b, sufficient for AVX-512 and most cache line sizes.
+ *
+ * @tparam ALIGNMENT_IN_BYTES Must be a positive power of 2.
+ */
+template<typename    ElementType,
+        std::size_t ALIGNMENT_IN_BYTES = 64>
+class AlignedAllocator
+{
+private:
+    static_assert(
+            ALIGNMENT_IN_BYTES >= alignof( ElementType ),
+            "Beware that types like int have minimum alignment requirements "
+            "or access will result in crashes."
+    );
+
+public:
+    using value_type = ElementType;
+    static std::align_val_t constexpr ALIGNMENT{ ALIGNMENT_IN_BYTES };
+
+    /**
+     * This is only necessary because AlignedAllocator has a second template
+     * argument for the alignment that will make the default
+     * std::allocator_traits implementation fail during compilation.
+     * @see https://stackoverflow.com/a/48062758/2191065
+     */
+    template<class OtherElementType>
+    struct rebind
+    {
+        using other = AlignedAllocator<OtherElementType, ALIGNMENT_IN_BYTES>;
+    };
+
+public:
+    constexpr AlignedAllocator() noexcept = default;
+
+    constexpr AlignedAllocator( const AlignedAllocator& ) noexcept = default;
+
+    template<typename U>
+    constexpr AlignedAllocator( AlignedAllocator<U, ALIGNMENT_IN_BYTES> const& ) noexcept
+    {}
+
+    [[nodiscard]] ElementType*
+    allocate( std::size_t nElementsToAllocate )
+    {
+        if ( nElementsToAllocate
+             > std::numeric_limits<std::size_t>::max() / sizeof( ElementType ) ) {
+            throw std::bad_array_new_length();
+        }
+
+        auto const nBytesToAllocate = nElementsToAllocate * sizeof( ElementType );
+        return reinterpret_cast<ElementType*>(
+                ::operator new[]( nBytesToAllocate, ALIGNMENT ) );
+    }
+
+    void
+    deallocate(                  ElementType* allocatedPointer,
+                                 [[maybe_unused]] std::size_t  nBytesAllocated )
+    {
+        /* According to the C++20 draft n4868 § 17.6.3.3, the delete operator
+         * must be called with the same alignment argument as the new expression.
+         * The size argument can be omitted but if present must also be equal to
+         * the one used in new. */
+        ::operator delete[]( allocatedPointer, ALIGNMENT );
+    }
+
+    template< class T, std::size_t BYTES>
+    constexpr bool operator==( const AlignedAllocator<T, BYTES>& lhs ) noexcept {
+        return std::is_same<T, ElementType>::value && BYTES == ALIGNMENT_IN_BYTES;
+    }
+};
+
+using vec4d_t = std::vector<double,AlignedAllocator<double, 32>>;
 
 /**
  * @brief wrapper class that stores and manages access to the particles
@@ -20,6 +97,7 @@
  *      Another implementation might decide to use a different underlying structure.
  */
 class ParticleContainer {
+
 public:
     /**
      * Is in itself a 3d vector, but can provide access to a 3d sub-vector with a certain inset
@@ -276,10 +354,10 @@ private:
      * */
     static constexpr unsigned long padding_count = 6;
     double root6_of_2;
-    std::vector<double> force;
-    std::vector<double> oldForce;
-    std::vector<double> x;
-    std::vector<double> v;
+    vec4d_t force;
+    vec4d_t oldForce;
+    vec4d_t x;
+    vec4d_t v;
     std::vector<double> m;
     std::vector<double> eps;
     std::vector<double> sig;
@@ -331,8 +409,8 @@ private:
      * @param s sigma vector
      */
     static void
-    storeParticle(Particle &p, unsigned long index, std::vector<double> &force, std::vector<double> &oldForce,
-                  std::vector<double> &x, std::vector<double> &v, std::vector<double> &m,
+    storeParticle(Particle &p, unsigned long index, vec4d_t &force, vec4d_t &oldForce,
+                  vec4d_t &x, vec4d_t &v, std::vector<double> &m,
                   std::vector<int> &type, std::vector<double> &e, std::vector<double> &s);
 
     /**
@@ -356,8 +434,8 @@ private:
      * @param s
      */
     static void
-    loadParticle(Particle &p, unsigned long index, std::vector<double> &force, std::vector<double> &oldForce,
-                 std::vector<double> &x, std::vector<double> &v, std::vector<double> &m,
+    loadParticle(Particle &p, unsigned long index, vec4d_t &force, vec4d_t &oldForce,
+                 vec4d_t &x, vec4d_t &v, std::vector<double> &m,
                  std::vector<int> &type, std::vector<double> &e, std::vector<double> &s);
 
 public:
@@ -461,8 +539,8 @@ s    * right corresponding cell-vector
                 for (unsigned int x_2 = 0; x_2 < gridDimensions[2]; x_2++) {
                     auto &cell_indices_left = cells[cellIndexFromCellCoordinates({0, x_1, x_2})];
                     for (auto i: cell_indices_left) {
-                        if (x[3 * i + 0] != 0 && x[3 * i + 0] < maxBorderDistance) {
-                            function(force, x, eps, sig, m, type, i, x[3*i+0] * (-1), x[3*i+1],x[3*i+2], eps[i], sig[i], m[i], type[i]);
+                        if (x[4 * i + 0] != 0 && x[4 * i + 0] < maxBorderDistance) {
+                            function(force, x, eps, sig, m, type, i, x[4*i+0] * (-1), x[4*i+1],x[4*i+2], eps[i], sig[i], m[i], type[i]);
                         }
                     }
                 }
@@ -473,9 +551,9 @@ s    * right corresponding cell-vector
                 for (unsigned int x_2 = 0; x_2 < gridDimensions[2]; x_2++) {
                     auto &cell_indices_right = cells[cellIndexFromCellCoordinates({gridDimensions[0] - 1, x_1, x_2})];
                     for (auto i: cell_indices_right) {
-                        double distance = domainSize[0] - x[3 * i + 0];
+                        double distance = domainSize[0] - x[4 * i + 0];
                         if (distance < maxBorderDistance) {
-                            function(force, x, eps, sig, m, type, i, x[3*i+0] + 2*distance, x[3*i+1],x[3*i+2], eps[i], sig[i], m[i], type[i]);
+                            function(force, x, eps, sig, m, type, i, x[4*i+0] + 2*distance, x[4*i+1],x[4*i+2], eps[i], sig[i], m[i], type[i]);
                         }
                     }
                 }
@@ -486,8 +564,8 @@ s    * right corresponding cell-vector
                 for (unsigned int x_2 = 0; x_2 < gridDimensions[2]; x_2++) {
                     auto &cell_indices_bot = cells[cellIndexFromCellCoordinates({x_0, 0, x_2})];
                     for (auto i: cell_indices_bot) {
-                        if (x[3 * i + 1] != 0 && x[3 * i + 1] < maxBorderDistance) {
-                            function(force, x, eps, sig, m, type, i, x[3*i+0], x[3*i+1] * (-1),x[3*i+2], eps[i], sig[i], m[i], type[i]);
+                        if (x[4 * i + 1] != 0 && x[4 * i + 1] < maxBorderDistance) {
+                            function(force, x, eps, sig, m, type, i, x[4*i+0], x[4*i+1] * (-1),x[4*i+2], eps[i], sig[i], m[i], type[i]);
                         }
                     }
                 }
@@ -498,9 +576,9 @@ s    * right corresponding cell-vector
                 for (unsigned int x_2 = 0; x_2 < gridDimensions[2]; x_2++) {
                     auto &cell_indices_top = cells[cellIndexFromCellCoordinates({x_0, gridDimensions[1] - 1, x_2})];
                     for (auto i: cell_indices_top) {
-                        double distance = domainSize[1] - x[3 * i + 1];
+                        double distance = domainSize[1] - x[4 * i + 1];
                         if (distance < maxBorderDistance) {
-                            function(force, x, eps, sig, m, type, i, x[3*i+0], x[3*i+1] + 2*distance,x[3*i+2], eps[i], sig[i], m[i], type[i]);
+                            function(force, x, eps, sig, m, type, i, x[4*i+0], x[4*i+1] + 2*distance,x[4*i+2], eps[i], sig[i], m[i], type[i]);
                         }
                     }
                 }
@@ -511,8 +589,8 @@ s    * right corresponding cell-vector
                 for (unsigned int x_1 = 0; x_1 < gridDimensions[1]; x_1++) {
                     auto &cell_indices_front = cells[cellIndexFromCellCoordinates({x_0, x_1, 0})];
                     for (auto i: cell_indices_front) {
-                        if (x[3 * i + 2] != 0 && x[3 * i + 2] < maxBorderDistance) {
-                            function(force, x, eps, sig, m, type, i, x[3*i+0], x[3*i+1],x[3*i+2] * (-1), eps[i], sig[i], m[i], type[i]);
+                        if (x[4 * i + 2] != 0 && x[4 * i + 2] < maxBorderDistance) {
+                            function(force, x, eps, sig, m, type, i, x[4*i+0], x[4*i+1],x[4*i+2] * (-1), eps[i], sig[i], m[i], type[i]);
                         }
                     }
                 }
@@ -523,9 +601,9 @@ s    * right corresponding cell-vector
                 for (unsigned int x_1 = 0; x_1 < gridDimensions[1]; x_1++) {
                     auto &cell_indices_back = cells[cellIndexFromCellCoordinates({x_0, x_1, gridDimensions[2] - 1})];
                     for (auto i: cell_indices_back) {
-                        double distance = domainSize[2] - x[3 * i + 2];
+                        double distance = domainSize[2] - x[4 * i + 2];
                         if (distance < maxBorderDistance) {
-                            function(force, x, eps, sig, m, type, i, x[3*i+0], x[3*i+1],x[3*i+2] + 2*distance, eps[i], sig[i], m[i], type[i]);
+                            function(force, x, eps, sig, m, type, i, x[4*i+0], x[4*i+1],x[4*i+2] + 2*distance, eps[i], sig[i], m[i], type[i]);
                         }
                     }
                 }
@@ -547,7 +625,7 @@ s    * right corresponding cell-vector
                     auto &cell_indices_left = cells[cellIndexFromCellCoordinates({0, x_1, x_2})];
                     cell_indices_left.erase(
                             std::remove_if(cell_indices_left.begin(), cell_indices_left.end(), [&](auto i) {
-                                if (x[3 * i + 0] < x_0_min) {
+                                if (x[4 * i + 0] < x_0_min) {
                                     output.emplace(i);
                                     return true;
                                 }
@@ -564,7 +642,7 @@ s    * right corresponding cell-vector
                     auto &cell_indices_right = cells[cellIndexFromCellCoordinates({gridDimensions[0] - 1, x_1, x_2})];
                     cell_indices_right.erase(
                             std::remove_if(cell_indices_right.begin(), cell_indices_right.end(), [&](auto i) {
-                                if (x[3 * i + 0] > x_0_max) {
+                                if (x[4 * i + 0] > x_0_max) {
                                     output.emplace(i);
                                     return true;
                                 }
@@ -581,7 +659,7 @@ s    * right corresponding cell-vector
                     auto &cell_indices_bot = cells[cellIndexFromCellCoordinates({x_0, 0, x_2})];
                     cell_indices_bot.erase(
                             std::remove_if(cell_indices_bot.begin(), cell_indices_bot.end(), [&](auto i) {
-                                if (x[3 * i + 1] < x_1_min) {
+                                if (x[4 * i + 1] < x_1_min) {
                                     output.emplace(i);
                                     return true;
                                 }
@@ -598,7 +676,7 @@ s    * right corresponding cell-vector
                     auto &cell_indices_top = cells[cellIndexFromCellCoordinates({x_0, gridDimensions[1] - 1, x_2})];
                     cell_indices_top.erase(
                             std::remove_if(cell_indices_top.begin(), cell_indices_top.end(), [&](auto i) {
-                                if (x[3 * i + 1] > x_1_max) {
+                                if (x[4 * i + 1] > x_1_max) {
                                     output.emplace(i);
                                     return true;
                                 }
@@ -615,7 +693,7 @@ s    * right corresponding cell-vector
                     auto &cell_indices_front = cells[cellIndexFromCellCoordinates({x_0, x_1, 0})];
                     cell_indices_front.erase(
                             std::remove_if(cell_indices_front.begin(), cell_indices_front.end(), [&](auto i) {
-                                if (x[3 * i + 2] < x_2_min) {
+                                if (x[4 * i + 2] < x_2_min) {
                                     output.emplace(i);
                                     return true;
                                 }
@@ -632,7 +710,7 @@ s    * right corresponding cell-vector
                     auto &cell_indices_back = cells[cellIndexFromCellCoordinates({x_0, x_1, gridDimensions[2] - 1})];
                     cell_indices_back.erase(
                             std::remove_if(cell_indices_back.begin(), cell_indices_back.end(), [&](auto i) {
-                                if (x[3 * i + 2] > x_2_max) {
+                                if (x[4 * i + 2] > x_2_max) {
                                     output.emplace(i);
                                     return true;
                                 }
@@ -660,9 +738,9 @@ s    * right corresponding cell-vector
             // move left to right
             double delta;
             for (auto i: indices) {
-                delta = std::abs(x_0_min - x[3 * i + 0]);
+                delta = std::abs(x_0_min - x[4 * i + 0]);
                 delta = std::min(r_cutoff, delta);
-                x[3 * i + 0] = x_0_max - delta;
+                x[4 * i + 0] = x_0_max - delta;
                 cells[xToCellCoords(i)].emplace_back(i);
 
             }
@@ -670,45 +748,45 @@ s    * right corresponding cell-vector
             // move right to left
             double delta;
             for (auto i: indices) {
-                delta = std::abs(x[3 * i + 0] - x_0_max);
+                delta = std::abs(x[4 * i + 0] - x_0_max);
                 delta = std::min(r_cutoff, delta);
-                x[3 * i + 0] = x_0_min + delta;
+                x[4 * i + 0] = x_0_min + delta;
                 cells[xToCellCoords(i)].emplace_back(i);
             }
         } else if constexpr (S == sim::physics::bounds::side::bottom) {
             // move bot to top
             double delta;
             for (auto i: indices) {
-                delta = std::abs(x_1_min - x[3 * i + 1]);
+                delta = std::abs(x_1_min - x[4 * i + 1]);
                 delta = std::min(r_cutoff, delta);
-                x[3 * i + 1] = x_1_max - delta;
+                x[4 * i + 1] = x_1_max - delta;
                 cells[xToCellCoords(i)].emplace_back(i);
             }
         } else if constexpr (S == sim::physics::bounds::side::top) {
             // move top to bot
             double delta;
             for (auto i: indices) {
-                delta = std::abs(x[3 * i + 1] - x_1_max);
+                delta = std::abs(x[4 * i + 1] - x_1_max);
                 delta = std::min(r_cutoff, delta);
-                x[3 * i + 1] = x_1_min + delta;
+                x[4 * i + 1] = x_1_min + delta;
                 cells[xToCellCoords(i)].emplace_back(i);
             }
         } else if constexpr (S == sim::physics::bounds::side::front) {
             // move front to rear
             double delta;
             for (auto i: indices) {
-                delta = std::abs(x_2_min - x[3 * i + 2]);
+                delta = std::abs(x_2_min - x[4 * i + 2]);
                 delta = std::min(r_cutoff, delta);
-                x[3 * i + 2] = x_2_max - delta;
+                x[4 * i + 2] = x_2_max - delta;
                 cells[xToCellCoords(i)].emplace_back(i);
             }
         } else if constexpr (S == sim::physics::bounds::side::rear) {
             // move rear to front
             double delta;
             for (auto i: indices) {
-                delta = std::abs(x[3 * i + 2] - x_2_max);
+                delta = std::abs(x[4 * i + 2] - x_2_max);
                 delta = std::min(r_cutoff, delta);
-                x[3 * i + 2] = x_2_min + delta;
+                x[4 * i + 2] = x_2_min + delta;
                 cells[xToCellCoords(i)].emplace_back(i);
             }
         }
@@ -721,9 +799,9 @@ private:
      * */
     unsigned int xToCellCoords(unsigned int i) {
         std::array<unsigned int, 3> cellCoordinate = {0, 0, 0};
-        if (x[3 * i] > 0) cellCoordinate[0] = (unsigned int) (x[3 * i] / r_cutoff);
-        if (x[3 * i + 1] > 0) cellCoordinate[1] = (unsigned int) (x[3 * i + 1] / r_cutoff);
-        if (x[3 * i + 2] > 0) cellCoordinate[2] = (unsigned int) (x[3 * i + 2] / r_cutoff);
+        if (x[4 * i] > 0) cellCoordinate[0] = (unsigned int) (x[4 * i] / r_cutoff);
+        if (x[4 * i + 1] > 0) cellCoordinate[1] = (unsigned int) (x[4 * i + 1] / r_cutoff);
+        if (x[4 * i + 2] > 0) cellCoordinate[2] = (unsigned int) (x[4 * i + 2] / r_cutoff);
         return cellIndexFromCellCoordinates(cellCoordinate);
     }
 
@@ -1149,10 +1227,10 @@ public:
                 for (auto indexI : hCell) {
                     //transform h coords
                     double x0, x1, x2;
-                    x0 = x[3*indexI + 0]; x1 = x[3*indexI + 1]; x2 = x[3*indexI + 2];
-                    x[3*indexI + 0] += (std::min(hcCoords[cIndex][0], 1u)) * domainSize[0] - (1 - std::min(hcCoords[cIndex][0], 1u)) * domainSize[0];
-                    x[3*indexI + 1] += (std::min(hcCoords[cIndex][1], 1u)) * domainSize[1] - (1 - std::min(hcCoords[cIndex][1], 1u)) * domainSize[1];
-                    x[3*indexI + 2] += (std::min(hcCoords[cIndex][2], 1u)) * domainSize[2] - (1 - std::min(hcCoords[cIndex][2], 1u)) * domainSize[2];
+                    x0 = x[4*indexI + 0]; x1 = x[4*indexI + 1]; x2 = x[4*indexI + 2];
+                    x[4*indexI + 0] += (std::min(hcCoords[cIndex][0], 1u)) * domainSize[0] - (1 - std::min(hcCoords[cIndex][0], 1u)) * domainSize[0];
+                    x[4*indexI + 1] += (std::min(hcCoords[cIndex][1], 1u)) * domainSize[1] - (1 - std::min(hcCoords[cIndex][1], 1u)) * domainSize[1];
+                    x[4*indexI + 2] += (std::min(hcCoords[cIndex][2], 1u)) * domainSize[2] - (1 - std::min(hcCoords[cIndex][2], 1u)) * domainSize[2];
 
                     for(int scale0{1}; scale0 < 3; scale0++) {
                         for(int scale1{1}; scale1 < 3; scale1++) {
@@ -1167,7 +1245,7 @@ public:
                     }
 
                     //write back original value
-                    x[3*indexI + 0] = x0; x[3*indexI + 1] = x1; x[3*indexI + 2] = x2;
+                    x[4*indexI + 0] = x0; x[4*indexI + 1] = x1; x[4*indexI + 2] = x2;
                 }
                 hCell.clear();
             }
@@ -1206,10 +1284,10 @@ public:
                             for (auto indexI : hCell) {
                                 //transform h coords
                                 double x0, x1, x2;
-                                x0 = x[3*indexI + 0]; x1 = x[3*indexI + 1]; x2 = x[3*indexI + 2];
-                                x[3*indexI + 0] -= domainSize[0] * dirs[0][0];
-                                x[3*indexI + 1] -= domainSize[1] * dirs[0][1];
-                                x[3*indexI + 2] -= domainSize[2] * dirs[0][2];
+                                x0 = x[4*indexI + 0]; x1 = x[4*indexI + 1]; x2 = x[4*indexI + 2];
+                                x[4*indexI + 0] -= domainSize[0] * dirs[0][0];
+                                x[4*indexI + 1] -= domainSize[1] * dirs[0][1];
+                                x[4*indexI + 2] -= domainSize[2] * dirs[0][2];
 
                                 //go in check direction
                                 for (auto &dir: dirs) {
@@ -1226,7 +1304,7 @@ public:
                                 }
 
                                 //write back original value
-                                x[3*indexI + 0] = x0; x[3*indexI + 1] = x1; x[3*indexI + 2] = x2;
+                                x[4*indexI + 0] = x0; x[4*indexI + 1] = x1; x[4*indexI + 2] = x2;
                             }
 
                             hCell.clear();
@@ -1275,10 +1353,10 @@ public:
                             for (auto indexI : hCell) {
                                 //transform h coords
                                 double x0, x1, x2;
-                                x0 = x[3*indexI + 0]; x1 = x[3*indexI + 1]; x2 = x[3*indexI + 2];
-                                x[3*indexI + 0] -= domainSize[0] * dirs[4][0];
-                                x[3*indexI + 1] -= domainSize[1] * dirs[4][1];
-                                x[3*indexI + 2] -= domainSize[2] * dirs[4][2];
+                                x0 = x[4*indexI + 0]; x1 = x[4*indexI + 1]; x2 = x[4*indexI + 2];
+                                x[4*indexI + 0] -= domainSize[0] * dirs[4][0];
+                                x[4*indexI + 1] -= domainSize[1] * dirs[4][1];
+                                x[4*indexI + 2] -= domainSize[2] * dirs[4][2];
 
                                 //go in check direction
                                 for (int scaleOffset{0}; scaleOffset < 2; scaleOffset++) {
@@ -1291,7 +1369,7 @@ public:
                                 }
 
                                 //write back original value
-                                x[3*indexI + 0] = x0; x[3*indexI + 1] = x1; x[3*indexI + 2] = x2;
+                                x[4*indexI + 0] = x0; x[4*indexI + 1] = x1; x[4*indexI + 2] = x2;
                             }
 
                             hCell.clear();
@@ -1323,10 +1401,10 @@ public:
      * Performs fun on provided data. All lambda args particle container internal data.
      * Will be applied on every distinct cell pair. (Set-Wise) I.e. {a,b} = {b,a}.
      * */
-    [[maybe_unused]] [[deprecated]] void forAllDistinctCellPairs(void (*fun)(std::vector<double> &force,
-                                                                             std::vector<double> &oldForce,
-                                                                             std::vector<double> &x,
-                                                                             std::vector<double> &v,
+    [[maybe_unused]] [[deprecated]] void forAllDistinctCellPairs(void (*fun)(vec4d_t &force,
+                                                                             vec4d_t &oldForce,
+                                                                             vec4d_t &x,
+                                                                             vec4d_t &v,
                                                                              std::vector<double> &m,
                                                                              std::vector<int> &type,
                                                                              unsigned long count,

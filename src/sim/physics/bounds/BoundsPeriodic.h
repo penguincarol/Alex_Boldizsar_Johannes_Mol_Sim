@@ -59,10 +59,10 @@ namespace sim::physics::bounds {
                 return;
             }
 
-            this->particleContainer.template runOnDataCell([&](std::vector<double> &force,
-                                                               std::vector<double> &oldForce,
-                                                               std::vector<double> &x,
-                                                               std::vector<double> &v,
+            this->particleContainer.template runOnDataCell([&](vec4d_t &force,
+                                                               vec4d_t &oldForce,
+                                                               vec4d_t &x,
+                                                               vec4d_t &v,
                                                                std::vector<double> &m,
                                                                std::vector<int> &t,
                                                                unsigned long count,
@@ -88,9 +88,9 @@ namespace sim::physics::bounds {
 
                             for (size_t indexH = 0; indexH < hCell->size(); indexH++) {
                                 unsigned long indexJ = (*hCell)[indexH];
-                                double x0 = x[3 * indexJ + 0] + off0;
-                                double x1 = x[3 * indexJ + 1] + off1;
-                                double x2 = x[3 * indexJ + 2] + off2;
+                                double x0 = x[4 * indexJ + 0] + off0;
+                                double x1 = x[4 * indexJ + 1] + off1;
+                                double x2 = x[4 * indexJ + 2] + off2;
 
                                 for (size_t indexB = 0; indexB < bCell->size(); indexB++) {
                                     unsigned long indexI = (*bCell)[indexB];
@@ -98,9 +98,9 @@ namespace sim::physics::bounds {
                                     double sigma2 = sigma * sigma;
                                     double sigma6 = sigma2 * sigma2 * sigma2;
                                     double epsilon = std::sqrt(eps[indexI] * eps[indexJ]);
-                                    double d0 = x[indexI * 3 + 0] - x0;
-                                    double d1 = x[indexI * 3 + 1] - x1;
-                                    double d2 = x[indexI * 3 + 2] - x2;
+                                    double d0 = x[indexI * 4 + 0] - x0;
+                                    double d1 = x[indexI * 4 + 1] - x1;
+                                    double d2 = x[indexI * 4 + 2] - x2;
                                     double dsqr = d0 * d0 + d1 * d1 + d2 * d2;
                                     //check if is membrane -> need to skip attractive forces
                                     if (t[indexI] & 0x80000000 || t[indexJ] & 0x80000000) {
@@ -113,12 +113,12 @@ namespace sim::physics::bounds {
                                     double fac1_sum1 = sigma6 * l2NInvPow6;
                                     double fac1 = (fac1_sum1) - 2 * (fac1_sum1 * fac1_sum1);
 
-                                    f[indexI * 3 + 0] -= fac0 * fac1 * d0;
-                                    f[indexI * 3 + 1] -= fac0 * fac1 * d1;
-                                    f[indexI * 3 + 2] -= fac0 * fac1 * d2;
-                                    f[indexJ * 3 + 0] += fac0 * fac1 * d0;
-                                    f[indexJ * 3 + 1] += fac0 * fac1 * d1;
-                                    f[indexJ * 3 + 2] += fac0 * fac1 * d2;
+                                    f[indexI * 4 + 0] -= fac0 * fac1 * d0;
+                                    f[indexI * 4 + 1] -= fac0 * fac1 * d1;
+                                    f[indexI * 4 + 2] -= fac0 * fac1 * d2;
+                                    f[indexJ * 4 + 0] += fac0 * fac1 * d0;
+                                    f[indexJ * 4 + 1] += fac0 * fac1 * d1;
+                                    f[indexJ * 4 + 2] += fac0 * fac1 * d2;
                                 }
                             }
                         }

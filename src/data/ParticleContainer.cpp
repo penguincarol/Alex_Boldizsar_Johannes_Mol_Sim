@@ -15,10 +15,10 @@ ParticleContainer::ParticleContainer() {
 
 ParticleContainer::ParticleContainer(const std::vector<Particle> &buffer) {
     count = buffer.size();
-    force.resize(count * 3);
-    oldForce.resize(count * 3);
-    x.resize(count * 3);
-    v.resize(count * 3);
+    force.resize(count * 4);
+    oldForce.resize(count * 4);
+    x.resize(count * 4);
+    v.resize(count * 4);
     m.resize(count);
     type.resize(count);
     eps.resize(count);
@@ -30,24 +30,24 @@ ParticleContainer::ParticleContainer(const std::vector<Particle> &buffer) {
     //load particles
     for (unsigned long index{0}; index < count; index++) {
         auto &f = buffer[index].getF();
-        force[index * 3 + 0] = f[0];
-        force[index * 3 + 1] = f[1];
-        force[index * 3 + 2] = f[2];
+        force[index * 4 + 0] = f[0];
+        force[index * 4 + 1] = f[1];
+        force[index * 4 + 2] = f[2];
 
         auto &of = buffer[index].getOldF();
-        oldForce[index * 3 + 0] = of[0];
-        oldForce[index * 3 + 1] = of[1];
-        oldForce[index * 3 + 2] = of[2];
+        oldForce[index * 4 + 0] = of[0];
+        oldForce[index * 4 + 1] = of[1];
+        oldForce[index * 4 + 2] = of[2];
 
         auto &xx = buffer[index].getX();
-        x[index * 3 + 0] = xx[0];
-        x[index * 3 + 1] = xx[1];
-        x[index * 3 + 2] = xx[2];
+        x[index * 4 + 0] = xx[0];
+        x[index * 4 + 1] = xx[1];
+        x[index * 4 + 2] = xx[2];
 
         auto &vv = buffer[index].getV();
-        v[index * 3 + 0] = vv[0];
-        v[index * 3 + 1] = vv[1];
-        v[index * 3 + 2] = vv[2];
+        v[index * 4 + 0] = vv[0];
+        v[index * 4 + 1] = vv[1];
+        v[index * 4 + 2] = vv[2];
 
         m[index] = buffer[index].getM();
         type[index] = buffer[index].getType();
@@ -86,10 +86,10 @@ ParticleContainer::ParticleContainer(const std::vector<Particle> &buffer, std::a
     if(eOMP) {
         //create padding
         unsigned long newSize = (cells.size() - 1) * padding_count + count;
-        force.resize(newSize * 3);
-        oldForce.resize(newSize * 3);
-        x.resize(newSize * 3);
-        v.resize(newSize * 3);
+        force.resize(newSize * 4);
+        oldForce.resize(newSize * 4);
+        x.resize(newSize * 4);
+        v.resize(newSize * 4);
         m.resize(newSize);
         type.resize(newSize);
         eps.resize(newSize);
@@ -153,25 +153,25 @@ std::array<unsigned int, 3> ParticleContainer::getGridDimensions() {
     return gridDimensions;
 }
 
-void ParticleContainer::loadParticle(Particle &p, unsigned long index, std::vector<double> &force,
-                                     std::vector<double> &oldForce, std::vector<double> &x, std::vector<double> &v,
+void ParticleContainer::loadParticle(Particle &p, unsigned long index, vec4d_t &force,
+                                     vec4d_t &oldForce, vec4d_t &x, vec4d_t &v,
                                      std::vector<double> &m, std::vector<int> &type, std::vector<double>& e,
                                      std::vector<double> &s) {
-    Eigen::Vector3d f{force[index * 3 + 0],
-                      force[index * 3 + 1],
-                      force[index * 3 + 2]};
+    Eigen::Vector3d f{force[index * 4 + 0],
+                      force[index * 4 + 1],
+                      force[index * 4 + 2]};
     p.setF(f);
-    Eigen::Vector3d of{oldForce[index * 3 + 0],
-                       oldForce[index * 3 + 1],
-                       oldForce[index * 3 + 2]};
+    Eigen::Vector3d of{oldForce[index * 4 + 0],
+                       oldForce[index * 4 + 1],
+                       oldForce[index * 4 + 2]};
     p.setOldF(of);
-    Eigen::Vector3d xx{x[index * 3 + 0],
-                       x[index * 3 + 1],
-                       x[index * 3 + 2]};
+    Eigen::Vector3d xx{x[index * 4 + 0],
+                       x[index * 4 + 1],
+                       x[index * 4 + 2]};
     p.setX(xx);
-    Eigen::Vector3d vv{v[index * 3 + 0],
-                       v[index * 3 + 1],
-                       v[index * 3 + 2]};
+    Eigen::Vector3d vv{v[index * 4 + 0],
+                       v[index * 4 + 1],
+                       v[index * 4 + 2]};
     p.setV(vv);
     p.setM(m[index]);
     p.setType(type[index]);
@@ -183,29 +183,29 @@ void ParticleContainer::loadParticle(Particle &p, unsigned long index) {
     loadParticle(p, index, force, oldForce, x, v, m, type, eps, sig);
 }
 
-void ParticleContainer::storeParticle(Particle &p, unsigned long index, std::vector<double> &force,
-                                      std::vector<double> &oldForce, std::vector<double> &x, std::vector<double> &v,
+void ParticleContainer::storeParticle(Particle &p, unsigned long index, vec4d_t &force,
+                                      vec4d_t &oldForce, vec4d_t &x, vec4d_t &v,
                                       std::vector<double> &m, std::vector<int> &type, std::vector<double>& e,
                                       std::vector<double> &s) {
     auto &ff = p.getF();
-    force[index * 3 + 0] = ff[0];
-    force[index * 3 + 1] = ff[1];
-    force[index * 3 + 2] = ff[2];
+    force[index * 4 + 0] = ff[0];
+    force[index * 4 + 1] = ff[1];
+    force[index * 4 + 2] = ff[2];
 
     auto &oof = p.getOldF();
-    oldForce[index * 3 + 0] = oof[0];
-    oldForce[index * 3 + 1] = oof[1];
-    oldForce[index * 3 + 2] = oof[2];
+    oldForce[index * 4 + 0] = oof[0];
+    oldForce[index * 4 + 1] = oof[1];
+    oldForce[index * 4 + 2] = oof[2];
 
     auto &xxx = p.getX();
-    x[index * 3 + 0] = xxx[0];
-    x[index * 3 + 1] = xxx[1];
-    x[index * 3 + 2] = xxx[2];
+    x[index * 4 + 0] = xxx[0];
+    x[index * 4 + 1] = xxx[1];
+    x[index * 4 + 2] = xxx[2];
 
     auto &vvv = p.getV();
-    v[index * 3 + 0] = vvv[0];
-    v[index * 3 + 1] = vvv[1];
-    v[index * 3 + 2] = vvv[2];
+    v[index * 4 + 0] = vvv[0];
+    v[index * 4 + 1] = vvv[1];
+    v[index * 4 + 2] = vvv[2];
 
     m[index] = p.getM();
     type[index] = p.getType();
@@ -229,9 +229,9 @@ void ParticleContainer::updateCells() {
         unsigned long i = id_to_index[id];
         //i am intentionally rounding down with casts from double to unsigned int
         std::array<unsigned int, 3> cellCoordinate = {0,0,0};
-        if(x[3*i+0] > 0) cellCoordinate[0] = (unsigned int) (x[3 * i] / r_cutoff);
-        if(x[3*i+1] > 0) cellCoordinate[1] = (unsigned int) (x[3 * i+1] / r_cutoff);
-        if(x[3*i+2] > 0) cellCoordinate[2] = (unsigned int) (x[3 * i+2] / r_cutoff);
+        if(x[4*i+0] > 0) cellCoordinate[0] = (unsigned int) (x[4 * i] / r_cutoff);
+        if(x[4*i+1] > 0) cellCoordinate[1] = (unsigned int) (x[4 * i+1] / r_cutoff);
+        if(x[4*i+2] > 0) cellCoordinate[2] = (unsigned int) (x[4 * i+2] / r_cutoff);
         this->cells[cellIndexFromCellCoordinates(cellCoordinate)].emplace_back(id);
     } // now cells contain ID of particle -> need sort particles and replace ID in cell with index
 
@@ -267,52 +267,52 @@ void ParticleContainer::swap(unsigned long id0, unsigned long id1) {
     double f0, f1, f2, of0, of1, of2, x0, x1, x2, v0, v1, v2, mm, s, e;
     int t;
 
-    f0 = force[index0 * 3 + 0];
-    f1 = force[index0 * 3 + 1];
-    f2 = force[index0 * 3 + 2];
-    of0 = oldForce[index0 * 3 + 0];
-    of1 = oldForce[index0 * 3 + 1];
-    of2 = oldForce[index0 * 3 + 2];
-    x0 = x[index0 * 3 + 0];
-    x1 = x[index0 * 3 + 1];
-    x2 = x[index0 * 3 + 2];
-    v0 = v[index0 * 3 + 0];
-    v1 = v[index0 * 3 + 1];
-    v2 = v[index0 * 3 + 2];
+    f0 = force[index0 * 4 + 0];
+    f1 = force[index0 * 4 + 1];
+    f2 = force[index0 * 4 + 2];
+    of0 = oldForce[index0 * 4 + 0];
+    of1 = oldForce[index0 * 4 + 1];
+    of2 = oldForce[index0 * 4 + 2];
+    x0 = x[index0 * 4 + 0];
+    x1 = x[index0 * 4 + 1];
+    x2 = x[index0 * 4 + 2];
+    v0 = v[index0 * 4 + 0];
+    v1 = v[index0 * 4 + 1];
+    v2 = v[index0 * 4 + 2];
     mm = m[index0];
     t = type[index0];
     s = sig[index0];
     e = eps[index0];
 
-    force[index0 * 3 + 0]    = force[index1 * 3 + 0];
-    force[index0 * 3 + 1]    = force[index1 * 3 + 1];
-    force[index0 * 3 + 2]    = force[index1 * 3 + 2];
-    oldForce[index0 * 3 + 0] = oldForce[index1 * 3 + 0];
-    oldForce[index0 * 3 + 1] = oldForce[index1 * 3 + 1];
-    oldForce[index0 * 3 + 2] = oldForce[index1 * 3 + 2];
-    x[index0 * 3 + 0]        = x[index1 * 3 + 0];
-    x[index0 * 3 + 1]        = x[index1 * 3 + 1];
-    x[index0 * 3 + 2]        = x[index1 * 3 + 2];
-    v[index0 * 3 + 0]        = v[index1 * 3 + 0];
-    v[index0 * 3 + 1]        = v[index1 * 3 + 1];
-    v[index0 * 3 + 2]        = v[index1 * 3 + 2];
+    force[index0 * 4 + 0]    = force[index1 * 4 + 0];
+    force[index0 * 4 + 1]    = force[index1 * 4 + 1];
+    force[index0 * 4 + 2]    = force[index1 * 4 + 2];
+    oldForce[index0 * 4 + 0] = oldForce[index1 * 4 + 0];
+    oldForce[index0 * 4 + 1] = oldForce[index1 * 4 + 1];
+    oldForce[index0 * 4 + 2] = oldForce[index1 * 4 + 2];
+    x[index0 * 4 + 0]        = x[index1 * 4 + 0];
+    x[index0 * 4 + 1]        = x[index1 * 4 + 1];
+    x[index0 * 4 + 2]        = x[index1 * 4 + 2];
+    v[index0 * 4 + 0]        = v[index1 * 4 + 0];
+    v[index0 * 4 + 1]        = v[index1 * 4 + 1];
+    v[index0 * 4 + 2]        = v[index1 * 4 + 2];
     m[index0]                = m[index1];
     type[index0]             = type[index1];
     sig[index0]              = sig[index1];
     eps[index0]              = eps[index1];
 
-    force[index1 * 3 + 0] = f0;
-    force[index1 * 3 + 1] = f1;
-    force[index1 * 3 + 2] = f2;
-    oldForce[index1 * 3 + 0] = of0;
-    oldForce[index1 * 3 + 1] = of1;
-    oldForce[index1 * 3 + 2] = of2;
-    x[index1 * 3 + 0] = x0;
-    x[index1 * 3 + 1] = x1;
-    x[index1 * 3 + 2] = x2;
-    v[index1 * 3 + 0] = v0;
-    v[index1 * 3 + 1] = v1;
-    v[index1 * 3 + 2] = v2;
+    force[index1 * 4 + 0] = f0;
+    force[index1 * 4 + 1] = f1;
+    force[index1 * 4 + 2] = f2;
+    oldForce[index1 * 4 + 0] = of0;
+    oldForce[index1 * 4 + 1] = of1;
+    oldForce[index1 * 4 + 2] = of2;
+    x[index1 * 4 + 0] = x0;
+    x[index1 * 4 + 1] = x1;
+    x[index1 * 4 + 2] = x2;
+    v[index1 * 4 + 0] = v0;
+    v[index1 * 4 + 1] = v1;
+    v[index1 * 4 + 2] = v2;
     m[index1] = mm;
     type[index1] = t;
     sig[index1] = s;
@@ -325,18 +325,18 @@ void ParticleContainer::swap(unsigned long id0, unsigned long id1) {
 }
 
 void ParticleContainer::move(unsigned long indexSrc, unsigned indexDst, unsigned long id) {
-    force[indexDst * 3 + 0]    = force[indexSrc * 3 + 0];
-    force[indexDst * 3 + 1]    = force[indexSrc * 3 + 1];
-    force[indexDst * 3 + 2]    = force[indexSrc * 3 + 2];
-    oldForce[indexDst * 3 + 0] = oldForce[indexSrc * 3 + 0];
-    oldForce[indexDst * 3 + 1] = oldForce[indexSrc * 3 + 1];
-    oldForce[indexDst * 3 + 2] = oldForce[indexSrc * 3 + 2];
-    x[indexDst * 3 + 0]        = x[indexSrc * 3 + 0];
-    x[indexDst * 3 + 1]        = x[indexSrc * 3 + 1];
-    x[indexDst * 3 + 2]        = x[indexSrc * 3 + 2];
-    v[indexDst * 3 + 0]        = v[indexSrc * 3 + 0];
-    v[indexDst * 3 + 1]        = v[indexSrc * 3 + 1];
-    v[indexDst * 3 + 2]        = v[indexSrc * 3 + 2];
+    force[indexDst * 4 + 0]    = force[indexSrc * 4 + 0];
+    force[indexDst * 4 + 1]    = force[indexSrc * 4 + 1];
+    force[indexDst * 4 + 2]    = force[indexSrc * 4 + 2];
+    oldForce[indexDst * 4 + 0] = oldForce[indexSrc * 4 + 0];
+    oldForce[indexDst * 4 + 1] = oldForce[indexSrc * 4 + 1];
+    oldForce[indexDst * 4 + 2] = oldForce[indexSrc * 4 + 2];
+    x[indexDst * 4 + 0]        = x[indexSrc * 4 + 0];
+    x[indexDst * 4 + 1]        = x[indexSrc * 4 + 1];
+    x[indexDst * 4 + 2]        = x[indexSrc * 4 + 2];
+    v[indexDst * 4 + 0]        = v[indexSrc * 4 + 0];
+    v[indexDst * 4 + 1]        = v[indexSrc * 4 + 1];
+    v[indexDst * 4 + 2]        = v[indexSrc * 4 + 2];
     m[indexDst]                = m[indexSrc];
     type[indexDst]             = type[indexSrc];
     sig[indexDst]              = sig[indexSrc];
@@ -524,10 +524,10 @@ void ParticleContainer::forAllPairsInSameCell(const std::function<void(Particle 
 
 [[maybe_unused]] void ParticleContainer::forAllDistinctCellPairs(
 #pragma region param
-        void(*fun)(std::vector<double> &force,
-                   std::vector<double> &oldForce,
-                   std::vector<double> &x,
-                   std::vector<double> &v,
+        void(*fun)(vec4d_t &force,
+                   vec4d_t &oldForce,
+                   vec4d_t &x,
+                   vec4d_t &v,
                    std::vector<double> &m,
                    std::vector<int> &type,
                    unsigned long count,
@@ -545,14 +545,14 @@ void ParticleContainer::forAllPairsInSameCell(const std::function<void(Particle 
 }
 
 void ParticleContainer::clearStoreForce() {
-    unsigned long size = force.size() / 3;
+    unsigned long size = force.size() / 4;
     for(unsigned long i {0}; i < size; i++) {
-        oldForce[3*i + 0] = force[3*i + 0];
-        oldForce[3*i + 1] = force[3*i + 1];
-        oldForce[3*i + 2] = force[3*i + 2];
-        force[3*i + 0] = 0;
-        force[3*i + 1] = 0;
-        force[3*i + 2] = 0;
+        oldForce[4*i + 0] = force[4*i + 0];
+        oldForce[4*i + 1] = force[4*i + 1];
+        oldForce[4*i + 2] = force[4*i + 2];
+        force[4*i + 0] = 0;
+        force[4*i + 1] = 0;
+        force[4*i + 2] = 0;
     }
 }
 

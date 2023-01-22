@@ -28,10 +28,10 @@ namespace sim::physics::force {
     }
 
     void FGravityCellsOMP::operator()() {
-        particleContainer.runOnDataCell([&](std::vector<double> &force,
-                                            std::vector<double> &oldForce,
-                                            std::vector<double> &x,
-                                            std::vector<double> &v,
+        particleContainer.runOnDataCell([&](vec4d_t &force,
+                                            vec4d_t &oldForce,
+                                            vec4d_t &x,
+                                            vec4d_t &v,
                                             std::vector<double> &m,
                                             std::vector<int> &type,
                                             unsigned long count,

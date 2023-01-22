@@ -8,16 +8,16 @@ namespace sim::physics::force {
      * \image latex plot.eps "Runtime comparison of All-Pairs algorithm with Linked-Cell algorithm" width=5cm
      */
     void FLennardJonesCells::operator()() {
-        particleContainer.forAllCells([this](std::vector<double> &force,
-                                         std::vector<double> &oldForce,
-                                         std::vector<double> &x,
-                                         std::vector<double> &v,
-                                         std::vector<double> &m,
-                                         std::vector<int> &type,
-                                         unsigned long count,
-                                         std::vector<unsigned long> &cellItems,
-                                         std::vector<double> &eps,
-                                         std::vector<double> &sig){
+        particleContainer.forAllCells([this](vec4d_t &force,
+                                             vec4d_t &oldForce,
+                                             vec4d_t &x,
+                                             vec4d_t &v,
+                                             std::vector<double> &m,
+                                             std::vector<int> &type,
+                                             unsigned long count,
+                                             std::vector<unsigned long> &cellItems,
+                                             std::vector<double> &eps,
+                                             std::vector<double> &sig){
             for(unsigned long indexX = 0; indexX < cellItems.size(); indexX++){
                 for(unsigned long indexY = indexX + 1; indexY < cellItems.size(); indexY++) {
                     unsigned long indexI = cellItems[indexX];
@@ -27,17 +27,17 @@ namespace sim::physics::force {
             }
         });
 
-        particleContainer.forAllDistinctCellNeighbours([this](std::vector<double> &force,
-                                                           std::vector<double> &oldForce,
-                                                           std::vector<double> &x,
-                                                           std::vector<double> &v,
-                                                           std::vector<double> &m,
-                                                           std::vector<int> &type,
-                                                           unsigned long count,
-                                                           std::vector<unsigned long> &cell0Items,
-                                                           std::vector<unsigned long> &cell1Items,
-                                                           std::vector<double> &eps,
-                                                           std::vector<double> &sig){
+        particleContainer.forAllDistinctCellNeighbours([this](vec4d_t &force,
+                                                              vec4d_t &oldForce,
+                                                              vec4d_t &x,
+                                                              vec4d_t &v,
+                                                              std::vector<double> &m,
+                                                              std::vector<int> &type,
+                                                              unsigned long count,
+                                                              std::vector<unsigned long> &cell0Items,
+                                                              std::vector<unsigned long> &cell1Items,
+                                                              std::vector<double> &eps,
+                                                              std::vector<double> &sig){
             for(unsigned long indexI : cell0Items){
                 for(unsigned long indexJ : cell1Items) {
                     this->fpairFun(force, x, eps, sig, m, type, indexI, indexJ);

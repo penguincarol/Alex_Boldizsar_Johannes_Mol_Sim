@@ -27,17 +27,17 @@ namespace sim::physics::force {
     }
 
     void FGravityOMP::operator()() {
-        particleContainer.runOnActiveData([](std::vector<double> &force,
-                                       std::vector<double> &oldForce,
-                                       std::vector<double> &x,
-                                       std::vector<double> &v,
-                                       std::vector<double> &m,
-                                       std::vector<int> &type,
-                                       unsigned long count,
-                                       std::vector<double> &eps,
-                                       std::vector<double> &sig,
-                                       std::unordered_map<unsigned long, unsigned long> &id_to_index,
-                                       std::vector<unsigned long> &activeParticles) {
+        particleContainer.runOnActiveData([](vec4d_t &force,
+                                             vec4d_t &oldForce,
+                                             vec4d_t &x,
+                                             vec4d_t &v,
+                                             std::vector<double> &m,
+                                             std::vector<int> &type,
+                                             unsigned long count,
+                                             std::vector<double> &eps,
+                                             std::vector<double> &sig,
+                                             std::unordered_map<unsigned long, unsigned long> &id_to_index,
+                                             std::vector<unsigned long> &activeParticles) {
 
             double d0, d1, d2, scalar;
             unsigned long indexI;
@@ -59,18 +59,18 @@ namespace sim::physics::force {
                     if(indexI == indexJ) continue;
                     indexI = id_to_index[indexI];
                     indexJ = id_to_index[indexJ];
-                    d0 = x[indexI*3 + 0] - x[indexJ*3 + 0];
-                    d1 = x[indexI*3 + 1] - x[indexJ*3 + 1];
-                    d2 = x[indexI*3 + 2] - x[indexJ*3 + 2];
+                    d0 = x[indexI*4 + 0] - x[indexJ*4 + 0];
+                    d1 = x[indexI*4 + 1] - x[indexJ*4 + 1];
+                    d2 = x[indexI*4 + 2] - x[indexJ*4 + 2];
                     scalar = m[indexI] * m[indexJ] * std::pow(1/std::sqrt(d0*d0+d1*d1+d2*d2),3);
 
 
-                    f[indexI*3 + 0] -= d0 * scalar;
-                    f[indexI*3 + 1] -= d1 * scalar;
-                    f[indexI*3 + 2] -= d2 * scalar;
-                    f[indexJ*3 + 0] += d0 * scalar;;
-                    f[indexJ*3 + 1] += d1 * scalar;;
-                    f[indexJ*3 + 2] += d2 * scalar;;
+                    f[indexI*4 + 0] -= d0 * scalar;
+                    f[indexI*4 + 1] -= d1 * scalar;
+                    f[indexI*4 + 2] -= d2 * scalar;
+                    f[indexJ*4 + 0] += d0 * scalar;;
+                    f[indexJ*4 + 1] += d1 * scalar;;
+                    f[indexJ*4 + 2] += d2 * scalar;;
                 }
             }
         });

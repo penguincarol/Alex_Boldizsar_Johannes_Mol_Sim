@@ -39,23 +39,23 @@ void Thermostat::notify(){
 
 
 void Thermostat::initializeBrownTemp(double TInit){
-    pc.runOnActiveData([&](std::vector<double>& force,
-                            std::vector<double>& oldForce,
-                            std::vector<double>& x,
-                            std::vector<double>& v,
-                            std::vector<double>& m,
-                            std::vector<int>& type,
-                            unsigned long count,
-                            std::vector<double>& eps,
-                            std::vector<double>& sig,
-                            std::unordered_map<unsigned long, unsigned long> &id_to_index,
-                            auto&){
+    pc.runOnActiveData([&](vec4d_t & force,
+                           vec4d_t & oldForce,
+                           vec4d_t & x,
+                           vec4d_t & v,
+                           std::vector<double>& m,
+                           std::vector<int>& type,
+                           unsigned long count,
+                           std::vector<double>& eps,
+                           std::vector<double>& sig,
+                           std::unordered_map<unsigned long, unsigned long> &id_to_index,
+                           auto&){
                                 for(auto [_,a]: id_to_index){
                                     auto brown{maxwellBoltzmannDistributedVelocity(std::sqrt(TInit/m[a]), dims)};
                                     //std::array<double, 3> brown{0.,0.,0.};
-                                    v[3*a] += brown[0];
-                                    v[3*a+1] += brown[1];
-                                    v[3*a+2] += brown[2];
+                                    v[4*a] += brown[0];
+                                    v[4*a+1] += brown[1];
+                                    v[4*a+2] += brown[2];
                                 }
                             });
 }

@@ -1,6 +1,7 @@
 //
 // Created by alex on 07.12.22.
 //
+#include <algorithm>
 #include "types.h"
 #include "io/input/cli/CLIArgsParser.h"
 

@@ -176,8 +176,8 @@ namespace sim {
                 if(thermoEnable){thermostat.notify();}
 
                 iteration++;
-                if (iteration % 10 == 0) {
-                    //ioWrapper.writeParticlesVTK(particleContainer, outputFolder, outputBaseName, iteration);
+                if (iteration % 100 == 0) {
+                    ioWrapper.writeParticlesVTK(particleContainer, outputFolder, outputBaseName, iteration);
                 }
                 if (iteration % 100 == 0)
                     io::output::loggers::simulation->info("Progress: {:03.2f}%", current_time / end_time * 100);

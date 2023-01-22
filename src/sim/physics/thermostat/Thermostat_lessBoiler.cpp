@@ -77,7 +77,7 @@ double Thermostat::computeCurrentTemp(){
                 sum += std::max(m[a], 0.) * (v[3*a]*v[3*a] + v[3*a+1]*v[3*a+1] + v[3*a+2]*v[3*a+2]);
             }
         });
-        return sum/(dims*static_cast<double>(pc.activeSize()));
+        return sum/(dims*static_cast<double>(numberFlowingParticles));
     }else{  //ThermoMode::pipe
 
         double sum{0};

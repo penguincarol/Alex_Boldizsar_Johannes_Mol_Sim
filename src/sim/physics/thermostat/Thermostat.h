@@ -48,8 +48,8 @@ public:
     explicit Thermostat(ParticleContainer& particleContainer, double T_t = default_t_target,
                         unsigned int cT = default_n_term, unsigned int dimensions = default_dims,
                         double dT = default_delta_temp, double TInit = default_t_init,
-                        bool thermoEnable = default_therm, ThermoMode tm = ThermoMode::normal)
-                        : pc(particleContainer), countThreshold(cT), dims(dimensions), thermoMode(tm) {
+                        bool thermoEnable = default_therm, ThermoMode tm = ThermoMode::pipe)
+                        : pc(particleContainer), countThreshold(cT), dims(dimensions), thermoMode(ThermoMode::pipe) {
         if(tm == ThermoMode::normal){
             numberFlowingParticles = pc.activeSize();
         }else{

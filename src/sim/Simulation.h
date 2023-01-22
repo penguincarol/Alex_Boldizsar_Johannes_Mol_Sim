@@ -176,7 +176,7 @@ namespace sim {
                 if(thermoEnable){thermostat.notify();}
 
                 iteration++;
-                if (iteration % 100 == 0) {
+                if (iteration % 1 == 0) {
                     ioWrapper.writeParticlesVTK(particleContainer, outputFolder, outputBaseName, iteration);
                 }
                 if (iteration % 100 == 0)

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Simulation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="../input/XMLFormat.xsd">
+    <OutputFile OutputFileName="nanoScaleFlow"/>
+    <EndTime>50.0</EndTime>
+    <TimeStepSize>0.0005</TimeStepSize>
+    <ForceCalculation>
+        <LennardJones/>
+        <EnableGrav X="0.0" Y="-0.8" Z="0.0"/>
+        <EnableLC>
+            <BoundaryBox>
+                <BoxSize X="30.0" Y="30.0" Z="12.0"/>
+                <Front>Periodic</Front>
+                <Rear>Periodic</Rear>
+                <Left>Outflow</Left>
+                <Right>Outflow</Right>
+                <Top>Periodic</Top>
+                <Bottom>Periodic</Bottom>
+            </BoundaryBox>
+            <CutoffRadius>2.5</CutoffRadius>
+        </EnableLC>
+        <EnableOMP/>
+        <EnableMem/>
+    </ForceCalculation>
+    <AverageBrownianMotion>0.0</AverageBrownianMotion>
+    <Dimensions>3</Dimensions>
+    <Thermostat>
+        <T_Init>40.0</T_Init>
+        <N_Term>10</N_Term>
+    </Thermostat>
+    <FileType>
+        <Input>
+            <ShapeList>
+                <Shape>
+                    <Particle Mass="-INF">
+                        <Position X="1.0" Y="1.0" Z="1.0"/>
+                        <Velocity X="0.0" Y="0.0" Z="0.0"/>
+                    </Particle>
+                </Shape>
+                <Shape>
+                    <Particle Mass="1000">
+                        <Position X="1.0" Y="1.0" Z="1.0"/>
+                        <Velocity X="1.0" Y="0.0" Z="0.0"/>
+                    </Particle>
+                </Shape>
+            </ShapeList>
+        </Input>
+    </FileType>
+</Simulation>

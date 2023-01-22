@@ -49,10 +49,11 @@ public:
                         unsigned int cT = default_n_term, unsigned int dimensions = default_dims,
                         double dT = default_delta_temp, double TInit = default_t_init,
                         bool thermoEnable = default_therm, ThermoMode tm = ThermoMode::normal)
-                        : pc(particleContainer), countThreshold(cT), dims(dimensions), thermoMode(tm) {
+                        : pc(particleContainer), countThreshold(cT), deltaTemp(dT), Ttarget(T_t), dims(dimensions), thermoMode(tm) {
         if(tm == ThermoMode::normal){
             numberFlowingParticles = pc.activeSize();
         }else{
+            numberFlowingParticles=0;
             pc.runOnActiveData([&](auto&,auto&,auto&,auto&,std::vector<double> &m,auto&,auto,auto&,auto&,
                                    std::unordered_map<unsigned long, unsigned long> &id_to_index, auto){
                 for(auto [_,a]: id_to_index){

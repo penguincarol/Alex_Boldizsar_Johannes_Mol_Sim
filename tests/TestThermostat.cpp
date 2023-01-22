@@ -162,8 +162,44 @@ TEST(Thermostat, pipeFeature){
     pipeWall.mass = -std::numeric_limits<double>::infinity();
     pipeWall.start_velocity = Eigen::Vector3d {0,0,0};
 
+    Body liquid;
+    liquid.shape = cuboid;
+    liquid.fixpoint = Eigen::Vector3d{4,0,0};
+    liquid.dimensions = Eigen::Vector3d {4,4,4};
+    liquid.distance = 1;
+    liquid.mass = 1;
+    liquid.start_velocity = Eigen::Vector3d {3,-1,0};
+
+
     std::list<Particle> buf{};
     ParticleGenerator::generateCuboid(pipeWall, 0, buf, 3, 1, 1);
+    ParticleGenerator::generateCuboid(liquid, 0, buf, 3, 1, 1);
+    std::vector<Particle> bufVec(buf.begin(), buf.end());
 
 
+    ParticleContainer pc(bufVec, {10,10,10}, 1, {}, true);
+
+    //T = sum_particles(m*<v,v>)/(#dims*#particles)
+    Thermostat thermostat(pc, 1, 2, 3, 100,0, true, ThermoMode::pipe);
+    pc.forAllParticles([&](Particle& p){
+        if(p.getM()>0){
+            ASSERT_DOUBLE_EQ(std::sqrt(3*3 + 1*1), p.getV().norm());
+        }else{
+            ASSERT_DOUBLE_EQ(p.getV().norm(), 0);
+        }
+    });
+    ASSERT_DOUBLE_EQ(thermostat.computeCurrentTemp(), (liquid.mass * 3 * 3)/(3));
+
+    thermostat.notify();
+    thermostat.notify();
+
+    ASSERT_DOUBLE_EQ(thermostat.computeCurrentTemp(), 1);
+    pc.forAllParticles([&](Particle& p){
+        if(p.getM()>0){
+            ASSERT_DOUBLE_EQ(-1, p.getV()[1]);
+            ASSERT_DOUBLE_EQ((p.getV()+Eigen::Vector3d {0,1,0}).norm(), std::sqrt(3.0));
+        }else{
+            ASSERT_DOUBLE_EQ(p.getV().norm(), 0);
+        }
+    });
 }

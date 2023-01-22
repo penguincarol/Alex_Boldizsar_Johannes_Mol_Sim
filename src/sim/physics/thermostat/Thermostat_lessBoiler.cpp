@@ -104,7 +104,7 @@ double Thermostat::computeCurrentTemp(){
                 sum += std::max(m[a], 0.) * (v[3*a]*v[3*a] + (v[3*a+1] - meanYDirection) * (v[3 * a + 1] - meanYDirection) + v[3 * a + 2] * v[3 * a + 2]);
             }
         });
-        return sum/static_cast<double>(numberFlowingParticles);
+        return sum/(dims*static_cast<double>(numberFlowingParticles));    //are we supposed to use dims=3 or 2 here?
     }
 }
 #endif

@@ -12,7 +12,7 @@ void Thermostat::getCooking(){
     double beta{computeBeta()};
 
     //v = beta*v for all active Particles
-    if(thermoMode == ThermoMode::normal){
+    if(thermoMode == ThermoMode::normalMode){
         pc.runOnActiveData([&](std::vector<double> &force,
                                std::vector<double> &oldForce,
                                std::vector<double> &x,
@@ -59,7 +59,7 @@ double Thermostat::computeCurrentTemp(){
 
     //T = sum_particles(m*<v,v>)/(#dims*#particles)
 
-    if(thermoMode == ThermoMode::normal){
+    if(thermoMode == ThermoMode::normalMode){
         double sum{0};
         //pc.forAllParticles([&sum](Particle& p ){sum += p.getM() * (p.getX().dot(p.getX()));});
         pc.runOnActiveData([&sum](std::vector<double> &force,

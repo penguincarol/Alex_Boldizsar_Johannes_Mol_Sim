@@ -13,6 +13,7 @@
 #include "sim/physics/position/types.h"
 #include "arg_names.h"
 #include "io/input/cli/CLIArgs.h"
+#include "sim/physics/thermostat/Thermostat.h"
 
 namespace io::input {
 

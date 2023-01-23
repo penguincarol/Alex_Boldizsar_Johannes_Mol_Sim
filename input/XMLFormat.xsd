@@ -35,6 +35,7 @@
         <xsd:attribute name="Z" type="positiveDouble_t" use="required"/>
     </xsd:complexType>
 
+
     <!-- I/O -->
 
     <!-- NOT REQUIRED
@@ -75,6 +76,7 @@
         <xsd:sequence>
             <xsd:element name="BoundaryBox" type="boundaries_t"/>
             <xsd:element name="CutoffRadius" type="nonNegativeDouble_t"/>
+            <xsd:element name="EnableProfiling" type="enProf_t" minOccurs="0"/>
         </xsd:sequence>
     </xsd:complexType>
 
@@ -84,6 +86,10 @@
         <xsd:sequence>
             <xsd:element name="EnableMemPull" type="enMemPull_t" minOccurs="0"/>
         </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="enProf_t">
+        <xsd:attribute name="NumBins" type="xsd:positiveInteger" use="required"/>
     </xsd:complexType>
 
     <xsd:complexType name="forceCalculation_t">

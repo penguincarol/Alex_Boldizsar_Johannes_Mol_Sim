@@ -5,7 +5,7 @@
     <EndTime>50.0</EndTime>
     <TimeStepSize>0.0005</TimeStepSize>
     <ForceCalculation>
-        <LennardJones/>
+        <LennardJones Epsilon="1.0" Sigma="1.0"/>
         <EnableGrav X="0.0" Y="-0.8" Z="0.0"/>
         <EnableLC>
             <BoundaryBox>
@@ -32,13 +32,13 @@
         <Input>
             <ShapeList>
                 <Shape>
-                    <Particle Mass="-INF">
+                    <Particle Mass="-INF" Epsilon="1" Sigma="1">
                         <Position X="1" Y="2.0" Z="2.0"/>
                         <Velocity X="0.0" Y="0.0" Z="0.0"/>
                     </Particle>
                 </Shape>
                 <Shape>
-                    <Particle Mass="1000">
+                    <Particle Mass="1000" Epsilon="1" Sigma="1">
                         <Position X="2.5" Y="2" Z="2"/>
                         <Velocity X="1.0" Y="0.0" Z="0.0"/>
                     </Particle>

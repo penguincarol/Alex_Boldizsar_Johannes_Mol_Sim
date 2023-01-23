@@ -779,6 +779,10 @@ public:
                 for (unsigned int x_2 = 0; x_2 < gridDimensions[2]; x_2++) {
                     auto &cell_indices_left = cells[cellIndexFromCellCoordinates({0, x_1, x_2})];
                     for (auto i: cell_indices_left) {
+
+                        ////Johnny trying to hotfix things:
+                        //if(m[i] < 0 || std::isinf(m[i]) || std::isinf(-m[i])) continue;
+
                         unsigned long g0 = gridDimensions[0] + 1;
                         unsigned long g1 = x_1 + 1
                                 - mMinor * (x_1 == gridDimensions[1] - 1) * static_cast<long>(gridDimensions[1])
@@ -799,6 +803,10 @@ public:
                 for (unsigned int x_2 = 0; x_2 < gridDimensions[2]; x_2++) {
                     auto &cell_indices_right = cells[cellIndexFromCellCoordinates({gridDimensions[0] - 1, x_1, x_2})];
                     for (auto i: cell_indices_right) {
+
+                        ////Johnny trying to hotfix things:
+                        //if(m[i] < 0 || std::isinf(m[i]) || std::isinf(-m[i])) continue;
+
                         unsigned long g0 = 0;
                         unsigned long g1 = x_1 + 1
                                            - mMinor * (x_1 == gridDimensions[1] - 1) * static_cast<long>(gridDimensions[1])
@@ -819,6 +827,10 @@ public:
                 for (unsigned int x_2 = 0; x_2 < gridDimensions[2]; x_2++) {
                     auto &cell_indices_bot = cells[cellIndexFromCellCoordinates({x_0, 0, x_2})];
                     for (auto i: cell_indices_bot) {
+
+                        ////Johnny trying to hotfix things:
+                        //if(m[i] < 0 || std::isinf(m[i]) || std::isinf(-m[i])) continue;
+
                         unsigned long g0 = x_0 + 1
                                            - mMinor * (x_0 == gridDimensions[0] - 1) * static_cast<long>(gridDimensions[0])
                                            - mMinor * (x_0 == gridDimensions[0] - 2) * (static_cast<long>(gridDimensions[0]) - 1)
@@ -839,6 +851,10 @@ public:
                 for (unsigned int x_2 = 0; x_2 < gridDimensions[2]; x_2++) {
                     auto &cell_indices_top = cells[cellIndexFromCellCoordinates({x_0, gridDimensions[1] - 1, x_2})];
                     for (auto i: cell_indices_top) {
+
+                        ////Johnny trying to hotfix things:
+                        //if(m[i] < 0 || std::isinf(m[i]) || std::isinf(-m[i])) continue;
+
                         unsigned long g0 = x_0 + 1
                                            - mMinor * (x_0 == gridDimensions[0] - 1) * static_cast<long>(gridDimensions[0])
                                            - mMinor * (x_0 == gridDimensions[0] - 2) * (static_cast<long>(gridDimensions[0]) - 1)
@@ -859,6 +875,10 @@ public:
                 for (unsigned int x_1 = 0; x_1 < gridDimensions[1]; x_1++) {
                     auto &cell_indices_front = cells[cellIndexFromCellCoordinates({x_0, x_1, 0})];
                     for (auto i: cell_indices_front) {
+
+                        ////Johnny trying to hotfix things:
+                        //if(m[i] < 0 || std::isinf(m[i]) || std::isinf(-m[i])) continue;
+
                         unsigned long g0 = x_0 + 1
                                            - mMinor * (x_0 == gridDimensions[0] - 1) * static_cast<long>(gridDimensions[0])
                                            - mMinor * (x_0 == gridDimensions[0] - 2) * (static_cast<long>(gridDimensions[0]) - 1)
@@ -879,6 +899,10 @@ public:
                 for (unsigned int x_1 = 0; x_1 < gridDimensions[1]; x_1++) {
                     auto &cell_indices_back = cells[cellIndexFromCellCoordinates({x_0, x_1, gridDimensions[2] - 1})];
                     for (auto i: cell_indices_back) {
+
+                        ////Johnny trying to hotfix things:
+                        //if(m[i] < 0 || std::isinf(m[i]) || std::isinf(-m[i])) continue;
+
                         unsigned long g0 = x_0 + 1
                                            - mMinor * (x_0 == gridDimensions[0] - 1) * static_cast<long>(gridDimensions[0])
                                            - mMinor * (x_0 == gridDimensions[0] - 2) * (static_cast<long>(gridDimensions[0]) - 1)

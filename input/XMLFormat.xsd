@@ -28,6 +28,13 @@
         </xsd:restriction>
     </xsd:simpleType>
 
+    <xsd:complexType name="thermomode_t">
+        <xsd:choice>
+            <xsd:element name="Normal"/>
+            <xsd:element name="Pipe"/>
+        </xsd:choice>
+    </xsd:complexType>
+
 
     <xsd:complexType name="posDVector_t">
         <xsd:attribute name="X" type="positiveDouble_t" use="required"/>
@@ -147,6 +154,7 @@
             <xsd:element name="N_Term" type="xsd:int"/>
             <xsd:element name="T_Target" type="xsd:double" minOccurs="0"/>
             <xsd:element name="Delta_T" type="xsd:double" minOccurs="0"/>
+            <xsd:element name="ThermoMode" type="thermomode_t" minOccurs=""/>
         </xsd:sequence>
     </xsd:complexType>
 

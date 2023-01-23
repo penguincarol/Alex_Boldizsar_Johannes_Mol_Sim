@@ -49,7 +49,7 @@ public:
                         unsigned int cT = default_n_term, unsigned int dimensions = default_dims,
                         double dT = default_delta_temp, double TInit = default_t_init,
                         bool thermoEnable = default_therm, ThermoMode tm = ThermoMode::normal)
-                        : pc(particleContainer), countThreshold(cT), dims(dimensions), deltaTemp(dT), Ttarget(T_t),  thermoMode(tm) {
+                        : pc(particleContainer), countThreshold(cT), dims(dimensions), Ttarget(T_t), deltaTemp(dT), thermoMode(tm) {
         if(tm == ThermoMode::normal){
             numberFlowingParticles = pc.activeSize();
         }else{

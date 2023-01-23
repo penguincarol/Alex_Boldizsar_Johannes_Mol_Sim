@@ -9,7 +9,7 @@
 #include <numeric>
 #include <string>
 
-enum class ThermoMode {normal, pipe};
+enum ThermoMode {normalMode, pipeMode};
 
 /**
  * @brief Thermostat is responsible for adjusting the temperature and determining whether temp-adjustment is wanted
@@ -49,9 +49,9 @@ public:
     explicit Thermostat(ParticleContainer& particleContainer, double T_t = default_t_target,
                         unsigned int cT = default_n_term, unsigned int dimensions = default_dims,
                         double dT = default_delta_temp, double TInit = default_t_init,
-                        bool thermoEnable = default_therm, ThermoMode tm = ThermoMode::normal)
+                        bool thermoEnable = default_therm, ThermoMode tm = ThermoMode::normalMode)
                         : pc(particleContainer), countThreshold(cT), dims(dimensions), Ttarget(T_t), deltaTemp(dT), thermoMode(tm) {
-        if(tm == ThermoMode::normal){
+        if(tm == ThermoMode::normalMode){
             numberFlowingParticles = pc.activeSize();
         }else{
             numberFlowingParticles=0;

@@ -90,6 +90,8 @@ namespace io::input {
                 entry<enableMembrane, bool>,
                 entry<enableMembranePull, bool>,
                 entry<enableOMP, bool>,
+                entry<enableProfiler, bool>,
+                entry<profilerNumBins, int>,
                 entry<gGrav0, double>,
                 entry<gGrav1, double>,
                 entry<gGrav2, double>,
@@ -114,7 +116,8 @@ namespace io::input {
                 entry<thermoTInit, double>,
                 entry<thermoNTerm, int>,
                 entry<thermoTTarget, double>,
-                entry<thermoDelta_t, double>
+                entry<thermoDelta_t, double>,
+                entry<thermoType_t, ThermoMode>
         >::type;
 
         using get = typename cond<current_entry::key != N, WRONG_ORDER_T, typename current_entry::value>::type;
@@ -130,7 +133,7 @@ namespace io::input {
         std::unordered_map<names, bool> valueLock;
 
         //data storage
-        using config_entry_t = std::variant<std::string, double, int, bool, force_t, pos_t, vel_t, bound_t, ERROR_T>;
+        using config_entry_t = std::variant<std::string, double, int, bool, force_t, pos_t, vel_t, bound_t, ERROR_T, ThermoMode>;
         std::unordered_map<names, config_entry_t> dataStorage;
 
     public:
@@ -247,6 +250,9 @@ namespace io::input {
             valueLock[gGrav1] = std::get<io::input::ArgEntry<double>>(io::input::cli_arg_map.at("-gGrav1")).isSet;
             valueLock[gGrav2] = std::get<io::input::ArgEntry<double>>(io::input::cli_arg_map.at("-gGrav2")).isSet;
             valueLock[simLastIteration] = std::get<io::input::ArgEntry<int>>(io::input::cli_arg_map.at("-lastIt")).isSet;
+            valueLock[enableProfiler] = false;
+            valueLock[profilerNumBins] = false;
+            valueLock[thermoType_t] = false;
         }
 
         /**
@@ -295,6 +301,9 @@ namespace io::input {
             if (!valueLock[gGrav1] && argMap.contains(gGrav1)) dataStorage[gGrav1] = std::stod(argMap.at(gGrav1));
             if (!valueLock[gGrav2] && argMap.contains(gGrav2)) dataStorage[gGrav2] = std::stod(argMap.at(gGrav2));
             if (!valueLock[simLastIteration] && argMap.contains(simLastIteration))dataStorage[simLastIteration] = std::stoi(argMap.at(simLastIteration));
+            if (!valueLock[enableProfiler] && argMap.contains(enableProfiler))dataStorage[enableProfiler] = std::stoi(argMap.at(enableProfiler))!=0;
+            if (!valueLock[profilerNumBins] && argMap.contains(profilerNumBins))dataStorage[profilerNumBins] = std::stoi(argMap.at(profilerNumBins));
+            if (!valueLock[thermoType_t] && argMap.contains(thermoType_t))dataStorage[thermoType_t] = ((std::stoi(argMap.at(thermoType_t)))==0)?ThermoMode::normalMode:ThermoMode::pipeMode;
         }
     };
 

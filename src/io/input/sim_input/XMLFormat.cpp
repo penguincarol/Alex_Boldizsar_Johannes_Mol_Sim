@@ -520,6 +520,36 @@ CutoffRadius (::std::unique_ptr< CutoffRadius_type > x)
   this->CutoffRadius_.set (std::move (x));
 }
 
+const enLC_t::EnableProfiling_optional& enLC_t::
+EnableProfiling () const
+{
+  return this->EnableProfiling_;
+}
+
+enLC_t::EnableProfiling_optional& enLC_t::
+EnableProfiling ()
+{
+  return this->EnableProfiling_;
+}
+
+void enLC_t::
+EnableProfiling (const EnableProfiling_type& x)
+{
+  this->EnableProfiling_.set (x);
+}
+
+void enLC_t::
+EnableProfiling (const EnableProfiling_optional& x)
+{
+  this->EnableProfiling_ = x;
+}
+
+void enLC_t::
+EnableProfiling (::std::unique_ptr< EnableProfiling_type > x)
+{
+  this->EnableProfiling_.set (std::move (x));
+}
+
 
 // enOMP_t
 // 
@@ -766,36 +796,6 @@ void forceCalculation_t::
 EnableMem (::std::unique_ptr< EnableMem_type > x)
 {
   this->EnableMem_.set (std::move (x));
-}
-
-const forceCalculation_t::EnableProfiling_optional& forceCalculation_t::
-EnableProfiling () const
-{
-  return this->EnableProfiling_;
-}
-
-forceCalculation_t::EnableProfiling_optional& forceCalculation_t::
-EnableProfiling ()
-{
-  return this->EnableProfiling_;
-}
-
-void forceCalculation_t::
-EnableProfiling (const EnableProfiling_type& x)
-{
-  this->EnableProfiling_.set (x);
-}
-
-void forceCalculation_t::
-EnableProfiling (const EnableProfiling_optional& x)
-{
-  this->EnableProfiling_ = x;
-}
-
-void forceCalculation_t::
-EnableProfiling (::std::unique_ptr< EnableProfiling_type > x)
-{
-  this->EnableProfiling_.set (std::move (x));
 }
 
 
@@ -3977,7 +3977,8 @@ enLC_t (const BoundaryBox_type& BoundaryBox,
         const CutoffRadius_type& CutoffRadius)
 : ::xml_schema::type (),
   BoundaryBox_ (BoundaryBox, this),
-  CutoffRadius_ (CutoffRadius, this)
+  CutoffRadius_ (CutoffRadius, this),
+  EnableProfiling_ (this)
 {
 }
 
@@ -3986,7 +3987,8 @@ enLC_t (::std::unique_ptr< BoundaryBox_type > BoundaryBox,
         const CutoffRadius_type& CutoffRadius)
 : ::xml_schema::type (),
   BoundaryBox_ (std::move (BoundaryBox), this),
-  CutoffRadius_ (CutoffRadius, this)
+  CutoffRadius_ (CutoffRadius, this),
+  EnableProfiling_ (this)
 {
 }
 
@@ -3996,7 +3998,8 @@ enLC_t (const enLC_t& x,
         ::xml_schema::container* c)
 : ::xml_schema::type (x, f, c),
   BoundaryBox_ (x.BoundaryBox_, f, this),
-  CutoffRadius_ (x.CutoffRadius_, f, this)
+  CutoffRadius_ (x.CutoffRadius_, f, this),
+  EnableProfiling_ (x.EnableProfiling_, f, this)
 {
 }
 
@@ -4006,7 +4009,8 @@ enLC_t (const ::xercesc::DOMElement& e,
         ::xml_schema::container* c)
 : ::xml_schema::type (e, f | ::xml_schema::flags::base, c),
   BoundaryBox_ (this),
-  CutoffRadius_ (this)
+  CutoffRadius_ (this),
+  EnableProfiling_ (this)
 {
   if ((f & ::xml_schema::flags::base) == 0)
   {
@@ -4053,6 +4057,20 @@ parse (::xsd::cxx::xml::dom::parser< char >& p,
       }
     }
 
+    // EnableProfiling
+    //
+    if (n.name () == "EnableProfiling" && n.namespace_ ().empty ())
+    {
+      ::std::unique_ptr< EnableProfiling_type > r (
+        EnableProfiling_traits::create (i, f, this));
+
+      if (!this->EnableProfiling_)
+      {
+        this->EnableProfiling_.set (::std::move (r));
+        continue;
+      }
+    }
+
     break;
   }
 
@@ -4086,6 +4104,7 @@ operator= (const enLC_t& x)
     static_cast< ::xml_schema::type& > (*this) = x;
     this->BoundaryBox_ = x.BoundaryBox_;
     this->CutoffRadius_ = x.CutoffRadius_;
+    this->EnableProfiling_ = x.EnableProfiling_;
   }
 
   return *this;
@@ -4382,8 +4401,7 @@ forceCalculation_t ()
   EnableGrav_ (this),
   EnableLC_ (this),
   EnableOMP_ (this),
-  EnableMem_ (this),
-  EnableProfiling_ (this)
+  EnableMem_ (this)
 {
 }
 
@@ -4397,8 +4415,7 @@ forceCalculation_t (const forceCalculation_t& x,
   EnableGrav_ (x.EnableGrav_, f, this),
   EnableLC_ (x.EnableLC_, f, this),
   EnableOMP_ (x.EnableOMP_, f, this),
-  EnableMem_ (x.EnableMem_, f, this),
-  EnableProfiling_ (x.EnableProfiling_, f, this)
+  EnableMem_ (x.EnableMem_, f, this)
 {
 }
 
@@ -4412,8 +4429,7 @@ forceCalculation_t (const ::xercesc::DOMElement& e,
   EnableGrav_ (this),
   EnableLC_ (this),
   EnableOMP_ (this),
-  EnableMem_ (this),
-  EnableProfiling_ (this)
+  EnableMem_ (this)
 {
   if ((f & ::xml_schema::flags::base) == 0)
   {
@@ -4516,20 +4532,6 @@ parse (::xsd::cxx::xml::dom::parser< char >& p,
       }
     }
 
-    // EnableProfiling
-    //
-    if (n.name () == "EnableProfiling" && n.namespace_ ().empty ())
-    {
-      ::std::unique_ptr< EnableProfiling_type > r (
-        EnableProfiling_traits::create (i, f, this));
-
-      if (!this->EnableProfiling_)
-      {
-        this->EnableProfiling_.set (::std::move (r));
-        continue;
-      }
-    }
-
     break;
   }
 }
@@ -4553,7 +4555,6 @@ operator= (const forceCalculation_t& x)
     this->EnableLC_ = x.EnableLC_;
     this->EnableOMP_ = x.EnableOMP_;
     this->EnableMem_ = x.EnableMem_;
-    this->EnableProfiling_ = x.EnableProfiling_;
   }
 
   return *this;
@@ -8789,6 +8790,18 @@ operator<< (::xercesc::DOMElement& e, const enLC_t& i)
 
     s << i.CutoffRadius ();
   }
+
+  // EnableProfiling
+  //
+  if (i.EnableProfiling ())
+  {
+    ::xercesc::DOMElement& s (
+      ::xsd::cxx::xml::dom::create_element (
+        "EnableProfiling",
+        e));
+
+    s << *i.EnableProfiling ();
+  }
 }
 
 void
@@ -8935,18 +8948,6 @@ operator<< (::xercesc::DOMElement& e, const forceCalculation_t& i)
         e));
 
     s << *i.EnableMem ();
-  }
-
-  // EnableProfiling
-  //
-  if (i.EnableProfiling ())
-  {
-    ::xercesc::DOMElement& s (
-      ::xsd::cxx::xml::dom::create_element (
-        "EnableProfiling",
-        e));
-
-    s << *i.EnableProfiling ();
   }
 }
 

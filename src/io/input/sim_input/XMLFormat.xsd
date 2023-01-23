@@ -76,6 +76,7 @@
         <xsd:sequence>
             <xsd:element name="BoundaryBox" type="boundaries_t"/>
             <xsd:element name="CutoffRadius" type="nonNegativeDouble_t"/>
+            <xsd:element name="EnableProfiling" type="enProf_t" minOccurs="0"/>
         </xsd:sequence>
     </xsd:complexType>
 
@@ -101,7 +102,6 @@
             <xsd:element name="EnableLC" type="enLC_t" minOccurs="0"/>
             <xsd:element name="EnableOMP" type="enOMP_t" minOccurs="0"/>
             <xsd:element name="EnableMem" type="enMem_t" minOccurs="0"/>
-            <xsd:element name="EnableProfiling" type="enProf_t" minOccurs="0"/>
         </xsd:sequence>
     </xsd:complexType>
 

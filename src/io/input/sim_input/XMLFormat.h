@@ -2698,6 +2698,82 @@ class enLC_t: public ::xml_schema::type
   //@}
 
   /**
+   * @name EnableProfiling
+   *
+   * @brief Accessor and modifier functions for the %EnableProfiling
+   * optional element.
+   */
+  //@{
+
+  /**
+   * @brief Element type.
+   */
+  typedef ::enProf_t EnableProfiling_type;
+
+  /**
+   * @brief Element optional container type.
+   */
+  typedef ::xsd::cxx::tree::optional< EnableProfiling_type > EnableProfiling_optional;
+
+  /**
+   * @brief Element traits type.
+   */
+  typedef ::xsd::cxx::tree::traits< EnableProfiling_type, char > EnableProfiling_traits;
+
+  /**
+   * @brief Return a read-only (constant) reference to the element
+   * container.
+   *
+   * @return A constant reference to the optional container.
+   */
+  const EnableProfiling_optional&
+  EnableProfiling () const;
+
+  /**
+   * @brief Return a read-write reference to the element container.
+   *
+   * @return A reference to the optional container.
+   */
+  EnableProfiling_optional&
+  EnableProfiling ();
+
+  /**
+   * @brief Set the element value.
+   *
+   * @param x A new value to set.
+   *
+   * This function makes a copy of its argument and sets it as
+   * the new value of the element.
+   */
+  void
+  EnableProfiling (const EnableProfiling_type& x);
+
+  /**
+   * @brief Set the element value.
+   *
+   * @param x An optional container with the new value to set.
+   *
+   * If the value is present in @a x then this function makes a copy 
+   * of this value and sets it as the new value of the element.
+   * Otherwise the element container is set the 'not present' state.
+   */
+  void
+  EnableProfiling (const EnableProfiling_optional& x);
+
+  /**
+   * @brief Set the element value without copying.
+   *
+   * @param p A new value to use.
+   *
+   * This function will try to use the passed value directly instead
+   * of making a copy.
+   */
+  void
+  EnableProfiling (::std::unique_ptr< EnableProfiling_type > p);
+
+  //@}
+
+  /**
    * @name Constructors
    */
   //@{
@@ -2792,6 +2868,7 @@ class enLC_t: public ::xml_schema::type
   protected:
   ::xsd::cxx::tree::one< BoundaryBox_type > BoundaryBox_;
   ::xsd::cxx::tree::one< CutoffRadius_type > CutoffRadius_;
+  EnableProfiling_optional EnableProfiling_;
 
   //@endcond
 };
@@ -3760,82 +3837,6 @@ class forceCalculation_t: public ::xml_schema::type
   //@}
 
   /**
-   * @name EnableProfiling
-   *
-   * @brief Accessor and modifier functions for the %EnableProfiling
-   * optional element.
-   */
-  //@{
-
-  /**
-   * @brief Element type.
-   */
-  typedef ::enProf_t EnableProfiling_type;
-
-  /**
-   * @brief Element optional container type.
-   */
-  typedef ::xsd::cxx::tree::optional< EnableProfiling_type > EnableProfiling_optional;
-
-  /**
-   * @brief Element traits type.
-   */
-  typedef ::xsd::cxx::tree::traits< EnableProfiling_type, char > EnableProfiling_traits;
-
-  /**
-   * @brief Return a read-only (constant) reference to the element
-   * container.
-   *
-   * @return A constant reference to the optional container.
-   */
-  const EnableProfiling_optional&
-  EnableProfiling () const;
-
-  /**
-   * @brief Return a read-write reference to the element container.
-   *
-   * @return A reference to the optional container.
-   */
-  EnableProfiling_optional&
-  EnableProfiling ();
-
-  /**
-   * @brief Set the element value.
-   *
-   * @param x A new value to set.
-   *
-   * This function makes a copy of its argument and sets it as
-   * the new value of the element.
-   */
-  void
-  EnableProfiling (const EnableProfiling_type& x);
-
-  /**
-   * @brief Set the element value.
-   *
-   * @param x An optional container with the new value to set.
-   *
-   * If the value is present in @a x then this function makes a copy 
-   * of this value and sets it as the new value of the element.
-   * Otherwise the element container is set the 'not present' state.
-   */
-  void
-  EnableProfiling (const EnableProfiling_optional& x);
-
-  /**
-   * @brief Set the element value without copying.
-   *
-   * @param p A new value to use.
-   *
-   * This function will try to use the passed value directly instead
-   * of making a copy.
-   */
-  void
-  EnableProfiling (::std::unique_ptr< EnableProfiling_type > p);
-
-  //@}
-
-  /**
    * @name Constructors
    */
   //@{
@@ -3922,7 +3923,6 @@ class forceCalculation_t: public ::xml_schema::type
   EnableLC_optional EnableLC_;
   EnableOMP_optional EnableOMP_;
   EnableMem_optional EnableMem_;
-  EnableProfiling_optional EnableProfiling_;
 
   //@endcond
 };

@@ -9,11 +9,11 @@
         <EnableGrav X="0.0" Y="-0.8" Z="0.0"/>
         <EnableLC>
             <BoundaryBox>
-                <BoxSize X="30.0" Y="30.0" Z="12.0"/>
+                <BoxSize X="10.0" Y="10.0" Z="10.0"/>
                 <Front>Periodic</Front>
                 <Rear>Periodic</Rear>
-                <Left>Outflow</Left>
-                <Right>Outflow</Right>
+                <Left>Periodic</Left>
+                <Right>Periodic</Right>
                 <Top>Periodic</Top>
                 <Bottom>Periodic</Bottom>
             </BoundaryBox>
@@ -33,13 +33,13 @@
             <ShapeList>
                 <Shape>
                     <Particle Mass="-INF">
-                        <Position X="1.0" Y="1.0" Z="1.0"/>
+                        <Position X="1" Y="2.0" Z="2.0"/>
                         <Velocity X="0.0" Y="0.0" Z="0.0"/>
                     </Particle>
                 </Shape>
                 <Shape>
                     <Particle Mass="1000">
-                        <Position X="1.0" Y="1.0" Z="1.0"/>
+                        <Position X="2.5" Y="2" Z="2"/>
                         <Velocity X="1.0" Y="0.0" Z="0.0"/>
                     </Particle>
                 </Shape>

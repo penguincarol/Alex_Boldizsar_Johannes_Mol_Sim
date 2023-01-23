@@ -12,8 +12,8 @@
                 <BoxSize X="10.0" Y="10.0" Z="10.0"/>
                 <Front>Periodic</Front>
                 <Rear>Periodic</Rear>
-                <Left>Reflecting</Left>
-                <Right>Reflecting</Right>
+                <Left>Outflow</Left>
+                <Right>Outflow</Right>
                 <Top>Periodic</Top>
                 <Bottom>Periodic</Bottom>
             </BoundaryBox>

@@ -150,7 +150,9 @@ namespace sim {
                            config.get<io::input::enableThermo>(), config.get<io::input::thermoDelta_t>(),
                            config.get<io::input::thermoNTerm>(), config.get<io::input::thermoTTarget>(),
                            config.get<io::input::thermoTInit>(), config.get<io::input::dimensions>(),
-                           config.get<io::input::thermoType_t>(), config.get<io::input::enableProfiler>(), config.get<io::input::profilerNumBins>()) {
+                           config.get<io::input::thermoType_t>(),
+                                   config.get<io::input::enableProfiler>(),
+                                           config.get<io::input::profilerNumBins>()) {
             io::output::loggers::simulation->trace("Sim constructor short used");
         }
 

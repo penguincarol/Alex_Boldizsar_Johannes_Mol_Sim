@@ -208,6 +208,9 @@ namespace io::input {
             dataStorage[gGrav1] = std::get<io::input::ArgEntry<double>>(io::input::cli_arg_map.at("-gGrav1")).value;
             dataStorage[gGrav2] = std::get<io::input::ArgEntry<double>>(io::input::cli_arg_map.at("-gGrav2")).value;
             dataStorage[simLastIteration] = std::get<io::input::ArgEntry<int>>(io::input::cli_arg_map.at("-lastIt")).value;
+            dataStorage[enableProfiler] = false;
+            dataStorage[profilerNumBins] = 0;
+            dataStorage[thermoType_t] = ThermoMode::normalMode;
 
             valueLock[outputFilePath] = std::get<io::input::ArgEntry<std::string>>(cli_arg_map.at("-of")).isSet;
             valueLock[outputFileName] = std::get<io::input::ArgEntry<std::string>>(cli_arg_map.at("-o")).isSet;

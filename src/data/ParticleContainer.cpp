@@ -348,13 +348,13 @@ void ParticleContainer::move(unsigned long indexSrc, unsigned indexDst, unsigned
 }
 
 void ParticleContainer::deactivateParticles(std::unordered_set<unsigned long> &indices) {
+    activeParticles.erase(std::remove_if(activeParticles.begin(), activeParticles.end(), [&](const auto &id) {
+        return indices.contains(id_to_index[id]);
+    }), activeParticles.end());
     for(unsigned long ind : indices) {
         id_to_index.erase(index_to_id[ind]);
         index_to_id.erase(ind);
     }
-    activeParticles.erase(std::remove_if(activeParticles.begin(), activeParticles.end(), [&](const auto &id) {
-        return indices.contains(id_to_index[id]);
-    }), activeParticles.end());
 }
 
 #pragma endregion

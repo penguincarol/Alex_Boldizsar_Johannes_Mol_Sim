@@ -630,11 +630,13 @@ class enLC_t;
 class enOMP_t;
 class enMemPull_t;
 class enMem_t;
+class enProf_t;
 class forceCalculation_t;
 class positionCalculation_t;
 class velocityCalculation_t;
 class boundaryBehavior_t;
 class boundaries_t;
+class thermomode_t;
 class thermostat_t;
 class logLevel_t;
 class fileBenchmark_t;
@@ -3153,6 +3155,147 @@ class enMem_t: public ::xml_schema::type
 };
 
 /**
+ * @brief Class corresponding to the %enProf_t schema type.
+ *
+ * @nosubgrouping
+ */
+class enProf_t: public ::xml_schema::type
+{
+  public:
+  /**
+   * @name NumBins
+   *
+   * @brief Accessor and modifier functions for the %NumBins
+   * required attribute.
+   */
+  //@{
+
+  /**
+   * @brief Attribute type.
+   */
+  typedef ::xml_schema::positive_integer NumBins_type;
+
+  /**
+   * @brief Attribute traits type.
+   */
+  typedef ::xsd::cxx::tree::traits< NumBins_type, char > NumBins_traits;
+
+  /**
+   * @brief Return a read-only (constant) reference to the attribute.
+   *
+   * @return A constant reference to the attribute.
+   */
+  const NumBins_type&
+  NumBins () const;
+
+  /**
+   * @brief Return a read-write reference to the attribute.
+   *
+   * @return A reference to the attribute.
+   */
+  NumBins_type&
+  NumBins ();
+
+  /**
+   * @brief Set the attribute value.
+   *
+   * @param x A new value to set.
+   *
+   * This function makes a copy of its argument and sets it as
+   * the new value of the attribute.
+   */
+  void
+  NumBins (const NumBins_type& x);
+
+  //@}
+
+  /**
+   * @name Constructors
+   */
+  //@{
+
+  /**
+   * @brief Create an instance from the ultimate base and
+   * initializers for required elements and attributes.
+   */
+  enProf_t (const NumBins_type&);
+
+  /**
+   * @brief Create an instance from a DOM element.
+   *
+   * @param e A DOM element to extract the data from.
+   * @param f Flags to create the new instance with.
+   * @param c A pointer to the object that will contain the new
+   * instance.
+   */
+  enProf_t (const ::xercesc::DOMElement& e,
+            ::xml_schema::flags f = 0,
+            ::xml_schema::container* c = 0);
+
+  /**
+   * @brief Copy constructor.
+   *
+   * @param x An instance to make a copy of.
+   * @param f Flags to create the copy with.
+   * @param c A pointer to the object that will contain the copy.
+   *
+   * For polymorphic object models use the @c _clone function instead.
+   */
+  enProf_t (const enProf_t& x,
+            ::xml_schema::flags f = 0,
+            ::xml_schema::container* c = 0);
+
+  /**
+   * @brief Copy the instance polymorphically.
+   *
+   * @param f Flags to create the copy with.
+   * @param c A pointer to the object that will contain the copy.
+   * @return A pointer to the dynamically allocated copy.
+   *
+   * This function ensures that the dynamic type of the instance is
+   * used for copying and should be used for polymorphic object
+   * models instead of the copy constructor.
+   */
+  virtual enProf_t*
+  _clone (::xml_schema::flags f = 0,
+          ::xml_schema::container* c = 0) const;
+
+  /**
+   * @brief Copy assignment operator.
+   *
+   * @param x An instance to make a copy of.
+   * @return A reference to itself.
+   *
+   * For polymorphic object models use the @c _clone function instead.
+   */
+  enProf_t&
+  operator= (const enProf_t& x);
+
+  //@}
+
+  /**
+   * @brief Destructor.
+   */
+  virtual 
+  ~enProf_t ();
+
+  // Implementation.
+  //
+
+  //@cond
+
+  protected:
+  void
+  parse (::xsd::cxx::xml::dom::parser< char >&,
+         ::xml_schema::flags);
+
+  protected:
+  ::xsd::cxx::tree::one< NumBins_type > NumBins_;
+
+  //@endcond
+};
+
+/**
  * @brief Class corresponding to the %forceCalculation_t schema type.
  *
  * @nosubgrouping
@@ -3617,6 +3760,82 @@ class forceCalculation_t: public ::xml_schema::type
   //@}
 
   /**
+   * @name EnableProfiling
+   *
+   * @brief Accessor and modifier functions for the %EnableProfiling
+   * optional element.
+   */
+  //@{
+
+  /**
+   * @brief Element type.
+   */
+  typedef ::enProf_t EnableProfiling_type;
+
+  /**
+   * @brief Element optional container type.
+   */
+  typedef ::xsd::cxx::tree::optional< EnableProfiling_type > EnableProfiling_optional;
+
+  /**
+   * @brief Element traits type.
+   */
+  typedef ::xsd::cxx::tree::traits< EnableProfiling_type, char > EnableProfiling_traits;
+
+  /**
+   * @brief Return a read-only (constant) reference to the element
+   * container.
+   *
+   * @return A constant reference to the optional container.
+   */
+  const EnableProfiling_optional&
+  EnableProfiling () const;
+
+  /**
+   * @brief Return a read-write reference to the element container.
+   *
+   * @return A reference to the optional container.
+   */
+  EnableProfiling_optional&
+  EnableProfiling ();
+
+  /**
+   * @brief Set the element value.
+   *
+   * @param x A new value to set.
+   *
+   * This function makes a copy of its argument and sets it as
+   * the new value of the element.
+   */
+  void
+  EnableProfiling (const EnableProfiling_type& x);
+
+  /**
+   * @brief Set the element value.
+   *
+   * @param x An optional container with the new value to set.
+   *
+   * If the value is present in @a x then this function makes a copy 
+   * of this value and sets it as the new value of the element.
+   * Otherwise the element container is set the 'not present' state.
+   */
+  void
+  EnableProfiling (const EnableProfiling_optional& x);
+
+  /**
+   * @brief Set the element value without copying.
+   *
+   * @param p A new value to use.
+   *
+   * This function will try to use the passed value directly instead
+   * of making a copy.
+   */
+  void
+  EnableProfiling (::std::unique_ptr< EnableProfiling_type > p);
+
+  //@}
+
+  /**
    * @name Constructors
    */
   //@{
@@ -3703,6 +3922,7 @@ class forceCalculation_t: public ::xml_schema::type
   EnableLC_optional EnableLC_;
   EnableOMP_optional EnableOMP_;
   EnableMem_optional EnableMem_;
+  EnableProfiling_optional EnableProfiling_;
 
   //@endcond
 };
@@ -4672,6 +4892,151 @@ class boundaries_t: public ::xml_schema::type
 };
 
 /**
+ * @brief Enumeration class corresponding to the %thermomode_t
+ * schema type.
+ */
+class thermomode_t: public ::xml_schema::string
+{
+  public:
+
+  /**
+   * @brief Underlying enum type.
+   */
+  enum value
+  {
+    Normal,
+    Pipe
+  };
+
+  /**
+   * @brief Create an instance from the underlying enum value.
+   *
+   * @param v A enum value.
+   */
+  thermomode_t (value v);
+
+  /**
+   * @brief Create an instance from a C string.
+   *
+   * @param v A string value.
+   */
+  thermomode_t (const char* v);
+
+  /**
+   * @brief Create an instance from a string.
+   *
+   * @param v A string value.
+   */
+  thermomode_t (const ::std::string& v);
+
+  /**
+   * @brief Create an instance from the base value.
+   *
+   * @param v A base value.
+   */
+  thermomode_t (const ::xml_schema::string& v);
+
+  /**
+   * @brief Create an instance from a DOM element.
+   *
+   * @param e A DOM element to extract the data from.
+   * @param f Flags to create the new instance with.
+   * @param c A pointer to the object that will contain the new
+   * instance.
+   */
+  thermomode_t (const ::xercesc::DOMElement& e,
+                ::xml_schema::flags f = 0,
+                ::xml_schema::container* c = 0);
+
+  /**
+   * @brief Create an instance from a DOM attribute.
+   *
+   * @param a A DOM attribute to extract the data from.
+   * @param f Flags to create the new instance with.
+   * @param c A pointer to the object that will contain the new
+   * instance.
+   */
+  thermomode_t (const ::xercesc::DOMAttr& a,
+                ::xml_schema::flags f = 0,
+                ::xml_schema::container* c = 0);
+
+  /**
+   * @brief Create an instance from a string fragment.
+   *
+   * @param s A string fragment to extract the data from.
+   * @param e A pointer to DOM element containing the string fragment.
+   * @param f Flags to create the new instance with.
+   * @param c A pointer to the object that will contain the new
+   * instance.
+   */
+  thermomode_t (const ::std::string& s,
+                const ::xercesc::DOMElement* e,
+                ::xml_schema::flags f = 0,
+                ::xml_schema::container* c = 0);
+
+  /**
+   * @brief Copy constructor.
+   *
+   * @param x An instance to make a copy of.
+   * @param f Flags to create the copy with.
+   * @param c A pointer to the object that will contain the copy.
+   *
+   * For polymorphic object models use the @c _clone function instead.
+   */
+  thermomode_t (const thermomode_t& x,
+                ::xml_schema::flags f = 0,
+                ::xml_schema::container* c = 0);
+
+  /**
+   * @brief Copy the instance polymorphically.
+   *
+   * @param f Flags to create the copy with.
+   * @param c A pointer to the object that will contain the copy.
+   * @return A pointer to the dynamically allocated copy.
+   *
+   * This function ensures that the dynamic type of the instance is
+   * used for copying and should be used for polymorphic object
+   * models instead of the copy constructor.
+   */
+  virtual thermomode_t*
+  _clone (::xml_schema::flags f = 0,
+          ::xml_schema::container* c = 0) const;
+
+  /**
+   * @brief Assign the underlying enum value.
+   *
+   * @param v A enum value.
+   * @return A reference to the instance.
+   */
+  thermomode_t&
+  operator= (value v);
+
+  /**
+   * @brief Implicit conversion operator to the underlying
+   * enum value.
+   *
+   * @return A enum value.
+   */
+  virtual
+  operator value () const
+  {
+    return _xsd_thermomode_t_convert ();
+  }
+
+  //@cond
+
+  protected:
+  value
+  _xsd_thermomode_t_convert () const;
+
+  public:
+  static const char* const _xsd_thermomode_t_literals_[2];
+  static const value _xsd_thermomode_t_indexes_[2];
+
+  //@endcond
+};
+
+/**
  * @brief Class corresponding to the %thermostat_t schema type.
  *
  * @nosubgrouping
@@ -4904,6 +5269,82 @@ class thermostat_t: public ::xml_schema::type
   //@}
 
   /**
+   * @name ThermoMode
+   *
+   * @brief Accessor and modifier functions for the %ThermoMode
+   * optional element.
+   */
+  //@{
+
+  /**
+   * @brief Element type.
+   */
+  typedef ::thermomode_t ThermoMode_type;
+
+  /**
+   * @brief Element optional container type.
+   */
+  typedef ::xsd::cxx::tree::optional< ThermoMode_type > ThermoMode_optional;
+
+  /**
+   * @brief Element traits type.
+   */
+  typedef ::xsd::cxx::tree::traits< ThermoMode_type, char > ThermoMode_traits;
+
+  /**
+   * @brief Return a read-only (constant) reference to the element
+   * container.
+   *
+   * @return A constant reference to the optional container.
+   */
+  const ThermoMode_optional&
+  ThermoMode () const;
+
+  /**
+   * @brief Return a read-write reference to the element container.
+   *
+   * @return A reference to the optional container.
+   */
+  ThermoMode_optional&
+  ThermoMode ();
+
+  /**
+   * @brief Set the element value.
+   *
+   * @param x A new value to set.
+   *
+   * This function makes a copy of its argument and sets it as
+   * the new value of the element.
+   */
+  void
+  ThermoMode (const ThermoMode_type& x);
+
+  /**
+   * @brief Set the element value.
+   *
+   * @param x An optional container with the new value to set.
+   *
+   * If the value is present in @a x then this function makes a copy 
+   * of this value and sets it as the new value of the element.
+   * Otherwise the element container is set the 'not present' state.
+   */
+  void
+  ThermoMode (const ThermoMode_optional& x);
+
+  /**
+   * @brief Set the element value without copying.
+   *
+   * @param p A new value to use.
+   *
+   * This function will try to use the passed value directly instead
+   * of making a copy.
+   */
+  void
+  ThermoMode (::std::unique_ptr< ThermoMode_type > p);
+
+  //@}
+
+  /**
    * @name Constructors
    */
   //@{
@@ -4989,6 +5430,7 @@ class thermostat_t: public ::xml_schema::type
   ::xsd::cxx::tree::one< N_Term_type > N_Term_;
   T_Target_optional T_Target_;
   Delta_T_optional Delta_T_;
+  ThermoMode_optional ThermoMode_;
 
   //@endcond
 };
@@ -12014,6 +12456,9 @@ void
 operator<< (::xercesc::DOMElement&, const enMem_t&);
 
 void
+operator<< (::xercesc::DOMElement&, const enProf_t&);
+
+void
 operator<< (::xercesc::DOMElement&, const forceCalculation_t&);
 
 void
@@ -12048,6 +12493,16 @@ operator<< (::xml_schema::list_stream&,
 
 void
 operator<< (::xercesc::DOMElement&, const boundaries_t&);
+
+void
+operator<< (::xercesc::DOMElement&, const thermomode_t&);
+
+void
+operator<< (::xercesc::DOMAttr&, const thermomode_t&);
+
+void
+operator<< (::xml_schema::list_stream&,
+            const thermomode_t&);
 
 void
 operator<< (::xercesc::DOMElement&, const thermostat_t&);

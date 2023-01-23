@@ -28,20 +28,12 @@
         </xsd:restriction>
     </xsd:simpleType>
 
-    <xsd:complexType name="thermomode_t">
-        <xsd:choice>
-            <xsd:element name="Normal"/>
-            <xsd:element name="Pipe"/>
-        </xsd:choice>
-    </xsd:complexType>
-
 
     <xsd:complexType name="posDVector_t">
         <xsd:attribute name="X" type="positiveDouble_t" use="required"/>
         <xsd:attribute name="Y" type="positiveDouble_t" use="required"/>
         <xsd:attribute name="Z" type="positiveDouble_t" use="required"/>
     </xsd:complexType>
-
 
     <!-- I/O -->
 
@@ -148,13 +140,20 @@
     </xsd:complexType>
 
     <!-- Thermostat -->
+    <xsd:simpleType  name="thermomode_t">
+        <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="Normal"/>
+            <xsd:enumeration value="Pipe"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
     <xsd:complexType name="thermostat_t">
         <xsd:sequence>
             <xsd:element name="T_Init" type="xsd:double"/>
             <xsd:element name="N_Term" type="xsd:int"/>
             <xsd:element name="T_Target" type="xsd:double" minOccurs="0"/>
             <xsd:element name="Delta_T" type="xsd:double" minOccurs="0"/>
-            <xsd:element name="ThermoMode" type="thermomode_t" minOccurs=""/>
+            <xsd:element name="ThermoMode" type="thermomode_t" minOccurs="0"/>
         </xsd:sequence>
     </xsd:complexType>
 

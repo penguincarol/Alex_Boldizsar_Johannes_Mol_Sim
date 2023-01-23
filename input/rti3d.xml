@@ -5,7 +5,7 @@
     <EndTime>2.5</EndTime>
     <TimeStepSize>0.0005</TimeStepSize>
     <ForceCalculation>
-        <LennardJones Epsilon="1.0" Sigma="1.0"/>
+          <LennardJones Epsilon="1.0" Sigma="1.0"/>
         <EnableLC>
             <BoundaryBox>
                 <BoxSize X="60.0" Y="60.0" Z="60.0"/>

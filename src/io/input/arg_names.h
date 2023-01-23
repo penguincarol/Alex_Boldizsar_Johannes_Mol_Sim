@@ -31,6 +31,8 @@ namespace io::input {
         enableMembrane,
         enableMembranePull,
         enableOMP,
+        enableProfiler,
+        profilerNumBins,
         gGrav0,
         gGrav1,
         gGrav2,
@@ -61,6 +63,7 @@ namespace io::input {
         thermoNTerm,
         thermoTTarget,
         thermoDelta_t,
+        thermoType_t,
         //MISC
         names_count [[maybe_unused]]
     };

@@ -3,7 +3,7 @@
 //
 
 #pragma once
-
+#include "../src/sim/physics/thermostat/Thermostat.h"
 #include <limits>
 
 constexpr double default_delta_t{1.0};
@@ -28,6 +28,8 @@ constexpr double default_bound_x2{100.0};
 constexpr double default_r_cutoff{5.0};
 constexpr int default_log_level{2};
 constexpr int default_therm{0}; // either 1 or 0
+constexpr auto default_thermo_mode{"normal"};
+constexpr unsigned long numBins{5};
 constexpr double default_t_init{20.0};
 constexpr int default_n_term{0};
 constexpr double default_t_target{20.0};

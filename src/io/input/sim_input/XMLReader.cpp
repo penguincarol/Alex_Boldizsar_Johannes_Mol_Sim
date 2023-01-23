@@ -2,7 +2,9 @@
 // Created by jan on 11/29/22.
 //
 
+#pragma once
 #include "io/input/sim_input/XMLReader.h"
+#include "../src/sim/physics/thermostat/Thermostat.h"
 
 
 namespace io::input {
@@ -120,6 +122,7 @@ namespace io::input {
                 setInMapND(thermoNTerm, std::to_string(t.get().N_Term()));
                 setInMap(thermoTTarget, t.get().T_Target().present(), std::to_string(t.get().T_Init()), [&]()->std::string{return std::to_string(t.get().T_Target().get());});
                 setInMap(thermoDelta_t, t.get().Delta_T().present(), std::to_string(default_delta_temp), [&]()->std::string{return std::to_string(t.get().Delta_T().get());});
+                setInMap(thermoType_t, t.get().ThermoMode().present(), default_thermo_mode, [&]()->std::string{return std::to_string(t.get().ThermoMode().get());});
             } else {
                 setInMapND(enableThermo, std::to_string(0));
             }

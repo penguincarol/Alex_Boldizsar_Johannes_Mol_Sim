@@ -7,6 +7,7 @@
 
 #include <vector>
 #include <numeric>
+#include <string>
 
 enum class ThermoMode {normal, pipe};
 

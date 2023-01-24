@@ -70,11 +70,11 @@ namespace sim::physics::bounds {
                                                                std::vector<double> &eps,
                                                                std::vector<double> &sig){
                 auto tasks = this->particleContainer.template generateHaloBorderTasks<S>();
+                auto retFun = this->forceHandler.getFastForceRetFunction();
                 double* f = force.data();
                 size_t size = force.size();
-                static const double rt3_2 = std::pow(2, 1 / 3);
 
-                #pragma omp parallel for default(none) shared(tasks, x, t, eps, sig, size) reduction(+:f[:size]) firstprivate(rt3_2)
+                #pragma omp parallel for default(none) shared(tasks, x, t, eps,m,force, sig, size, retFun) reduction(+:f[:size])
                 for(size_t tid = 0; tid < static_cast<size_t>(omp_get_max_threads()); tid++) {
                     for(size_t hcId = 0; hcId < tasks[tid].size(); hcId++) {
                         auto hCell = std::get<0>(tasks[tid][hcId][0]);
@@ -94,31 +94,14 @@ namespace sim::physics::bounds {
 
                                 for (size_t indexB = 0; indexB < bCell->size(); indexB++) {
                                     unsigned long indexI = (*bCell)[indexB];
-                                    double sigma = (sig[indexI] + sig[indexJ]) / 2;
-                                    double sigma2 = sigma * sigma;
-                                    double sigma6 = sigma2 * sigma2 * sigma2;
-                                    double epsilon = std::sqrt(eps[indexI] * eps[indexJ]);
-                                    double d0 = x[indexI * 3 + 0] - x0;
-                                    double d1 = x[indexI * 3 + 1] - x1;
-                                    double d2 = x[indexI * 3 + 2] - x2;
-                                    double dsqr = d0 * d0 + d1 * d1 + d2 * d2;
-                                    //check if is membrane -> need to skip attractive forces
-                                    if (t[indexI] & 0x80000000 || t[indexJ] & 0x80000000) {
-                                        if (dsqr >= rt3_2 * sigma2) continue;
-                                    }
+                                    auto new_force = retFun(force,x,eps,sig,m,t,indexI,x0,x1,x2,eps[indexJ],sig[indexJ],0,t[indexJ]);
 
-                                    double l2NInvSquare = 1 / (dsqr);
-                                    double fac0 = 24 * epsilon * l2NInvSquare;
-                                    double l2NInvPow6 = l2NInvSquare * l2NInvSquare * l2NInvSquare;
-                                    double fac1_sum1 = sigma6 * l2NInvPow6;
-                                    double fac1 = (fac1_sum1) - 2 * (fac1_sum1 * fac1_sum1);
-
-                                    f[indexI * 3 + 0] -= fac0 * fac1 * d0;
-                                    f[indexI * 3 + 1] -= fac0 * fac1 * d1;
-                                    f[indexI * 3 + 2] -= fac0 * fac1 * d2;
-                                    f[indexJ * 3 + 0] += fac0 * fac1 * d0;
-                                    f[indexJ * 3 + 1] += fac0 * fac1 * d1;
-                                    f[indexJ * 3 + 2] += fac0 * fac1 * d2;
+                                    f[indexI * 3 + 0] -= new_force[0];
+                                    f[indexI * 3 + 1] -= new_force[1];
+                                    f[indexI * 3 + 2] -= new_force[2];
+                                    f[indexJ * 3 + 0] += new_force[0];
+                                    f[indexJ * 3 + 1] += new_force[1];
+                                    f[indexJ * 3 + 2] += new_force[2];
                                 }
                             }
                         }

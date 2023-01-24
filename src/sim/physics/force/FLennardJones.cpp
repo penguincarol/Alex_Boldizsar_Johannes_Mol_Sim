@@ -166,9 +166,9 @@ namespace sim::physics::force {
         fac1_sum1 = sigma6 * l2NInvPow6;
         fac1 = (fac1_sum1) - 2 * (fac1_sum1 * fac1_sum1);
 
-        return {-fac0 * fac1 * d0,
-                -fac0 * fac1 * d1,
-                -fac0 * fac1 * d2};
+        return {fac0 * fac1 * d0,
+                fac0 * fac1 * d1,
+                fac0 * fac1 * d2};
     }
 
     fpair_fun_ret_t FLennardJones::getFastForceRetFunction() {

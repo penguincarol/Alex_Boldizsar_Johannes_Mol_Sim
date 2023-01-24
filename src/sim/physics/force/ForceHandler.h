@@ -17,11 +17,8 @@
 #include "FLennardJonesOMP.h"
 #include "FLennardJonesCellsOMP.h"
 #include "FGlobalGravity.h"
-#include "FGlobalGravityOMP.h"
 #include "FMembrane.h"
-#include "FMembraneOMP.h"
 #include "FMembranePull.h"
-#include "FMembranePullOMP.h"
 
 namespace sim::physics::force {
     /**
@@ -52,12 +49,9 @@ namespace sim::physics::force {
                 exit(-1);
             }
             //generate secondary FFs
-            if (eGrav && !eOMP) secondaryFF.emplace_back(std::make_shared<FGlobalGravity>(st, et, dt, eps, sig, gG0, gG1, gG2,pc));
-            if (eGrav &&  eOMP) secondaryFF.emplace_back(std::make_shared<FGlobalGravityOMP>(st, et, dt, eps, sig, gG0, gG1, gG2,pc));
-            if (eMem && !eOMP) secondaryFF.emplace_back(std::make_shared<FMembrane>(st, et, dt, eps, sig, pc));
-            if (eMem &&  eOMP) secondaryFF.emplace_back(std::make_shared<FMembraneOMP>(st, et, dt, eps, sig, pc));
-            if (eMem && eMemPull && !eOMP) secondaryFF.emplace_back(std::make_shared<FMembranePull>(st, et, dt, eps, sig, pc));
-            if (eMem && eMemPull &&  eOMP) secondaryFF.emplace_back(std::make_shared<FMembranePullOMP>(st, et, dt, eps, sig, pc));
+            if (eGrav) secondaryFF.emplace_back(std::make_shared<FGlobalGravity>(st, et, dt, eps, sig, gG0, gG1, gG2,pc));
+            if (eMem) secondaryFF.emplace_back(std::make_shared<FMembrane>(st, et, dt, eps, sig, pc));
+            if (eMem && eMemPull) secondaryFF.emplace_back(std::make_shared<FMembranePull>(st, et, dt, eps, sig, pc));
         }
 
         /**

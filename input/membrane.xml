@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Simulation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="../input/XMLFormat.xsd">
+    <OutputFile OutputFileName="membrane"/>
+    <EndTime>500.0</EndTime>
+    <TimeStepSize>0.01</TimeStepSize>
+    <ForceCalculation>
+        <LennardJones Epsilon="1.0" Sigma="1.0"/>
+        <EnableGrav X="0.0" Y="0.0" Z="-0.001"/>
+        <EnableLC>
+            <BoundaryBox>
+                <BoxSize X="148.0" Y="148.0" Z="148.0"/>
+                <Front>Reflecting</Front>
+                <Rear>Reflecting</Rear>
+                <Left>Reflecting</Left>
+                <Right>Reflecting</Right>
+                <Top>Reflecting</Top>
+                <Bottom>Reflecting</Bottom>
+            </BoundaryBox>
+            <CutoffRadius>4.0</CutoffRadius>
+        </EnableLC>
+        <EnableOMP/>
+        <EnableMem>
+            <EnableMemPull/>
+        </EnableMem>
+    </ForceCalculation>
+    <Dimensions>3</Dimensions>
+    <FileType>
+        <Input>
+            <ShapeList>
+                <Shape>
+                    <Membrane Spacing="2.2" Mass="1.0" SpringStrength="300.0" DesiredDistance="2.2" Epsilon="1.0" Sigma="1.0">
+                        <Position X="15.0" Y="15.0" Z="1.5"/>
+                        <Velocity X="0.0" Y="0.0" Z="0.0"/>
+                        <Dimensions X="50" Y="50" Z="1"/>
+                        <Pull EndTimePull="150.0">
+                            <PullForce X="0.0" Y="0.0" Z="0.8"/>
+                            <PullIndices>
+                                <Index I="17" J="24"/>
+                                <Index I="17" J="25"/>
+                                <Index I="18" J="24"/>
+                                <Index I="18" J="25"/>
+                            </PullIndices>
+                        </Pull>
+                    </Membrane>
+                </Shape>
+            </ShapeList>
+        </Input>
+    </FileType>
+</Simulation>

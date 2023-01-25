@@ -19,21 +19,13 @@ void sim::physics::force::FGlobalGravity::operator()() {
                                    std::unordered_map<unsigned long, unsigned long> &id_to_index,
                                    std::vector<unsigned long> &activeParticles) {
         for (auto [_,index] : id_to_index) {
-            force[index*3 + 0] += m[index] * gGrav0;
-            force[index*3 + 1] += m[index] * gGrav1;
-            force[index*3 + 2] += m[index] * gGrav2;
+            force[index*3 + 0] += std::max(m[index], 0.0) * gGrav0;
+            force[index*3 + 1] += std::max(m[index], 0.0) * gGrav1;
+            force[index*3 + 2] += std::max(m[index], 0.0) * gGrav2;
         }
     });
 }
 
-sim::physics::force::fpair_fun_t sim::physics::force::FGlobalGravity::getFastForceFunction() {
-    throw std::runtime_error{"This should not be called. Not supported."};
-}
-
 void sim::physics::force::FGlobalGravity::setParticleContainer(ParticleContainer &pc) {
     particleContainer = pc;
-}
-
-sim::physics::force::pair_fun_t &sim::physics::force::FGlobalGravity::getForceFunction() {
-    throw std::runtime_error{"This should not be called. Not supported."};
 }

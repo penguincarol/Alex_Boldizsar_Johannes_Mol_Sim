@@ -18,6 +18,7 @@ TEST(ParticleContainer, ParticleContainer_Empty) {
  * */
 TEST(ParticleContainer, ParticleContainer_Count) {
     std::vector<Particle> vec{Particle{0}, Particle{1}, Particle{2}, Particle{3}};
+    for(auto i=0; i < vec.size(); i++){vec[i].setID(i);}
     ASSERT_EQ(vec.size(), 4);
 
     ParticleContainer pc{vec};

@@ -8,6 +8,8 @@ namespace sim::physics::force {
     void FGravityOMP::setPairFun() {
         pairFun = forceDelegate.getForceFunction();
         fpairFun = forceDelegate.getFastForceFunction();
+        fpairFunAlt = forceDelegate.getFastForceAltFunction();
+        fpairFunRet = forceDelegate.getFastForceRetFunction();
     }
 
     void FGravityOMP::setParticleContainer(ParticleContainer &pc) {
@@ -60,7 +62,7 @@ namespace sim::physics::force {
                     d0 = x[indexI*3 + 0] - x[indexJ*3 + 0];
                     d1 = x[indexI*3 + 1] - x[indexJ*3 + 1];
                     d2 = x[indexI*3 + 2] - x[indexJ*3 + 2];
-                    scalar = m[indexI] * m[indexJ] * std::pow(1/std::sqrt(d0*d0+d1*d1+d2*d2),3);
+                    scalar = m[indexI] * m[indexJ] * std::pow(1.0/std::sqrt(d0*d0+d1*d1+d2*d2),3);
 
 
                     f[indexI*3 + 0] -= d0 * scalar;
@@ -72,6 +74,14 @@ namespace sim::physics::force {
                 }
             }
         });
+    }
+
+    fpair_fun_alt_t FGravityOMP::getFastForceAltFunction() {
+        return fpairFunAlt;
+    }
+
+    fpair_fun_ret_t FGravityOMP::getFastForceRetFunction() {
+        return fpairFunRet;
     }
 
 } // force

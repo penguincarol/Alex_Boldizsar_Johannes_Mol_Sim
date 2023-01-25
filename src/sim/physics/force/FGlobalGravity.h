@@ -31,9 +31,6 @@ namespace sim::physics::force {
 
         void setParticleContainer(ParticleContainer& pc) override;
 
-        pair_fun_t& getForceFunction() override;
-
-        fpair_fun_t getFastForceFunction() override;
     };
 
 } // sim::physics::force

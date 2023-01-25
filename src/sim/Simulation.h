@@ -55,6 +55,9 @@ namespace sim {
         bool thermoEnable;
         Thermostat thermostat;
 
+        bool profEnable;
+        int profNumBins;
+
     public:
         physics::force::ForceHandler calcF;
         physics::PhysicsFunctorBase &calcX;
@@ -82,7 +85,8 @@ namespace sim {
                             bool eCP = default_checkpointing,
                             double gG0 = default_g_grav0, double gG1 = default_g_grav1, double gG2 = default_g_grav2,
                             bool eTH = default_therm, double thermoDelta_t = default_delta_temp, int thermoNTerm = default_n_term,
-                            double thermoTTarget = default_t_target, double ThermoTInit = default_t_init, int dimensions = default_dims) :
+                            double thermoTTarget = default_t_target, double ThermoTInit = default_t_init, int dimensions = default_dims,
+                            ThermoMode thermoMode = ThermoMode::normalMode, bool eProf = false, int profNumBin_ = 5) :
                 ioWrapper(iow),
                 particleContainer(pc),
                 start_time(st), end_time(et),
@@ -92,12 +96,14 @@ namespace sim {
                 p_calcX(position::generatePosition(posType, st, et, dt, eps, sig, pc)),
                 p_calcV(velocity::generateVelocity(velType, st, et, dt, eps, sig, pc)),
                 thermoEnable(eTH),
-                thermostat(pc, thermoTTarget, thermoNTerm, dimensions, thermoDelta_t, ThermoTInit, eTH),
+                thermostat(pc, thermoTTarget, thermoNTerm, dimensions, thermoDelta_t, ThermoTInit, eTH, thermoMode),
+                profEnable(eProf),
+                profNumBins(profNumBin_),
                 calcF(forceType, eLC, eOMP, eGrav, eMem, eMemPull, gG0, gG1, gG2, st, et, dt, eps, sig, pc),
                 calcX(*p_calcX),
                 calcV(*p_calcV),
                 handleBounds(leftBound, rightBound, topBound, botBound, frontBound, rearBound,
-                             calcF, st, et, dt, eps, sig, pc) {
+                             calcF, st, et, dt, eps, sig, pc, eOMP) {
             if (p_calcX == nullptr || p_calcV == nullptr) {
                 io::output::loggers::general->error("Failed to initialize simulation. Malloc failed.");
                 exit(-1);
@@ -143,7 +149,10 @@ namespace sim {
                            config.get<io::input::gGrav0>(), config.get<io::input::gGrav1>(), config.get<io::input::gGrav2>(),
                            config.get<io::input::enableThermo>(), config.get<io::input::thermoDelta_t>(),
                            config.get<io::input::thermoNTerm>(), config.get<io::input::thermoTTarget>(),
-                           config.get<io::input::thermoTInit>(), config.get<io::input::dimensions>()) {
+                           config.get<io::input::thermoTInit>(), config.get<io::input::dimensions>(),
+                           config.get<io::input::thermoType_t>(),
+                           config.get<io::input::enableProfiler>(),
+                           config.get<io::input::profilerNumBins>()) {
             io::output::loggers::simulation->trace("Sim constructor short used");
         }
 
@@ -160,9 +169,11 @@ namespace sim {
          * @param writeParticle Function to write all particles all 10 iterations
          * */
         void run(io::input::Configuration &config) {
+            io::output::loggers::simulation->info("Running with {} Threads", omp_get_max_threads());
             io::output::loggers::simulation->info("Starting simulation");
             double current_time = start_time;
             int iteration = config.get<io::input::simLastIteration>();
+            ioWrapper.writeParticlesVTK(particleContainer, outputFolder, outputBaseName, iteration);
             // init forces
             calcF();
             // for this loop, we assume: current x, current f and current v are known
@@ -179,13 +190,15 @@ namespace sim {
                 if (iteration % 10 == 0) {
                     ioWrapper.writeParticlesVTK(particleContainer, outputFolder, outputBaseName, iteration);
                 }
+                if (iteration % 100 == 0)
+                    io::output::loggers::simulation->info("Progress: {:03.2f}%", current_time / end_time * 100);
                 if (iteration % 1000 == 0) {
                     if(checkpointingEnable) ioWrapper.writeCheckpoint(particleContainer, config, iteration, current_time);
-                    io::output::loggers::simulation->info("Progress: {:03.2f}%", current_time / end_time * 100);
+
                     io::output::loggers::simulation->trace("Iteration {} finished.", iteration);
                 }
-                if (iteration % 10000 == 0) {
-                    sim::analysis::Profiler::run(50,
+                if (iteration % 10000 == 0 && profEnable) {
+                    sim::analysis::Profiler::run(profNumBins,
                                                  {config.get<io::input::boundingBox_X0>(),
                                                   config.get<io::input::boundingBox_X1>(),
                                                   config.get<io::input::boundingBox_X2>()},

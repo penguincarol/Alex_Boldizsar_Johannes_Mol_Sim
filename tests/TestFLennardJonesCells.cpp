@@ -12,6 +12,8 @@ ParticleContainer pcWithParticles(std::array<double, 3> p1Coord, std::array<doub
     std::vector<Particle> buffer{};
     Particle p1{p1Coord, {0.,0.,0.}, 1., 0};
     Particle p2{p2Coord, {0.,0.,0.}, 1., 0};
+    p1.setID(0);
+    p2.setID(1);
     buffer.emplace_back(p1);
     buffer.emplace_back(p2);
     return ParticleContainer{buffer, {3.1,3.1,3.1}, 1.2};

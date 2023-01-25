@@ -3,7 +3,6 @@
 //
 
 #pragma once
-
 #include <limits>
 
 constexpr double default_delta_t{1.0};
@@ -28,6 +27,8 @@ constexpr double default_bound_x2{100.0};
 constexpr double default_r_cutoff{5.0};
 constexpr int default_log_level{2};
 constexpr int default_therm{0}; // either 1 or 0
+constexpr auto default_thermo_mode{0}; //0 is normal
+constexpr unsigned long numBins{5};
 constexpr double default_t_init{20.0};
 constexpr int default_n_term{0};
 constexpr double default_t_target{20.0};
@@ -42,4 +43,4 @@ constexpr bool default_enable_grav{false};
 constexpr bool default_enable_omp{false};
 constexpr bool default_enable_membrane{false};
 constexpr bool default_enable_membrane_pull{false};
-constexpr unsigned long max_thread_tasks{1000};
+constexpr unsigned long max_thread_tasks{100};

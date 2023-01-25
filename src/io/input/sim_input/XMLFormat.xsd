@@ -76,6 +76,7 @@
         <xsd:sequence>
             <xsd:element name="BoundaryBox" type="boundaries_t"/>
             <xsd:element name="CutoffRadius" type="nonNegativeDouble_t"/>
+            <xsd:element name="EnableProfiling" type="enProf_t" minOccurs="0"/>
         </xsd:sequence>
     </xsd:complexType>
 
@@ -85,6 +86,10 @@
         <xsd:sequence>
             <xsd:element name="EnableMemPull" type="enMemPull_t" minOccurs="0"/>
         </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="enProf_t">
+        <xsd:attribute name="NumBins" type="xsd:positiveInteger" use="required"/>
     </xsd:complexType>
 
     <xsd:complexType name="forceCalculation_t">
@@ -141,12 +146,20 @@
     </xsd:complexType>
 
     <!-- Thermostat -->
+    <xsd:simpleType  name="thermomode_t">
+        <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="Normal"/>
+            <xsd:enumeration value="Pipe"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
     <xsd:complexType name="thermostat_t">
         <xsd:sequence>
             <xsd:element name="T_Init" type="xsd:double"/>
             <xsd:element name="N_Term" type="xsd:int"/>
             <xsd:element name="T_Target" type="xsd:double" minOccurs="0"/>
             <xsd:element name="Delta_T" type="xsd:double" minOccurs="0"/>
+            <xsd:element name="ThermoMode" type="thermomode_t" minOccurs="0"/>
         </xsd:sequence>
     </xsd:complexType>
 

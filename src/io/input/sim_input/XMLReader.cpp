@@ -93,6 +93,11 @@ namespace io::input {
                 setInMapND(boundCondRight, eLC->BoundaryBox().Right());
                 setInMapND(boundCondTop, eLC->BoundaryBox().Top());
                 setInMapND(boundCondBottom, eLC->BoundaryBox().Bottom());
+
+                setInMap(enableProfiler, eLC->EnableProfiling().present(), std::to_string(0), [&]()->std::string{return std::to_string(1);});
+                if(eLC->EnableProfiling().present()){
+                    setInMapND(profilerNumBins, std::to_string(eLC->EnableProfiling()->NumBins()));
+                }
             } else {
                 setInMapND(enableLinkedCell, "0");
             }
@@ -120,6 +125,7 @@ namespace io::input {
                 setInMapND(thermoNTerm, std::to_string(t.get().N_Term()));
                 setInMap(thermoTTarget, t.get().T_Target().present(), std::to_string(t.get().T_Init()), [&]()->std::string{return std::to_string(t.get().T_Target().get());});
                 setInMap(thermoDelta_t, t.get().Delta_T().present(), std::to_string(default_delta_temp), [&]()->std::string{return std::to_string(t.get().Delta_T().get());});
+                setInMap(thermoType_t, t.get().ThermoMode().present(), std::to_string(default_thermo_mode), [&]()->std::string{return std::to_string(t.get().ThermoMode().get() == "Normal"?0:1);});
             } else {
                 setInMapND(enableThermo, std::to_string(0));
             }

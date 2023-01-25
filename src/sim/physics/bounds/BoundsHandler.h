@@ -25,7 +25,7 @@ namespace sim::physics::bounds {
         sim::physics::bounds::BoundsFunctorBase<side_t::rear> *handleRear; //!< defines the boundsHandler used on the back side (front-rear is z-direction)
         bool periodicActive; //!< helper variable, gets set to true if there are periodic Bounds
         ParticleContainer& particleContainer; //!< stores pc that this BoundsHandler belongs to
-
+        bool enableOMP;
         /**
          * Handles all periodic bounds.
          * */
@@ -55,7 +55,7 @@ namespace sim::physics::bounds {
          */
         BoundsHandler(bound_t let, bound_t rit, bound_t tot, bound_t bot, bound_t frt, bound_t ret,
                       sim::physics::force::ForceHandler &fh, double st, double et, double dt, double eps,
-                      double sig, ParticleContainer &pc);
+                      double sig, ParticleContainer &pc, bool eOMP);
 
         /**
          * Deallocates used memory.
@@ -98,7 +98,7 @@ namespace sim::physics::bounds {
                                                         double st, double et, double dt, double eps, double sig,
                                                         ParticleContainer &pc,
                                                         type bLeft, type bRight, type bBottom,
-                                                        type bTop, type bFront, type bRear) {
+                                                        type bTop, type bFront, type bRear, bool eOMP) {
         auto warn = [&](){
             t = periodic;
             io::output::loggers::general->template warn("When using periodic bounds, both opposing sides have to be periodic!");
@@ -115,8 +115,8 @@ namespace sim::physics::bounds {
             if ((bFront != periodic) ^ (bRear != periodic)) warn();
         }
 
-        if (t == bound_t::outflow) return new BoundsOutflow<S>(st, et, dt, eps, sig, pc);
-        else if (t == bound_t::reflecting) return new BoundsReflecting<S>(st, et, dt, eps, sig, pc, fh);
+        if (t == bound_t::outflow) return new BoundsOutflow<S>(st, et, dt, eps, sig, pc, eOMP);
+        else if (t == bound_t::reflecting) return new BoundsReflecting<S>(st, et, dt, eps, sig, pc, fh, eOMP);
         else if (t == bound_t::periodic) {
             bool mMinor, mMajor;
             if constexpr(S == left || S == right) {
@@ -132,9 +132,9 @@ namespace sim::physics::bounds {
                 mMinor = false;
                 mMajor = false;
             }
-            return new BoundsPeriodic<S>(st, et, dt, eps, sig, pc, fh, mMinor, mMajor);
+            return new BoundsPeriodic<S>(st, et, dt, eps, sig, pc, fh, mMinor, mMajor, eOMP);
         }
-        else return new BoundsFunctorBase<S>(st, et, dt, eps, sig, pc);
+        else return new BoundsFunctorBase<S>(st, et, dt, eps, sig, pc, eOMP);
     }
 } // sim::physics::bounds
 

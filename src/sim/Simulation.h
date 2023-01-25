@@ -169,6 +169,7 @@ namespace sim {
          * @param writeParticle Function to write all particles all 10 iterations
          * */
         void run(io::input::Configuration &config) {
+            io::output::loggers::simulation->info("Running with {} Threads", omp_get_max_threads());
             io::output::loggers::simulation->info("Starting simulation");
             double current_time = start_time;
             int iteration = config.get<io::input::simLastIteration>();

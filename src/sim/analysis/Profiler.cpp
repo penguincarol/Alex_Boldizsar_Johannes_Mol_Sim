@@ -59,8 +59,8 @@ namespace sim::analysis {
         for (size_t i{0}; i < data.bins; i++) {
             file << i << ";" << data.densities[i] << ";" <<
                  "[" << data.velocities[3 * i + 0] << ","
-                     << data.velocities[3 * i + 0] << ","
-                     << data.velocities[3 * i + 0] << "]" << std::endl;
+                     << data.velocities[3 * i + 1] << ","
+                     << data.velocities[3 * i + 2] << "]" << std::endl;
         }
         file.close();
     }

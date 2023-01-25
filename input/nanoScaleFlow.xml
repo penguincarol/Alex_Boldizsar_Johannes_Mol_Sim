@@ -2,7 +2,7 @@
 <Simulation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
             xsi:noNamespaceSchemaLocation="../input/XMLFormat.xsd">
     <OutputFile OutputFileName="nanoScaleFlow"/>
-    <EndTime>50.0</EndTime>
+    <EndTime>500.0</EndTime>
     <TimeStepSize>0.0005</TimeStepSize>
     <ForceCalculation>
         <LennardJones Epsilon="1" Sigma="1"/>
@@ -17,16 +17,17 @@
                 <Top>Periodic</Top>
                 <Bottom>Periodic</Bottom>
             </BoundaryBox>
-            <CutoffRadius>2.5</CutoffRadius>
+            <CutoffRadius>2.75</CutoffRadius>
+            <EnableProfiling NumBins="50"/>
         </EnableLC>
         <EnableOMP/>
-        <EnableMem/>
     </ForceCalculation>
     <AverageBrownianMotion>0.0</AverageBrownianMotion>
     <Dimensions>3</Dimensions>
     <Thermostat>
         <T_Init>40.0</T_Init>
         <N_Term>10</N_Term>
+        <ThermoMode>Pipe</ThermoMode>
     </Thermostat>
     <FileType>
         <Input>

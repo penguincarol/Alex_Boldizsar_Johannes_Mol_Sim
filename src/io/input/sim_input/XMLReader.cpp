@@ -96,7 +96,7 @@ namespace io::input {
 
                 setInMap(enableProfiler, eLC->EnableProfiling().present(), std::to_string(0), [&]()->std::string{return std::to_string(1);});
                 if(eLC->EnableProfiling().present()){
-                    setInMapND(profilerNumBins, std::to_string(numBins));
+                    setInMapND(profilerNumBins, std::to_string(eLC->EnableProfiling()->NumBins()));
                 }
             } else {
                 setInMapND(enableLinkedCell, "0");

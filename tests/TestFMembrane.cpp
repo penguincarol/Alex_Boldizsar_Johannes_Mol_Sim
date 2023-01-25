@@ -6,6 +6,8 @@
 #include "data/ParticleContainer.h"
 #include "data/ParticleGenerator.h"
 #include "sim/physics/force/FMembrane.h"
+#include "sim/physics/force/FLennardJonesCells.h"
+#include "sim/physics/force/FLennardJonesCellsOMP.h"
 #include "sim/physics/force/FMembranePull.h"
 
 static bool vectorEqual(const Eigen::Vector3d& lhs, const Eigen::Vector3d& rhs){
@@ -102,6 +104,114 @@ TEST(FMembrane, operator) {
     ASSERT_TRUE(vectorEqual(pc.getParticle(membrNodes[1][1]).getF(), fMiddleParticle));
 
 }
+
+
+/***
+ * This test is supposed to check whether LennardJonesCells is getting truncated for Membranes correctly
+ */
+TEST(FMembrane, LennardJonesTruncateIfWanted) {
+    std::list<Particle> buf;
+    std::list<Membrane> membrBuf;
+
+    //desiredDistance = startingDistance
+    Body membr;
+    membr.shape = membrane;
+    membr.fixpoint = {6, 1, 1};
+    membr.dimensions = {4,4, 1};
+    membr.distance = 3.05;
+    membr.mass = 1;
+    membr.start_velocity = {0., 0., 0.};
+    membr.desiredDistance = 3.05;
+    membr.springStrength = 3;
+    membr.pullEndTime = 0;
+    membr.pullForce = {0, 0, 0};
+    membr.pullIndices = {};
+
+    double rt2_6 = std::pow(2.0, 1.0/6.0);
+    double sig{3.0/rt2_6};      //=> truncation should happen at 3 since std::pow(20, 1.0/6.0)*sig = 3
+    double eps{sig*1.2};
+
+    ParticleGenerator::generateMembrane(membr, 0, buf, membrBuf, 3, sig, eps);
+
+    std::vector bufVec(buf.begin(), buf.end());
+    std::vector<Membrane> membrVec(membrBuf.begin(), membrBuf.end());
+    ParticleContainer pc(bufVec, std::array<double, 3>{10., 10., 10.}, 3., membrVec);
+
+    //auto fMem = sim::physics::force::FMembrane(0, 100, 0.01, eps, sig, pc);
+    //intentionally giving them absurdly high default eps and sig so that they need to use the membrane eps and sig to truncate
+    auto fLen = sim::physics::force::FLennardJonesCells(0, 100, 0.01, 500, 500, pc);
+    auto fLenOMP = sim::physics::force::FLennardJonesCells(0, 100, 0.01, 500, 500, pc);
+
+    //since membrane got initialized with 3.05 distance and truncation should take place at a distance of 3
+    //no forces should be applied in either case here
+    fLen.operator()();
+    pc.forAllParticles([&](Particle &p) {
+        ASSERT_EQ(p.getF().norm(), 0.);
+    });
+    fLenOMP.operator()();
+    pc.forAllParticles([&](Particle &p) {
+        ASSERT_EQ(p.getF().norm(), 0.);
+    });
+}
+
+/**
+ * This test is a sanity check that looks whether you are NOT truncating
+ * if you aren't supposed to truncate
+ */
+TEST(FMembrane, LennardJonesDontAlwaysTruncate) {
+    std::list<Particle> buf;
+    std::list<Membrane> membrBuf;
+
+    //desiredDistance = startingDistance
+    Body membr;
+    membr.shape = membrane;
+    membr.fixpoint = {6, 1, 1};
+    membr.dimensions = {4,4, 1};
+    membr.distance = 3.0;
+    const double d = membr.distance;
+    membr.mass = 1;
+    membr.start_velocity = {0., 0., 0.};
+    membr.desiredDistance = 3.0;
+    membr.springStrength = 5;
+    membr.pullEndTime = 0;
+    membr.pullForce = {0, 0, 0};
+    membr.pullIndices = {};
+
+    double rt2_6 = std::pow(2.0, 1.0/6.0);
+    double sigFact=1.00025;
+    double sig{(3.0/rt2_6)*sigFact};
+    double eps{4.0};
+
+    ParticleGenerator::generateMembrane(membr, 0, buf, membrBuf, 3, sig, eps);
+
+    std::vector bufVec(buf.begin(), buf.end());
+    std::vector<Membrane> membrVec(membrBuf.begin(), membrBuf.end());
+    ParticleContainer pc(bufVec, std::array<double, 3>{10., 10., 10.}, 3., membrVec);
+
+    //auto fMem = sim::physics::force::FMembrane(0, 100, 0.01, eps, sig, pc);
+    //setting eps and sig so that he truncates if he accidentally uses them instead
+    auto fLen = sim::physics::force::FLennardJonesCells(0, 100, 0.01, 0.1, 0.1, pc);
+    auto fLenOMP = sim::physics::force::FLennardJonesCells(0, 100, 0.01, 0.1, 0.1, pc);
+
+    fLen.operator()();
+    //check one outer particle and one inner particle as sample if it works properly
+    //auto temp = pc.getMembranes()[0].getMembrNodes()[0][0];
+    auto idOut = pc.getMembranes()[0].getMembrNodes()[1][0];
+    auto idIn = pc.getMembranes()[0].getMembrNodes()[1][1];
+    Eigen::Vector3d forceOnOut = {0., -(24*eps/d)* d * ((1.*std::pow(sigFact, 6.0)/2.) - 2*(std::pow(sigFact, 12.0)/4.0)), 0.};
+
+    ASSERT_TRUE(vectorEqual(pc.getParticle(idIn).getF(), {0,0,0}));
+    ASSERT_TRUE(vectorEqual(pc.getParticle(idOut).getF(), forceOnOut));
+
+    pc.forAllParticles([&](Particle &p) {
+        p.setF({0,0,0});
+    });
+
+    fLenOMP.operator()();
+    ASSERT_TRUE(vectorEqual(pc.getParticle(idIn).getF(), {0,0,0}));
+    ASSERT_TRUE(vectorEqual(pc.getParticle(idOut).getF(), forceOnOut));
+}
+
 
 TEST(FMembranePull, operator) {
     std::list<Particle> buf;

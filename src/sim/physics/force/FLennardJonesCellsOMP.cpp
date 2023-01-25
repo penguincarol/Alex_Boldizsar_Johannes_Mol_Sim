@@ -6,7 +6,6 @@
 #include "defaults.h"
 
 #include <iostream>
-#include <immintrin.h>
 
 namespace sim::physics::force {
     /**

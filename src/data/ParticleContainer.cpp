@@ -561,7 +561,7 @@ void ParticleContainer::initAlternativeTaskModel(){
     alternativeTaskModelCache.clear();
     alternativeTaskModelCache.resize(maxThreads);
     //26 TaskGroups (for the 13 cases*2)
-    //every taskGroup has the pairs of CellIndices that are independently doable split up into numThreads packages
+    //every taskGroup has the pairs of CellIndices that are independently doable
 
     //All these variables could be const attributes of class
     const auto numCases = 13;
@@ -583,52 +583,44 @@ void ParticleContainer::initAlternativeTaskModel(){
                                                   b{0,0,0}, b{0,1,0},
                                                   b{0,0,0}, b{0,0,1}, b{0,0,0}, b{0,0,1},
                                                   b{0,0,0}, b{0,1,0}, b{0,0,1}, b{0,1,1}};
-
+    #ifndef TASK_ROUND_ROBIN
     std::vector<size_t> interactions;
     interactions.resize(maxThreads);
+    #endif
 
     for(auto c = 0; c < numCases; c++){ //pun intended
-        for(unsigned int x0 = lowerBounds[c][0]; x0 < upperBounds[c][0]; x0+=2){
-            for(unsigned int x1 = lowerBounds[c][1]; x1 < upperBounds[c][1]; x1+=1){
-                for(unsigned int x2 = lowerBounds[c][2]; x2 < upperBounds[c][2]; x2+=1){
+
+        #ifdef TASK_ROUND_ROBIN
+        constexpr unsigned long roundRobinMolUpdateThreshold = 1'000'000;
+        size_t roundRobinAccumulator{0};
+        #endif
+        size_t nextIndex{0};
+
+        for(unsigned int x0 = lowerBounds[c][0]; x0 < upperBounds[c][0]; x0++){
+            for(unsigned int x1 = lowerBounds[c][1]; x1 < upperBounds[c][1]; x1++){
+                for(unsigned int x2 = lowerBounds[c][2]; x2 < upperBounds[c][2]; x2++){
                     auto cell1 = cellIndexFromCellCoordinatesFast(x0, x1, x2);
                     auto cell2 = cellIndexFromCellCoordinatesFast(x0 + offsets[c][0], x1 + offsets[c][1], x2 + offsets[c][2]);
+                    alternativeTaskModelCache[nextIndex].emplace_back(cell1,cell2);
+                    SPDLOG_TRACE("Added CellInteraction (({} {} {}), ({} {} {})) to taskBlock {} ", x0, x1, x2, x0 + offsets[c][0], x1 + offsets[c][1], x2 + offsets[c][2], 2*c+0);
 
-                    size_t indexMin = 0;
-                    size_t last_count = interactions[indexMin];
-                    for(size_t i = 1; i < maxThreads; i++) {
-                        if(interactions[i] <= last_count) {
+                    #ifdef TASK_ROUND_ROBIN
+                    roundRobinAccumulator += cells[cell1].size() * cells[cell2].size();
+                    if(roundRobinAccumulator >= roundRobinMolUpdateThreshold){
+                        nextIndex = (nextIndex+1)%maxThreads;
+                        roundRobinAccumulator = 0;
+                    }
+                    #else
+                    interactions[nextIndex] += cells[cell1].size()*cells[cell2].size();
+                    nextIndex = 0;
+                    size_t last_count = interactions[nextIndex];
+                    for(size_t i = 1; i < maxThreads; i++){
+                        if(interactions[i] <= last_count){
                             last_count = interactions[i];
-                            indexMin = i;
+                            nextIndex = i;
                         }
                     }
-
-                    alternativeTaskModelCache[indexMin].emplace_back(cell1,cell2);
-                    interactions[indexMin] += cells[cell1].size()*cells[cell2].size();
-                    SPDLOG_TRACE("Added CellInteraction (({} {} {}), ({} {} {})) to taskBlock {}", x0, x1, x2, x0 + offsets[c][0], x1 + offsets[c][1], x2 + offsets[c][2], 2*c+0);
-                }
-            }
-        }
-
-        //yes you could cut this down to 2 lines with another helper array but this more verbose version seems much easier to understand
-        for(unsigned int x0 = lowerBounds[c][0] + 1; x0 < upperBounds[c][0]; x0+=2){
-            for(unsigned int x1 = lowerBounds[c][1]; x1 < upperBounds[c][1]; x1+=1){
-                for(unsigned int x2 = lowerBounds[c][2]; x2 < upperBounds[c][2]; x2+=1){
-                    auto cell1 = cellIndexFromCellCoordinatesFast(x0, x1, x2);
-                    auto cell2 = cellIndexFromCellCoordinatesFast(x0 + offsets[c][0], x1 + offsets[c][1], x2 + offsets[c][2]);
-
-                    size_t indexMin = 0;
-                    size_t last_count = interactions[indexMin];
-                    for(size_t i = 1; i < maxThreads; i++) {
-                        if(interactions[i] <= last_count) {
-                            last_count = interactions[i];
-                            indexMin = i;
-                        }
-                    }
-
-                    alternativeTaskModelCache[indexMin].emplace_back(cell1,cell2);
-                    interactions[indexMin] += cells[cell1].size()*cells[cell2].size();
-                    SPDLOG_TRACE("Added CellInteraction (({} {} {}), ({} {} {})) to taskBlock {}", x0, x1, x2, x0 + offsets[c][0], x1 + offsets[c][1], x2 + offsets[c][2], 2*c+1);
+                    #endif
                 }
             }
         }
@@ -642,7 +634,6 @@ void ParticleContainer::initTaskModel() {
 
     //All these variables could be const attributes of class
     const auto numCases = 13;
-
     using a = std::array<int, 3>;
     constexpr std::array<a, numCases> offsets{a{1,0,0}, a{0,1,0}, a{0,0,1},
                                               a{1,1,0}, a{1,-1,0},
@@ -661,28 +652,55 @@ void ParticleContainer::initTaskModel() {
                                                   b{0,0,0}, b{0,0,1}, b{0,0,0}, b{0,0,1},
                                                   b{0,0,0}, b{0,1,0}, b{0,0,1}, b{0,1,1}};
 
+    std::array<unsigned int, 3> additionalIncrement{0,0,0};
     for(auto c = 0; c < numCases; c++){ //pun intended
+        if(offsets[c][0] == 1){additionalIncrement = std::array<unsigned int, 3>{1,0,0};}
+        else if(offsets[c][1] == 1){additionalIncrement = std::array<unsigned int, 3>{0,1,0};}
+        else{additionalIncrement = std::array<unsigned int, 3>{0,0,1};}
+
+
         //const std::vector<std::vector<std::vector<std::pair<unsigned long, unsigned long>>>>& generateDistinctCellNeighbours()
         const unsigned long maxThreads{static_cast<unsigned long>(omp_get_max_threads())};
-        constexpr unsigned long roundRobinMolUpdateThreshold = 500'000;
+
+        #ifdef TASK_ROUND_ROBIN
+        constexpr unsigned long roundRobinMolUpdateThreshold = 1'000'000;
         size_t roundRobinAccumulator{0};
-        size_t roundRobinIndex{0};
+        #else
+        std::vector<size_t> interactions;
+        interactions.resize(maxThreads);
+        #endif
+        size_t nextIndex{0};
 
         std::vector<std::vector<std::pair<unsigned long, unsigned long>>> independentTasksBlock{maxThreads, std::vector<std::pair<unsigned long, unsigned long>>{}};
-        for(unsigned int x0 = lowerBounds[c][0]; x0 < upperBounds[c][0]; x0+=2){
-            for(unsigned int x1 = lowerBounds[c][1]; x1 < upperBounds[c][1]; x1+=1){
-                for(unsigned int x2 = lowerBounds[c][2]; x2 < upperBounds[c][2]; x2+=1){
+
+        for(unsigned int x0 = lowerBounds[c][0]; x0 < upperBounds[c][0]; x0+= 1 + additionalIncrement[0]){
+            for(unsigned int x1 = lowerBounds[c][1]; x1 < upperBounds[c][1]; x1+= 1 + additionalIncrement[1]){
+                for(unsigned int x2 = lowerBounds[c][2]; x2 < upperBounds[c][2]; x2+= 1 + additionalIncrement[2]){
 
                     auto cell1 = cellIndexFromCellCoordinatesFast(x0, x1, x2);
                     auto cell2 = cellIndexFromCellCoordinatesFast(x0 + offsets[c][0], x1 + offsets[c][1], x2 + offsets[c][2]);
-                    independentTasksBlock[roundRobinIndex].emplace_back(cell1,cell2);
+                    independentTasksBlock[nextIndex].emplace_back(cell1,cell2);
+                    SPDLOG_TRACE("Added CellInteraction (({} {} {}), ({} {} {})) to taskBlock {} and job {} ", x0, x1, x2, x0 + offsets[c][0], x1 + offsets[c][1], x2 + offsets[c][2], 2*c+0, roundRobinIndex);
+                    //std::cout<< "Added CellInteraction (("<< x0<<" "<<x1<<" "<< x2 << ") ("<< x0 + offsets[c][0] << " " << x1 + offsets[c][1] <<" "<< x2 + offsets[c][2]<< ")) to taskBlock " << 2*c+0<< " and job " << roundRobinIndex << std::endl;
+
+                    #ifdef TASK_ROUND_ROBIN
                     roundRobinAccumulator += cells[cell1].size() * cells[cell2].size();
 
                     if(roundRobinAccumulator >= roundRobinMolUpdateThreshold){
-                        roundRobinIndex = (roundRobinIndex+1)%maxThreads;
+                        nextIndex = (nextIndex+1)%maxThreads;
                         roundRobinAccumulator = 0;
                     }
-                    SPDLOG_TRACE("Added CellInteraction (({} {} {}), ({} {} {})) to taskBlock {}", x0, x1, x2, x0 + offsets[c][0], x1 + offsets[c][1], x2 + offsets[c][2], 2*c+0);
+                    #else
+                    nextIndex = 0;
+                    size_t last_count = interactions[nextIndex];
+                    for(size_t i = 1; i < maxThreads; i++){
+                        if(interactions[i] <= last_count){
+                            last_count = interactions[i];
+                            nextIndex = i;
+                        }
+                    }
+                    #endif
+
                 }
             }
         }
@@ -691,21 +709,41 @@ void ParticleContainer::initTaskModel() {
 
         //yes you could cut this down to 2 lines with another helper array but this more verbose version seems much easier to understand
         std::vector<std::vector<std::pair<unsigned long, unsigned long>>> independentTasksBlock2{maxThreads, std::vector<std::pair<unsigned long, unsigned long>>{}};
-        roundRobinIndex = 0;
+
+        #ifdef TASK_ROUND_ROBIN
+        nextIndex = 0;
         roundRobinAccumulator = 0;
-        for(unsigned int x0 = lowerBounds[c][0] + 1; x0 < upperBounds[c][0]; x0+=2){
-            for(unsigned int x1 = lowerBounds[c][1] + 1; x1 < upperBounds[c][1]; x1+=1){
-                for(unsigned int x2 = lowerBounds[c][2] + 1; x2 < upperBounds[c][2]; x2+=1){
+        #else
+        interactions.clear();
+        interactions.resize(maxThreads);
+        #endif
+        for(unsigned int x0 = lowerBounds[c][0] + additionalIncrement[0] ; x0 < upperBounds[c][0]; x0+= 1 + additionalIncrement[0]){
+            for(unsigned int x1 = lowerBounds[c][1] + additionalIncrement[1]; x1 < upperBounds[c][1]; x1+= 1 + additionalIncrement[1]){
+                for(unsigned int x2 = lowerBounds[c][2] + additionalIncrement[2]; x2 < upperBounds[c][2]; x2+= 1 + additionalIncrement[2]){
                     auto cell1 = cellIndexFromCellCoordinatesFast(x0, x1, x2);
                     auto cell2 = cellIndexFromCellCoordinatesFast(x0 + offsets[c][0], x1 + offsets[c][1], x2 + offsets[c][2]);
-                    independentTasksBlock2[roundRobinIndex].emplace_back(cell1,cell2);
-                    roundRobinAccumulator += cells[cell1].size() * cells[cell2].size();
+                    independentTasksBlock2[nextIndex].emplace_back(cell1,cell2);
+                    SPDLOG_TRACE("Added CellInteraction (({} {} {}), ({} {} {})) to taskBlock {} and job {}", x0, x1, x2, x0 + offsets[c][0], x1 + offsets[c][1], x2 + offsets[c][2], 2*c+1, roundRobinIndex);
+                    //std::cout<< "Added CellInteraction (("<< x0<<" "<<x1<<" "<< x2 << ") ("<< x0 + offsets[c][0] << " " << x1 + offsets[c][1] <<" "<< x2 + offsets[c][2]<< ")) to taskBlock " << 2*c+1<< " and job " << roundRobinIndex << std::endl;
 
+                    #ifdef TASK_ROUND_ROBIN
+                    roundRobinAccumulator += cells[cell1].size() * cells[cell2].size();
                     if(roundRobinAccumulator >= roundRobinMolUpdateThreshold){
-                        roundRobinIndex = (roundRobinIndex+1)%maxThreads;
+                        nextIndex = (nextIndex+1)%maxThreads;
+                        roundRobinAccumulator = 0;
                         roundRobinAccumulator = 0;
                     }
-                    SPDLOG_TRACE("Added CellInteraction (({} {} {}), ({} {} {})) to taskBlock {}", x0, x1, x2, x0 + offsets[c][0], x1 + offsets[c][1], x2 + offsets[c][2], 2*c+1);
+                    #else
+                    nextIndex = 0;
+                    size_t last_count = interactions[nextIndex];
+                    for(size_t i = 1; i < maxThreads; i++){
+                        if(interactions[i] <= last_count){
+                            last_count = interactions[i];
+                            nextIndex = i;
+                        }
+                    }
+                    #endif
+
                 }
             }
         }
@@ -713,204 +751,6 @@ void ParticleContainer::initTaskModel() {
 
     }
 }
-
-
-/*
-void ParticleContainer::initTaskModel() {
-    std::vector<std::vector<std::pair<unsigned long, unsigned long>>> task_group_buffer;
-    std::vector<std::pair<unsigned long, unsigned long>> task_buffer;
-
-    //Straight lines ----------------------------------------
-    //all pairs in x_0 direction:
-    {
-        for (unsigned int x_1 = 0; x_1 < gridDimensions[1]; x_1++) {
-            for (unsigned int x_2 = 0; x_2 < gridDimensions[2]; x_2++) {
-                for (unsigned int x_0 = 0; x_0 < gridDimensions[0] - 1; x_0++) {
-                    task_buffer.emplace_back(cellIndexFromCellCoordinatesFast(x_0, x_1, x_2),
-                                             cellIndexFromCellCoordinatesFast(x_0 + 1, x_1, x_2));
-                }
-                task_group_buffer.emplace_back(task_buffer);
-                task_buffer.clear();
-            }
-        }
-        taskModelCache.emplace_back(task_group_buffer);
-        task_group_buffer.clear();
-
-        //all pairs in x_1 direction:
-        for (unsigned int x_0 = 0; x_0 < gridDimensions[0]; x_0++) {
-            for (unsigned int x_2 = 0; x_2 < gridDimensions[2]; x_2++) {
-                for (unsigned int x_1 = 0; x_1 < gridDimensions[1] - 1; x_1++) {
-                    task_buffer.emplace_back(cellIndexFromCellCoordinatesFast(x_0, x_1, x_2),
-                                             cellIndexFromCellCoordinatesFast(x_0, x_1 + 1, x_2));
-                }
-                task_group_buffer.emplace_back(task_buffer);
-                task_buffer.clear();
-            }
-        }
-        taskModelCache.emplace_back(task_group_buffer);
-        task_group_buffer.clear();
-
-        //all pairs in x_2 direction:
-        for (unsigned int x_0 = 0; x_0 < gridDimensions[0]; x_0++) {
-            for (unsigned int x_1 = 0; x_1 < gridDimensions[1]; x_1++) {
-                for (unsigned int x_2 = 0; x_2 < gridDimensions[2] - 1; x_2++) {
-                    task_buffer.emplace_back(cellIndexFromCellCoordinatesFast(x_0, x_1, x_2),
-                                             cellIndexFromCellCoordinatesFast(x_0, x_1, x_2 + 1));
-                }
-                task_group_buffer.emplace_back(task_buffer);
-                task_buffer.clear();
-            }
-        }
-        taskModelCache.emplace_back(task_group_buffer);
-        task_group_buffer.clear();
-    }
-    //End of straight lines ---------------------------------------------------
-
-    //"2d-diagonals"------------------------------------------------
-    {
-        //diagonals lying in the x_0-x_1 plane
-        for (unsigned int x_2 = 0; x_2 < gridDimensions[2]; x_2++) {
-            //diagonals from bottom left to top right
-            for (unsigned int x_0 = 0; x_0 < gridDimensions[0] - 1; x_0++) {
-                for (unsigned int x_1 = 0; x_1 < gridDimensions[1] - 1; x_1++) {
-                    task_buffer.emplace_back(cellIndexFromCellCoordinatesFast(x_0, x_1, x_2),
-                                             cellIndexFromCellCoordinatesFast(x_0 + 1, x_1 + 1, x_2));
-                }
-            }
-            task_group_buffer.emplace_back(task_buffer);
-            task_buffer.clear();
-        }
-        taskModelCache.emplace_back(task_group_buffer);
-        task_group_buffer.clear();
-
-        for (unsigned int x_2 = 0; x_2 < gridDimensions[2]; x_2++) {
-            //diagonals from top left to bottom right
-            for (unsigned int x_0 = 0; x_0 < gridDimensions[0] - 1; x_0++) {
-                for (unsigned int x_1 = 1; x_1 < gridDimensions[1]; x_1++) {
-                    task_buffer.emplace_back(cellIndexFromCellCoordinatesFast(x_0, x_1, x_2),
-                                             cellIndexFromCellCoordinatesFast(x_0 + 1, x_1 - 1, x_2));
-                }
-            }
-            task_group_buffer.emplace_back(task_buffer);
-            task_buffer.clear();
-        }
-        taskModelCache.emplace_back(task_group_buffer);
-        task_group_buffer.clear();
-
-        //diagonals lying in the x_0-x_2 plane
-        for (unsigned int x_1 = 0; x_1 < gridDimensions[1]; x_1++) {
-            //diagonals from bottom left to top right
-            for (unsigned int x_0 = 0; x_0 < gridDimensions[0] - 1; x_0++) {
-                for (unsigned int x_2 = 0; x_2 < gridDimensions[2] - 1; x_2++) {
-                    task_buffer.emplace_back(cellIndexFromCellCoordinatesFast(x_0, x_1, x_2),
-                                             cellIndexFromCellCoordinatesFast(x_0 + 1, x_1, x_2 + 1));
-                }
-            }
-            task_group_buffer.emplace_back(task_buffer);
-            task_buffer.clear();
-        }
-        taskModelCache.emplace_back(task_group_buffer);
-        task_group_buffer.clear();
-        for (unsigned int x_1 = 0; x_1 < gridDimensions[1]; x_1++) {
-            //diagonals from top left to bottom right
-            for (unsigned int x_0 = 0; x_0 < gridDimensions[0] - 1; x_0++) {
-                for (unsigned int x_2 = 1; x_2 < gridDimensions[2]; x_2++) {
-                    task_buffer.emplace_back(cellIndexFromCellCoordinatesFast(x_0, x_1, x_2),
-                                             cellIndexFromCellCoordinatesFast(x_0 + 1, x_1, x_2 - 1));
-                }
-            }
-            task_group_buffer.emplace_back(task_buffer);
-            task_buffer.clear();
-        }
-        taskModelCache.emplace_back(task_group_buffer);
-        task_group_buffer.clear();
-
-        //diagonals lying in the x_1-x_2 plane
-        for (unsigned int x_0 = 0; x_0 < gridDimensions[0]; x_0++) {
-            //diagonals from bottom left to top right
-            for (unsigned int x_1 = 0; x_1 < gridDimensions[1] - 1; x_1++) {
-                for (unsigned int x_2 = 0; x_2 < gridDimensions[2] - 1; x_2++) {
-                    task_buffer.emplace_back(cellIndexFromCellCoordinatesFast(x_0, x_1, x_2),
-                                             cellIndexFromCellCoordinatesFast(x_0, x_1 + 1, x_2 + 1));
-                }
-            }
-            task_group_buffer.emplace_back(task_buffer);
-            task_buffer.clear();
-        }
-        taskModelCache.emplace_back(task_group_buffer);
-        task_group_buffer.clear();
-        for (unsigned int x_0 = 0; x_0 < gridDimensions[0]; x_0++) {
-            //diagonals from top left to bottom right
-            for (unsigned int x_1 = 0; x_1 < gridDimensions[1] - 1; x_1++) {
-                for (unsigned int x_2 = 1; x_2 < gridDimensions[2]; x_2++) {
-                    task_buffer.emplace_back(cellIndexFromCellCoordinatesFast(x_0, x_1, x_2),
-                                             cellIndexFromCellCoordinatesFast(x_0, x_1 + 1, x_2 - 1));
-                }
-            }
-            task_group_buffer.emplace_back(task_buffer);
-            task_buffer.clear();
-        }
-        taskModelCache.emplace_back(task_group_buffer);
-        task_group_buffer.clear();
-    }
-    //End of "2d diagonals"-----------------------------------------------
-
-    //Start of "3d diagonals"----------------
-    {//from bottom front left top back right
-        for (unsigned int x_0 = 0; x_0 < gridDimensions[0] - 1; x_0++) {
-            for (unsigned int x_1 = 0; x_1 < gridDimensions[1] - 1; x_1++) {
-                for (unsigned int x_2 = 0; x_2 < gridDimensions[2] - 1; x_2++) {
-                    task_buffer.emplace_back(cellIndexFromCellCoordinatesFast(x_0, x_1, x_2),
-                                             cellIndexFromCellCoordinatesFast(x_0 + 1, x_1 + 1, x_2 + 1));
-                }
-            }
-            task_group_buffer.emplace_back(task_buffer);
-            task_buffer.clear();
-            taskModelCache.emplace_back(task_group_buffer);
-            task_group_buffer.clear();
-        }
-        //from top front left to bottom back right
-        for (unsigned int x_0 = 0; x_0 < gridDimensions[0] - 1; x_0++) {
-            for (unsigned int x_1 = 1; x_1 < gridDimensions[1]; x_1++) {
-                for (unsigned int x_2 = 0; x_2 < gridDimensions[2] - 1; x_2++) {
-                    task_buffer.emplace_back(cellIndexFromCellCoordinatesFast(x_0, x_1, x_2),
-                                             cellIndexFromCellCoordinatesFast(x_0 + 1, x_1 - 1, x_2 + 1));
-                }
-            }
-            task_group_buffer.emplace_back(task_buffer);
-            task_buffer.clear();
-            taskModelCache.emplace_back(task_group_buffer);
-            task_group_buffer.clear();
-        }
-        //from bottom back left to top front right
-        for (unsigned int x_0 = 0; x_0 < gridDimensions[0] - 1; x_0++) {
-            for (unsigned int x_1 = 0; x_1 < gridDimensions[1] - 1; x_1++) {
-                for (unsigned int x_2 = 1; x_2 < gridDimensions[2]; x_2++) {
-                    task_buffer.emplace_back(cellIndexFromCellCoordinatesFast(x_0, x_1, x_2),
-                                             cellIndexFromCellCoordinatesFast(x_0 + 1, x_1 + 1, x_2 - 1));
-                }
-            }
-            task_group_buffer.emplace_back(task_buffer);
-            task_buffer.clear();
-            taskModelCache.emplace_back(task_group_buffer);
-            task_group_buffer.clear();
-        }
-        //from top back left to bottom front right
-        for (unsigned int x_0 = 0; x_0 < gridDimensions[0] - 1; x_0++) {
-            for (unsigned int x_1 = 1; x_1 < gridDimensions[1]; x_1++) {
-                for (unsigned int x_2 = 1; x_2 < gridDimensions[2]; x_2++) {
-                    task_buffer.emplace_back(cellIndexFromCellCoordinatesFast(x_0, x_1, x_2),
-                                             cellIndexFromCellCoordinatesFast(x_0 + 1, x_1 - 1, x_2 - 1));
-                }
-            }
-            task_group_buffer.emplace_back(task_buffer);
-            task_buffer.clear();
-            taskModelCache.emplace_back(task_group_buffer);
-            task_group_buffer.clear();
-        }
-    }
-    //End of "3d diagonals" -----------------
-}*/
 
 const std::vector<std::vector<std::vector<std::pair<unsigned long, unsigned long>>>>& ParticleContainer::generateDistinctCellNeighbours() {
     initTaskModel();

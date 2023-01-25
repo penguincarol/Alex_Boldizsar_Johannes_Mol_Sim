@@ -23,6 +23,7 @@ ParticleContainer initializeTestPContainer(){
                 Eigen::Vector3d pos{r_cutoff*x + 0.1, r_cutoff*y + 0.1, r_cutoff*z + 0.1};
                 Eigen::Vector3d vel{0.,0.,0.};
                 particles.emplace_back(pos, vel, 1.0, particleIndex++);
+                particles[particleIndex-1].setID(particleIndex-1);
             }
         }
     }
@@ -58,6 +59,7 @@ TEST(ParticleContainer, forAllPairsInSameCell){
 
     particles.emplace_back(Eigen::Vector3d{1.4,1.4,1.4}, Eigen::Vector3d{0.,0.,0.}, 1.0, 1);
     particles.emplace_back(Eigen::Vector3d{1.4,1.4,0}, Eigen::Vector3d{0.,0.,0.}, 1.0, 1);
+    for(auto i=0; i < particles.size(); i++){particles[i].setID(i);}
 
     std::array<double, 3> domainSize{3.1,3.1,3.1};
     ParticleContainer pc(particles, domainSize, 1.0);

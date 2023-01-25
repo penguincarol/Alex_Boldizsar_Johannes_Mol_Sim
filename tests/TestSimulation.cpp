@@ -14,10 +14,11 @@ static_assert(__cplusplus >= 202002L);
  * 
  */
 TEST(Simulation, calculateFLennardJones) {
+    std::vector<Particle> particles{Particle{Eigen::Vector3d{0.5, 0, 0}, Eigen::Vector3d{0, 0, 0}, 1.0, 0},
+                          Particle{Eigen::Vector3d{-0.5, 0, 0}, Eigen::Vector3d{0, 0, 0}, 1.0, 0}};
+    for(auto i=0; i < particles.size(); i++){particles[i].setID(i);}
     // Scenario: Particles along X-Axis -> distance 1 -> force should be 1
-    ParticleContainer pc = ParticleContainer(
-            std::vector<Particle>{Particle{Eigen::Vector3d{0.5, 0, 0}, Eigen::Vector3d{0, 0, 0}, 1.0, 0},
-                                  Particle{Eigen::Vector3d{-0.5, 0, 0}, Eigen::Vector3d{0, 0, 0}, 1.0, 0}});
+    ParticleContainer pc = ParticleContainer(particles);
     pc.forAllParticles([=](Particle& p){p.setEpsilon(1.0 / 24.0); p.setSigma(1);});
 
     io::IOWrapper iow{io::input::XML};
@@ -37,9 +38,10 @@ TEST(Simulation, calculateFLennardJones) {
 
 // Old Test, can be ignored
 TEST(Simulation, calculateFGravity) {
-    ParticleContainer pc = ParticleContainer(
-            std::vector<Particle>{Particle{Eigen::Vector3d{0, 0, 0}, Eigen::Vector3d{0, 0, 0}, 1.0, 0},
-                                  Particle{Eigen::Vector3d{1, 1, 0}, Eigen::Vector3d{0, 0, 0}, 1.0, 0}});
+    std::vector<Particle> particles{Particle{Eigen::Vector3d{0, 0, 0}, Eigen::Vector3d{0, 0, 0}, 1.0, 0},
+                          Particle{Eigen::Vector3d{1, 1, 0}, Eigen::Vector3d{0, 0, 0}, 1.0, 0}};
+    for(auto i=0; i < particles.size(); i++){particles[i].setID(i);}
+    ParticleContainer pc = ParticleContainer(particles);
     io::IOWrapper iow{io::input::XML};
     sim::Simulation simulation{iow, pc, 0, 10, 0.01, 1.0, 1.0, "", "", sim::physics::force::type::gravity};
 
@@ -58,8 +60,9 @@ TEST(Simulation, calculateFGravity) {
  * Tests if positions are calculated correctly. Velocity is such that outcome is predictable.
  * */
 TEST(Simulation, calculateXStoermerVelvet) {
-    ParticleContainer pc = ParticleContainer(
-            std::vector<Particle>{Particle{Eigen::Vector3d{0, 0, 0}, Eigen::Vector3d{1, 0, 0}, 1.0, 0}});
+    std::vector<Particle> particles{Particle{Eigen::Vector3d{0, 0, 0}, Eigen::Vector3d{1, 0, 0}, 1.0, 0}};
+    for(auto i=0; i < particles.size(); i++){particles[i].setID(i);}
+    ParticleContainer pc = ParticleContainer(particles);
     io::IOWrapper iow{io::input::XML};
     sim::Simulation simulation{iow, pc, 0, 10, 0.01, 1.0, 1.0, "", "",
                                sim::physics::force::type::lennardJones,
@@ -87,10 +90,11 @@ TEST(Simulation, calculateXStoermerVelvet) {
  * 
  */
 TEST(Simulation, calculateVStoermerVelvet) {
+    std::vector<Particle>particles{Particle{Eigen::Vector3d{0, 0, 0}, Eigen::Vector3d{0, 0, 0}, 10.0, 0},
+                          Particle{Eigen::Vector3d{1, 0, 0}, Eigen::Vector3d{0, 1, 0}, 0.1, 0}};
+    for(auto i=0; i < particles.size(); i++){particles[i].setID(i);}
     spdlog::set_level(static_cast<spdlog::level::level_enum>(0));
-    ParticleContainer pc = ParticleContainer(
-            std::vector<Particle>{Particle{Eigen::Vector3d{0, 0, 0}, Eigen::Vector3d{0, 0, 0}, 10.0, 0},
-                                  Particle{Eigen::Vector3d{1, 0, 0}, Eigen::Vector3d{0, 1, 0}, 0.1, 0}});
+    ParticleContainer pc = ParticleContainer(particles);
     io::IOWrapper iow{io::input::XML};
     sim::Simulation simulation{iow, pc, 0, 10, 0.01, 1.0, 1.0, "", "",
                                sim::physics::force::type::gravity,

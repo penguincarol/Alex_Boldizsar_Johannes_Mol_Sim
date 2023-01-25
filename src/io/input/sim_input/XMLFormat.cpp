@@ -520,6 +520,36 @@ CutoffRadius (::std::unique_ptr< CutoffRadius_type > x)
   this->CutoffRadius_.set (std::move (x));
 }
 
+const enLC_t::EnableProfiling_optional& enLC_t::
+EnableProfiling () const
+{
+  return this->EnableProfiling_;
+}
+
+enLC_t::EnableProfiling_optional& enLC_t::
+EnableProfiling ()
+{
+  return this->EnableProfiling_;
+}
+
+void enLC_t::
+EnableProfiling (const EnableProfiling_type& x)
+{
+  this->EnableProfiling_.set (x);
+}
+
+void enLC_t::
+EnableProfiling (const EnableProfiling_optional& x)
+{
+  this->EnableProfiling_ = x;
+}
+
+void enLC_t::
+EnableProfiling (::std::unique_ptr< EnableProfiling_type > x)
+{
+  this->EnableProfiling_.set (std::move (x));
+}
+
 
 // enOMP_t
 // 
@@ -560,6 +590,28 @@ void enMem_t::
 EnableMemPull (::std::unique_ptr< EnableMemPull_type > x)
 {
   this->EnableMemPull_.set (std::move (x));
+}
+
+
+// enProf_t
+// 
+
+const enProf_t::NumBins_type& enProf_t::
+NumBins () const
+{
+  return this->NumBins_.get ();
+}
+
+enProf_t::NumBins_type& enProf_t::
+NumBins ()
+{
+  return this->NumBins_.get ();
+}
+
+void enProf_t::
+NumBins (const NumBins_type& x)
+{
+  this->NumBins_.set (x);
 }
 
 
@@ -1054,6 +1106,51 @@ Bottom (::std::unique_ptr< Bottom_type > x)
 }
 
 
+// thermomode_t
+// 
+
+thermomode_t::
+thermomode_t (value v)
+: ::xml_schema::string (_xsd_thermomode_t_literals_[v])
+{
+}
+
+thermomode_t::
+thermomode_t (const char* v)
+: ::xml_schema::string (v)
+{
+}
+
+thermomode_t::
+thermomode_t (const ::std::string& v)
+: ::xml_schema::string (v)
+{
+}
+
+thermomode_t::
+thermomode_t (const ::xml_schema::string& v)
+: ::xml_schema::string (v)
+{
+}
+
+thermomode_t::
+thermomode_t (const thermomode_t& v,
+              ::xml_schema::flags f,
+              ::xml_schema::container* c)
+: ::xml_schema::string (v, f, c)
+{
+}
+
+thermomode_t& thermomode_t::
+operator= (value v)
+{
+  static_cast< ::xml_schema::string& > (*this) = 
+  ::xml_schema::string (_xsd_thermomode_t_literals_[v]);
+
+  return *this;
+}
+
+
 // thermostat_t
 // 
 
@@ -1139,6 +1236,36 @@ void thermostat_t::
 Delta_T (const Delta_T_optional& x)
 {
   this->Delta_T_ = x;
+}
+
+const thermostat_t::ThermoMode_optional& thermostat_t::
+ThermoMode () const
+{
+  return this->ThermoMode_;
+}
+
+thermostat_t::ThermoMode_optional& thermostat_t::
+ThermoMode ()
+{
+  return this->ThermoMode_;
+}
+
+void thermostat_t::
+ThermoMode (const ThermoMode_type& x)
+{
+  this->ThermoMode_.set (x);
+}
+
+void thermostat_t::
+ThermoMode (const ThermoMode_optional& x)
+{
+  this->ThermoMode_ = x;
+}
+
+void thermostat_t::
+ThermoMode (::std::unique_ptr< ThermoMode_type > x)
+{
+  this->ThermoMode_.set (std::move (x));
 }
 
 
@@ -3850,7 +3977,8 @@ enLC_t (const BoundaryBox_type& BoundaryBox,
         const CutoffRadius_type& CutoffRadius)
 : ::xml_schema::type (),
   BoundaryBox_ (BoundaryBox, this),
-  CutoffRadius_ (CutoffRadius, this)
+  CutoffRadius_ (CutoffRadius, this),
+  EnableProfiling_ (this)
 {
 }
 
@@ -3859,7 +3987,8 @@ enLC_t (::std::unique_ptr< BoundaryBox_type > BoundaryBox,
         const CutoffRadius_type& CutoffRadius)
 : ::xml_schema::type (),
   BoundaryBox_ (std::move (BoundaryBox), this),
-  CutoffRadius_ (CutoffRadius, this)
+  CutoffRadius_ (CutoffRadius, this),
+  EnableProfiling_ (this)
 {
 }
 
@@ -3869,7 +3998,8 @@ enLC_t (const enLC_t& x,
         ::xml_schema::container* c)
 : ::xml_schema::type (x, f, c),
   BoundaryBox_ (x.BoundaryBox_, f, this),
-  CutoffRadius_ (x.CutoffRadius_, f, this)
+  CutoffRadius_ (x.CutoffRadius_, f, this),
+  EnableProfiling_ (x.EnableProfiling_, f, this)
 {
 }
 
@@ -3879,7 +4009,8 @@ enLC_t (const ::xercesc::DOMElement& e,
         ::xml_schema::container* c)
 : ::xml_schema::type (e, f | ::xml_schema::flags::base, c),
   BoundaryBox_ (this),
-  CutoffRadius_ (this)
+  CutoffRadius_ (this),
+  EnableProfiling_ (this)
 {
   if ((f & ::xml_schema::flags::base) == 0)
   {
@@ -3926,6 +4057,20 @@ parse (::xsd::cxx::xml::dom::parser< char >& p,
       }
     }
 
+    // EnableProfiling
+    //
+    if (n.name () == "EnableProfiling" && n.namespace_ ().empty ())
+    {
+      ::std::unique_ptr< EnableProfiling_type > r (
+        EnableProfiling_traits::create (i, f, this));
+
+      if (!this->EnableProfiling_)
+      {
+        this->EnableProfiling_.set (::std::move (r));
+        continue;
+      }
+    }
+
     break;
   }
 
@@ -3959,6 +4104,7 @@ operator= (const enLC_t& x)
     static_cast< ::xml_schema::type& > (*this) = x;
     this->BoundaryBox_ = x.BoundaryBox_;
     this->CutoffRadius_ = x.CutoffRadius_;
+    this->EnableProfiling_ = x.EnableProfiling_;
   }
 
   return *this;
@@ -4159,6 +4305,88 @@ operator= (const enMem_t& x)
 
 enMem_t::
 ~enMem_t ()
+{
+}
+
+// enProf_t
+//
+
+enProf_t::
+enProf_t (const NumBins_type& NumBins)
+: ::xml_schema::type (),
+  NumBins_ (NumBins, this)
+{
+}
+
+enProf_t::
+enProf_t (const enProf_t& x,
+          ::xml_schema::flags f,
+          ::xml_schema::container* c)
+: ::xml_schema::type (x, f, c),
+  NumBins_ (x.NumBins_, f, this)
+{
+}
+
+enProf_t::
+enProf_t (const ::xercesc::DOMElement& e,
+          ::xml_schema::flags f,
+          ::xml_schema::container* c)
+: ::xml_schema::type (e, f | ::xml_schema::flags::base, c),
+  NumBins_ (this)
+{
+  if ((f & ::xml_schema::flags::base) == 0)
+  {
+    ::xsd::cxx::xml::dom::parser< char > p (e, false, false, true);
+    this->parse (p, f);
+  }
+}
+
+void enProf_t::
+parse (::xsd::cxx::xml::dom::parser< char >& p,
+       ::xml_schema::flags f)
+{
+  while (p.more_attributes ())
+  {
+    const ::xercesc::DOMAttr& i (p.next_attribute ());
+    const ::xsd::cxx::xml::qualified_name< char > n (
+      ::xsd::cxx::xml::dom::name< char > (i));
+
+    if (n.name () == "NumBins" && n.namespace_ ().empty ())
+    {
+      this->NumBins_.set (NumBins_traits::create (i, f, this));
+      continue;
+    }
+  }
+
+  if (!NumBins_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_attribute< char > (
+      "NumBins",
+      "");
+  }
+}
+
+enProf_t* enProf_t::
+_clone (::xml_schema::flags f,
+        ::xml_schema::container* c) const
+{
+  return new class enProf_t (*this, f, c);
+}
+
+enProf_t& enProf_t::
+operator= (const enProf_t& x)
+{
+  if (this != &x)
+  {
+    static_cast< ::xml_schema::type& > (*this) = x;
+    this->NumBins_ = x.NumBins_;
+  }
+
+  return *this;
+}
+
+enProf_t::
+~enProf_t ()
 {
 }
 
@@ -4816,6 +5044,76 @@ boundaries_t::
 {
 }
 
+// thermomode_t
+//
+
+thermomode_t::
+thermomode_t (const ::xercesc::DOMElement& e,
+              ::xml_schema::flags f,
+              ::xml_schema::container* c)
+: ::xml_schema::string (e, f, c)
+{
+  _xsd_thermomode_t_convert ();
+}
+
+thermomode_t::
+thermomode_t (const ::xercesc::DOMAttr& a,
+              ::xml_schema::flags f,
+              ::xml_schema::container* c)
+: ::xml_schema::string (a, f, c)
+{
+  _xsd_thermomode_t_convert ();
+}
+
+thermomode_t::
+thermomode_t (const ::std::string& s,
+              const ::xercesc::DOMElement* e,
+              ::xml_schema::flags f,
+              ::xml_schema::container* c)
+: ::xml_schema::string (s, e, f, c)
+{
+  _xsd_thermomode_t_convert ();
+}
+
+thermomode_t* thermomode_t::
+_clone (::xml_schema::flags f,
+        ::xml_schema::container* c) const
+{
+  return new class thermomode_t (*this, f, c);
+}
+
+thermomode_t::value thermomode_t::
+_xsd_thermomode_t_convert () const
+{
+  ::xsd::cxx::tree::enum_comparator< char > c (_xsd_thermomode_t_literals_);
+  const value* i (::std::lower_bound (
+                    _xsd_thermomode_t_indexes_,
+                    _xsd_thermomode_t_indexes_ + 2,
+                    *this,
+                    c));
+
+  if (i == _xsd_thermomode_t_indexes_ + 2 || _xsd_thermomode_t_literals_[*i] != *this)
+  {
+    throw ::xsd::cxx::tree::unexpected_enumerator < char > (*this);
+  }
+
+  return *i;
+}
+
+const char* const thermomode_t::
+_xsd_thermomode_t_literals_[2] =
+{
+  "Normal",
+  "Pipe"
+};
+
+const thermomode_t::value thermomode_t::
+_xsd_thermomode_t_indexes_[2] =
+{
+  ::thermomode_t::Normal,
+  ::thermomode_t::Pipe
+};
+
 // thermostat_t
 //
 
@@ -4826,7 +5124,8 @@ thermostat_t (const T_Init_type& T_Init,
   T_Init_ (T_Init, this),
   N_Term_ (N_Term, this),
   T_Target_ (this),
-  Delta_T_ (this)
+  Delta_T_ (this),
+  ThermoMode_ (this)
 {
 }
 
@@ -4838,7 +5137,8 @@ thermostat_t (const thermostat_t& x,
   T_Init_ (x.T_Init_, f, this),
   N_Term_ (x.N_Term_, f, this),
   T_Target_ (x.T_Target_, f, this),
-  Delta_T_ (x.Delta_T_, f, this)
+  Delta_T_ (x.Delta_T_, f, this),
+  ThermoMode_ (x.ThermoMode_, f, this)
 {
 }
 
@@ -4850,7 +5150,8 @@ thermostat_t (const ::xercesc::DOMElement& e,
   T_Init_ (this),
   N_Term_ (this),
   T_Target_ (this),
-  Delta_T_ (this)
+  Delta_T_ (this),
+  ThermoMode_ (this)
 {
   if ((f & ::xml_schema::flags::base) == 0)
   {
@@ -4913,6 +5214,20 @@ parse (::xsd::cxx::xml::dom::parser< char >& p,
       }
     }
 
+    // ThermoMode
+    //
+    if (n.name () == "ThermoMode" && n.namespace_ ().empty ())
+    {
+      ::std::unique_ptr< ThermoMode_type > r (
+        ThermoMode_traits::create (i, f, this));
+
+      if (!this->ThermoMode_)
+      {
+        this->ThermoMode_.set (::std::move (r));
+        continue;
+      }
+    }
+
     break;
   }
 
@@ -4948,6 +5263,7 @@ operator= (const thermostat_t& x)
     this->N_Term_ = x.N_Term_;
     this->T_Target_ = x.T_Target_;
     this->Delta_T_ = x.Delta_T_;
+    this->ThermoMode_ = x.ThermoMode_;
   }
 
   return *this;
@@ -8474,6 +8790,18 @@ operator<< (::xercesc::DOMElement& e, const enLC_t& i)
 
     s << i.CutoffRadius ();
   }
+
+  // EnableProfiling
+  //
+  if (i.EnableProfiling ())
+  {
+    ::xercesc::DOMElement& s (
+      ::xsd::cxx::xml::dom::create_element (
+        "EnableProfiling",
+        e));
+
+    s << *i.EnableProfiling ();
+  }
 }
 
 void
@@ -8525,6 +8853,23 @@ operator<< (::xercesc::DOMElement& e, const enMem_t& i)
         e));
 
     s << *i.EnableMemPull ();
+  }
+}
+
+void
+operator<< (::xercesc::DOMElement& e, const enProf_t& i)
+{
+  e << static_cast< const ::xml_schema::type& > (i);
+
+  // NumBins
+  //
+  {
+    ::xercesc::DOMAttr& a (
+      ::xsd::cxx::xml::dom::create_attribute (
+        "NumBins",
+        e));
+
+    a << i.NumBins ();
   }
 }
 
@@ -8747,6 +9092,25 @@ operator<< (::xercesc::DOMElement& e, const boundaries_t& i)
 }
 
 void
+operator<< (::xercesc::DOMElement& e, const thermomode_t& i)
+{
+  e << static_cast< const ::xml_schema::string& > (i);
+}
+
+void
+operator<< (::xercesc::DOMAttr& a, const thermomode_t& i)
+{
+  a << static_cast< const ::xml_schema::string& > (i);
+}
+
+void
+operator<< (::xml_schema::list_stream& l,
+            const thermomode_t& i)
+{
+  l << static_cast< const ::xml_schema::string& > (i);
+}
+
+void
 operator<< (::xercesc::DOMElement& e, const thermostat_t& i)
 {
   e << static_cast< const ::xml_schema::type& > (i);
@@ -8795,6 +9159,18 @@ operator<< (::xercesc::DOMElement& e, const thermostat_t& i)
         e));
 
     s << ::xml_schema::as_double(*i.Delta_T ());
+  }
+
+  // ThermoMode
+  //
+  if (i.ThermoMode ())
+  {
+    ::xercesc::DOMElement& s (
+      ::xsd::cxx::xml::dom::create_element (
+        "ThermoMode",
+        e));
+
+    s << *i.ThermoMode ();
   }
 }
 

@@ -3,10 +3,9 @@
             xsi:noNamespaceSchemaLocation="../input/XMLFormat.xsd">
     <OutputFile OutputFileName="membrane"/>
     <EndTime>500.0</EndTime>
-    <TimeStepSize>0.01</TimeStepSize>
+    <TimeStepSize>0.005</TimeStepSize>
     <ForceCalculation>
         <LennardJones Epsilon="1.0" Sigma="1.0"/>
-        <EnableGrav X="0.0" Y="0.0" Z="-0.001"/>
         <EnableLC>
             <BoundaryBox>
                 <BoxSize X="148.0" Y="148.0" Z="148.0"/>
@@ -19,11 +18,11 @@
             </BoundaryBox>
             <CutoffRadius>4.0</CutoffRadius>
         </EnableLC>
-        <EnableOMP/>
         <EnableMem>
             <EnableMemPull/>
         </EnableMem>
     </ForceCalculation>
+    <AverageBrownianMotion>0.0</AverageBrownianMotion>
     <Dimensions>3</Dimensions>
     <FileType>
         <Input>

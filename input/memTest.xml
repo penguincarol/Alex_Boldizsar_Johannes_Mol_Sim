@@ -2,7 +2,7 @@
 <Simulation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
             xsi:noNamespaceSchemaLocation="../input/XMLFormat.xsd">
     <OutputFile OutputFileName="memTest"/>
-    <EndTime>30.0</EndTime>
+    <EndTime>300.0</EndTime>
     <TimeStepSize>0.001</TimeStepSize>
     <ForceCalculation>
         <LennardJones Epsilon="1.0" Sigma="1.0"/>
@@ -18,7 +18,6 @@
             </BoundaryBox>
             <CutoffRadius>2.5</CutoffRadius>
         </EnableLC>
-        <EnableOMP/>
         <EnableMem>
             <EnableMemPull/>
         </EnableMem>

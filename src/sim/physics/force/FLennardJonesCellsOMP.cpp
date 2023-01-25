@@ -81,7 +81,7 @@ namespace sim::physics::force {
                                             ParticleContainer::VectorCoordWrapper &cells,
                                             std::vector<double> &eps,
                                             std::vector<double> &sig) {
-            static const double rt3_2 = std::pow(2, 1 / 3);
+            static const double rt3_2 = std::pow(2, 1.0 / 3.0);
             const std::vector<std::vector<std::pair<unsigned long, unsigned long>>>& alternativeTaskGroups = particleContainer.generateDistinctAlternativeCellNeighbours();
             double *_force = force.data();
             size_t size = force.size();

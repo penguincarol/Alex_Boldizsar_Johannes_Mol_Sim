@@ -101,7 +101,7 @@ ParticleContainer::ParticleContainer(const std::vector<Particle> &buffer, std::a
     updateCells();
 
     //halo value
-    root6_of_2 = std::pow(2, 1/6);
+    root6_of_2 = std::pow(2, 1.0/6.0);
 
     if(eOMP){
         initTaskModel();

@@ -453,15 +453,14 @@ s    * right corresponding cell-vector
      * */
     template<sim::physics::bounds::side S, typename F>
     void
-    forEachParticleHaloPairInSide(const double sigma, F function) {
-        double maxBorderDistance = root6_of_2 * sigma / 2;
+    forEachParticleHaloPairInSide( F function) {
         if constexpr (S == sim::physics::bounds::side::left) {
             // left x = x_0 = min
             for (unsigned int x_1 = 0; x_1 < gridDimensions[1]; x_1++) {
                 for (unsigned int x_2 = 0; x_2 < gridDimensions[2]; x_2++) {
                     auto &cell_indices_left = cells[cellIndexFromCellCoordinates({0, x_1, x_2})];
                     for (auto i: cell_indices_left) {
-                        if (x[3 * i + 0] != 0 && x[3 * i + 0] < maxBorderDistance) {
+                        if (x[3 * i + 0] != 0 && x[3 * i + 0] < root6_of_2 * sig[i] / 2) {
                             function(force, x, eps, sig, m, type, i, x[3*i+0] * (-1), x[3*i+1],x[3*i+2], eps[i], sig[i], m[i], type[i]);
                         }
                     }
@@ -474,7 +473,7 @@ s    * right corresponding cell-vector
                     auto &cell_indices_right = cells[cellIndexFromCellCoordinates({gridDimensions[0] - 1, x_1, x_2})];
                     for (auto i: cell_indices_right) {
                         double distance = domainSize[0] - x[3 * i + 0];
-                        if (distance < maxBorderDistance) {
+                        if (distance < root6_of_2 * sig[i] / 2) {
                             function(force, x, eps, sig, m, type, i, x[3*i+0] + 2*distance, x[3*i+1],x[3*i+2], eps[i], sig[i], m[i], type[i]);
                         }
                     }
@@ -486,7 +485,7 @@ s    * right corresponding cell-vector
                 for (unsigned int x_2 = 0; x_2 < gridDimensions[2]; x_2++) {
                     auto &cell_indices_bot = cells[cellIndexFromCellCoordinates({x_0, 0, x_2})];
                     for (auto i: cell_indices_bot) {
-                        if (x[3 * i + 1] != 0 && x[3 * i + 1] < maxBorderDistance) {
+                        if (x[3 * i + 1] != 0 && x[3 * i + 1] < root6_of_2 * sig[i] / 2) {
                             function(force, x, eps, sig, m, type, i, x[3*i+0], x[3*i+1] * (-1),x[3*i+2], eps[i], sig[i], m[i], type[i]);
                         }
                     }
@@ -499,7 +498,7 @@ s    * right corresponding cell-vector
                     auto &cell_indices_top = cells[cellIndexFromCellCoordinates({x_0, gridDimensions[1] - 1, x_2})];
                     for (auto i: cell_indices_top) {
                         double distance = domainSize[1] - x[3 * i + 1];
-                        if (distance < maxBorderDistance) {
+                        if (distance < root6_of_2 * sig[i] / 2) {
                             function(force, x, eps, sig, m, type, i, x[3*i+0], x[3*i+1] + 2*distance,x[3*i+2], eps[i], sig[i], m[i], type[i]);
                         }
                     }
@@ -511,7 +510,7 @@ s    * right corresponding cell-vector
                 for (unsigned int x_1 = 0; x_1 < gridDimensions[1]; x_1++) {
                     auto &cell_indices_front = cells[cellIndexFromCellCoordinates({x_0, x_1, 0})];
                     for (auto i: cell_indices_front) {
-                        if (x[3 * i + 2] != 0 && x[3 * i + 2] < maxBorderDistance) {
+                        if (x[3 * i + 2] != 0 && x[3 * i + 2] < root6_of_2 * sig[i] / 2) {
                             function(force, x, eps, sig, m, type, i, x[3*i+0], x[3*i+1],x[3*i+2] * (-1), eps[i], sig[i], m[i], type[i]);
                         }
                     }
@@ -524,7 +523,7 @@ s    * right corresponding cell-vector
                     auto &cell_indices_back = cells[cellIndexFromCellCoordinates({x_0, x_1, gridDimensions[2] - 1})];
                     for (auto i: cell_indices_back) {
                         double distance = domainSize[2] - x[3 * i + 2];
-                        if (distance < maxBorderDistance) {
+                        if (distance < root6_of_2 * sig[i] / 2) {
                             function(force, x, eps, sig, m, type, i, x[3*i+0], x[3*i+1],x[3*i+2] + 2*distance, eps[i], sig[i], m[i], type[i]);
                         }
                     }

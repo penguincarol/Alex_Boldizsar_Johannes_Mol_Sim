@@ -62,7 +62,7 @@ namespace sim::physics::force {
                     d0 = x[indexI*3 + 0] - x[indexJ*3 + 0];
                     d1 = x[indexI*3 + 1] - x[indexJ*3 + 1];
                     d2 = x[indexI*3 + 2] - x[indexJ*3 + 2];
-                    scalar = m[indexI] * m[indexJ] * std::pow(1/std::sqrt(d0*d0+d1*d1+d2*d2),3);
+                    scalar = m[indexI] * m[indexJ] * std::pow(1.0/std::sqrt(d0*d0+d1*d1+d2*d2),3);
 
 
                     f[indexI*3 + 0] -= d0 * scalar;

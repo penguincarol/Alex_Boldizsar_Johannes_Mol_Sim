@@ -38,7 +38,7 @@ namespace sim::physics::force {
         setPairFun();
     }
 
-    static const double rt3_2 = std::pow(2,1/3);
+    static const double rt3_2 = std::pow(2,1.0/3.0);
     static void fastPairFunction(std::vector<double> &force,
                                  std::vector<double> &x,
                                  std::vector<double> &eps,
@@ -77,7 +77,7 @@ namespace sim::physics::force {
     void FLennardJones::setPairFun() {
         pairFun = [](Particle &p1, Particle &p2) {
             Eigen::Vector3d delta{p1.getX() - p2.getX()};
-            double l2Norm = delta.norm();
+            double l2Norm = delta.squaredNorm();
             double l2NInvSquare = 1 / (l2Norm * l2Norm);                        // invert squared norm
             double epsilon = std::sqrt(p1.getEpsilon()*p2.getEpsilon());
             double fac0 = 24 * epsilon * l2NInvSquare;                          // create first factor

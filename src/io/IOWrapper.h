@@ -248,7 +248,8 @@ namespace io {
                         p.getM(),
                         p.getEpsilon(),
                         p.getSigma(),
-                        p.getType()
+                        p.getType(),
+                        p.getID()
                 ));
             });
             CPParticles.CPParticle(sequence);

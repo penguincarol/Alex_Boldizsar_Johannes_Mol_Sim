@@ -28,16 +28,16 @@ namespace sim::physics::force {
     }
 
     void FGravityCellsOMP::operator()() {
-        particleContainer.runOnDataCell([&](std::vector<double> &force,
-                                            std::vector<double> &oldForce,
-                                            std::vector<double> &x,
-                                            std::vector<double> &v,
-                                            std::vector<double> &m,
-                                            std::vector<int> &type,
+        particleContainer.runOnDataCell([&](Kokkos::View<double*> &force,
+                                            Kokkos::View<double*> &oldForce,
+                                            Kokkos::View<double*> &x,
+                                            Kokkos::View<double*> &v,
+                                            Kokkos::View<double*> &m,
+                                            Kokkos::View<int*> &type,
                                             unsigned long count,
                                             ParticleContainer::VectorCoordWrapper& cells,
-                                            std::vector<double> &eps,
-                                            std::vector<double> &sig){
+                                            Kokkos::View<double*> &eps,
+                                            Kokkos::View<double*> &sig){
             // TODO impl
         });
     }

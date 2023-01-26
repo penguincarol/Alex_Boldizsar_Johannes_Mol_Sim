@@ -6,20 +6,8 @@
 
 namespace sim::physics::force {
 
-    /*
-    void FMembrane::operator()() {
-        particleContainer.forAllMembraneSprings([&](Particle &p1, Particle &p2, double desiredDistance, double springStrength){
-            //this method is basically the pairFun but you can't really make it pretty with the signature of pairFun..
-           Eigen::Vector3d dist{p2.getX() - p1.getX()};   //p1 = pi, p2 = pj
-           double norm = dist.norm();
-           Eigen::Vector3d f_ij = springStrength * (norm - desiredDistance) * dist/norm;
-           p1.add_to_F(f_ij);
-           p2.add_to_F(-f_ij);
-        });
-    }*/
-
     void FMembrane::addSpringForce(size_t p1i, size_t p1j, size_t p2i, size_t p2j,
-                                           Membrane& membrane, std::vector<double>& force, std::vector<double>& x, std::unordered_map<unsigned long, unsigned long> &id_to_index){
+                                           Membrane& membrane, Kokkos::View<double*>& force, Kokkos::View<double*>& x, std::unordered_map<unsigned long, unsigned long> &id_to_index){
         size_t idI = membrane.getMembrNodes()[p1i][p1j];
         size_t idJ = membrane.getMembrNodes()[p2i][p2j];
         size_t indexI = id_to_index[idI];
@@ -55,10 +43,10 @@ namespace sim::physics::force {
     void FMembrane::operator()() {
         //fun(membranes, force, x, count);
         particleContainer.runOnMembranes([](std::vector<Membrane>& membranes,
-                                        std::vector<double>& force,
-                                        std::vector<double>& x,
-                                        unsigned long count,
-                                        std::unordered_map<unsigned long, unsigned long> &id_to_index){
+                                            Kokkos::View<double*>& force,
+                                            Kokkos::View<double*>& x,
+                                            unsigned long count,
+                                            std::unordered_map<unsigned long, unsigned long> &id_to_index){
             for(Membrane& membrane:membranes){
                 auto& grid = membrane.getMembrNodes();
                 if(grid.empty()) continue;

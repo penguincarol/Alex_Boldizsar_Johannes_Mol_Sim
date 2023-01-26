@@ -5,6 +5,7 @@
 #include "sim/physics/bounds/types.h"
 #include "io/output/Logging.h"
 #include "Membrane.h"
+#include "Kokkos_Core.hpp"
 
 #include <vector>
 #include <array>
@@ -276,14 +277,14 @@ private:
      * */
     static constexpr unsigned long padding_count = 6;
     double root6_of_2;
-    std::vector<double> force;
-    std::vector<double> oldForce;
-    std::vector<double> x;
-    std::vector<double> v;
-    std::vector<double> m;
-    std::vector<double> eps;
-    std::vector<double> sig;
-    std::vector<int> type;
+    Kokkos::View<double*> force;
+    Kokkos::View<double*> oldForce;
+    Kokkos::View<double*> x;
+    Kokkos::View<double*> v;
+    Kokkos::View<double*> m;
+    Kokkos::View<double*> eps;
+    Kokkos::View<double*> sig;
+    Kokkos::View<int*> type;
     unsigned long count;
     /**contains particle IDs*/
     std::vector<unsigned long> activeParticles;
@@ -331,9 +332,9 @@ private:
      * @param s sigma vector
      */
     static void
-    storeParticle(Particle &p, unsigned long index, std::vector<double> &force, std::vector<double> &oldForce,
-                  std::vector<double> &x, std::vector<double> &v, std::vector<double> &m,
-                  std::vector<int> &type, std::vector<double> &e, std::vector<double> &s);
+    storeParticle(Particle &p, unsigned long index, Kokkos::View<double*> &force, Kokkos::View<double*> &oldForce,
+                  Kokkos::View<double*> &x, Kokkos::View<double*> &v, Kokkos::View<double*> &m,
+                  Kokkos::View<int*> &type, Kokkos::View<double*> &e, Kokkos::View<double*> &s);
 
     /**
      * Loads a particle from the internal data into @param p at @param index
@@ -356,9 +357,9 @@ private:
      * @param s
      */
     static void
-    loadParticle(Particle &p, unsigned long index, std::vector<double> &force, std::vector<double> &oldForce,
-                 std::vector<double> &x, std::vector<double> &v, std::vector<double> &m,
-                 std::vector<int> &type, std::vector<double> &e, std::vector<double> &s);
+    loadParticle(Particle &p, unsigned long index, Kokkos::View<double*> &force, Kokkos::View<double*> &oldForce,
+                 Kokkos::View<double*> &x, Kokkos::View<double*> &v, Kokkos::View<double*> &m,
+                 Kokkos::View<int*> &type, Kokkos::View<double*> &e, Kokkos::View<double*> &s);
 
 public:
     /**
@@ -1319,20 +1320,6 @@ public:
     void forAllPairsInSameCell(const std::function<void(Particle &p1, Particle &p2)> &function);
 
     /**
-     * Performs fun on provided data. All lambda args particle container internal data.
-     * Will be applied on every distinct cell pair. (Set-Wise) I.e. {a,b} = {b,a}.
-     * */
-    [[maybe_unused]] [[deprecated]] void forAllDistinctCellPairs(void (*fun)(std::vector<double> &force,
-                                                                             std::vector<double> &oldForce,
-                                                                             std::vector<double> &x,
-                                                                             std::vector<double> &v,
-                                                                             std::vector<double> &m,
-                                                                             std::vector<int> &type,
-                                                                             unsigned long count,
-                                                                             std::vector<unsigned long> &cell0Items,
-                                                                             std::vector<unsigned long> &cell1Items));
-
-    /**
      * Initializes generateDistinctCellNeighbours cache.
      * */
     void initTaskModel();
@@ -1340,7 +1327,7 @@ public:
     void initAlternativeTaskModel();
 private:
     std::vector<std::vector<std::vector<std::pair<unsigned long, unsigned long>>>> taskModelCache;
-    std::vector<std::vector<std::pair<unsigned long, unsigned long>>> alternativeTaskModelCache;
+    std::vector<std::pair<unsigned long, unsigned long>> alternativeTaskModelCache;
 
 
 public:
@@ -1356,7 +1343,7 @@ public:
      * */
     const std::vector<std::vector<std::vector<std::pair<unsigned long, unsigned long>>>>& generateDistinctCellNeighbours();
 
-    const std::vector<std::vector<std::pair<unsigned long, unsigned long>>>& generateDistinctAlternativeCellNeighbours();
+    const std::vector<std::pair<unsigned long, unsigned long>>& generateDistinctAlternativeCellNeighbours();
 
 
     /**
@@ -1364,17 +1351,17 @@ public:
      * Will be applied on every distinct cell neighbours. (Set-Wise) I.e. {a,b} = {b,a}.
      * Arguments:
      *
-     * std::vector<double> &force,
-     * std::vector<double> &oldForce,
-     * std::vector<double> &x,
-     * std::vector<double> &v,
-     * std::vector<double> &m,
-     * std::vector<int> &type,
+     * Kokkos::View<double*> &force,
+     * Kokkos::View<double*> &oldForce,
+     * Kokkos::View<double*> &x,
+     * Kokkos::View<double*> &v,
+     * Kokkos::View<double*> &m,
+     * Kokkos::View<int*> &type,
      * unsigned long count,
      * std::vector<unsigned long> &cell0Items
      * std::vector<unsigned long> &cell1Items
-     * std::vector<double> &eps,
-     * std::vector<double> &sig
+     * Kokkos::View<double*> &eps,
+     * Kokkos::View<double*> &sig
      * */
     template<typename F>
     void forAllDistinctCellNeighbours(F fun) {

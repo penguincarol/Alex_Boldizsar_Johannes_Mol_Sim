@@ -23,7 +23,7 @@ namespace sim::analysis {
         const double delta_x0 = domainSize[0] / bins;
         double x0 = 0;
         pc.runOnActiveData([&](auto &, auto &,
-                               std::vector<double> &x, std::vector<double> &v,
+                               Kokkos::View<double*> &x, Kokkos::View<double*> &v,
                                auto &, auto &, auto &, auto &, auto &,
                                std::unordered_map<unsigned long, unsigned long> &id_to_index,
                                std::vector<unsigned long> &activeParticles) {

@@ -13,15 +13,15 @@ void Thermostat::getCooking(){
 
     //v = beta*v for all active Particles
     if(thermoMode == ThermoMode::normalMode){
-        pc.runOnActiveData([&](std::vector<double> &force,
-                               std::vector<double> &oldForce,
-                               std::vector<double> &x,
-                               std::vector<double> &v,
-                               std::vector<double> &m,
-                               std::vector<int> &type,
+        pc.runOnActiveData([&](Kokkos::View<double*> &force,
+                               Kokkos::View<double*> &oldForce,
+                               Kokkos::View<double*> &x,
+                               Kokkos::View<double*> &v,
+                               Kokkos::View<double*> &m,
+                               Kokkos::View<int*> &type,
                                unsigned long count,
-                               std::vector<double> &eps,
-                               std::vector<double> &sig,
+                               Kokkos::View<double*> &eps,
+                               Kokkos::View<double*> &sig,
                                std::unordered_map<unsigned long, unsigned long> &id_to_index,
                                auto&){
             for(auto [_,a]: id_to_index){
@@ -32,15 +32,15 @@ void Thermostat::getCooking(){
         });
     }
     else{//ThermoMode::pipe
-        pc.runOnActiveData([&](std::vector<double> &force,
-                               std::vector<double> &oldForce,
-                               std::vector<double> &x,
-                               std::vector<double> &v,
-                               std::vector<double> &m,
-                               std::vector<int> &type,
+        pc.runOnActiveData([&](Kokkos::View<double*> &force,
+                               Kokkos::View<double*> &oldForce,
+                               Kokkos::View<double*> &x,
+                               Kokkos::View<double*> &v,
+                               Kokkos::View<double*> &m,
+                               Kokkos::View<int*> &type,
                                unsigned long count,
-                               std::vector<double> &eps,
-                               std::vector<double> &sig,
+                               Kokkos::View<double*> &eps,
+                               Kokkos::View<double*> &sig,
                                std::unordered_map<unsigned long, unsigned long> &id_to_index,
                                auto&){
             for(auto [_,a]: id_to_index){
@@ -62,15 +62,15 @@ double Thermostat::computeCurrentTemp(){
     if(thermoMode == ThermoMode::normalMode){
         double sum{0};
         //pc.forAllParticles([&sum](Particle& p ){sum += p.getM() * (p.getX().dot(p.getX()));});
-        pc.runOnActiveData([&sum](std::vector<double> &force,
-                                    std::vector<double> &oldForce,
-                                    std::vector<double> &x,
-                                    std::vector<double> &v,
-                                    std::vector<double> &m,
-                                    std::vector<int> &type,
+        pc.runOnActiveData([&sum](Kokkos::View<double*> &force,
+                                    Kokkos::View<double*> &oldForce,
+                                    Kokkos::View<double*> &x,
+                                    Kokkos::View<double*> &v,
+                                    Kokkos::View<double*> &m,
+                                  Kokkos::View<int*> &type,
                                     unsigned long count,
-                                    std::vector<double> &eps,
-                                    std::vector<double> &sig,
+                                    Kokkos::View<double*> &eps,
+                                    Kokkos::View<double*> &sig,
                                     std::unordered_map<unsigned long, unsigned long> &id_to_index,
                                     auto&){
             for(auto [_,a]: id_to_index){
@@ -81,15 +81,15 @@ double Thermostat::computeCurrentTemp(){
     }else{  //ThermoMode::pipe
 
         double sum{0};
-        pc.runOnActiveData([this, &sum](std::vector<double> &force,
-                                  std::vector<double> &oldForce,
-                                  std::vector<double> &x,
-                                  std::vector<double> &v,
-                                  std::vector<double> &m,
-                                  std::vector<int> &type,
+        pc.runOnActiveData([this, &sum](Kokkos::View<double*> &force,
+                                  Kokkos::View<double*> &oldForce,
+                                  Kokkos::View<double*> &x,
+                                  Kokkos::View<double*> &v,
+                                  Kokkos::View<double*> &m,
+                                        Kokkos::View<int*> &type,
                                   unsigned long count,
-                                  std::vector<double> &eps,
-                                  std::vector<double> &sig,
+                                  Kokkos::View<double*> &eps,
+                                  Kokkos::View<double*> &sig,
                                   std::unordered_map<unsigned long, unsigned long> &id_to_index,
                                   auto&){
             double meanYDirection{0};

@@ -13,12 +13,12 @@ namespace sim::physics::force {
         return pairFun;
     }
 
-    static void fastPairFunction(std::vector<double> &force,
-                                 std::vector<double> &x,
-                                 std::vector<double> &eps,
-                                 std::vector<double> &sig,
-                                 std::vector<double> &m,
-                                 std::vector<int> &t,
+    static void fastPairFunction(Kokkos::View<double*> &force,
+                                 Kokkos::View<double*> &x,
+                                 Kokkos::View<double*> &eps,
+                                 Kokkos::View<double*> &sig,
+                                 Kokkos::View<double*> &m,
+                                 Kokkos::View<int*> &t,
                                  unsigned long indexI, unsigned long indexJ) {
         double d0, d1, d2, s, df0, df1, df2;
         d0 = x[3*indexI + 0] - x[3*indexJ + 0];
@@ -59,12 +59,12 @@ namespace sim::physics::force {
         return fpairFun;
     }
 
-    static void fastForeAlt(std::vector<double> &force,
-                     std::vector<double> &x,
-                     std::vector<double> &eps,
-                     std::vector<double> &sig,
-                     std::vector<double> &m,
-                     std::vector<int> &t,
+    static void fastForeAlt(Kokkos::View<double*> &force,
+                     Kokkos::View<double*> &x,
+                     Kokkos::View<double*> &eps,
+                     Kokkos::View<double*> &sig,
+                     Kokkos::View<double*> &m,
+                     Kokkos::View<int*> &t,
                      unsigned long indexI,
                      double xJ0, double xJ1, double xJ2,
                      double, double, double mJ, int) {
@@ -85,12 +85,12 @@ namespace sim::physics::force {
         return fastForeAlt;
     }
 
-    static std::array<double,3> fastForceRet(std::vector<double> &force,
-                             std::vector<double> &x,
-                             std::vector<double> &eps,
-                             std::vector<double> &sig,
-                             std::vector<double> &m,
-                             std::vector<int> &t,
+    static std::array<double,3> fastForceRet(Kokkos::View<double*> &force,
+                             Kokkos::View<double*> &x,
+                             Kokkos::View<double*> &eps,
+                             Kokkos::View<double*> &sig,
+                             Kokkos::View<double*> &m,
+                             Kokkos::View<int*> &t,
                              unsigned long indexI,
                              double xJ0, double xJ1, double xJ2,
                              double, double, double mJ, int){

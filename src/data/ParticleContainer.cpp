@@ -14,14 +14,14 @@ ParticleContainer::ParticleContainer() {
 
 ParticleContainer::ParticleContainer(const std::vector<Particle> &buffer) {
     count = buffer.size();
-    force.resize(count * 3);
-    oldForce.resize(count * 3);
-    x.resize(count * 3);
-    v.resize(count * 3);
-    m.resize(count);
-    type.resize(count);
-    eps.resize(count);
-    sig.resize(count);
+    force = Kokkos::View<double*>("force", count * 3);
+    oldForce = Kokkos::View<double*>("oldForce", count*3);
+    x = Kokkos::View<double*>("x", count * 3);
+    v = Kokkos::View<double*>("v", count * 3);
+    m = Kokkos::View<double*>("m", count);
+    type = Kokkos::View<int*>("type", count);
+    eps = Kokkos::View<double*>("eps", count);
+    sig = Kokkos::View<double*>("sig", count);
 
     //define which particles are still part of the simulation
     activeParticles.resize(count);
@@ -82,21 +82,6 @@ ParticleContainer::ParticleContainer(const std::vector<Particle> &buffer, std::a
     cells = VectorCoordWrapper(gridDimensions[0]+2, gridDimensions[1]+2, gridDimensions[2]+2);
     this->r_cutoff = (double) r_cutoff;
 
-    if(eOMP) {
-        //create padding
-        unsigned long newSize = (cells.size() - 1) * padding_count + count;
-        force.resize(newSize * 3);
-        oldForce.resize(newSize * 3);
-        x.resize(newSize * 3);
-        v.resize(newSize * 3);
-        m.resize(newSize);
-        type.resize(newSize);
-        eps.resize(newSize);
-        sig.resize(newSize);
-        //particles are now at the beginning of all vectors
-        //by calling update cells will be sorted and moved into cell
-    }
-
     updateCells();
 
     //halo value
@@ -124,14 +109,14 @@ unsigned long ParticleContainer::activeSize() {
 
 void ParticleContainer::clear() {
     count = 0;
-    force.clear();
-    oldForce.clear();
-    x.clear();
-    v.clear();
-    m.clear();
-    type.clear();
-    eps.clear();
-    sig.clear();
+    //force.clear();
+//    oldForce.clear();
+//    x.clear();
+//    v.clear();
+//    m.clear();
+//    type.clear();
+//    eps.clear();
+//    sig.clear();
     activeParticles.clear();
     cells.clear();
     id_to_index.clear();
@@ -152,10 +137,10 @@ std::array<unsigned int, 3> ParticleContainer::getGridDimensions() {
     return gridDimensions;
 }
 
-void ParticleContainer::loadParticle(Particle &p, unsigned long index, std::vector<double> &force,
-                                     std::vector<double> &oldForce, std::vector<double> &x, std::vector<double> &v,
-                                     std::vector<double> &m, std::vector<int> &type, std::vector<double>& e,
-                                     std::vector<double> &s) {
+void ParticleContainer::loadParticle(Particle &p, unsigned long index, Kokkos::View<double*> &force,
+                                     Kokkos::View<double*> &oldForce, Kokkos::View<double*> &x, Kokkos::View<double*> &v,
+                                     Kokkos::View<double*> &m, Kokkos::View<int*> &type, Kokkos::View<double*>& e,
+                                     Kokkos::View<double*> &s) {
     Eigen::Vector3d f{force[index * 3 + 0],
                       force[index * 3 + 1],
                       force[index * 3 + 2]};
@@ -182,10 +167,10 @@ void ParticleContainer::loadParticle(Particle &p, unsigned long index) {
     loadParticle(p, index, force, oldForce, x, v, m, type, eps, sig);
 }
 
-void ParticleContainer::storeParticle(Particle &p, unsigned long index, std::vector<double> &force,
-                                      std::vector<double> &oldForce, std::vector<double> &x, std::vector<double> &v,
-                                      std::vector<double> &m, std::vector<int> &type, std::vector<double>& e,
-                                      std::vector<double> &s) {
+void ParticleContainer::storeParticle(Particle &p, unsigned long index, Kokkos::View<double*> &force,
+                                      Kokkos::View<double*> &oldForce, Kokkos::View<double*> &x, Kokkos::View<double*> &v,
+                                      Kokkos::View<double*> &m, Kokkos::View<int*> &type, Kokkos::View<double*>& e,
+                                      Kokkos::View<double*> &s) {
     auto &ff = p.getF();
     force[index * 3 + 0] = ff[0];
     force[index * 3 + 1] = ff[1];
@@ -233,29 +218,6 @@ void ParticleContainer::updateCells() {
         if(x[3*i+2] > 0) cellCoordinate[2] = (unsigned int) (x[3 * i+2] / r_cutoff);
         this->cells[cellIndexFromCellCoordinates(cellCoordinate)].emplace_back(id);
     } // now cells contain ID of particle -> need sort particles and replace ID in cell with index
-
-    if(!eOMP) return;
-
-    const unsigned long cellCount = cells.size();
-    unsigned long vecIndex = 0;
-    for (unsigned long indexCells {0}; indexCells < cellCount; indexCells++) {
-        const unsigned long cellItems = cells[indexCells].size();
-        for (unsigned long indexC {0}; indexC < cellItems; indexC++) {
-            const unsigned long thisID = cells[indexCells][indexC];
-            if (index_to_id.contains(vecIndex)) { // need to swap
-                const unsigned long otherID = index_to_id[vecIndex];
-                swap(thisID, otherID);
-            }
-            else { //current position is free
-                move(id_to_index[thisID], vecIndex, thisID);
-            }
-            //thisID done -> replace ID in cells with index
-            cells[indexCells][indexC] = vecIndex;
-
-            vecIndex++;
-        }
-        vecIndex += padding_count; // padding
-    }
 }
 
 void ParticleContainer::swap(unsigned long id0, unsigned long id1) {
@@ -521,28 +483,6 @@ void ParticleContainer::forAllPairsInSameCell(const std::function<void(Particle 
     }
 }
 
-[[maybe_unused]] void ParticleContainer::forAllDistinctCellPairs(
-#pragma region param
-        void(*fun)(std::vector<double> &force,
-                   std::vector<double> &oldForce,
-                   std::vector<double> &x,
-                   std::vector<double> &v,
-                   std::vector<double> &m,
-                   std::vector<int> &type,
-                   unsigned long count,
-                   std::vector<unsigned long> &cell0Items,
-                   std::vector<unsigned long> &cell1Items)
-#pragma endregion
-) {
-    io::output::loggers::general->warn(
-            "forAllDistinctCellPairs probably wasn't the method you wanted to call you probably wanted to use forAllDistinctCellNeighbours");
-    for (unsigned long i = 0; i < cells.size(); i++) {
-        for (unsigned long j = i + 1; j < cells.size(); j++) {
-            fun(force, oldForce, x, v, m, type, count, cells[i], cells[j]);
-        }
-    }
-}
-
 void ParticleContainer::clearStoreForce() {
     unsigned long size = force.size() / 3;
     for(unsigned long i {0}; i < size; i++) {
@@ -556,9 +496,7 @@ void ParticleContainer::clearStoreForce() {
 }
 
 void ParticleContainer::initAlternativeTaskModel(){
-    const unsigned long maxThreads{static_cast<unsigned long>(omp_get_max_threads())};
     alternativeTaskModelCache.clear();
-    alternativeTaskModelCache.resize(maxThreads);
     //26 TaskGroups (for the 13 cases*2)
     //every taskGroup has the pairs of CellIndices that are independently doable
 
@@ -582,44 +520,17 @@ void ParticleContainer::initAlternativeTaskModel(){
                                                   b{0,0,0}, b{0,1,0},
                                                   b{0,0,0}, b{0,0,1}, b{0,0,0}, b{0,0,1},
                                                   b{0,0,0}, b{0,1,0}, b{0,0,1}, b{0,1,1}};
-    #ifndef TASK_ROUND_ROBIN
-    std::vector<size_t> interactions;
-    interactions.resize(maxThreads);
-    #endif
-
     for(auto c = 0; c < numCases; c++){ //pun intended
-
-        #ifdef TASK_ROUND_ROBIN
-        constexpr unsigned long roundRobinMolUpdateThreshold = 1'000'000;
-        size_t roundRobinAccumulator{0};
-        #endif
-        size_t nextIndex{0};
-
         for(unsigned int x0 = lowerBounds[c][0]; x0 < upperBounds[c][0]; x0++){
             for(unsigned int x1 = lowerBounds[c][1]; x1 < upperBounds[c][1]; x1++){
                 for(unsigned int x2 = lowerBounds[c][2]; x2 < upperBounds[c][2]; x2++){
                     auto cell1 = cellIndexFromCellCoordinatesFast(x0, x1, x2);
                     auto cell2 = cellIndexFromCellCoordinatesFast(x0 + offsets[c][0], x1 + offsets[c][1], x2 + offsets[c][2]);
-                    alternativeTaskModelCache[nextIndex].emplace_back(cell1,cell2);
-                    SPDLOG_TRACE("Added CellInteraction (({} {} {}), ({} {} {})) to taskBlock {} ", x0, x1, x2, x0 + offsets[c][0], x1 + offsets[c][1], x2 + offsets[c][2], 2*c+0);
-
-                    #ifdef TASK_ROUND_ROBIN
-                    roundRobinAccumulator += cells[cell1].size() * cells[cell2].size();
-                    if(roundRobinAccumulator >= roundRobinMolUpdateThreshold){
-                        nextIndex = (nextIndex+1)%maxThreads;
-                        roundRobinAccumulator = 0;
-                    }
-                    #else
-                    interactions[nextIndex] += cells[cell1].size()*cells[cell2].size();
-                    nextIndex = 0;
-                    size_t last_count = interactions[nextIndex];
-                    for(size_t i = 1; i < maxThreads; i++){
-                        if(interactions[i] <= last_count){
-                            last_count = interactions[i];
-                            nextIndex = i;
+                    for(auto i : cells[cell1]) {
+                        for(auto j : cells[cell2]) {
+                            alternativeTaskModelCache.emplace_back(i,j);
                         }
                     }
-                    #endif
                 }
             }
         }
@@ -756,7 +667,7 @@ const std::vector<std::vector<std::vector<std::pair<unsigned long, unsigned long
     return taskModelCache;
 }
 
-const std::vector<std::vector<std::pair<unsigned long, unsigned long>>>& ParticleContainer::generateDistinctAlternativeCellNeighbours(){
+const std::vector<std::pair<unsigned long, unsigned long>>& ParticleContainer::generateDistinctAlternativeCellNeighbours(){
     initAlternativeTaskModel();
     return alternativeTaskModelCache;
 }

@@ -15,6 +15,7 @@
 using namespace io::input;
 
 int main(int argc, char *argsv[]) {
+    Kokkos::initialize(argc,argsv);
     //Handle input
     CLIArgsParser parser{argc, argsv};
     parser.parseArgs();
@@ -65,6 +66,7 @@ int main(int argc, char *argsv[]) {
 
     //clean up
     pc.clear();
+    Kokkos::finalize();
     return 0;
 }
 

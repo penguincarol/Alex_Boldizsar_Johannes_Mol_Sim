@@ -7,11 +7,11 @@
 namespace sim::physics::position {
     void XStoermerVelvetOMP::operator()() {
         double delta_t = this->delta_t;
-        particleContainer.runOnActiveData([delta_t](std::vector<double> &force,
-                                       std::vector<double> &oldForce,
-                                       std::vector<double> &x,
-                                       std::vector<double> &v,
-                                       std::vector<double> &m,
+        particleContainer.runOnActiveData([delta_t](Kokkos::View<double*> &force,
+                                       Kokkos::View<double*> &oldForce,
+                                       Kokkos::View<double*> &x,
+                                       Kokkos::View<double*> &v,
+                                       Kokkos::View<double*> &m,
                                        auto,
                                        unsigned long count,
                                        auto, auto,std::unordered_map<unsigned long, unsigned long> &id_to_index,

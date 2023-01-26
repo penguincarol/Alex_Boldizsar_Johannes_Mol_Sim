@@ -7,8 +7,8 @@
 namespace sim::physics::force {
     void FMembranePull::operator()() {
         particleContainer.runOnMembranes([&](std::vector<Membrane>& membranes,
-                                            std::vector<double>& force,
-                                            std::vector<double>& x,
+                                             Kokkos::View<double*>& force,
+                                             Kokkos::View<double*>& x,
                                             unsigned long count,
                                             std::unordered_map<unsigned long, unsigned long> &id_to_index){
             for(auto& mem : membranes) {

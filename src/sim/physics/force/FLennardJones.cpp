@@ -11,19 +11,20 @@ namespace sim::physics::force {
      * \image latex plot.eps "Runtime comparison of All-Pairs algorithm with Linked-Cell algorithm" width=5cm
      */
     void FLennardJones::operator()() {
-        particleContainer.runOnActiveData([this](std::vector<double> &force,
-                                       std::vector<double> &oldForce,
-                                       std::vector<double> &x,
-                                       std::vector<double> &v,
-                                       std::vector<double> &m,
-                                       std::vector<int> &type,
+        particleContainer.runOnActiveData([this](
+                                       Kokkos::View<double*> &force,
+                                       Kokkos::View<double*> &oldForce,
+                                       Kokkos::View<double*> &x,
+                                       Kokkos::View<double*> &v,
+                                       Kokkos::View<double*> &m,
+                                       Kokkos::View<int*> &type,
                                        unsigned long count,
-                                       std::vector<double> &eps,
-                                       std::vector<double> &sig,
-                                       std::unordered_map<unsigned long, unsigned long> &id_to_index, auto&_){
-            for(unsigned long indexI = 0; indexI < count; indexI++){
-                for(unsigned long indexJ = indexI + 1; indexJ < count; indexJ++) {
-                    this->fpairFun(force, x, eps, sig, m, type, id_to_index[indexI], id_to_index[indexJ]);
+                                       Kokkos::View<double*> &eps,
+                                       Kokkos::View<double*> &sig,
+                                       std::unordered_map<unsigned long, unsigned long> &id_to_index, std::vector<unsigned long>& activeParticles){
+            for(unsigned long indexI = 0; indexI < activeParticles.size(); indexI++){
+                for(unsigned long indexJ = indexI + 1; indexJ < activeParticles.size(); indexJ++) {
+                    this->fpairFun(force, x, eps, sig, m, type, activeParticles[indexI], activeParticles[indexJ]);
                 }
             }
         });
@@ -39,12 +40,12 @@ namespace sim::physics::force {
     }
 
     static const double rt3_2 = std::pow(2,1.0/3.0);
-    static void fastPairFunction(std::vector<double> &force,
-                                 std::vector<double> &x,
-                                 std::vector<double> &eps,
-                                 std::vector<double> &sig,
-                                 std::vector<double> &m,
-                                 std::vector<int> &t,
+    static void fastPairFunction(Kokkos::View<double*> &force,
+                                 Kokkos::View<double*> &x,
+                                 Kokkos::View<double*> &eps,
+                                 Kokkos::View<double*> &sig,
+                                 Kokkos::View<double*> &m,
+                                 Kokkos::View<int*> &t,
                                  unsigned long indexI, unsigned long indexJ) {
         double sigma, sigma2, sigma6, epsilon, d0, d1, d2, dsqr, l2NInvSquare, fac0, l2NInvPow6, fac1_sum1, fac1;
         sigma = (sig[indexI] + sig[indexJ]) / 2;
@@ -99,12 +100,12 @@ namespace sim::physics::force {
         return fpairFun;
     }
 
-    static void fastPairAlt(std::vector<double> &force,
-                            std::vector<double> &x,
-                            std::vector<double> &eps,
-                            std::vector<double> &sig,
-                            std::vector<double> &m,
-                            std::vector<int> &t,
+    static void fastPairAlt(Kokkos::View<double*> &force,
+                            Kokkos::View<double*> &x,
+                            Kokkos::View<double*> &eps,
+                            Kokkos::View<double*> &sig,
+                            Kokkos::View<double*> &m,
+                            Kokkos::View<int*> &t,
                             unsigned long indexI,
                             double xJ0, double xJ1, double xJ2,
                             double epsJ, double sigJ, double mJ, int tJ) {
@@ -137,12 +138,12 @@ namespace sim::physics::force {
         return fastPairAlt;
     }
 
-    std::array<double,3> fastPairRet(std::vector<double> &force,
-                                     std::vector<double> &x,
-                                     std::vector<double> &eps,
-                                     std::vector<double> &sig,
-                                     std::vector<double> &m,
-                                     std::vector<int> &t,
+    std::array<double,3> fastPairRet(Kokkos::View<double*> &force,
+                                     Kokkos::View<double*> &x,
+                                     Kokkos::View<double*> &eps,
+                                     Kokkos::View<double*> &sig,
+                                     Kokkos::View<double*> &m,
+                                     Kokkos::View<int*> &t,
                                      unsigned long indexI,
                                      double xJ0, double xJ1, double xJ2,
                                      double epsJ, double sigJ, double mJ, int tJ){

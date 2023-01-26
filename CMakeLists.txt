@@ -24,6 +24,8 @@ file(GLOB_RECURSE MY_SRC "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp" "${CMAKE_CURREN
 #   Create Executable                                                                                       #
 #############################################################################################################
 add_subdirectory(libs/libspdlog)
+add_subdirectory(libs/libkokkos)
+include_directories(${Kokkos_INCLUDE_DIRS_RET})
 #find_package(spdlog REQUIRED PATHS ${CMAKE_CURRENT_SOURCE_DIR}/libs/libspdlog)
 add_executable(MolSim ${MY_SRC})
 target_compile_features(MolSim PRIVATE cxx_std_20)
@@ -42,11 +44,13 @@ if(OpenMP_CXX_FOUND)
             PUBLIC PkgConfig::XERCESC
             PRIVATE spdlog::spdlog
             PUBLIC OpenMP::OpenMP_CXX
+            PUBLIC Kokkos::kokkos
             )
 else()
     target_link_libraries(MolSim
             PUBLIC PkgConfig::XERCESC
             PRIVATE spdlog::spdlog
+            PUBLIC Kokkos::kokkos
             )
 endif()
 # activate all compiler warnings. Clean up your code :P

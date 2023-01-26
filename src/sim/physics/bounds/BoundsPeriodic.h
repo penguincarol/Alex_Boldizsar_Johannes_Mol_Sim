@@ -59,16 +59,16 @@ namespace sim::physics::bounds {
                 return;
             }
 
-            this->particleContainer.template runOnDataCell([&](std::vector<double> &force,
-                                                               std::vector<double> &oldForce,
-                                                               std::vector<double> &x,
-                                                               std::vector<double> &v,
-                                                               std::vector<double> &m,
-                                                               std::vector<int> &t,
+            this->particleContainer.template runOnDataCell([&](Kokkos::View<double*> &force,
+                                                               Kokkos::View<double*> &oldForce,
+                                                               Kokkos::View<double*> &x,
+                                                               Kokkos::View<double*> &v,
+                                                               Kokkos::View<double*> &m,
+                                                               Kokkos::View<int*> &t,
                                                                unsigned long count,
                                                                ParticleContainer::VectorCoordWrapper &cells,
-                                                               std::vector<double> &eps,
-                                                               std::vector<double> &sig){
+                                                               Kokkos::View<double*> &eps,
+                                                               Kokkos::View<double*> &sig){
                 auto tasks = this->particleContainer.template generateHaloBorderTasks<S>();
                 auto retFun = this->forceHandler.getFastForceRetFunction();
                 double* f = force.data();

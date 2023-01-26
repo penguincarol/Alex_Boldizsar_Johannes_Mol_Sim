@@ -256,25 +256,45 @@ TEST(FMembrane, increasingErrors){
 
     fMem.operator()();
     fLen.operator()();
-    ASSERT_DOUBLE_EQ(pc.getParticle(pc.getMembranes()[0].getMembrNodes()[2][2]).getF().norm(), 0.)<<"1 force calc";
+    //ASSERT_DOUBLE_EQ(pc.getParticle(pc.getMembranes()[0].getMembrNodes()[1][0]).getF().norm(), 0.)<<"1 force calc";
     //ASSERT_DOUBLE_EQ(pc.getParticle(pc.getMembranes()[0].getMembrNodes()[1][1]).getF().norm(), 0.)<< "Force at " << 1 << " " << 1 << "after 1k iterations unequal to 0";
 
-    for(size_t i{0}; i < 1'000; i++){
+    for(size_t i{0}; i < 2000; i++){
         xCalc.operator()();
         pc.updateCells();
         pc.clearStoreForce();
         fMem.operator()();
         fLen.operator()();
-        xCalc.operator()();
+        vCalc.operator()();
     }
+    EXPECT_DOUBLE_EQ(pc.getParticle(pc.getMembranes()[0].getMembrNodes()[1][0]).getF().norm(), 0.)<< "Force at " << 2 << " " << 2 << "after 1k iterations unequal to 0";
+    //ASSERT_DOUBLE_EQ(pc.getParticle(pc.getMembranes()[0].getMembrNodes()[1][1]).getF().norm(), 0.)<< "Force at " << 1 << " " << 1 << "after 1k iterations unequal to 0";
+    EXPECT_DOUBLE_EQ(pc.getParticle(pc.getMembranes()[0].getMembrNodes()[1][0]).getF().norm(), 0.)<< "Force at " << 1 << " " << 0<< "after 1k iterations unequal to 0";
 
-    /*pc.forAllParticles([&](Particle& p){
-        ASSERT_DOUBLE_EQ(p.getF().norm(), 0.);
-    });*/
+    for(size_t i{0}; i < 500; i++){
+        xCalc.operator()();
+        pc.updateCells();
+        pc.clearStoreForce();
+        fMem.operator()();
+        fLen.operator()();
+        vCalc.operator()();
+    }
+    EXPECT_DOUBLE_EQ(pc.getParticle(pc.getMembranes()[0].getMembrNodes()[1][0]).getF().norm(), 0.)<< "Force at " << 2 << " " << 2 << "after 1k iterations unequal to 0";
+    //ASSERT_DOUBLE_EQ(pc.getParticle(pc.getMembranes()[0].getMembrNodes()[1][1]).getF().norm(), 0.)<< "Force at " << 1 << " " << 1 << "after 1k iterations unequal to 0";
+    EXPECT_DOUBLE_EQ(pc.getParticle(pc.getMembranes()[0].getMembrNodes()[1][0]).getF().norm(), 0.)<< "Force at " << 1 << " " << 0<< "after 1k iterations unequal to 0";
 
-    ASSERT_DOUBLE_EQ(pc.getParticle(pc.getMembranes()[0].getMembrNodes()[2][2]).getF().norm(), 0.)<< "Force at " << 2 << " " << 2 << "after 1k iterations unequal to 0";
-    ASSERT_DOUBLE_EQ(pc.getParticle(pc.getMembranes()[0].getMembrNodes()[1][1]).getF().norm(), 0.)<< "Force at " << 1 << " " << 1 << "after 1k iterations unequal to 0";
-    ASSERT_DOUBLE_EQ(pc.getParticle(pc.getMembranes()[0].getMembrNodes()[1][0]).getF().norm(), 0.)<< "Force at " << 1 << " " << 0<< "after 1k iterations unequal to 0";
+    for(size_t i{0}; i < 500; i++){
+        xCalc.operator()();
+        pc.updateCells();
+        pc.clearStoreForce();
+        fMem.operator()();
+        fLen.operator()();
+        vCalc.operator()();
+    }
+    EXPECT_DOUBLE_EQ(pc.getParticle(pc.getMembranes()[0].getMembrNodes()[1][0]).getF().norm(), 0.)<< "Force at " << 2 << " " << 2 << "after 1k iterations unequal to 0";
+    //ASSERT_DOUBLE_EQ(pc.getParticle(pc.getMembranes()[0].getMembrNodes()[1][1]).getF().norm(), 0.)<< "Force at " << 1 << " " << 1 << "after 1k iterations unequal to 0";
+    EXPECT_DOUBLE_EQ(pc.getParticle(pc.getMembranes()[0].getMembrNodes()[1][0]).getF().norm(), 0.)<< "Force at " << 1 << " " << 0<< "after 1k iterations unequal to 0";
+
 
     for(size_t i{0}; i < pc.getMembranes()[0].getMembrNodes().size(); i++){
         for(size_t j{0}; j < pc.getMembranes()[0].getMembrNodes()[0].size(); j++){

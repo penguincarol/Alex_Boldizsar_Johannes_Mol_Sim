@@ -3,7 +3,7 @@
             xsi:noNamespaceSchemaLocation="../input/XMLFormat.xsd">
     <OutputFile OutputFileName="membrane"/>
     <EndTime>500.0</EndTime>
-    <TimeStepSize>0.005</TimeStepSize>
+    <TimeStepSize>0.01</TimeStepSize>
     <ForceCalculation>
         <LennardJones Epsilon="1.0" Sigma="1.0"/>
         <EnableLC>
@@ -32,7 +32,7 @@
                         <Position X="15.0" Y="15.0" Z="1.5"/>
                         <Velocity X="0.0" Y="0.0" Z="0.0"/>
                         <Dimensions X="50" Y="50" Z="1"/>
-                        <Pull EndTimePull="150.0">
+                        <Pull EndTimePull="0">
                             <PullForce X="0.0" Y="0.0" Z="0.8"/>
                             <PullIndices>
                                 <Index I="17" J="24"/>

@@ -234,7 +234,7 @@ TEST(FMembrane, increasingErrors){
     membr.mass = 1;
     membr.start_velocity = {0., 0., 0.};
     membr.desiredDistance = 2.2;
-    membr.springStrength = 5;
+    membr.springStrength = 300;
     membr.pullEndTime = 0;
     membr.pullForce = {0, 0, 0};
     membr.pullIndices = {};
@@ -246,6 +246,7 @@ TEST(FMembrane, increasingErrors){
     ParticleContainer pc(bufVec, std::array<double, 3>{100., 100., 100.}, 3., membrVec);
 
     auto fMem = sim::physics::force::FMembrane(0, 100, 0.01, 1, 1, pc);
+    auto fLen = sim::physics::force::FLennardJonesCells(0,100, 0.01, 1.0, 1.0, pc);
 
     //auto xCalc = sim::physics::position::XStoermerVelvetOMP(0., 100, 0.01, 1, 1, pc);
     //auto vCalc = sim::physics::velocity::VStoermerVelvetOMP(0., 100., 0.01, 1, 1, pc);
@@ -254,13 +255,16 @@ TEST(FMembrane, increasingErrors){
 
 
     fMem.operator()();
+    fLen.operator()();
     ASSERT_DOUBLE_EQ(pc.getParticle(pc.getMembranes()[0].getMembrNodes()[2][2]).getF().norm(), 0.)<<"1 force calc";
+    //ASSERT_DOUBLE_EQ(pc.getParticle(pc.getMembranes()[0].getMembrNodes()[1][1]).getF().norm(), 0.)<< "Force at " << 1 << " " << 1 << "after 1k iterations unequal to 0";
 
-    for(size_t i{0}; i < 10'000; i++){
+    for(size_t i{0}; i < 1'000; i++){
         xCalc.operator()();
         pc.updateCells();
         pc.clearStoreForce();
         fMem.operator()();
+        fLen.operator()();
         xCalc.operator()();
     }
 

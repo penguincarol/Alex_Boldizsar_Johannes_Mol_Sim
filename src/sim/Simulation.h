@@ -180,7 +180,7 @@ namespace sim {
                 calcX();
                 if (linkedCell) particleContainer.updateCells(); // update cell structure
                 particleContainer.clearStoreForce();
-                if (linkedCell) handleBounds();
+                //if (linkedCell) handleBounds();
                 calcF();
                 calcV();
                 if(thermoEnable){thermostat.notify();}

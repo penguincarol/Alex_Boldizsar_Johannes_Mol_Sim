@@ -286,6 +286,7 @@ namespace io::input {
                     p.setOldF({cp.OldForce().X(), cp.OldForce().Y(), cp.OldForce().Z()});
                     p.setSigma(cp.Sigma());
                     p.setEpsilon(cp.Epsilon());
+                    p.setID(cp.Id());
                     particles.push_back(p);
                 }
             }

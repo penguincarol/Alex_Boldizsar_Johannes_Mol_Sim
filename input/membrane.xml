@@ -6,6 +6,7 @@
     <TimeStepSize>0.01</TimeStepSize>
     <ForceCalculation>
         <LennardJones Epsilon="1.0" Sigma="1.0"/>
+        <EnableGrav X="0.0" Y="-0.001" Z="0.0"/>
         <EnableLC>
             <BoundaryBox>
                 <BoxSize X="148.0" Y="148.0" Z="148.0"/>
@@ -32,7 +33,7 @@
                         <Position X="15.0" Y="15.0" Z="1.5"/>
                         <Velocity X="0.0" Y="0.0" Z="0.0"/>
                         <Dimensions X="50" Y="50" Z="1"/>
-                        <Pull EndTimePull="0">
+                        <Pull EndTimePull="150">
                             <PullForce X="0.0" Y="0.0" Z="0.8"/>
                             <PullIndices>
                                 <Index I="17" J="24"/>

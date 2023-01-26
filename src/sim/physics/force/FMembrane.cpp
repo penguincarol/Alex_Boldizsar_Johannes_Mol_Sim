@@ -29,19 +29,23 @@ namespace sim::physics::force {
         d0 = x[indexI * 3 + 0] - x[indexJ * 3 + 0];
         d1 = x[indexI * 3 + 1] - x[indexJ * 3 + 1];
         d2 = x[indexI * 3 + 2] - x[indexJ * 3 + 2];
+
         double f0,f1,f2;
         double norm = std::sqrt(d0*d0+d1*d1+d2*d2);
         double k = membrane.getSpringStrength();
         double dd = membrane.getDesiredDistance();
+        double springDev;
         if(p1i != p2i && p1j != p2j){
-            f0 = k * (norm - std::sqrt(2.0) * dd) * d0 / norm;
-            f1 = k * (norm - std::sqrt(2.0) * dd) * d1 / norm;
-            f2 = k * (norm - std::sqrt(2.0) * dd) * d2 / norm;
+            springDev = norm - std::sqrt(2.0) * dd;
         }else{
-            f0 = k * (norm - dd) * d0 / norm;
-            f1 = k * (norm - dd) * d1 / norm;
-            f2 = k * (norm - dd) * d2 / norm;
+            springDev = norm - dd;
         }
+        constexpr double smallDistance = 0.0000001;
+        if(springDev < smallDistance){return;}
+
+        f0 = k * (springDev) * d0 / norm;
+        f1 = k * (springDev) * d1 / norm;
+        f2 = k * (springDev) * d2 / norm;
 
         force[indexI * 3 + 0] -= f0;
         force[indexI * 3 + 1] -= f1;

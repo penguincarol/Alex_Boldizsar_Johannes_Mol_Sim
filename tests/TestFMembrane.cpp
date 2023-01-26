@@ -273,8 +273,6 @@ TEST(FMembrane, increasingErrors){
             ASSERT_DOUBLE_EQ(pc.getParticle(pc.getMembranes()[0].getMembrNodes()[i][j]).getF().norm(), 0.)<< "Force at " << i << " " << j << "after 1k iterations unequal to 0";
         }
     }
-
-
 }*/
 
 

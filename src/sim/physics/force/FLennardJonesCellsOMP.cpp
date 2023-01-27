@@ -7,6 +7,18 @@
 
 #include <iostream>
 
+/**
+* I am not writing yet another task initializer so this method just creates the 1d tasks using the 2d tasks
+*/
+template<typename T>
+std::vector<T> flatten(const std::vector<std::vector<T>> &orig)
+{
+    std::vector<T> ret;
+    for(const auto &v: orig)
+        ret.insert(ret.end(), v.begin(), v.end());
+    return ret;
+}
+
 namespace sim::physics::force {
     /**
      * @brief Returns the force function used
@@ -47,7 +59,10 @@ namespace sim::physics::force {
         return fpairFunAlt;
     }
 
+    #ifndef ONE_DIMENSIONAL_TASKS
+    #ifndef THREE_DIMENSIONAL_TASKS
     void FLennardJonesCellsOMP::operator()() {
+
         particleContainer.runOnDataCell([&](std::vector<double> &force,
                                             std::vector<double> &oldForce,
                                             std::vector<double> &x,
@@ -55,15 +70,15 @@ namespace sim::physics::force {
                                             std::vector<double> &m,
                                             std::vector<int> &type,
                                             unsigned long count,
-                                            ParticleContainer::VectorCoordWrapper& cells,
+                                            ParticleContainer::VectorCoordWrapper &cells,
                                             std::vector<double> &eps,
-                                            std::vector<double> &sig){
+                                            std::vector<double> &sig) {
             auto fpairFun = this->fpairFun;
-            #pragma omp parallel for default(none) shared(cells, x, eps, sig, m, type, force, fpairFun) //reduction(+:interactions)
-            for(size_t cellIndex=0; cellIndex < cells.size(); cellIndex++){
-                auto& cell = cells[cellIndex];
-                for(size_t i = 0; i < cell.size(); i++){
-                    for(size_t j = i+1; j < cell.size(); j++){
+#pragma omp parallel for default(none) shared(cells, x, eps, sig, m, type, force, fpairFun) //reduction(+:interactions)
+            for (size_t cellIndex = 0; cellIndex < cells.size(); cellIndex++) {
+                auto &cell = cells[cellIndex];
+                for (size_t i = 0; i < cell.size(); i++) {
+                    for (size_t j = i + 1; j < cell.size(); j++) {
                         fpairFun(force, x, eps, sig, m, type, cell[i], cell[j]);
                     }
                 }
@@ -81,7 +96,7 @@ namespace sim::physics::force {
                                             std::vector<double> &eps,
                                             std::vector<double> &sig) {
             static const double rt3_2 = std::pow(2, 1.0 / 3.0);
-            const std::vector<std::vector<std::pair<unsigned long, unsigned long>>>& alternativeTaskGroups = particleContainer.generateDistinctAlternativeCellNeighbours();
+            const std::vector<std::vector<std::pair<unsigned long, unsigned long>>> &alternativeTaskGroups = particleContainer.generateDistinctAlternativeCellNeighbours();
             double *_force = force.data();
             size_t size = force.size();
             double sigma, sigma2, sigma6, epsilon, dsqr, d0, d1, d2, l2NInvSquare, fac0, l2NInvPow6, fac1_sum1, fac1;
@@ -96,18 +111,18 @@ namespace sim::physics::force {
 
             size_t maxThreads = omp_get_max_threads();
 
-            #pragma omp parallel \
+#pragma omp parallel \
                 default(none) \
-                shared(size, x, t, cells, eps, sig,alternativeTaskGroups,fpairFun,force,m, maxThreads) \
+                shared(size, x, t, cells, eps, sig, alternativeTaskGroups, fpairFun, force, m, maxThreads) \
                 private(sigma, sigma2, sigma6, epsilon, dsqr, l2NInvSquare, d0, d1, d2, \
-                        fac0, l2NInvPow6, fac1_sum1, fac1, indexI, indexJ,indexII,indexJJ,indexY,indexC0,indexC1) \
+                        fac0, l2NInvPow6, fac1_sum1, fac1, indexI, indexJ, indexII, indexJJ, indexY, indexC0, indexC1) \
                 firstprivate(indexX, rt3_2) \
                 reduction(+:_force[:size])
             {
                 //generate tasks: for all distinct cell neighbours
-                #pragma omp for simd
-                for(indexX = 0; indexX < maxThreads; indexX++) {
-                    for(indexY = 0; indexY < alternativeTaskGroups[indexX].size(); indexY++){
+#pragma omp for simd
+                for (indexX = 0; indexX < maxThreads; indexX++) {
+                    for (indexY = 0; indexY < alternativeTaskGroups[indexX].size(); indexY++) {
                         indexC0 = alternativeTaskGroups[indexX][indexY].first;
                         indexC1 = alternativeTaskGroups[indexX][indexY].second;
                         for (indexII = 0; indexII < cells[indexC0].size(); indexII++) {
@@ -148,4 +163,6 @@ namespace sim::physics::force {
             }
         });
     }
+    #endif
+    #endif
 } // force

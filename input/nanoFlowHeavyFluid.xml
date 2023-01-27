@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Simulation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="../input/XMLFormat.xsd">
+    <OutputFile OutputFileName="nanoScaleFlow"/>
+    <EndTime>500.0</EndTime>
+    <TimeStepSize>0.0005</TimeStepSize>
+    <ForceCalculation>
+        <LennardJones Epsilon="1" Sigma="1"/>
+        <EnableGrav X="0.0" Y="-0.8" Z="0.0"/>
+        <EnableLC>
+            <BoundaryBox>
+                <BoxSize X="30.0" Y="30.0" Z="12.0"/>
+                <Front>Periodic</Front>
+                <Rear>Periodic</Rear>
+                <Left>Outflow</Left>
+                <Right>Outflow</Right>
+                <Top>Periodic</Top>
+                <Bottom>Periodic</Bottom>
+            </BoundaryBox>
+            <CutoffRadius>2.75</CutoffRadius>
+            <EnableProfiling NumBins="50"/>
+        </EnableLC>
+        <EnableOMP/>
+    </ForceCalculation>
+    <AverageBrownianMotion>0.0</AverageBrownianMotion>
+    <Dimensions>3</Dimensions>
+    <Thermostat>
+        <T_Init>40.0</T_Init>
+        <N_Term>10</N_Term>
+        <ThermoMode>Pipe</ThermoMode>
+    </Thermostat>
+    <FileType>
+        <Input>
+            <ShapeList>
+                <Shape>
+                    <Cuboid Spacing="1.0" Mass="-INF" Epsilon="2.0" Sigma="1.1">
+                        <Position X="1.0" Y="0.5" Z="0.5"/>
+                        <Velocity X="0.0" Y="0.0" Z="0.0"/>
+                        <Dimensions X="2" Y="30" Z="12"/>
+                    </Cuboid>
+                </Shape>
+                <Shape>
+                    <Cuboid Spacing="1.0" Mass="-INF" Epsilon="2.0" Sigma="1.1">
+                        <Position X="27.2" Y="0.5" Z="0.5"/>
+                        <Velocity X="0.0" Y="0.0" Z="0.0"/>
+                        <Dimensions X="2" Y="30" Z="12"/>
+                    </Cuboid>
+                </Shape>
+                <Shape>
+                    <Cuboid Spacing="1.2" Mass="10.0" Epsilon="1.0" Sigma="1.0">
+                        <Position X="3.2" Y="0.6" Z="0.6"/>
+                        <Velocity X="0.0" Y="0.0" Z="0.0"/>
+                        <Dimensions X="20" Y="25" Z="10"/>
+                    </Cuboid>
+                </Shape>
+            </ShapeList>
+        </Input>
+    </FileType>
+</Simulation>

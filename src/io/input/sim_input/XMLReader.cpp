@@ -96,7 +96,7 @@ namespace io::input {
 
                 setInMap(enableProfiler, eLC->EnableProfiling().present(), std::to_string(0), [&]()->std::string{return std::to_string(1);});
                 if(eLC->EnableProfiling().present()){
-                    setInMapND(profilerNumBins, std::to_string(numBins));
+                    setInMapND(profilerNumBins, std::to_string(eLC->EnableProfiling()->NumBins()));
                 }
             } else {
                 setInMapND(enableLinkedCell, "0");
@@ -286,6 +286,7 @@ namespace io::input {
                     p.setOldF({cp.OldForce().X(), cp.OldForce().Y(), cp.OldForce().Z()});
                     p.setSigma(cp.Sigma());
                     p.setEpsilon(cp.Epsilon());
+                    p.setID(cp.Id());
                     particles.push_back(p);
                 }
             }

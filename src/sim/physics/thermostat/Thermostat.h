@@ -51,8 +51,10 @@ public:
                         bool thermoEnable = default_therm, ThermoMode tm = ThermoMode::normalMode)
                         : pc(particleContainer), countThreshold(cT), dims(dimensions), Ttarget(T_t), deltaTemp(dT), thermoMode(tm) {
         if(tm == ThermoMode::normalMode){
+            io::output::loggers::simulation->info("Using Thermostat: normal mode");
             numberFlowingParticles = pc.activeSize();
         }else{
+            io::output::loggers::simulation->info("Using Thermostat: pipe mode");
             numberFlowingParticles=0;
             pc.runOnActiveData([&](auto&,auto&,auto&,auto&,std::vector<double> &m,auto&,auto,auto&,auto&,
                                    std::unordered_map<unsigned long, unsigned long> &id_to_index, auto){

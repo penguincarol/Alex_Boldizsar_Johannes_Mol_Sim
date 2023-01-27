@@ -10257,6 +10257,53 @@ class cp_particle_t: public ::xml_schema::type
   //@}
 
   /**
+   * @name Id
+   *
+   * @brief Accessor and modifier functions for the %Id
+   * required attribute.
+   */
+  //@{
+
+  /**
+   * @brief Attribute type.
+   */
+  typedef ::xml_schema::int_ Id_type;
+
+  /**
+   * @brief Attribute traits type.
+   */
+  typedef ::xsd::cxx::tree::traits< Id_type, char > Id_traits;
+
+  /**
+   * @brief Return a read-only (constant) reference to the attribute.
+   *
+   * @return A constant reference to the attribute.
+   */
+  const Id_type&
+  Id () const;
+
+  /**
+   * @brief Return a read-write reference to the attribute.
+   *
+   * @return A reference to the attribute.
+   */
+  Id_type&
+  Id ();
+
+  /**
+   * @brief Set the attribute value.
+   *
+   * @param x A new value to set.
+   *
+   * This function makes a copy of its argument and sets it as
+   * the new value of the attribute.
+   */
+  void
+  Id (const Id_type& x);
+
+  //@}
+
+  /**
    * @name Constructors
    */
   //@{
@@ -10272,7 +10319,8 @@ class cp_particle_t: public ::xml_schema::type
                  const Mass_type&,
                  const Epsilon_type&,
                  const Sigma_type&,
-                 const Type_type&);
+                 const Type_type&,
+                 const Id_type&);
 
   /**
    * @brief Create an instance from the ultimate base and
@@ -10289,7 +10337,8 @@ class cp_particle_t: public ::xml_schema::type
                  const Mass_type&,
                  const Epsilon_type&,
                  const Sigma_type&,
-                 const Type_type&);
+                 const Type_type&,
+                 const Id_type&);
 
   /**
    * @brief Create an instance from a DOM element.
@@ -10369,6 +10418,7 @@ class cp_particle_t: public ::xml_schema::type
   ::xsd::cxx::tree::one< Epsilon_type > Epsilon_;
   ::xsd::cxx::tree::one< Sigma_type > Sigma_;
   ::xsd::cxx::tree::one< Type_type > Type_;
+  ::xsd::cxx::tree::one< Id_type > Id_;
 
   //@endcond
 };

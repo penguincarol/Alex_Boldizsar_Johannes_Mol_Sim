@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Simulation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
             xsi:noNamespaceSchemaLocation="../input/XMLFormat.xsd">
-    <OutputFile OutputFileName="nanoScaleFlow"/>
+    <OutputFile OutputFileName="nanoFlowStillFixedSphere"/>
     <EndTime>500.0</EndTime>
     <TimeStepSize>0.0005</TimeStepSize>
     <ForceCalculation>
@@ -54,8 +54,8 @@
                     </Cuboid>
                 </Shape>
                 <Shape>
-                    <Sphere Radius="5" Spacing="1.2" Mass="-INF">
-                        <Position X="15.0" Y="15.0" Z="6.0"/>
+                    <Sphere Radius="5" Spacing="1.0" Mass="-INF">
+                        <Position X="15.1" Y="6.0" Z="6.0"/>
                         <Velocity X="0.0" Y="0.0" Z="0.0"/>
                     </Sphere>
                 </Shape>

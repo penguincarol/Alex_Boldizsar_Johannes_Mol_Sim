@@ -358,7 +358,7 @@ private:
     static void
     loadParticle(Particle &p, unsigned long index, std::vector<double> &force, std::vector<double> &oldForce,
                  std::vector<double> &x, std::vector<double> &v, std::vector<double> &m,
-                 std::vector<int> &type, std::vector<double> &e, std::vector<double> &s);
+                 std::vector<int> &type, std::vector<double> &e, std::vector<double> &s, unsigned long id);
 
 public:
     /**

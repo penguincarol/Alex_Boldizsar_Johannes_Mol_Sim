@@ -188,11 +188,12 @@ namespace sim {
 
                 iteration++;
                 if (iteration % 10 == 0) {
-                    ioWrapper.writeParticlesVTK(particleContainer, outputFolder, outputBaseName, iteration);
                 }
-                if (iteration % 100 == 0)
-                    io::output::loggers::simulation->info("Progress: {:03.2f}%", current_time / end_time * 100);
+                if (iteration % 100 == 0) {
+                }
                 if (iteration % 1000 == 0) {
+                    io::output::loggers::simulation->info("Progress: {:03.2f}%", current_time / end_time * 100);
+                    ioWrapper.writeParticlesVTK(particleContainer, outputFolder, outputBaseName, iteration);
                     if(checkpointingEnable) ioWrapper.writeCheckpoint(particleContainer, config, iteration, current_time);
 
                     io::output::loggers::simulation->trace("Iteration {} finished.", iteration);
@@ -202,7 +203,7 @@ namespace sim {
                                                  {config.get<io::input::boundingBox_X0>(),
                                                   config.get<io::input::boundingBox_X1>(),
                                                   config.get<io::input::boundingBox_X2>()},
-                                                 particleContainer, "flowProfile" + std::to_string(iteration%10000) +std::string{".csv"});
+                                                 particleContainer, "flowProfile" + std::to_string(iteration) +std::string{".csv"});
                 }
 
                 current_time += delta_t;

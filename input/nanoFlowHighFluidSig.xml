@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Simulation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
             xsi:noNamespaceSchemaLocation="../input/XMLFormat.xsd">
-    <OutputFile OutputFileName="nanoScaleFlow"/>
+    <OutputFile OutputFileName="nanoFlowHighFluidSig"/>
     <EndTime>500.0</EndTime>
     <TimeStepSize>0.0005</TimeStepSize>
     <ForceCalculation>
@@ -47,7 +47,7 @@
                     </Cuboid>
                 </Shape>
                 <Shape>
-                    <Cuboid Spacing="1.2" Mass="1.0" Epsilon="1.0" Sigma="10.0">
+                    <Cuboid Spacing="1.2" Mass="1.0" Epsilon="1.0" Sigma="1.5">
                         <Position X="3.2" Y="0.6" Z="0.6"/>
                         <Velocity X="0.0" Y="0.0" Z="0.0"/>
                         <Dimensions X="20" Y="25" Z="10"/>

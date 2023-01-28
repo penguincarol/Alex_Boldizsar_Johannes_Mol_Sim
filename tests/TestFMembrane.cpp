@@ -311,25 +311,25 @@ TEST(FMembrane, increasingErrors){
     Body membr;
     membr.shape = membrane;
     membr.fixpoint = {1, 1, 1};
-    membr.dimensions = {4,4, 1};
-    membr.distance = 2.2;
+    membr.dimensions = {2,1, 1};
+    membr.distance = 2.6;
     const double d = membr.distance;
     membr.mass = 1;
     membr.start_velocity = {0., 0., 0.};
-    membr.desiredDistance = 2.2;
+    membr.desiredDistance = 2.5;
     membr.springStrength = 300;
     membr.pullEndTime = 0;
     membr.pullForce = {0, 0, 0};
     membr.pullIndices = {};
 
-    ParticleGenerator::generateMembrane(membr, 0, buf, membrBuf, 3, 1, 1);
+    ParticleGenerator::generateMembrane(membr, 0, buf, membrBuf, 3, 1.2, 1.2);
 
     std::vector bufVec(buf.begin(), buf.end());
     std::vector<Membrane> membrVec(membrBuf.begin(), membrBuf.end());
     ParticleContainer pc(bufVec, std::array<double, 3>{100., 100., 100.}, 3., membrVec);
 
     auto fMem = sim::physics::force::FMembrane(0, 100, 0.01, 1, 1, pc);
-    auto fLen = sim::physics::force::FLennardJonesCells(0, 100, 0.01, 1, 1, pc);
+    auto fLen = sim::physics::force::FLennardJonesCells(0, 100, 0.01, 1.2, 1.2, pc);
 
     //auto xCalc = sim::physics::position::XStoermerVelvetOMP(0., 100, 0.01, 1, 1, pc);
     //auto vCalc = sim::physics::velocity::VStoermerVelvetOMP(0., 100., 0.01, 1, 1, pc);
@@ -341,10 +341,12 @@ TEST(FMembrane, increasingErrors){
 
     for(size_t i{0}; i < 10'000; i++){
         xCalc.operator()();
+        auto dist=(pc.getParticle(pc.getMembranes()[0].getMembrNodes()[1][0]).getX() - pc.getParticle(pc.getMembranes()[0].getMembrNodes()[0][0]).getX()).norm();
+        ASSERT_TRUE(std::abs(dist-membr.desiredDistance)<=0.10000000000000009)<<"Particles at iteration "<<i<<" were " << dist-membr.desiredDistance << " apart from each other";
         pc.updateCells();
         pc.clearStoreForce();
         fMem.operator()();
-        //fLen.operator()();
+        fLen.operator()();
         vCalc.operator()();
     }
     ASSERT_DOUBLE_EQ(pc.getParticle(pc.getMembranes()[0].getMembrNodes()[1][0]).getF().norm(), 0.)<< "Force at " << 1 << " " << 0 << "after 1k iterations unequal to 0";

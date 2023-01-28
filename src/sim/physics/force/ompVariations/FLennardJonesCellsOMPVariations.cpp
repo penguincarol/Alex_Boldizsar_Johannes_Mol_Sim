@@ -23,7 +23,7 @@ std::vector<T> flatten(const std::vector<std::vector<T>> &orig)
      * This is the implementaiton of the operator utilizing the one-dimensional-task approach as displayed in the presentation
      */
     void FLennardJonesCellsOMP::operator()() {
-
+        //io::output::loggers::general->error("Jup, one-dim used!");
         particleContainer.runOnDataCell([&](std::vector<double> &force,
                                             std::vector<double> &oldForce,
                                             std::vector<double> &x,

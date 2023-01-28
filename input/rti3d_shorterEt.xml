@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Simulation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="../input/XMLFormat.xsd">
+    <OutputFile OutputFileName="rti3d_shorterEt"/>
+    <EndTime>5</EndTime>
+    <TimeStepSize>0.0005</TimeStepSize>
+    <ForceCalculation>
+        <LennardJones Epsilon="1.0" Sigma="1.0"/>
+        <EnableGrav X="0.0" Y="-12.44" Z="0.0"/>
+        <EnableLC>
+            <BoundaryBox>
+                <BoxSize X="60.0" Y="60.0" Z="60.0"/>
+                <Front>Periodic</Front>
+                <Rear>Periodic</Rear>
+                <Left>Periodic</Left>
+                <Right>Periodic</Right>
+                <Top>Reflecting</Top>
+                <Bottom>Reflecting</Bottom>
+            </BoundaryBox>
+            <CutoffRadius>3.6</CutoffRadius>
+        </EnableLC>
+        <EnableOMP/>
+    </ForceCalculation>
+    <AverageBrownianMotion>0.0</AverageBrownianMotion>
+    <Dimensions>3</Dimensions>
+    <Thermostat>
+        <T_Init>40</T_Init>
+        <N_Term>1000</N_Term>
+    </Thermostat>
+    <FileType>
+        <Input>
+            <ShapeList>
+                <Shape>
+                    <Cuboid Spacing="1.2" Mass="1.0" Sigma="1.2" Epsilon="1.0">
+                        <Position X="0.6" Y="0.6" Z="0.6"/>
+                        <Velocity X="0.0" Y="0.0" Z="0.0"/>
+                        <Dimensions X="50" Y="20" Z="50"/>
+                    </Cuboid>
+                </Shape>
+                <Shape>
+                    <Cuboid Spacing="1.2" Mass="2.0" Sigma="1.1" Epsilon="1.0">
+                        <Position X="0.6" Y="24.6" Z="0.6"/>
+                        <Velocity X="0.0" Y="0.0" Z="0.0"/>
+                        <Dimensions X="50" Y="20" Z="50"/>
+                    </Cuboid>
+                </Shape>
+            </ShapeList>
+        </Input>
+    </FileType>
+</Simulation>

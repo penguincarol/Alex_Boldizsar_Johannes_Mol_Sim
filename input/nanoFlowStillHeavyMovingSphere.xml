@@ -48,14 +48,14 @@
                 </Shape>
                 <Shape>
                     <Cuboid Spacing="1.2" Mass="1.0" Epsilon="1.0" Sigma="1.0">
-                        <Position X="3.2" Y="0.6" Z="0.6"/>
+                        <Position X="3.2" Y="11.0" Z="0.6"/>
                         <Velocity X="0.0" Y="0.0" Z="0.0"/>
-                        <Dimensions X="20" Y="25" Z="10"/>
+                        <Dimensions X="20" Y="15" Z="10"/>
                     </Cuboid>
                 </Shape>
                 <Shape>
-                    <Sphere Radius="5" Spacing="1.0" Mass="2.5">
-                        <Position X="15.1" Y="6.0" Z="6.0"/>
+                    <Sphere Radius="5" Spacing="1.0" Mass="2.5" Epsilon="2.0" Sigma="1.1">
+                        <Position X="15.1" Y="5.1" Z="6.0"/>
                         <Velocity X="0.0" Y="0.0" Z="0.0"/>
                     </Sphere>
                 </Shape>

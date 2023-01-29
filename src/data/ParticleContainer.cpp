@@ -626,8 +626,71 @@ void ParticleContainer::initAlternativeTaskModel(){
     }
 }
 
-void init2DTaskOrientedModel(){
+void ParticleContainer::init2DTaskOrientedModel(){
+    taskOriented2dCache.clear();
+    //26 TaskGroups (for the 13 cases*2)
+    //every taskGroup has the pairs of CellIndices that are independently doable split up into numThreads packages
 
+    //All these variables could be const attributes of class
+    const auto numCases = 13;
+    using a = std::array<int, 3>;
+    constexpr std::array<a, numCases> offsets{a{1,0,0}, a{0,1,0}, a{0,0,1},
+                                              a{1,1,0}, a{1,-1,0},
+                                              a{1,0,1}, a{1,0,-1}, a{0,1,1}, a{0,1,-1},
+                                              a{1,1,1}, a{1,-1,1}, a{1,1,-1}, a{1,-1,-1}};
+
+    auto gD = gridDimensions;
+    using b = std::array<unsigned int, 3>;
+    const std::array<b, numCases> upperBounds{b{gD[0]-1, gD[1], gD[2]}, b{gD[0], gD[1]-1, gD[2]}, b{gD[0], gD[1], gD[2]-1},
+                                              b{gD[0]-1, gD[1]-1, gD[2]}, b{gD[0]-1, gD[1], gD[2]},
+                                              b{gD[0]-1, gD[1], gD[2]-1}, b{gD[0]-1, gD[1], gD[2]}, b{gD[0], gD[1]-1, gD[2]-1}, b{gD[0], gD[1]-1, gD[2]},
+                                              b{gD[0]-1, gD[1]-1, gD[2]-1}, b{gD[0]-1, gD[1], gD[2]-1}, b{gD[0]-1, gD[1]-1, gD[2]}, b{gD[0]-1, gD[1], gD[2]}};
+
+    constexpr std::array<b, numCases> lowerBounds{b{0,0,0}, b{0,0,0}, b{0,0,0},
+                                                  b{0,0,0}, b{0,1,0},
+                                                  b{0,0,0}, b{0,0,1}, b{0,0,0}, b{0,0,1},
+                                                  b{0,0,0}, b{0,1,0}, b{0,0,1}, b{0,1,1}};
+
+    std::array<unsigned int, 3> additionalIncrement{0,0,0};
+    for(auto c = 0; c < numCases; c++){ //pun intended
+        if(offsets[c][0] == 1){additionalIncrement = std::array<unsigned int, 3>{1,0,0};}
+        else if(offsets[c][1] == 1){additionalIncrement = std::array<unsigned int, 3>{0,1,0};}
+        else{additionalIncrement = std::array<unsigned int, 3>{0,0,1};}
+
+        std::vector<std::pair<unsigned long, unsigned long>> independentTasksBlock{};
+
+        for(unsigned int x0 = lowerBounds[c][0]; x0 < upperBounds[c][0]; x0+= 1 + additionalIncrement[0]){
+            for(unsigned int x1 = lowerBounds[c][1]; x1 < upperBounds[c][1]; x1+= 1 + additionalIncrement[1]){
+                for(unsigned int x2 = lowerBounds[c][2]; x2 < upperBounds[c][2]; x2+= 1 + additionalIncrement[2]){
+
+                    auto cell1 = cellIndexFromCellCoordinatesFast(x0, x1, x2);
+                    auto cell2 = cellIndexFromCellCoordinatesFast(x0 + offsets[c][0], x1 + offsets[c][1], x2 + offsets[c][2]);
+                    independentTasksBlock.emplace_back(cell1,cell2);
+                    SPDLOG_TRACE("Added CellInteraction (({} {} {}), ({} {} {})) to taskBlock {}", x0, x1, x2, x0 + offsets[c][0], x1 + offsets[c][1], x2 + offsets[c][2], 2*c+0);
+                    //std::cout<< "Added CellInteraction (("<< x0<<" "<<x1<<" "<< x2 << ") ("<< x0 + offsets[c][0] << " " << x1 + offsets[c][1] <<" "<< x2 + offsets[c][2]<< ")) to taskBlock " << 2*c+0<< " and job " << roundRobinIndex << std::endl;
+                }
+            }
+        }
+
+        taskOriented2dCache.emplace_back(independentTasksBlock);
+
+        //yes you could cut this down to 2 lines with another helper array but this more verbose version seems much easier to understand
+        std::vector<std::pair<unsigned long, unsigned long>> independentTasksBlock2{};
+
+        for(unsigned int x0 = lowerBounds[c][0] + additionalIncrement[0] ; x0 < upperBounds[c][0]; x0+= 1 + additionalIncrement[0]){
+            for(unsigned int x1 = lowerBounds[c][1] + additionalIncrement[1]; x1 < upperBounds[c][1]; x1+= 1 + additionalIncrement[1]){
+                for(unsigned int x2 = lowerBounds[c][2] + additionalIncrement[2]; x2 < upperBounds[c][2]; x2+= 1 + additionalIncrement[2]){
+                    auto cell1 = cellIndexFromCellCoordinatesFast(x0, x1, x2);
+                    auto cell2 = cellIndexFromCellCoordinatesFast(x0 + offsets[c][0], x1 + offsets[c][1], x2 + offsets[c][2]);
+                    independentTasksBlock2.emplace_back(cell1,cell2);
+                    SPDLOG_TRACE("Added CellInteraction (({} {} {}), ({} {} {})) to taskBlock {}", x0, x1, x2, x0 + offsets[c][0], x1 + offsets[c][1], x2 + offsets[c][2], 2*c+1);
+                    //std::cout<< "Added CellInteraction (("<< x0<<" "<<x1<<" "<< x2 << ") ("<< x0 + offsets[c][0] << " " << x1 + offsets[c][1] <<" "<< x2 + offsets[c][2]<< ")) to taskBlock " << 2*c+1<< " and job " << roundRobinIndex << std::endl;
+                }
+            }
+        }
+        taskOriented2dCache.emplace_back(independentTasksBlock2);
+
+    }
 }
 
 void ParticleContainer::initTaskModel() {

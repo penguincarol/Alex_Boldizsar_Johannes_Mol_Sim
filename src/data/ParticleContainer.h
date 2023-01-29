@@ -1382,6 +1382,7 @@ public:
 
     const std::vector<std::vector<std::pair<unsigned long, unsigned long>>>& generateDistinctAlternativeCellNeighbours();
 
+    const std::vector<std::vector<std::pair<unsigned long, unsigned long>>>& generateDistinctTaskOrientedCellNeighbours();
 
     /**
      * Performs fun on provided data. All lambda args particle container internal data.

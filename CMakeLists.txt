@@ -57,14 +57,14 @@ if(three_dim_tasks)
     if(round_robin_distr)
         target_compile_options(MolSim
                 PRIVATE
-                $<$<CXX_COMPILER_ID:GNU>:-Wall -g -march=native -DTHREE_DIMENSIONAL_TASKS -DTASK_ROUND_ROBIN>
+                $<$<CXX_COMPILER_ID:GNU>:-Wall -O3 -march=native -DTHREE_DIMENSIONAL_TASKS -DTASK_ROUND_ROBIN>
                 # disable some spam warnings for icpc...
                 $<$<CXX_COMPILER_ID:Intel>:-w3 -wd383,981,1418,1572,2259>
                 )
     else()
         target_compile_options(MolSim
                 PRIVATE
-                $<$<CXX_COMPILER_ID:GNU>:-Wall -g -march=native -DTHREE_DIMENSIONAL_TASKS>
+                $<$<CXX_COMPILER_ID:GNU>:-Wall -O3 -march=native -DTHREE_DIMENSIONAL_TASKS>
                 # disable some spam warnings for icpc...
                 $<$<CXX_COMPILER_ID:Intel>:-w3 -wd383,981,1418,1572,2259>
                 )
@@ -72,7 +72,7 @@ if(three_dim_tasks)
 elseif(one_dim_tasks)
     target_compile_options(MolSim
             PRIVATE
-            $<$<CXX_COMPILER_ID:GNU>:-Wall -g -march=native -DONE_DIMENSIONAL_TASKS>
+            $<$<CXX_COMPILER_ID:GNU>:-Wall -O3 -march=native -DONE_DIMENSIONAL_TASKS>
             # disable some spam warnings for icpc...
             $<$<CXX_COMPILER_ID:Intel>:-w3 -wd383,981,1418,1572,2259>
             )
@@ -80,14 +80,14 @@ else()
     if(round_robin_distr)
         target_compile_options(MolSim
                 PRIVATE
-                $<$<CXX_COMPILER_ID:GNU>:-Wall -g -march=native -DTASK_ROUND_ROBIN>
+                $<$<CXX_COMPILER_ID:GNU>:-Wall -O3 -march=native -DTASK_ROUND_ROBIN>
                 # disable some spam warnings for icpc...
                 $<$<CXX_COMPILER_ID:Intel>:-w3 -wd383,981,1418,1572,2259>
                 )
     else()
         target_compile_options(MolSim
                 PRIVATE
-                $<$<CXX_COMPILER_ID:GNU>:-Wall -g -march=native>
+                $<$<CXX_COMPILER_ID:GNU>:-Wall -O3 -march=native>
                 # disable some spam warnings for icpc...
                 $<$<CXX_COMPILER_ID:Intel>:-w3 -wd383,981,1418,1572,2259>
                 )

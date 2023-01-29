@@ -21,9 +21,9 @@ namespace sim::physics::position {
                                        std::vector<unsigned long> &activeParticles){
             for (unsigned long & activeParticle : activeParticles) {
                 unsigned long index = id_to_index[activeParticle];
-                x[3*index + 0] += delta_t * v[3*index + 0] + delta_t * delta_t * oldForce[3*index + 0] / (2 * m[index]);
-                x[3*index + 1] += delta_t * v[3*index + 1] + delta_t * delta_t * oldForce[3*index + 1] / (2 * m[index]);
-                x[3*index + 2] += delta_t * v[3*index + 2] + delta_t * delta_t * oldForce[3*index + 2] / (2 * m[index]);
+                x[3*index + 0] += delta_t * v[3*index + 0] + delta_t * delta_t * force[3*index + 0] / (2 * m[index]);
+                x[3*index + 1] += delta_t * v[3*index + 1] + delta_t * delta_t * force[3*index + 1] / (2 * m[index]);
+                x[3*index + 2] += delta_t * v[3*index + 2] + delta_t * delta_t * force[3*index + 2] / (2 * m[index]);
             }
         });
 #endif

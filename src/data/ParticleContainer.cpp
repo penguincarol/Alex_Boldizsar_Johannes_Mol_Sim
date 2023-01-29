@@ -155,7 +155,7 @@ std::array<unsigned int, 3> ParticleContainer::getGridDimensions() {
 void ParticleContainer::loadParticle(Particle &p, unsigned long index, std::vector<double> &force,
                                      std::vector<double> &oldForce, std::vector<double> &x, std::vector<double> &v,
                                      std::vector<double> &m, std::vector<int> &type, std::vector<double>& e,
-                                     std::vector<double> &s) {
+                                     std::vector<double> &s, unsigned long id) {
     Eigen::Vector3d f{force[index * 3 + 0],
                       force[index * 3 + 1],
                       force[index * 3 + 2]};
@@ -176,10 +176,11 @@ void ParticleContainer::loadParticle(Particle &p, unsigned long index, std::vect
     p.setType(type[index]);
     p.setEpsilon(e[index]);
     p.setSigma(s[index]);
+    p.setID(id);
 }
 
 void ParticleContainer::loadParticle(Particle &p, unsigned long index) {
-    loadParticle(p, index, force, oldForce, x, v, m, type, eps, sig);
+    loadParticle(p, index, force, oldForce, x, v, m, type, eps, sig, index_to_id[index]);
 }
 
 void ParticleContainer::storeParticle(Particle &p, unsigned long index, std::vector<double> &force,

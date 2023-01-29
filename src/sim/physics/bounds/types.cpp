@@ -3,6 +3,7 @@
 //
 
 #include <unordered_map>
+#include <algorithm>
 #include "types.h"
 #include "io/input/cli/CLIArgsParser.h"
 

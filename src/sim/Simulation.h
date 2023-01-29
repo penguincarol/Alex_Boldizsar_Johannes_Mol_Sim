@@ -217,13 +217,14 @@ namespace sim {
          * @param simIteration Amount of iterations the simulation should be performed, until average time is computed.
          * @param inputDataSource Name of where the starting data came from
          * @param startingData Data based on which the simulation should start
+         * @param startingMembranes Data for membranes based on which the simulation should start
          * @param bbox0 length of domain in x-direction
          * @param bbox1 length of domain in y-directiond
          * @param bbox2 length of domain in z-direction
          * @param rCutoff r_cutoff for cell-algorithm
          */
         void runBenchmark(const int simIteration, const std::string &inputDataSource,
-                          const std::vector<Particle> &startingData, double bbox0, double bbox1, double bbox2, double rCutoff) {
+                          const std::vector<Particle> &startingData, const std::vector<Membrane> &startingMembranes, double bbox0, double bbox1, double bbox2, double rCutoff, bool eOMP) {
             io::output::loggers::simulation->info("Starting Benchmark");
 
 #pragma region sim_times
@@ -234,7 +235,7 @@ namespace sim {
 
             for (int pass{0}; pass < simIteration; pass++) {
                 //reset data
-                ParticleContainer pc = ParticleContainer(startingData,{bbox0, bbox1, bbox2},rCutoff);
+                ParticleContainer pc = ParticleContainer(startingData,{bbox0, bbox1, bbox2},rCutoff, startingMembranes, eOMP);
                 particleContainer = pc;
                 calcF.setParticleContainer(particleContainer);
                 calcX.setParticleContainer(particleContainer);
@@ -285,7 +286,7 @@ namespace sim {
             std::chrono::high_resolution_clock::duration it_maxTime{std::chrono::high_resolution_clock::duration::min()};
 
             //reset data
-            ParticleContainer pc = ParticleContainer(startingData,{bbox0, bbox1, bbox2},rCutoff);
+            ParticleContainer pc = ParticleContainer(startingData,{bbox0, bbox1, bbox2},rCutoff, startingMembranes, eOMP);
             particleContainer = pc;
             calcF.setParticleContainer(particleContainer);
             calcX.setParticleContainer(particleContainer);

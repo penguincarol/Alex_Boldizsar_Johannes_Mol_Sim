@@ -626,6 +626,10 @@ void ParticleContainer::initAlternativeTaskModel(){
     }
 }
 
+void init2DTaskOrientedModel(){
+
+}
+
 void ParticleContainer::initTaskModel() {
     taskModelCache.clear();
     //26 TaskGroups (for the 13 cases*2)
@@ -759,6 +763,11 @@ const std::vector<std::vector<std::vector<std::pair<unsigned long, unsigned long
 const std::vector<std::vector<std::pair<unsigned long, unsigned long>>>& ParticleContainer::generateDistinctAlternativeCellNeighbours(){
     initAlternativeTaskModel();
     return alternativeTaskModelCache;
+}
+
+const std::vector<std::vector<std::pair<unsigned long, unsigned long>>>& ParticleContainer::generateDistinctTaskOrientedCellNeighbours(){
+    init2DTaskOrientedModel();
+    return taskOriented2dCache;
 }
 
 #pragma endregion

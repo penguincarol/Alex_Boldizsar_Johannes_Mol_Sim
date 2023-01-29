@@ -1333,14 +1333,38 @@ public:
                                                                              std::vector<unsigned long> &cell1Items));
 
     /**
-     * Initializes generateDistinctCellNeighbours cache.
+     * Initializes 3D task model. The 3D Task model is a 3D vector of pairs of indices. The pairs of indices represent cells, that are supposed to interact with each other.
+     * The outer most vector hast the size 26.
+     * Each of those 26 vectors of vectors of pairs can be fully parallelized.
+     * Trying to work with on multiple outer vectors at the same time will lead to race conditions.
+     *
+     * One layer deeper there are num_thread entries in the vector. Each thread is supposed to get one entry of this layer. The last layer is just the list of tasks assigned to this thread.
+     * The tasks are supposed to be distributed as evenly as possible (see distribution strategy). Possible strategies are round_robin_threshhold and the a greedy approach.
      * */
     void initTaskModel();
 
+    /**
+     * Initializes 2D task Model.
+     * The 2D task model is a 2D vector of pairs of indices. Each indice represents a cell and the pair represents 2 cells that should interact with each other.
+     *
+     * The outer most vector has the size num_threads. Each thread is supposed to get one entry. It contains all the cell-pairs that this thread is supposed to handle.
+     * Due to potential Race-conditions a reduction is needed!
+     */
     void initAlternativeTaskModel();
+
+    /**
+     * Initializes 2D task Model.
+     * The 2D task model is a 2D vector of pairs of indices. Each indice represents a cell and the pair represents 2 cells that should interact with each other.
+     *
+     * The outer most vector has the size 26. Inside of each outer vector every task can be done in parallel and in any order without causing race conditions
+     */
+    void init2DTaskOrientedModel();
+
+
 private:
     std::vector<std::vector<std::vector<std::pair<unsigned long, unsigned long>>>> taskModelCache;
     std::vector<std::vector<std::pair<unsigned long, unsigned long>>> alternativeTaskModelCache;
+    std::vector<std::vector<std::pair<unsigned long, unsigned long>>> taskOriented2dCache;
 
 
 public:

@@ -169,7 +169,7 @@ target_compile_options(asan-MolSim
         $<$<CXX_COMPILER_ID:Intel>:-w3 -wd383,981,1418,1572,2259>
         PRIVATE -fsanitize=address
         )
-target_link_options(asan-MolSim PRIVATE -fsanitize=address)
+target_link_options(asan-MolSim PUBLIC OpenMP::OpenMP_CXX PRIVATE -fsanitize=address)
 
 
 #############################################################################################################

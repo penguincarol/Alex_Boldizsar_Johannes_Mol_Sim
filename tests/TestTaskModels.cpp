@@ -3,9 +3,9 @@
 #include "data/ParticleContainer.h"
 #include "data/Particle.h"
 #include "data/ParticleGenerator.h"
-#include "omp.h"
 
 #include <vector>
+#include <omp.h>
 
 void performTaskModelTest(ParticleContainer& pc){
 

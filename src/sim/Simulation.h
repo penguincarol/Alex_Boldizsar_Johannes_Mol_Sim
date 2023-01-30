@@ -28,6 +28,7 @@
 #include <memory>
 #include <chrono>
 #include <utility>
+#include <omp.h>
 
 namespace sim {
     using namespace sim::physics;

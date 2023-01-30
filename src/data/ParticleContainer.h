@@ -13,6 +13,7 @@
 #include <functional>
 #include <unordered_set>
 #include <iostream>
+#include <omp.h>
 
 /**
  * @brief wrapper class that stores and manages access to the particles

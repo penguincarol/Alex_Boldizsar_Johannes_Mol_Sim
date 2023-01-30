@@ -2,6 +2,7 @@
 #include "defaults.h"
 
 #include <iostream>
+#include <omp.h>
 
 namespace sim::physics::force {
 

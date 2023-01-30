@@ -5,6 +5,7 @@
 #include <vector>
 #include <iostream>
 #include <numeric>
+#include <omp.h>
 
 #pragma region Contructors
 

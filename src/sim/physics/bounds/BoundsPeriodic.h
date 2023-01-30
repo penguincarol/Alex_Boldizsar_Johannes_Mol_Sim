@@ -7,6 +7,8 @@
 #include "BoundsFunctorBase.h"
 #include "sim/physics/force/ForceHandler.h"
 
+#include <omp.h>
+
 namespace sim::physics::bounds {
     template<sim::physics::bounds::side S>
     class BoundsPeriodic : public BoundsFunctorBase<S> {

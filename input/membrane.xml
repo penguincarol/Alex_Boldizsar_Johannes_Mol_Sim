@@ -3,7 +3,7 @@
             xsi:noNamespaceSchemaLocation="../input/XMLFormat.xsd">
     <OutputFile OutputFileName="membrane"/>
     <EndTime>500.0</EndTime>
-    <TimeStepSize>0.001</TimeStepSize>
+    <TimeStepSize>0.01</TimeStepSize>
     <ForceCalculation>
         <LennardJones Epsilon="1.0" Sigma="1.0"/>
         <EnableGrav X="0.0" Y="0.0" Z="-0.001"/>

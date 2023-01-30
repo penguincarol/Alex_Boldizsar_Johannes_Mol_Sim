@@ -19,6 +19,7 @@ TUM PSE Molecular Dynamics project by Jan Hampe, Alex Hocks, and Johannes Riemen
 * Run cmake: ` cmake ..`
 * Run make: ` make`
 * Additional compilerflags can be given via CXX_FLAGS (for example `make CXX_FLAGS+="-Dslow -std=c++20" MolSim` builds a less optimized version of the project)
+* In order to compile different multithreading approaches add `-Done_dim_tasks=1`, `-Dthree_dim_tasks=1` or `-Dround_robin_distr=1` respectively. The default version is the 2D-task approach with greedy distribution (see presentation for details) 
 
 
 ## Build Doxygen Documentation  
@@ -31,10 +32,12 @@ TUM PSE Molecular Dynamics project by Jan Hampe, Alex Hocks, and Johannes Riemen
 
 The plot comparing the runtime of the different algorithms can be found in the documenation of FLennardJonesCells and FLennardJones since they are responsible for the strategy used. One way to get there would be "Namespaces -> FLennardJonesCells" (sim->physics->force->FLennardJonesCells)<br>
 
+The remaining graphs and comparisons can be found in the Jo/presentation branch of this repository.
+
 To recreate the results see [benchmarking](#benchmarking).
 
 ### Profiling
-* After running `cmake` run `make ProfileMolSim` (additional parameters like `make CXX_FLAGS+="-O2 -std=c++20" ProfileMolSim` work as described in [Compilation and build](#compilation-and-build))
+* After running `cmake` run `make ProfileMolSim`
 * Run Simulation: `./ProfileMolSim ../input/file-to-use`
 * Extract profile data: `gprof BenchMolSim gmon.out > profile-data.txt `
 * The profile data can now be found at profile-data.txt
@@ -117,16 +120,6 @@ Bigger tests can be run by changing bbox, the input file and the output file acc
 
 The input files of the current program should be given as an .xml-file conforming to [XMLFormat.xsd](https://github.com/penguincarol/Alex_Jan_Johannes_Mol_Sim/blob/master/input/XMLFormat.xsd).
 See [test.xml](https://github.com/penguincarol/Alex_Jan_Johannes_Mol_Sim/blob/master/input/test.xml) to get an example of a valid input files.
-
-For benchmarking purposes (when -bench is set as a command line argument) input files can also be given in the following format:
-* Lines of comment begin with a '#' and are only allowed at the beginning of the file.  
-* The first non-commented line must be an integer indicating the number of bodies to be specified. Each body takes up one line.  
-* To create a single particle, specify its xyz-coordinates, velocity, and mass like so: `x.x y.y z.z x.x y.y z.z m.m`.  
-* To make creation of complex bodies more convienient, one can create one by specifying its coodinates of its front-left corner, velocity, mass, shape, dimensions, and the distance between each individual particle like so: `x.x y.y z.z x.x y.y z.z m.m shape x y z d.d`.  Currently supported shapes are Cuboids and Particles (There is no functional difference between declaring a single particle the first or second way). Capitalization doesn't matter.   
-* If the simulation uses the [Lennard-Jones Potential](https://en.wikipedia.org/wiki/Lennard-Jones_potential), sigma and epsilon can optionally be specified in the input file. Also the average velocity of the Brownian Motion as well as the number of dimensions (2 or 3) can be set here.  
-* An example input file can be found under [example-file.txt](https://github.com/penguincarol/Alex_Jan_Johannes_Mol_Sim/blob/master/input/example-file.txt).
-
-If the program is not executed in bench-mode these input files won't be read in properly. This behaviour will change with assignment 4.
 
 ## Tests
 

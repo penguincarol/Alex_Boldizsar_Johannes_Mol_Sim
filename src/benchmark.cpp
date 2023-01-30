@@ -71,7 +71,7 @@ runBenchmarkFile(Configuration& config, std::vector<std::string>& files, io::inp
                                 configActive.get<boundingBox_X1>(),
                                 configActive.get<boundingBox_X2>(),
                                 configActive.get<rCutoff>(),
-                                configActive.get<io::input::enableOMP>());
+                                false);
         buffer.clear();
     }
     return 0;

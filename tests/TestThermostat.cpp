@@ -140,15 +140,15 @@ TEST(Thermostat, HeatInit){
     size_t numParWeight1{100000};
     size_t numParWeight5{100000};
     for(size_t i{0}; i<numParWeight1; i++){
-        buffer.emplace_back(Eigen::Vector3d{((double )i)/1000, 0, 0}, Eigen::Vector3d{0.,0.,0.}, 1.0, 0);
+        buffer.emplace_back(Eigen::Vector3d{((double )i)/1000, 0, 0}, Eigen::Vector3d{0.,0.,0.}, 1.0, 0, i);
     }
     for(size_t i{0}; i<numParWeight5; i++){
-        buffer.emplace_back(Eigen::Vector3d{((double )i)/1000, 1, 1}, Eigen::Vector3d{0.,0.,0.}, 4.0, 0);
+        buffer.emplace_back(Eigen::Vector3d{((double )i)/1000, 1, 1}, Eigen::Vector3d{0.,0.,0.}, 4.0, 0, numParWeight1 + i);
     }
 
     ParticleContainer pc(buffer, {100., 100., 100.}, 10.0);
     double TInit{30};
-    Thermostat ts(pc, 0, 2, 3, 3, 30, true);
+    Thermostat ts(pc, 0, 2, 3, 3, 30, true, normalMode);
 
     ASSERT_TRUE(std::abs(ts.computeCurrentTemp()-TInit) < TInit*0.0001)<< "Current temp was " << ts.computeCurrentTemp() <<" instead of being approximately " << TInit<< " after initialization with Thermostat"<<std::endl;
 }

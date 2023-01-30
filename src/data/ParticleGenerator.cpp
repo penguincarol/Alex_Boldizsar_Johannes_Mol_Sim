@@ -80,11 +80,8 @@ namespace ParticleGenerator {
             planeFlag = 0;
         }
 
-
-
         //std::vector<std::vector<unsigned long>> membrNodes(x0, std::vector<unsigned long>(0, x1));
         std::vector<std::vector<unsigned long>> membrNodes(x0, std::vector<unsigned long>{});
-
         for(double i = 0; i < x0; i++){
             for(double j = 0; j < x1; j++){
                 Eigen::Vector3d pos = body.fixpoint + (body.distance * membrComputeOffset(planeFlag, i, j));

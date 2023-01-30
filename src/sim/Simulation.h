@@ -28,6 +28,7 @@
 #include <memory>
 #include <chrono>
 #include <utility>
+#include <omp.h>
 
 namespace sim {
     using namespace sim::physics;
@@ -225,6 +226,7 @@ namespace sim {
          */
         void runBenchmark(const int simIteration, const std::string &inputDataSource,
                           const std::vector<Particle> &startingData, const std::vector<Membrane> &startingMembranes, double bbox0, double bbox1, double bbox2, double rCutoff, bool eOMP) {
+            io::output::loggers::simulation->info("Running with {} Threads", omp_get_max_threads());
             io::output::loggers::simulation->info("Starting Benchmark");
 
 #pragma region sim_times

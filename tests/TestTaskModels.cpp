@@ -97,6 +97,65 @@ void performAlternativeTaskModelTest(ParticleContainer& pc){
 
 }
 
+
+void performTaskOriented2DTest(ParticleContainer& pc){
+    std::map<unsigned long, std::unordered_set<unsigned long>> edgesTaken{};
+    std::unordered_set<unsigned long> cellsTouchedThisTask{};
+
+    std::vector<std::vector<std::pair<unsigned long, unsigned long>>> taskGroup = pc.generateDistinctTaskOrientedCellNeighbours();
+
+    ASSERT_EQ(taskGroup.size(), 26);
+
+    size_t sumCellInteractions{0};
+    for(const auto& tasks: taskGroup){
+        cellsTouchedThisTask.clear();
+        for(auto& [i,j]: tasks){
+            sumCellInteractions++;
+
+            ASSERT_FALSE(cellsTouchedThisTask.contains(i));
+            ASSERT_FALSE(cellsTouchedThisTask.contains(j));
+            auto iCopy=i; auto jCopy = j;
+            cellsTouchedThisTask.emplace(iCopy);
+            cellsTouchedThisTask.emplace(jCopy);
+
+            if(edgesTaken.contains(i)){
+                ASSERT_FALSE(edgesTaken.at(i).contains(j));
+                auto jc = j;
+                edgesTaken.at(i).emplace(jc);
+            }else{
+                auto ic = i;
+                edgesTaken.emplace(ic, std::unordered_set<unsigned long>{j});
+            }
+            if(edgesTaken.contains(j)){
+                ASSERT_FALSE(edgesTaken.at(j).contains(i));
+                auto ic = i;
+                edgesTaken.at(j).emplace(ic);
+            }else{
+                auto jc = j;
+                edgesTaken.emplace(jc, std::unordered_set<unsigned long>{i});
+            }
+        }
+    }
+
+    size_t cellInteractionReference{0};
+    pc.forAllDistinctCellNeighbours([&cellInteractionReference](std::vector<double> &force,
+                                                                std::vector<double> &oldForce,
+                                                                std::vector<double> &x,
+                                                                std::vector<double> &v,
+                                                                std::vector<double> &m,
+                                                                std::vector<int> &type,
+                                                                unsigned long count,
+                                                                std::vector<unsigned long> &cell0Items,
+                                                                std::vector<unsigned long> &cell1Items,
+                                                                std::vector<double> &eps,
+                                                                std::vector<double> &sig){
+        cellInteractionReference++;
+    });
+
+    ASSERT_EQ(cellInteractionReference, sumCellInteractions) << "forAllDistinctCellNeighbours had" << cellInteractionReference << " Neighbouring Cell interactions whereas the taskModel produced " << sumCellInteractions;
+
+}
+
 /**
  * Check if
  * -Tasks created cover all the interactions
@@ -123,7 +182,7 @@ TEST(ParticleContainer, initTaskModel) {
 
     performTaskModelTest(pc);
     performAlternativeTaskModelTest(pc);
-
+    performTaskOriented2DTest(pc);
 
     //second larger test
     cub.dimensions = {100, 100, 100};
@@ -139,5 +198,6 @@ TEST(ParticleContainer, initTaskModel) {
 
     performTaskModelTest(pc);
     performAlternativeTaskModelTest(pc);
+    performTaskOriented2DTest(pc);
 }
 

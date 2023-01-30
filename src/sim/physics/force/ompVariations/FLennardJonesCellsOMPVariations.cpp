@@ -99,6 +99,7 @@ std::vector<T> flatten(const std::vector<std::vector<T>> &orig)
      * This is the implementaiton of the operator utilizing the three-dimensional-task approach as displayed in the presentation
      */
     void FLennardJonesCellsOMP::operator()() {
+        //io::output::loggers::general->error("Jup, three-dim used!");
         particleContainer.runOnDataCell([&](std::vector<double> &force,
                                             std::vector<double> &oldForce,
                                             std::vector<double> &x,
@@ -171,8 +172,10 @@ std::vector<T> flatten(const std::vector<std::vector<T>> &orig)
         //#pragma omp barrier
     }
 #endif
+
 #ifdef TASK_ORIENTED_2D
     void FLennardJonesCellsOMP::operator()() {
+        //io::output::loggers::general->error("Jup, task oriented 2D is used!");
         particleContainer.runOnDataCell([&](std::vector<double> &force,
                                             std::vector<double> &oldForce,
                                             std::vector<double> &x,
@@ -208,7 +211,8 @@ std::vector<T> flatten(const std::vector<std::vector<T>> &orig)
 
             const std::vector<std::vector<std::pair<unsigned long, unsigned long>>> &taskOrientedGroups = particleContainer.generateDistinctTaskOrientedCellNeighbours();
             for(auto& tasks : taskOrientedGroups){
-            #pragma omp for default(none) shared(fpairFun, force, oldForce, x, v, m, type, count, cells, eps, sig)
+                auto fpairFun = this->fpairFun;
+            #pragma omp parallel for default(none) shared(fpairFun, force, oldForce, x, v, m, type, count, cells, eps, sig, tasks)
                 for(auto &[cellIndexI, cellIndexJ]: tasks){
                     auto& cellI = cells[cellIndexI];
                     auto& cellJ = cells[cellIndexJ];

@@ -61,8 +61,9 @@ namespace sim::physics::force {
 
     #ifndef ONE_DIMENSIONAL_TASKS
     #ifndef THREE_DIMENSIONAL_TASKS
+    #ifndef TASK_ORIENTED_2D
     void FLennardJonesCellsOMP::operator()() {
-
+        //io::output::loggers::general->error("Default 2d thread oriented is used");
         particleContainer.runOnDataCell([&](std::vector<double> &force,
                                             std::vector<double> &oldForce,
                                             std::vector<double> &x,
@@ -163,6 +164,7 @@ namespace sim::physics::force {
             }
         });
     }
+    #endif
     #endif
     #endif
 } // force

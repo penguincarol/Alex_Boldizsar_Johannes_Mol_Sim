@@ -85,12 +85,21 @@ else()
                 $<$<CXX_COMPILER_ID:Intel>:-w3 -wd383,981,1418,1572,2259>
                 )
     else()
+        if(task_oriented_2d)
+            target_compile_options(MolSim
+                    PRIVATE
+                    $<$<CXX_COMPILER_ID:GNU>:-Wall -O3 -march=native -DTASK_ORIENTED_2D>
+                    # disable some spam warnings for icpc...
+                    $<$<CXX_COMPILER_ID:Intel>:-w3 -wd383,981,1418,1572,2259>
+                    )
+        else()
         target_compile_options(MolSim
                 PRIVATE
                 $<$<CXX_COMPILER_ID:GNU>:-Wall -O3 -march=native>
                 # disable some spam warnings for icpc...
                 $<$<CXX_COMPILER_ID:Intel>:-w3 -wd383,981,1418,1572,2259>
                 )
+        endif()
     endif()
 endif()
 

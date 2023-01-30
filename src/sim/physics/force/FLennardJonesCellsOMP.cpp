@@ -49,6 +49,7 @@ namespace sim::physics::force {
 
     #ifndef ONE_DIMENSIONAL_TASKS
     #ifndef THREE_DIMENSIONAL_TASKS
+    #ifndef TASK_ORIENTED_2D
     void FLennardJonesCellsOMP::operator()() {
         particleContainer.runOnDataCell([&](std::vector<double> &force,
                                             std::vector<double> &oldForce,
@@ -61,7 +62,7 @@ namespace sim::physics::force {
                                             std::vector<double> &eps,
                                             std::vector<double> &sig) {
             static const double rt3_2 = std::pow(2, 1.0 / 3.0);
-            const std::vector<std::vector<std::pair<unsigned long, unsigned long>>>& alternativeTaskGroups = particleContainer.generateDistinctAlternativeCellNeighbours();
+            const std::vector<std::vector<std::pair<unsigned long, unsigned long>>>& alternativeTaskGroups = particleContainer.generate2DTaskModelSplitIntoThreads();
             double *_force = force.data();
             size_t size = force.size();
             double sigma, sigma2, sigma6, epsilon, dsqr, d0, d1, d2, l2NInvSquare, fac0, l2NInvPow6, fac1_sum1, fac1;
@@ -164,6 +165,7 @@ namespace sim::physics::force {
             }
         });
     }
+    #endif
     #endif
     #endif
 } // force

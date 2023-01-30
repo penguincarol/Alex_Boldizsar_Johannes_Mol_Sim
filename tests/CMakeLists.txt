@@ -17,7 +17,7 @@ target_include_directories(runtest
         PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/../libs/libspdlog/include/spdlog
         PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../src
         )
-target_link_libraries(runtest PRIVATE pthread PUBLIC PkgConfig::XERCESC PUBLIC GTest::gtest_main PUBLIC spdlog::spdlog)
+target_link_libraries(runtest PRIVATE pthread PUBLIC PkgConfig::XERCESC PUBLIC GTest::gtest_main PUBLIC spdlog::spdlog PUBLIC OpenMP::OpenMP_CXX)
 target_compile_features(runtest PUBLIC cxx_std_20)
 set_target_properties( runtest
         PROPERTIES

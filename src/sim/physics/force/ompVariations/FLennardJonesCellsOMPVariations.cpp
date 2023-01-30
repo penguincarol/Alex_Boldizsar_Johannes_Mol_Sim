@@ -99,6 +99,7 @@ std::vector<T> flatten(const std::vector<std::vector<T>> &orig)
      * This is the implementaiton of the operator utilizing the three-dimensional-task approach as displayed in the presentation
      */
     void FLennardJonesCellsOMP::operator()() {
+        //io::output::loggers::general->error("Jup, three-dim used!");
         particleContainer.runOnDataCell([&](std::vector<double> &force,
                                             std::vector<double> &oldForce,
                                             std::vector<double> &x,
@@ -171,4 +172,62 @@ std::vector<T> flatten(const std::vector<std::vector<T>> &orig)
         //#pragma omp barrier
     }
 #endif
+
+#ifdef TASK_ORIENTED_2D
+    void FLennardJonesCellsOMP::operator()() {
+        //io::output::loggers::general->error("Jup, task oriented 2D is used!");
+        particleContainer.runOnDataCell([&](std::vector<double> &force,
+                                            std::vector<double> &oldForce,
+                                            std::vector<double> &x,
+                                            std::vector<double> &v,
+                                            std::vector<double> &m,
+                                            std::vector<int> &type,
+                                            unsigned long count,
+                                            ParticleContainer::VectorCoordWrapper &cells,
+                                            std::vector<double> &eps,
+                                            std::vector<double> &sig) {
+            auto fpairFun = this->fpairFun;
+            #pragma omp parallel for default(none) shared(cells, x, eps, sig, m, type, force, fpairFun)
+            for (size_t cellIndex = 0; cellIndex < cells.size(); cellIndex++) {
+                auto &cell = cells[cellIndex];
+                for (size_t i = 0; i < cell.size(); i++) {
+                    for (size_t j = i + 1; j < cell.size(); j++) {
+                        fpairFun(force, x, eps, sig, m, type, cell[i], cell[j]);
+                    }
+                }
+            }
+        });
+
+        particleContainer.runOnDataCell([&](std::vector<double> &force,
+                                            std::vector<double> &oldForce,
+                                            std::vector<double> &x,
+                                            std::vector<double> &v,
+                                            std::vector<double> &m,
+                                            std::vector<int> &type,
+                                            unsigned long count,
+                                            ParticleContainer::VectorCoordWrapper &cells,
+                                            std::vector<double> &eps,
+                                            std::vector<double> &sig) {
+
+            const std::vector<std::vector<std::pair<unsigned long, unsigned long>>> &taskOrientedGroups = particleContainer.generateDistinctTaskOrientedCellNeighbours();
+            for(auto& tasks : taskOrientedGroups){
+                auto fpairFun = this->fpairFun;
+            #pragma omp parallel for default(none) shared(fpairFun, force, oldForce, x, v, m, type, count, cells, eps, sig, tasks)
+                for(auto &[cellIndexI, cellIndexJ]: tasks){
+                    auto& cellI = cells[cellIndexI];
+                    auto& cellJ = cells[cellIndexJ];
+
+                    for(auto& pIndexI: cellI){
+                        for(auto& pIndexJ: cellJ){
+                            fpairFun(force, x, eps, sig, m, type, pIndexI, pIndexJ);
+                        }
+                    }
+
+                }
+            }
+        });
+
+    }
+#endif
 }
+

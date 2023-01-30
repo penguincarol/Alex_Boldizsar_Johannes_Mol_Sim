@@ -41,8 +41,6 @@ namespace sim::physics::force {
         }else{
             springDev = norm - dd;
         }
-        constexpr double smallDistance = 0.000'000'1;
-        //if(std::abs(springDev) < smallDistance){return;}
 
         f0 = k * (springDev) * d0 / norm;
         f1 = k * (springDev) * d1 / norm;

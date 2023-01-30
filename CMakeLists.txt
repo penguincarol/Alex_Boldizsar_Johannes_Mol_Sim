@@ -158,7 +158,7 @@ target_include_directories(asan-MolSim
         PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/libs/libspdlog/include/spdlog
         PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src
         )
-target_link_libraries(asan-MolSim PUBLIC PkgConfig::XERCESC PRIVATE spdlog::spdlog)
+target_link_libraries(asan-MolSim PUBLIC PkgConfig::XERCESC PRIVATE spdlog::spdlog PUBLIC OpenMP::OpenMP_CXX)
 
 # activate all compiler warnings. Clean up your code :P
 # depending on the compiler different flags are used
@@ -169,7 +169,7 @@ target_compile_options(asan-MolSim
         $<$<CXX_COMPILER_ID:Intel>:-w3 -wd383,981,1418,1572,2259>
         PRIVATE -fsanitize=address
         )
-target_link_options(asan-MolSim PUBLIC OpenMP::OpenMP_CXX PRIVATE -fsanitize=address)
+target_link_options(asan-MolSim PRIVATE -fsanitize=address)
 
 
 #############################################################################################################

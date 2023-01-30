@@ -47,29 +47,9 @@ namespace sim::physics::force {
         return fpairFunAlt;
     }
 
+    #ifndef ONE_DIMENSIONAL_TASKS
+    #ifndef THREE_DIMENSIONAL_TASKS
     void FLennardJonesCellsOMP::operator()() {
-        particleContainer.runOnDataCell([&](std::vector<double> &force,
-                                            std::vector<double> &oldForce,
-                                            std::vector<double> &x,
-                                            std::vector<double> &v,
-                                            std::vector<double> &m,
-                                            std::vector<int> &type,
-                                            unsigned long count,
-                                            ParticleContainer::VectorCoordWrapper& cells,
-                                            std::vector<double> &eps,
-                                            std::vector<double> &sig){
-            auto fpairFun = this->fpairFun;
-            #pragma omp parallel for default(none) shared(cells, x, eps, sig, m, type, force, fpairFun) //reduction(+:interactions)
-            for(size_t cellIndex=0; cellIndex < cells.size(); cellIndex++){
-                auto& cell = cells[cellIndex];
-                for(size_t i = 0; i < cell.size(); i++){
-                    for(size_t j = i+1; j < cell.size(); j++){
-                        fpairFun(force, x, eps, sig, m, type, cell[i], cell[j]);
-                    }
-                }
-            }
-        });
-
         particleContainer.runOnDataCell([&](std::vector<double> &force,
                                             std::vector<double> &oldForce,
                                             std::vector<double> &x,
@@ -104,6 +84,42 @@ namespace sim::physics::force {
                 firstprivate(indexX, rt3_2) \
                 reduction(+:_force[:size])
             {
+                #pragma omp for simd
+                for(int cellIndex=0; cellIndex < cells.size(); cellIndex++){
+                    auto& cell = cells[cellIndex];
+                    for(int i = 0; i < cell.size(); i++){
+                        for(int j = i+1; j < cell.size(); j++){
+                            indexI = cell[i];
+                            indexJ = cell[j];
+                            sigma = (sig[indexI] + sig[indexJ]) / 2;
+                            sigma2 = sigma * sigma;
+                            sigma6 = sigma2 * sigma2 * sigma2;
+                            epsilon = std::sqrt(eps[indexI] * eps[indexJ]); // TODO this can be cached
+                            d0 = x[indexI * 3 + 0] - x[indexJ * 3 + 0];
+                            d1 = x[indexI * 3 + 1] - x[indexJ * 3 + 1];
+                            d2 = x[indexI * 3 + 2] - x[indexJ * 3 + 2];
+                            dsqr = d0 * d0 + d1 * d1 + d2 * d2;
+                            //check if is membrane -> need to skip attractive forces
+                            if (t[indexI] & 0x80000000 || t[indexJ] & 0x80000000) {
+                                if (dsqr >= rt3_2 * sigma2) continue;
+                            }
+
+                            l2NInvSquare = 1 / (dsqr);
+                            fac0 = 24 * epsilon * l2NInvSquare;
+                            l2NInvPow6 = l2NInvSquare * l2NInvSquare * l2NInvSquare;
+                            fac1_sum1 = sigma6 * l2NInvPow6;
+                            fac1 = (fac1_sum1) - 2 * (fac1_sum1 * fac1_sum1);
+
+                            _force[indexI * 3 + 0] -= fac0 * fac1 * d0;
+                            _force[indexI * 3 + 1] -= fac0 * fac1 * d1;
+                            _force[indexI * 3 + 2] -= fac0 * fac1 * d2;
+                            _force[indexJ * 3 + 0] += fac0 * fac1 * d0;
+                            _force[indexJ * 3 + 1] += fac0 * fac1 * d1;
+                            _force[indexJ * 3 + 2] += fac0 * fac1 * d2;
+                        }
+                    }
+                }
+
                 //generate tasks: for all distinct cell neighbours
                 #pragma omp for simd
                 for(indexX = 0; indexX < maxThreads; indexX++) {
@@ -148,4 +164,6 @@ namespace sim::physics::force {
             }
         });
     }
+    #endif
+    #endif
 } // force

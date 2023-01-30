@@ -32,7 +32,7 @@ target_include_directories(MolSim
         PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/libs/libeigen/Eigen
         PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/libs/libspdlog/include/spdlog
         PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src
-)
+        )
 
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(XERCESC REQUIRED IMPORTED_TARGET xerces-c)
@@ -49,15 +49,50 @@ else()
             PRIVATE spdlog::spdlog
             )
 endif()
+
+#this code got inflated really quickly..
 # activate all compiler warnings. Clean up your code :P
 # depending on the compiler different flags are used
-target_compile_options(MolSim
-        PRIVATE
-            $<$<CXX_COMPILER_ID:GNU>:-Wall -O3 -march=native>
+if(three_dim_tasks)
+    if(round_robin_distr)
+        target_compile_options(MolSim
+                PRIVATE
+                $<$<CXX_COMPILER_ID:GNU>:-Wall -O3 -march=native -DTHREE_DIMENSIONAL_TASKS -DTASK_ROUND_ROBIN>
+                # disable some spam warnings for icpc...
+                $<$<CXX_COMPILER_ID:Intel>:-w3 -wd383,981,1418,1572,2259>
+                )
+    else()
+        target_compile_options(MolSim
+                PRIVATE
+                $<$<CXX_COMPILER_ID:GNU>:-Wall -O3 -march=native -DTHREE_DIMENSIONAL_TASKS>
+                # disable some spam warnings for icpc...
+                $<$<CXX_COMPILER_ID:Intel>:-w3 -wd383,981,1418,1572,2259>
+                )
+    endif()
+elseif(one_dim_tasks)
+    target_compile_options(MolSim
+            PRIVATE
+            $<$<CXX_COMPILER_ID:GNU>:-Wall -O3 -march=native -DONE_DIMENSIONAL_TASKS>
             # disable some spam warnings for icpc...
             $<$<CXX_COMPILER_ID:Intel>:-w3 -wd383,981,1418,1572,2259>
-        
-)
+            )
+else()
+    if(round_robin_distr)
+        target_compile_options(MolSim
+                PRIVATE
+                $<$<CXX_COMPILER_ID:GNU>:-Wall -O3 -march=native -DTASK_ROUND_ROBIN>
+                # disable some spam warnings for icpc...
+                $<$<CXX_COMPILER_ID:Intel>:-w3 -wd383,981,1418,1572,2259>
+                )
+    else()
+        target_compile_options(MolSim
+                PRIVATE
+                $<$<CXX_COMPILER_ID:GNU>:-Wall -O3 -march=native>
+                # disable some spam warnings for icpc...
+                $<$<CXX_COMPILER_ID:Intel>:-w3 -wd383,981,1418,1572,2259>
+                )
+    endif()
+endif()
 
 #Benchmark option
 #this is almost the identical code to the target MolSim and i am sure that there is an extremely pretty way to do exactely that in ~4 lines instead

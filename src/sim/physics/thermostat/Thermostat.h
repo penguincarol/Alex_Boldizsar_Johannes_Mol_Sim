@@ -57,8 +57,8 @@ public:
             io::output::loggers::simulation->info("Using Thermostat: pipe mode");
             numberFlowingParticles=0;
             pc.runOnActiveData([&](auto&,auto&,auto&,auto&,std::vector<double> &m,auto&,auto,auto&,auto&,
-                                   std::unordered_map<unsigned long, unsigned long> &id_to_index, auto){
-                for(auto [_,a]: id_to_index){
+                                   auto& activeParticles){
+                for(auto a: activeParticles){
                     if(m[a] >= 0) numberFlowingParticles++;
                 }
             });

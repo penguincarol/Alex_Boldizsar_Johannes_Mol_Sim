@@ -20,10 +20,10 @@ namespace sim::physics::force {
                                        unsigned long count,
                                        std::vector<double> &eps,
                                        std::vector<double> &sig,
-                                       std::unordered_map<unsigned long, unsigned long> &id_to_index, auto&_){
+                                       auto&_){
             for(unsigned long indexI = 0; indexI < count; indexI++){
                 for(unsigned long indexJ = indexI + 1; indexJ < count; indexJ++) {
-                    this->fpairFun(force, x, eps, sig, m, type, id_to_index[indexI], id_to_index[indexJ]);
+                    this->fpairFun(force, x, eps, sig, m, type, indexI, indexJ);
                 }
             }
         });

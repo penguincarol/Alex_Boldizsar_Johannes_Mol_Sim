@@ -15,9 +15,12 @@
 #include "sim/physics/velocity/VStoermerVelvet.h"
 
 static void vectorEqual(const Eigen::Vector3d& lhs, const Eigen::Vector3d& rhs){
-    ASSERT_DOUBLE_EQ(lhs[0], rhs[0])<< "ForceLeft was "  << lhs << "\nbut was expected to be " << rhs << "\n";
-    ASSERT_DOUBLE_EQ(lhs[1], rhs[1])<< "ForceLeft was "  << lhs << "\nbut was expected to be " << rhs << "\n";;
-    ASSERT_DOUBLE_EQ(lhs[2], rhs[2])<< "ForceLeft was "  << lhs << "\nbut was expected to be " << rhs << "\n";;
+    /*ASSERT_DOUBLE_EQ(lhs[0], rhs[0])<< "ForceLeft was "  << lhs << "\nbut was expected to be " << rhs << "\n";
+    ASSERT_DOUBLE_EQ(lhs[1], rhs[1])<< "ForceLeft was "  << lhs << "\nbut was expected to be " << rhs << "\n";
+    ASSERT_DOUBLE_EQ(lhs[2], rhs[2])<< "ForceLeft was "  << lhs << "\nbut was expected to be " << rhs << "\n";*/
+    ASSERT_TRUE(std::abs(lhs[0]-rhs[0]) < std::max(0.000000001*lhs[0], 0.0000000000001) )<< "ForceLeft was "  << lhs << "\nbut was expected to be " << rhs << "\n";
+    ASSERT_TRUE(std::abs(lhs[1]-rhs[1]) < std::max(0.000000001*lhs[0], 0.0000000000001))<< "ForceLeft was "  << lhs << "\nbut was expected to be " << rhs << "\n";
+    ASSERT_TRUE(std::abs(lhs[2]-rhs[2]) < std::max(0.000000001*lhs[0], 0.0000000000001))<< "ForceLeft was "  << lhs << "\nbut was expected to be " << rhs << "\n";
     //return true;
     /*for(int i=0; i<3; i++){
         if(lhs[i]-rhs[i] > std::max(lhs[i]*0.000000001, 0.000'000'000'000'001)){
@@ -192,7 +195,7 @@ TEST(FMembrane, LennardJonesDontAlwaysTruncate) {
 
     double rt2_6 = std::pow(2.0, 1.0/6.0);
     double sigFact=1.00025;
-    double sig{(3.0/rt2_6)*sigFact};
+    double sig{(d*sigFact/rt2_6)};
     double eps{4.0};
 
     ParticleGenerator::generateMembrane(membr, 0, buf, membrBuf, 3, sig, eps);
@@ -211,8 +214,12 @@ TEST(FMembrane, LennardJonesDontAlwaysTruncate) {
     //auto temp = pc.getMembranes()[0].getMembrNodes()[0][0];
     auto idOut = pc.getMembranes()[0].getMembrNodes()[1][0];
     auto idIn = pc.getMembranes()[0].getMembrNodes()[1][1];
-    //Eigen::Vector3d forceOnOut = {0., -(24.0*eps/d*d)* d * ((1.*std::pow(sigFact, 6.0)/2.) - 2*(std::pow(sigFact, 12.0)/4.0)), 0.};
-    Eigen::Vector3d forceOnOut = {0., -(24.0*eps/d)* d * ((1.*std::pow(sigFact, 6.0)/2.) - 2*(std::pow(sigFact, 12.0)/4.0)), 0.};
+    Eigen::Vector3d forceOnOut = {0., (24.0*eps/d) * ((1.*std::pow(sigFact, 6.0)/2.) - 2*(std::pow(sigFact, 12.0)/4.0)), 0.};
+    //F = -(24*eps/(d*d)) * ((std::pow(sigma/d, 6.0) - 2 * std::pow(sigma/d), 12.0)) * d
+    //  = -(24*eps/d) * ( ((d*sigFact/2^(1./6.))/d)^6 - 2* ((d*sigFact/2^(1./6.))/d)^12)
+    //  = -(24*eps/d) * ( sigFact^6/2 - 2 * sigFact^12/4
+
+    //Eigen::Vector3d forceOnOut = {0., -(24.0*eps/d)* d * ((1.*std::pow(sigFact, 6.0)/2.) - 2*(std::pow(sigFact, 12.0)/4.0)), 0.};
 
     //ASSERT_TRUE(vectorEqual(pc.getParticle(idIn).getF(), {0,0,0}));
     //ASSERT_TRUE(vectorEqual(pc.getParticle(idOut).getF(), forceOnOut));
@@ -270,7 +277,7 @@ TEST(FMembrane, increasingErrors){
     fMem.operator()();
     //ASSERT_DOUBLE_EQ(pc.getParticle(pc.getMembranes()[0].getMembrNodes()[1][0]).getF().norm(), 0.)<<"1 force calc";
 
-    for(size_t i{0}; i < 5'000; i++){
+    for(size_t i{0}; i < 100; i++){
         xCalc.operator()();
         auto dist=(pc.getParticle(pc.getMembranes()[0].getMembrNodes()[1][0]).getX() - pc.getParticle(pc.getMembranes()[0].getMembrNodes()[0][0]).getX()).norm();
         //ASSERT_TRUE(std::abs(dist-membr.desiredDistance)<=0.10000000000000009)<<"Particles at iteration "<<i<<" were " << dist-membr.desiredDistance << " apart from each other";

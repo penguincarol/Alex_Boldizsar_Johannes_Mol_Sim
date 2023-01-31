@@ -1,0 +1,17 @@
+\frametitle{Optimizations 1}
+	\large
+As mentioned in Assignment 3 our ParticleContainer does not contain Particle-structs anymore.\\
+Keeping the old interface lead to the following method:
+\begin{lstlisting}
+void ParticleContainer::forAllParticles(void(*function)(Particle &)) {
+	for (unsigned long index: activeParticles) {
+		Particle p;
+		loadParticle(p, index);
+		function(p);
+		storeParticle(p, index);
+	}
+}
+\end{lstlisting}
+
+$\implies$ rewriting old code where this method got used was a major improvement
+

@@ -50,7 +50,7 @@ std::vector<T> flatten(const std::vector<std::vector<T>> &orig)
             //std::cout<<"Inter Cells with themselves: " << interactions << std::endl;
         });
 
-        std::vector<std::vector<std::pair<unsigned long, unsigned long>>> taskBlocks = particleContainer.generateDistinctAlternativeCellNeighbours();
+        std::vector<std::vector<std::pair<unsigned long, unsigned long>>> taskBlocks = particleContainer.generate2DTaskModelSplitIntoThreads();
         std::vector<std::pair<unsigned long, unsigned long>> tasks = flatten(taskBlocks);
 
         particleContainer.runOnDataCell([&tasks, this](std::vector<double> &force,
@@ -127,7 +127,7 @@ std::vector<T> flatten(const std::vector<std::vector<T>> &orig)
             //std::cout<<"Inter Cells with themselves: " << interactions << std::endl;
         });
 
-        std::vector<std::vector<std::vector<std::pair<unsigned long, unsigned long>>>> taskBlocks = particleContainer.generateDistinctCellNeighbours();
+        std::vector<std::vector<std::vector<std::pair<unsigned long, unsigned long>>>> taskBlocks = particleContainer.generate3DTaskModel();
         auto fPairFun = this->fpairFun;
         for (auto &tasks: taskBlocks) {
             //the previous taskBlock needs to be finished before the next taskBlock can start>
@@ -210,7 +210,7 @@ std::vector<T> flatten(const std::vector<std::vector<T>> &orig)
                                             std::vector<double> &eps,
                                             std::vector<double> &sig) {
 
-            const std::vector<std::vector<std::pair<unsigned long, unsigned long>>> &taskOrientedGroups = particleContainer.generateDistinctTaskOrientedCellNeighbours();
+            const std::vector<std::vector<std::pair<unsigned long, unsigned long>>> &taskOrientedGroups = particleContainer.generate2DTaskModelColoring();
             for(auto& tasks : taskOrientedGroups){
                 auto fpairFun = this->fpairFun;
             #pragma omp parallel for default(none) shared(fpairFun, force, oldForce, x, v, m, type, count, cells, eps, sig, tasks)

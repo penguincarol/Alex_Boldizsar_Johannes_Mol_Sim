@@ -191,10 +191,10 @@ namespace sim {
                 if (iteration % 10 == 0) {
                 }
                 if (iteration % 100 == 0) {
+                    ioWrapper.writeParticlesVTK(particleContainer, outputFolder, outputBaseName, iteration);
                 }
                 if (iteration % 1000 == 0) {
                     io::output::loggers::simulation->info("Progress: {:03.2f}%", current_time / end_time * 100);
-                    ioWrapper.writeParticlesVTK(particleContainer, outputFolder, outputBaseName, iteration);
                     if(checkpointingEnable) ioWrapper.writeCheckpoint(particleContainer, config, iteration, current_time);
 
                     io::output::loggers::simulation->trace("Iteration {} finished.", iteration);

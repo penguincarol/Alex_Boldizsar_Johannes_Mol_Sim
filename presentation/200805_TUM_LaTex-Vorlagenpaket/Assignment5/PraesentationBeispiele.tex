@@ -12,6 +12,15 @@
 \end{frame}
 
 \begin{frame}
+	\frametitle{Implementation of immovable Particles}
+	\large
+	\begin{itemize}
+		\item Set mass of particle to -inf
+		\item refactor code to ignore those particles wherever needed (e.g. Thermostat)
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
 	\frametitle{Preparation for Multithreading- Refactoring the Particle Container}
 	\large
 	Our current implementation of the Cell Data structure (as displayed in Assigment 3):
@@ -104,6 +113,23 @@
 		\item \textbf{Task Model}: The task model defines the data structure that these tasks are stored in.
 		\item \textbf{Distribution Strategy}: Many task models require splitting up bundles of tasks into buckets. The distribution strategy defines the strategy used for this splitting process.
 	\end{itemize}
+\end{frame}
+
+
+\begin{frame}
+	\frametitle{Distribution Strategy}
+	\large
+	\begin{itemize}
+		\item Splitting tasks into even-ish packages is necessary functionality
+		\item This problem is np-complete
+	\end{itemize}
+	
+	Approaches we looked at:
+	\begin{enumerate}
+		\item Round Robin: Assume that every Cell-Interaction has the same weight and distribute them via Round Robin
+		\item Greedy distribution: give the next job to the package that has the least work so far
+		\item Round Robin Threshold: Give Cell Interactions into one package until the number of interactions surpasses a threshold value (e.g. $10^{4}$ interactions); continue in Round Robin fashion
+	\end{enumerate}
 \end{frame}
 	
 
@@ -208,7 +234,7 @@ tasks = {{(0,1), (0,3), (3,6) ...},
 \end{frame}
 
 \begin{frame}
-	\frametitle{Approach 3- Task oriented 2D task model}
+	\frametitle{Approach 3- Color oriented 2D task model}
 	\large
 	\begin{itemize}
 		\item You need 13 "`lines"' in the Cell-Algorithm to cover all neighbouring cell-interactions
@@ -274,7 +300,7 @@ tasks = {{(0,1), (0,3), (3,6) ...},
 \end{frame}
 
 \begin{frame}[fragile]
-	\frametitle{Approach 3- Task oriented 2D task model}
+	\frametitle{Approach 3- Color oriented 2D task model}
 	
 	\begin{columns}
 		\begin{column}{0.5\textwidth}
@@ -346,7 +372,7 @@ tasks = {{(0,1), (0,3), (3,6) ...},
 	\frametitle{Approach 4- 3D task model}
 	\large
 	\begin{itemize}
-		\item Combination of thread oriented and task oriented 2D approaches
+		\item Combination of thread oriented and color oriented 2D approaches
 		\item Split up tasks into 26 fully parallelizable blocks
 		\item Split those blocks into num\_threads jobs; use a distribution strategy to balance workload
 		\item No reduction required
@@ -356,19 +382,8 @@ tasks = {{(0,1), (0,3), (3,6) ...},
 \end{frame}
 
 \begin{frame}
-	\frametitle{Even distribution Strategy}
-	\large
-	\begin{itemize}
-		\item Splitting tasks into even-ish packages is necessary functionality
-		\item This problem is np-complete
-	\end{itemize}
+	\frametitle{Speedup of the 3D task model approach}
 	
-	Approaches we looked at:
-	\begin{enumerate}
-		\item Round Robin: Assume that every Cell-Interaction has the same weight and distribute them via Round Robin
-		\item Greedy distribution: give the next job to the package that has the least work so far
-		\item Round Robin Threshold: Give Cell Interactions into one package until the number of interactions surpasses a threshold value (e.g. $10^{4}$ interactions); continue in Round Robin fashion
-	\end{enumerate}
 	
 \end{frame}
 
@@ -380,13 +395,20 @@ tasks = {{(0,1), (0,3), (3,6) ...},
 	\def\arraystretch{1.5}
 	\begin{tabularx}{\linewidth}{>{\hsize=.25\hsize}X|>{\hsize=.25\hsize}X|>{\hsize=.25\hsize}X|>{\hsize=.25\hsize}X}	
 		
-		1D Tasks & 2D thread tasks & 2D colored tasks & 3D tasks\\
+		1D Tasks & 2D thread tasks
+						\begin{tabular}{l|l}
+							Greedy & Round Robin\\
+						\end{tabular}& 2D colored tasks & 3D tasks 
+					\begin{tabular}{l|l}
+						Greedy & Round Robin\\
+					\end{tabular}\\
 		\hline
 		\textcolor{black}{Simplest approach} & 
 		\textcolor{black}{$+$ Potentially better scheduling than 1D tasks} &
 		\textcolor{black}{$+$ Limit for parallelization corresponds to problem given theoretical limit} &
 		\textcolor{black}{$+$ Potential to get the best out of both "`2D worlds"'}
 		\\ 
+
 		
 		
 		

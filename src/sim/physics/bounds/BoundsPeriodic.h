@@ -75,9 +75,16 @@ namespace sim::physics::bounds {
                 auto retFun = this->forceHandler.getFastForceRetFunction();
                 double* f = force.data();
                 size_t size = force.size();
+                const unsigned long maxThreads{static_cast<unsigned long>(
+                #ifdef _OPENMP
+                    omp_get_max_threads()
+                #else
+                    1
+                #endif
+                )};
 
-                #pragma omp parallel for default(none) shared(tasks, x, t, eps,m,force, sig, size, retFun) reduction(+:f[:size])
-                for(size_t tid = 0; tid < static_cast<size_t>(omp_get_max_threads()); tid++) {
+                #pragma omp parallel for default(none) shared(tasks, x, t, eps,m,force, sig, size, retFun,maxThreads) reduction(+:f[:size])
+                for(size_t tid = 0; tid < maxThreads; tid++) {
                     for(size_t hcId = 0; hcId < tasks[tid].size(); hcId++) {
                         auto hCell = std::get<0>(tasks[tid][hcId][0]);
                         for (size_t pairIndex = 0; pairIndex < tasks[tid][hcId].size(); pairIndex++) {

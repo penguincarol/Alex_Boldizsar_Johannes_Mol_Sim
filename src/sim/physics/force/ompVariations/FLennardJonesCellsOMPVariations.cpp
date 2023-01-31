@@ -131,7 +131,14 @@ std::vector<T> flatten(const std::vector<std::vector<T>> &orig)
         auto fPairFun = this->fpairFun;
         for (auto &tasks: taskBlocks) {
             //the previous taskBlock needs to be finished before the next taskBlock can start>
-            if (tasks.size() != omp_get_max_threads()) {
+            const unsigned long maxThreads{static_cast<unsigned long>(
+            #ifdef _OPENMP
+                omp_get_max_threads()
+            #else
+                1
+            #endif
+            )};
+            if (tasks.size() != maxThreads) {
                 io::output::loggers::simulation->debug(
                         "Task creation for force calculation didn't result in appropriate amount of tasks");
             }

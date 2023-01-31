@@ -944,7 +944,13 @@ public:
         std::vector<std::vector<std::vector<std::tuple<cell_ptr, cell_ptr, double, double, double>>>> tasks;
         using halo_buf_t = std::vector<std::tuple<cell_ptr, cell_ptr, double, double, double>>;
         std::vector<size_t> interactions;
-        size_t maxThreads = omp_get_max_threads();
+        const unsigned long maxThreads{static_cast<unsigned long>(
+        #ifdef _OPENMP
+            omp_get_max_threads()
+        #else
+            1
+        #endif
+        )};
         tasks.resize(maxThreads);
         interactions.resize(maxThreads);
         auto getMin = [&](){

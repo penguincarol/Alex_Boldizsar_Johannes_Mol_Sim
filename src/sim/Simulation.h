@@ -170,7 +170,9 @@ namespace sim {
          * @param writeParticle Function to write all particles all 10 iterations
          * */
         void run(io::input::Configuration &config) {
+            #ifdef _OPENMP
             io::output::loggers::simulation->info("Running with {} Threads", omp_get_max_threads());
+            #endif
             io::output::loggers::simulation->info("Starting simulation");
             double current_time = start_time;
             int iteration = config.get<io::input::simLastIteration>();
@@ -226,7 +228,9 @@ namespace sim {
          */
         void runBenchmark(const int simIteration, const std::string &inputDataSource,
                           const std::vector<Particle> &startingData, const std::vector<Membrane> &startingMembranes, double bbox0, double bbox1, double bbox2, double rCutoff, bool eOMP) {
+            #ifdef _OPENMP
             io::output::loggers::simulation->info("Running with {} Threads", omp_get_max_threads());
+            #endif
             io::output::loggers::simulation->info("Starting Benchmark");
 
 #pragma region sim_times

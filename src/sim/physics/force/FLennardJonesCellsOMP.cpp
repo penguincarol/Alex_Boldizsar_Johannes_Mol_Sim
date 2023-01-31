@@ -75,8 +75,13 @@ namespace sim::physics::force {
             unsigned long indexY;
             unsigned long indexC0;
             unsigned long indexC1;
-
-            size_t maxThreads = omp_get_max_threads();
+            const unsigned long maxThreads{static_cast<unsigned long>(
+            #ifdef _OPENMP
+                omp_get_max_threads()
+            #else
+                1
+            #endif
+            )};
 
             #pragma omp parallel \
                 default(none) \
@@ -87,10 +92,10 @@ namespace sim::physics::force {
                 reduction(+:_force[:size])
             {
                 #pragma omp for simd
-                for(int cellIndex=0; cellIndex < cells.size(); cellIndex++){
+                for(int cellIndex=0; cellIndex < static_cast<int>(cells.size()); cellIndex++){
                     auto& cell = cells[cellIndex];
-                    for(int i = 0; i < cell.size(); i++){
-                        for(int j = i+1; j < cell.size(); j++){
+                    for(int i = 0; i < static_cast<int>(cell.size()); i++){
+                        for(int j = i+1; j < static_cast<int>(cell.size()); j++){
                             indexI = cell[i];
                             indexJ = cell[j];
                             sigma = (sig[indexI] + sig[indexJ]) / 2;

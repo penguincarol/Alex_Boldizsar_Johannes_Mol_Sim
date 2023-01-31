@@ -424,7 +424,13 @@ void ParticleContainer::clearStoreForce() {
 }
 
 void ParticleContainer::init2DTaskModelSplit(){
-    const unsigned long maxThreads{static_cast<unsigned long>(omp_get_max_threads())};
+    const unsigned long maxThreads{static_cast<unsigned long>(
+    #ifdef _OPENMP
+        omp_get_max_threads()
+    #else
+        1
+    #endif
+    )};
     taskModelCache2DSplit.clear();
     taskModelCache2DSplit.resize(maxThreads);
     //26 TaskGroups (for the 13 cases*2)
@@ -594,7 +600,13 @@ void ParticleContainer::init3DTaskModel() {
 
 
         //const std::vector<std::vector<std::vector<std::pair<unsigned long, unsigned long>>>>& generateDistinctCellNeighbours()
-        const unsigned long maxThreads{static_cast<unsigned long>(omp_get_max_threads())};
+        const unsigned long maxThreads{static_cast<unsigned long>(
+        #ifdef _OPENMP
+            omp_get_max_threads()
+        #else
+            1
+        #endif
+        )};
 
         #ifdef TASK_ROUND_ROBIN
         constexpr unsigned long roundRobinMolUpdateThreshold = 1'000'000;

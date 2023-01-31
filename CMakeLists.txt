@@ -57,14 +57,14 @@ if(three_dim_tasks)
     if(round_robin_distr)
         target_compile_options(MolSim
                 PRIVATE
-                $<$<CXX_COMPILER_ID:GNU>:-Wall -O3 -march=native -DTHREE_DIMENSIONAL_TASKS -DTASK_ROUND_ROBIN>
+                $<$<CXX_COMPILER_ID:GNU>:-Wall -Wno-unknown-pragmas -O3 -march=native -DTHREE_DIMENSIONAL_TASKS -DTASK_ROUND_ROBIN>
                 # disable some spam warnings for icpc...
                 $<$<CXX_COMPILER_ID:Intel>:-w3 -wd383,981,1418,1572,2259>
                 )
     else()
         target_compile_options(MolSim
                 PRIVATE
-                $<$<CXX_COMPILER_ID:GNU>:-Wall -O3 -march=native -DTHREE_DIMENSIONAL_TASKS>
+                $<$<CXX_COMPILER_ID:GNU>:-Wall -Wno-unknown-pragmas -O3 -march=native -DTHREE_DIMENSIONAL_TASKS>
                 # disable some spam warnings for icpc...
                 $<$<CXX_COMPILER_ID:Intel>:-w3 -wd383,981,1418,1572,2259>
                 )
@@ -72,7 +72,7 @@ if(three_dim_tasks)
 elseif(one_dim_tasks)
     target_compile_options(MolSim
             PRIVATE
-            $<$<CXX_COMPILER_ID:GNU>:-Wall -O3 -march=native -DONE_DIMENSIONAL_TASKS>
+            $<$<CXX_COMPILER_ID:GNU>:-Wall -Wno-unknown-pragmas -O3 -march=native -DONE_DIMENSIONAL_TASKS>
             # disable some spam warnings for icpc...
             $<$<CXX_COMPILER_ID:Intel>:-w3 -wd383,981,1418,1572,2259>
             )
@@ -80,7 +80,7 @@ else()
     if(round_robin_distr)
         target_compile_options(MolSim
                 PRIVATE
-                $<$<CXX_COMPILER_ID:GNU>:-Wall -O3 -march=native -DTASK_ROUND_ROBIN>
+                $<$<CXX_COMPILER_ID:GNU>:-Wall -Wno-unknown-pragmas -O3 -march=native -DTASK_ROUND_ROBIN>
                 # disable some spam warnings for icpc...
                 $<$<CXX_COMPILER_ID:Intel>:-w3 -wd383,981,1418,1572,2259>
                 )
@@ -88,14 +88,14 @@ else()
         if(task_oriented_2d)
             target_compile_options(MolSim
                     PRIVATE
-                    $<$<CXX_COMPILER_ID:GNU>:-Wall -O3 -march=native -DTASK_ORIENTED_2D>
+                    $<$<CXX_COMPILER_ID:GNU>:-Wall -Wno-unknown-pragmas -O3 -march=native -DTASK_ORIENTED_2D>
                     # disable some spam warnings for icpc...
                     $<$<CXX_COMPILER_ID:Intel>:-w3 -wd383,981,1418,1572,2259>
                     )
         else()
         target_compile_options(MolSim
                 PRIVATE
-                $<$<CXX_COMPILER_ID:GNU>:-Wall -O3 -march=native>
+                $<$<CXX_COMPILER_ID:GNU>:-Wall -Wno-unknown-pragmas -O3 -march=native>
                 # disable some spam warnings for icpc...
                 $<$<CXX_COMPILER_ID:Intel>:-w3 -wd383,981,1418,1572,2259>
                 )
@@ -134,7 +134,7 @@ endif()
 # depending on the compiler different flags are used
 target_compile_options(ProfileMolSim
         PRIVATE
-        $<$<CXX_COMPILER_ID:GNU>:-Wall -pg>
+        $<$<CXX_COMPILER_ID:GNU>:-Wall -Wno-unknown-pragmas -pg>
         # disable some spam warnings for icpc...
         $<$<CXX_COMPILER_ID:Intel>:-w3 -wd383,981,1418,1572,2259>
 
@@ -164,7 +164,7 @@ target_link_libraries(asan-MolSim PUBLIC PkgConfig::XERCESC PRIVATE spdlog::spdl
 # depending on the compiler different flags are used
 target_compile_options(asan-MolSim
         PRIVATE
-        $<$<CXX_COMPILER_ID:GNU>:-Wall>
+        $<$<CXX_COMPILER_ID:GNU>:-Wall -Wno-unknown-pragmas>
         # disable some spam warnings for icpc...
         $<$<CXX_COMPILER_ID:Intel>:-w3 -wd383,981,1418,1572,2259>
         PRIVATE -fsanitize=address

@@ -52,7 +52,14 @@ void performAlternativeTaskModelTest(ParticleContainer& pc){
 
     std::vector<std::vector<std::pair<unsigned long, unsigned long>>> taskGroup = pc.generate2DTaskModelSplitIntoThreads();
 
-    ASSERT_EQ(taskGroup.size(), omp_get_max_threads());
+    const unsigned long maxThreads{static_cast<unsigned long>(
+    #ifdef _OPENMP
+        omp_get_max_threads()
+    #else
+        1
+    #endif
+    )};
+    ASSERT_EQ(taskGroup.size(), maxThreads);
 
     size_t sumCellInteractions{0};
     for(const auto& task: taskGroup){

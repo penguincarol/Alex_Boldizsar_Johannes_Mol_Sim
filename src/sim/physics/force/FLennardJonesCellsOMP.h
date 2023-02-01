@@ -46,10 +46,14 @@ namespace sim::physics::force {
          * The implementation used can be chosen by adding the flags '''-Dthree_dim_tasks=1''', '''-Done_dim_tasks=1''', '''-Dtask_oriented_2d=1''' and
          * '''-Dround_robin_distr=1''' when running CMake (e.g. cmake -Dthree_dim_tasks=1 -Dround_robin_distr=1 ..)
          *
+         * \image html speedup_2D_st_comp.png width=1px
+         * \image html speedup_1D_st_comp.png width=1px
+         * \image html speedup_3D_st_comp.png width=1px
+         *
          * \htmlonly
          * <div style="display: flex;">
          *     <div style="flex: 1;">
-         *     <img src="speedup_3D_st_comp.png"/>
+         *     <img src="speedup_1D_st_comp.png"/>
          *     </div>
          *     <div style="flex: 1;">
          *         <img src="speedup_2D_st_comp.png"/>

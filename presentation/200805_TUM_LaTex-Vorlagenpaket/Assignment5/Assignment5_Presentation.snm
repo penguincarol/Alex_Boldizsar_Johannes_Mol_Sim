@@ -3,8 +3,9 @@
 \beamer@slide {fig:speedup1dompcomp}{16}
 \beamer@slide {fig:cluster2dgreedybargraph}{17}
 \beamer@slide {fig:cluster2dcolorbargraph}{17}
-\beamer@slide {fig:thermocomm}{18}
-\beamer@slide {fig:vectorcoordwrapper}{19}
-\beamer@slide {fig:boundarymolsim}{23}
-\beamer@slide {fig:fgravityadded}{24}
-\beamer@slide {fig:profilepreoptimizationjustrelevantpart}{26}
+\beamer@slide {fig:2dpaddingcomp}{18}
+\beamer@slide {fig:thermocomm}{19}
+\beamer@slide {fig:vectorcoordwrapper}{20}
+\beamer@slide {fig:boundarymolsim}{24}
+\beamer@slide {fig:fgravityadded}{25}
+\beamer@slide {fig:profilepreoptimizationjustrelevantpart}{27}

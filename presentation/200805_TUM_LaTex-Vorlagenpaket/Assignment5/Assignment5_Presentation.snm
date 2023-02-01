@@ -1,5 +1,10 @@
-\beamer@slide {fig:thermocomm}{15}
-\beamer@slide {fig:vectorcoordwrapper}{16}
-\beamer@slide {fig:boundarymolsim}{20}
-\beamer@slide {fig:fgravityadded}{21}
-\beamer@slide {fig:profilepreoptimizationjustrelevantpart}{23}
+\beamer@slide {fig:speedup3dstcomp}{14}
+\beamer@slide {fig:flamegraph3dproblem}{15}
+\beamer@slide {fig:speedup1dompcomp}{16}
+\beamer@slide {fig:cluster2dgreedybargraph}{17}
+\beamer@slide {fig:cluster2dcolorbargraph}{17}
+\beamer@slide {fig:thermocomm}{18}
+\beamer@slide {fig:vectorcoordwrapper}{19}
+\beamer@slide {fig:boundarymolsim}{23}
+\beamer@slide {fig:fgravityadded}{24}
+\beamer@slide {fig:profilepreoptimizationjustrelevantpart}{26}

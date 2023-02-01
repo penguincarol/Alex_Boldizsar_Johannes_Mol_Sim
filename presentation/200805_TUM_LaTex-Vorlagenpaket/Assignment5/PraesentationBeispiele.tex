@@ -382,12 +382,6 @@ tasks = {{(0,1), (0,3), (3,6) ...},
 \end{frame}
 
 \begin{frame}
-	\frametitle{Speedup of the 3D task model approach}
-	
-	
-\end{frame}
-
-\begin{frame}
 	
 	\frametitle{Approach Comparison}
 	\large
@@ -424,6 +418,65 @@ tasks = {{(0,1), (0,3), (3,6) ...},
 	\end{tabularx}
 \end{frame}
 
+\begin{frame}
+	\frametitle{Speedup of the 3D task model}
+		\begin{figure}
+			\centering
+			\includegraphics[width=0.6\textwidth]{speedup_3D_st_comp}
+			\label{fig:speedup3dstcomp}
+		\end{figure}
+\end{frame}
+
+
+\begin{frame}
+	\frametitle{What happened?}
+	\begin{figure}
+		\centering
+		\includegraphics[width=\linewidth]{flame_graph_3d_problem}
+		\label{fig:flamegraph3dproblem}
+	\end{figure}
+
+	\large
+\begin{itemize}
+	\item As you can see we only use a fraction of our time actually computing forces
+	\item The majority of time is spent with OMP overhead
+	\item Our conclusion: dividing the workload by $num\_threads\cdot26$ doesn't leave enough tasks in each job	
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Speedup of the 1D approach}
+	\begin{figure}
+		\centering
+		\includegraphics[width=0.6\linewidth]{speedup_1D_omp_comp}
+		\label{fig:speedup1dompcomp}
+	\end{figure}
+	
+\end{frame}
+
+\begin{frame}
+	\frametitle{Speedups of the 2D approaches}
+	\begin{columns}
+		
+	\begin{column}{0.5\linewidth}
+		\begin{figure}
+			\centering
+			\includegraphics[width=\linewidth]{cluster2DGreedyBarGraph}
+			\label{fig:cluster2dgreedybargraph}
+		\end{figure}
+		
+	\end{column}
+	
+	\begin{column}{0.5\linewidth}
+		\begin{figure}
+			\centering
+			\includegraphics[width=\linewidth]{cluster2DColorBarGraph}
+			\label{fig:cluster2dcolorbargraph}
+		\end{figure}
+	\end{column}
+	\end{columns}	
+\end{frame}
+
 
 \begin{frame}
 	\frametitle{Thermostat}
@@ -433,10 +486,7 @@ tasks = {{(0,1), (0,3), (3,6) ...},
 		%\caption{}
 		\label{fig:thermocomm}
 	\end{figure}
-	
-	
 \end{frame}
-
 \begin{frame}
 	\frametitle{Adapting ParticleContainer for periodic bounds}
 	\large

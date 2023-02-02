@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2023.1.11)  1 FEB 2023 16:46
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2023.1.11)  2 FEB 2023 02:39
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1802,7 +1802,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 419--419
  []
 
 
-Overfull \hbox (47.32533pt too wide) in paragraph at lines 419--419
+Overfull \hbox (24.56305pt too wide) in paragraph at lines 419--419
 []| 
  []
 
@@ -1812,7 +1812,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 419--419
  []
 
 
-Overfull \hbox (47.32533pt too wide) in paragraph at lines 419--419
+Overfull \hbox (24.56305pt too wide) in paragraph at lines 419--419
 []| 
  []
 
@@ -1929,86 +1929,110 @@ n input line 502.
 [18
 
  <./2DPaddingComp.pdf>]
+File: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf Graphic file (type pdf)
+<use ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf>
+Package pdftex.def Info: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf  used o
+n input line 507.
+(pdftex.def)             Requested size: 47.80042pt x 25.17415pt.
+ [19
+
+]
+File: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf Graphic file (type pdf)
+<use ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf>
+Package pdftex.def Info: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf  used o
+n input line 512.
+(pdftex.def)             Requested size: 47.80042pt x 25.17415pt.
+ [20
+
+]
+File: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf Graphic file (type pdf)
+<use ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf>
+Package pdftex.def Info: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf  used o
+n input line 517.
+(pdftex.def)             Requested size: 47.80042pt x 25.17415pt.
+ [21
+
+]
 
 pdfTeX warning: /usr/bin/pdflatex (file ./ThermoComm.pdf): PDF inclusion: found
  PDF version <1.7>, but at most version <1.5> allowed
-<ThermoComm.pdf, id=611, 751.30687pt x 547.2947pt>
+<ThermoComm.pdf, id=666, 751.30687pt x 547.2947pt>
 File: ThermoComm.pdf Graphic file (type pdf)
 <use ThermoComm.pdf>
-Package pdftex.def Info: ThermoComm.pdf  used on input line 513.
+Package pdftex.def Info: ThermoComm.pdf  used on input line 530.
 (pdftex.def)             Requested size: 369.63173pt x 269.26237pt.
 File: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf Graphic file (type pdf)
 <use ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf>
 Package pdftex.def Info: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf  used o
-n input line 513.
+n input line 530.
 (pdftex.def)             Requested size: 47.80042pt x 25.17415pt.
-[19
+[22
 
  <./ThermoComm.pdf>]
-<VectorCoordWrapper.pdf, id=634, 501.875pt x 192.72pt>
+<VectorCoordWrapper.pdf, id=689, 501.875pt x 192.72pt>
 File: VectorCoordWrapper.pdf Graphic file (type pdf)
 <use VectorCoordWrapper.pdf>
-Package pdftex.def Info: VectorCoordWrapper.pdf  used on input line 559.
+Package pdftex.def Info: VectorCoordWrapper.pdf  used on input line 576.
 (pdftex.def)             Requested size: 403.23648pt x 154.84961pt.
 
-Overfull \hbox (2.8323pt too wide) in paragraph at lines 559--559
+Overfull \hbox (2.8323pt too wide) in paragraph at lines 576--576
 [][]  
  []
 
 File: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf Graphic file (type pdf)
 <use ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf>
 Package pdftex.def Info: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf  used o
-n input line 559.
+n input line 576.
 (pdftex.def)             Requested size: 47.80042pt x 25.17415pt.
-[20
+[23
 
  <./VectorCoordWrapper.pdf>]
 File: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf Graphic file (type pdf)
 <use ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf>
 Package pdftex.def Info: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf  used o
-n input line 623.
+n input line 640.
 (pdftex.def)             Requested size: 47.80042pt x 25.17415pt.
- [21
+ [24
 
 ]
-<small_rti.png, id=689, 1797.71625pt x 1010.77625pt>
+<small_rti.png, id=743, 1797.71625pt x 1010.77625pt>
 File: small_rti.png Graphic file (type png)
 <use small_rti.png>
-Package pdftex.def Info: small_rti.png  used on input line 635.
+Package pdftex.def Info: small_rti.png  used on input line 652.
 (pdftex.def)             Requested size: 470.43571pt x 264.5076pt.
 File: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf Graphic file (type pdf)
 <use ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf>
 Package pdftex.def Info: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf  used o
-n input line 635.
+n input line 652.
 (pdftex.def)             Requested size: 47.80042pt x 25.17415pt.
- [22
+ [25
 
  <./small_rti.png>]
 File: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf Graphic file (type pdf)
 <use ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf>
 Package pdftex.def Info: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf  used o
-n input line 703.
+n input line 720.
 (pdftex.def)             Requested size: 47.80042pt x 25.17415pt.
- [23
+ [26
 
 ]
-<BoundaryMolSim.pdf, id=730, 1154.3125pt x 413.545pt>
+<BoundaryMolSim.pdf, id=785, 1154.3125pt x 413.545pt>
 File: BoundaryMolSim.pdf Graphic file (type pdf)
 <use BoundaryMolSim.pdf>
-Package pdftex.def Info: BoundaryMolSim.pdf  used on input line 714.
+Package pdftex.def Info: BoundaryMolSim.pdf  used on input line 731.
 (pdftex.def)             Requested size: 638.44922pt x 228.73772pt.
 File: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf Graphic file (type pdf)
 <use ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf>
 Package pdftex.def Info: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf  used o
-n input line 714.
+n input line 731.
 (pdftex.def)             Requested size: 47.80042pt x 25.17415pt.
- [24
+ [27
 
  <./BoundaryMolSim.pdf>]
 \openout4 = `Assignment5_Presentation.vrb'.
 
  (./Assignment5_Presentation.vrb
-<FGravity_added.pdf, id=766, 742.775pt x 353.32pt>
+<FGravity_added.pdf, id=822, 742.775pt x 353.32pt>
 File: FGravity_added.pdf Graphic file (type pdf)
 <use FGravity_added.pdf>
 Package pdftex.def Info: FGravity_added.pdf  used on input line 6.
@@ -2022,15 +2046,15 @@ File: ts1phv.fd 2020/03/25 scalable font definitions for TS1/phv.
 LaTeX Font Info:    Font shape `TS1/phv/m/n' will be
 (Font)              scaled to size 11.81796pt on input line 14.
 )
-Overfull \vbox (4.55855pt too high) detected at line 740
+Overfull \vbox (4.55855pt too high) detected at line 757
  []
 
 File: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf Graphic file (type pdf)
 <use ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf>
 Package pdftex.def Info: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf  used o
-n input line 740.
+n input line 757.
 (pdftex.def)             Requested size: 47.80042pt x 25.17415pt.
-[25
+[28
 
  <./FGravity_added.pdf>]
 \openout4 = `Assignment5_Presentation.vrb'.
@@ -2042,137 +2066,137 @@ LaTeX Font Info:    Font shape `TS1/phv/m/n' will be
 File: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf Graphic file (type pdf)
 <use ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf>
 Package pdftex.def Info: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf  used o
-n input line 760.
+n input line 777.
 (pdftex.def)             Requested size: 47.80042pt x 25.17415pt.
- [26
+ [29
 
 ]
 
 pdfTeX warning: /usr/bin/pdflatex (file ./profile_preoptimization_just_relevant
 _part.pdf): PDF inclusion: found PDF version <1.7>, but at most version <1.5> a
 llowed
-<profile_preoptimization_just_relevant_part.pdf, id=822, 846.51137pt x 80.11327
+<profile_preoptimization_just_relevant_part.pdf, id=876, 846.51137pt x 80.11327
 pt>
 File: profile_preoptimization_just_relevant_part.pdf Graphic file (type pdf)
 <use profile_preoptimization_just_relevant_part.pdf>
 Package pdftex.def Info: profile_preoptimization_just_relevant_part.pdf  used o
-n input line 779.
+n input line 796.
 (pdftex.def)             Requested size: 672.05397pt x 63.60294pt.
 File: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf Graphic file (type pdf)
 <use ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf>
 Package pdftex.def Info: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf  used o
-n input line 779.
+n input line 796.
 (pdftex.def)             Requested size: 47.80042pt x 25.17415pt.
-[27
+[30
 
  <./profile_preoptimization_just_relevant_part.pdf>]
 File: small_rti.png Graphic file (type png)
 <use small_rti.png>
-Package pdftex.def Info: small_rti.png  used on input line 792.
+Package pdftex.def Info: small_rti.png  used on input line 809.
 (pdftex.def)             Requested size: 470.43571pt x 264.5076pt.
 File: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf Graphic file (type pdf)
 <use ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf>
 Package pdftex.def Info: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf  used o
-n input line 792.
-(pdftex.def)             Requested size: 47.80042pt x 25.17415pt.
- [28
-
-]
-<large_rti.png, id=864, 1919.17pt x 998.73125pt>
-File: large_rti.png Graphic file (type png)
-<use large_rti.png>
-Package pdftex.def Info: large_rti.png  used on input line 803.
-(pdftex.def)             Requested size: 504.04047pt x 262.30042pt.
-File: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf Graphic file (type pdf)
-<use ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf>
-Package pdftex.def Info: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf  used o
-n input line 803.
-(pdftex.def)             Requested size: 47.80042pt x 25.17415pt.
- [29
-
- <./large_rti.png>]
-<falling_drop.png, id=887, 1843.88875pt x 1031.855pt>
-File: falling_drop.png Graphic file (type png)
-<use falling_drop.png>
-Package pdftex.def Info: falling_drop.png  used on input line 814.
-(pdftex.def)             Requested size: 470.43571pt x 263.25337pt.
-File: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf Graphic file (type pdf)
-<use ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf>
-Package pdftex.def Info: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf  used o
-n input line 814.
-(pdftex.def)             Requested size: 47.80042pt x 25.17415pt.
- [30
-
- <./falling_drop.png>]
-LaTeX Font Info:    Calculating math sizes for size <17.92> on input line 836.
-LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <17.92> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 836.
-LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <13.2609> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 836.
-LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10.7521> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 836.
-LaTeX Font Info:    Font shape `T1/phv/m/n' will be
-(Font)              scaled to size 12.59781pt on input line 836.
-LaTeX Font Info:    Font shape `T1/phv/m/n' will be
-(Font)              scaled to size 10.21446pt on input line 836.
-LaTeX Font Info:    Font shape `T1/phv/m/it' in size <17.92> not available
-(Font)              Font shape `T1/phv/m/sl' tried instead on input line 836.
-LaTeX Font Info:    Font shape `T1/phv/m/sl' will be
-(Font)              scaled to size 17.02394pt on input line 836.
-LaTeX Font Info:    Font shape `T1/phv/m/it' in size <13.2609> not available
-(Font)              Font shape `T1/phv/m/sl' tried instead on input line 836.
-LaTeX Font Info:    Font shape `T1/phv/m/sl' will be
-(Font)              scaled to size 12.59781pt on input line 836.
-LaTeX Font Info:    Font shape `T1/phv/m/it' in size <10.7521> not available
-(Font)              Font shape `T1/phv/m/sl' tried instead on input line 836.
-LaTeX Font Info:    Font shape `T1/phv/m/sl' will be
-(Font)              scaled to size 10.21446pt on input line 836.
-File: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf Graphic file (type pdf)
-<use ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf>
-Package pdftex.def Info: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf  used o
-n input line 836.
+n input line 809.
 (pdftex.def)             Requested size: 47.80042pt x 25.17415pt.
  [31
 
 ]
+<large_rti.png, id=920, 1919.17pt x 998.73125pt>
+File: large_rti.png Graphic file (type png)
+<use large_rti.png>
+Package pdftex.def Info: large_rti.png  used on input line 820.
+(pdftex.def)             Requested size: 504.04047pt x 262.30042pt.
 File: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf Graphic file (type pdf)
 <use ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf>
 Package pdftex.def Info: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf  used o
-n input line 848.
+n input line 820.
 (pdftex.def)             Requested size: 47.80042pt x 25.17415pt.
  [32
+
+ <./large_rti.png>]
+<falling_drop.png, id=943, 1843.88875pt x 1031.855pt>
+File: falling_drop.png Graphic file (type png)
+<use falling_drop.png>
+Package pdftex.def Info: falling_drop.png  used on input line 831.
+(pdftex.def)             Requested size: 470.43571pt x 263.25337pt.
+File: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf Graphic file (type pdf)
+<use ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf>
+Package pdftex.def Info: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf  used o
+n input line 831.
+(pdftex.def)             Requested size: 47.80042pt x 25.17415pt.
+ [33
+
+ <./falling_drop.png>]
+LaTeX Font Info:    Calculating math sizes for size <17.92> on input line 853.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <17.92> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 853.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <13.2609> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 853.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10.7521> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 853.
+LaTeX Font Info:    Font shape `T1/phv/m/n' will be
+(Font)              scaled to size 12.59781pt on input line 853.
+LaTeX Font Info:    Font shape `T1/phv/m/n' will be
+(Font)              scaled to size 10.21446pt on input line 853.
+LaTeX Font Info:    Font shape `T1/phv/m/it' in size <17.92> not available
+(Font)              Font shape `T1/phv/m/sl' tried instead on input line 853.
+LaTeX Font Info:    Font shape `T1/phv/m/sl' will be
+(Font)              scaled to size 17.02394pt on input line 853.
+LaTeX Font Info:    Font shape `T1/phv/m/it' in size <13.2609> not available
+(Font)              Font shape `T1/phv/m/sl' tried instead on input line 853.
+LaTeX Font Info:    Font shape `T1/phv/m/sl' will be
+(Font)              scaled to size 12.59781pt on input line 853.
+LaTeX Font Info:    Font shape `T1/phv/m/it' in size <10.7521> not available
+(Font)              Font shape `T1/phv/m/sl' tried instead on input line 853.
+LaTeX Font Info:    Font shape `T1/phv/m/sl' will be
+(Font)              scaled to size 10.21446pt on input line 853.
+File: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf Graphic file (type pdf)
+<use ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf>
+Package pdftex.def Info: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf  used o
+n input line 853.
+(pdftex.def)             Requested size: 47.80042pt x 25.17415pt.
+ [34
+
+]
+File: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf Graphic file (type pdf)
+<use ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf>
+Package pdftex.def Info: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf  used o
+n input line 865.
+(pdftex.def)             Requested size: 47.80042pt x 25.17415pt.
+ [35
 
 ]
 File: ./Ressourcen/Praesentation/Bilder/TUM_Uhrenturm.png Graphic file (type pn
 g)
 <use ./Ressourcen/Praesentation/Bilder/TUM_Uhrenturm.png>
 Package pdftex.def Info: ./Ressourcen/Praesentation/Bilder/TUM_Uhrenturm.png  u
-sed on input line 853.
+sed on input line 870.
 (pdftex.def)             Requested size: 307.38763pt x 408.5654pt.
 File: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf Graphic file (type pdf)
 <use ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf>
 Package pdftex.def Info: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf  used o
-n input line 853.
+n input line 870.
 (pdftex.def)             Requested size: 47.80042pt x 25.17415pt.
- [33
+ [36
 
 ]
 LaTeX Font Info:    Trying to load font information for T1+cmtt on input line 8
-65.
+82.
 
 (/usr/share/texlive/texmf-dist/tex/latex/base/t1cmtt.fd
 File: t1cmtt.fd 2019/12/16 v2.5j Standard LaTeX font definitions
 )
 
 LaTeX Font Warning: Font shape `T1/cmtt/m/n' in size <14.93> not available
-(Font)              size <14.4> substituted on input line 865.
+(Font)              size <14.4> substituted on input line 882.
 
 File: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf Graphic file (type pdf)
 <use ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf>
 Package pdftex.def Info: ./Ressourcen/_Bilder/Universitaet_Logo_RGB.pdf  used o
-n input line 865.
+n input line 882.
 (pdftex.def)             Requested size: 47.80042pt x 25.17415pt.
-[34
+[37
 
 ])
 \tf@nav=\write6
@@ -2191,9 +2215,9 @@ LaTeX Font Warning: Size substitutions with differences
 
  ) 
 Here is how much of TeX's memory you used:
- 45196 strings out of 478287
- 1053825 string characters out of 5849289
- 1446742 words of memory out of 5000000
+ 45202 strings out of 478287
+ 1053882 string characters out of 5849289
+ 1446741 words of memory out of 5000000
  62375 multiletter control sequences out of 15000+600000
  557382 words of font info for 153 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
@@ -2206,10 +2230,10 @@ amsfonts/cm/cmsy10.pfb></usr/share/texmf/fonts/type1/public/cm-super/sftt1440.p
 fb></usr/share/texlive/texmf-dist/fonts/type1/urw/helvetic/uhvb8a.pfb></usr/sha
 re/texlive/texmf-dist/fonts/type1/urw/helvetic/uhvr8a.pfb></usr/share/texlive/t
 exmf-dist/fonts/type1/urw/helvetic/uhvro8a.pfb>
-Output written on Assignment5_Presentation.pdf (34 pages, 5177453 bytes).
+Output written on Assignment5_Presentation.pdf (37 pages, 5180699 bytes).
 PDF statistics:
- 1037 PDF objects out of 1200 (max. 8388607)
- 725 compressed objects within 8 object streams
- 80 named destinations out of 1000 (max. 500000)
+ 1095 PDF objects out of 1200 (max. 8388607)
+ 780 compressed objects within 8 object streams
+ 86 named destinations out of 1000 (max. 500000)
  143 words of extra memory for PDF output out of 10000 (max. 10000000)
 

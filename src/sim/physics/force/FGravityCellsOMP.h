@@ -8,7 +8,10 @@
 #include "FGravity.h"
 
 namespace sim::physics::force {
-
+    /**
+     * Performs gravity interaction between two particles while using OMP and the linked cell approach.
+     * WARNING: this is not supported any more
+     * */
     class FGravityCellsOMP : public ForceFunctorBase{
     private:
         pair_fun_t pairFun;
@@ -23,6 +26,14 @@ namespace sim::physics::force {
         fpair_fun_ret_t getFastForceRetFunction() override;
 
     public:
+        /**
+         * @param st start time
+         * @param et end time
+         * @param dt delta time
+         * @param eps epsilon
+         * @param sig sigma
+         * @param pc particle container
+         * */
         FGravityCellsOMP(double st,
                       double et,
                       double dt,
@@ -30,7 +41,9 @@ namespace sim::physics::force {
                       double sig,
                       ParticleContainer &pc
         ) : ForceFunctorBase(st, et, dt, eps, sig, pc), forceDelegate(st, et, dt, eps, sig, pc) {
-            setPairFun();
+            std::cerr << "Sorry not supported, please do not use Gravity with Cells and OMP" << std::endl;
+            exit(-1);
+            //setPairFun();
         }
 
         void operator()() override;

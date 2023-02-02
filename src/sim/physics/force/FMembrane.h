@@ -7,7 +7,6 @@
 #include "ForceFunctorBase.h"
 
 namespace sim::physics::force {
-
     /**
      * Simulates the interaction of particles within a membrane (i.e. spring forces)
      * */
@@ -15,6 +14,12 @@ namespace sim::physics::force {
     public:
         /**
          * the created instance will take ownership of ff and will delete it upon deconstruction.
+         * @param st start time
+         * @param et end time
+         * @param dt delta time
+         * @param eps epsilon
+         * @param sig sigma
+         * @param pc particle container
          * */
         FMembrane(double st,
                   double et,

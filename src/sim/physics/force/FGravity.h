@@ -18,6 +18,14 @@ namespace sim::physics::force {
         void setPairFun();
 
     public:
+        /**
+         * @param st start time
+         * @param et end time
+         * @param dt delta time
+         * @param eps epsilon
+         * @param sig sigma
+         * @param pc particle container
+         * */
         FGravity(double st,
                  double et,
                  double dt,

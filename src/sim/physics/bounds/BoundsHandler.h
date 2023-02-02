@@ -14,6 +14,9 @@ namespace sim::physics::bounds {
     using bound_t = sim::physics::bounds::type;
     using side_t = sim::physics::bounds::side;
 
+    /**
+     * Handles all bounds related functionality.
+     * */
     class BoundsHandler {
     private:
 
@@ -40,18 +43,18 @@ namespace sim::physics::bounds {
          * <h3> Will allocate memory on heap </h3>
          * @param fh is the currently use force calculation method.
          * The remaining arguments are simulation properties.
-         * @param let
-         * @param rit
-         * @param tot
-         * @param bot
-         * @param frt
-         * @param ret
-         * @param st
-         * @param et
-         * @param dt
-         * @param eps
-         * @param sig
-         * @param pc
+         * @param let left bound type
+         * @param rit right bound type
+         * @param tot top bound type
+         * @param bot bottom bound type
+         * @param frt front bound type
+         * @param ret rear bound type
+         * @param st start time
+         * @param et end time
+         * @param dt delta time
+         * @param eps epsilon
+         * @param sig sigma
+         * @param pc particle container
          */
         BoundsHandler(bound_t let, bound_t rit, bound_t tot, bound_t bot, bound_t frt, bound_t ret,
                       sim::physics::force::ForceHandler &fh, double st, double et, double dt, double eps,
@@ -76,22 +79,22 @@ namespace sim::physics::bounds {
     /**
      * Generate the correct bounds functor depending on @param t.
      * The other args are passed to the constructor.
-     * @tparam S
-     * @param t
-     * @param ff
-     * @param st
-     * @param et
-     * @param dt
-     * @param eps
-     * @param sig
-     * @param pc
-     * @param bLeft
-     * @param bRight
-     * @param bBottom
-     * @param bTop
-     * @param bFront
-     * @param bRear
-     * @return
+     * @tparam S Side bound should be generated for
+     * @param t  bound type
+     * @param fh force handler
+     * @param st start time
+     * @param et end time
+     * @param dt delta time
+     * @param eps epsilon
+     * @param sig sigma
+     * @param pc particle container
+     * @param bLeft left bound type
+     * @param bRight right bound type
+     * @param bBottom bottom bound type
+     * @param bTop top bound type
+     * @param bFront front bound type
+     * @param bRear rear bound type
+     * @returns the specified bound
      */
     template<sim::physics::bounds::side S>
     static BoundsFunctorBase<S>* generateBound(type t, sim::physics::force::ForceHandler &fh,

@@ -67,6 +67,42 @@ namespace sim {
 
         /**
          * Standard constructor with all params.
+         * @param iow IOWrapper - to write output
+         * @param pc particle container
+         * @param st start time
+         * @param et end time
+         * @param dt delta time
+         * @param eps epsilon : not used actually anymore
+         * @param sig sigma : not used actually anymore
+         * @param of output folder
+         * @param on output file name
+         * @param leftBound left bound type
+         * @param rightBound right bound type
+         * @param topBound top bound type
+         * @param botBound bot bound type
+         * @param frontBound front bound type
+         * @param rearBound rear bound type
+         * @param forceType force calculation type
+         * @param posType position calculation type
+         * @param velType velocity calculation type
+         * @param eLC enable linked cell flag
+         * @param eOMP enable OMP flag
+         * @param eGrav enable global gravity flag
+         * @param eMem enable membrane simulation flag
+         * @param eMemPull enable membrane pull flag
+         * @param eCP enable checkpointing flag
+         * @param gG0 global gravity in x0 direction
+         * @param gG1 global gravity in x1 direction
+         * @param gG2 global gravity in x2 direction
+         * @param eTH enable thermostat flag
+         * @param thermoDelta_t maximal difference of temperature the thermostat can produce in one time step
+         * @param thermoNTerm count of iterations between two thermostat actions
+         * @param thermoTTarget target temperature
+         * @param ThermoTInit starting temperature of the simulation
+         * @param dimensions dimensions dimensionality of the simulation either 2 or 3
+         * @param thermoMode thermostat mode either ThermoMode::normalMode for most simulations or ThermoMode::pipeMode for no y-Velocity scaling
+         * @param eProf enable profiling flag
+         * @param profNumBin_ profiling number of bins
          * */
         explicit Simulation(io::IOWrapper &iow, ParticleContainer &pc, double st = default_start_time, double et = default_end_time,
                             double dt = default_delta_t, double eps = default_epsilon, double sig = default_sigma,
@@ -113,8 +149,20 @@ namespace sim {
         }
 
         /**
-         * Constructor with no boundary information. Will init simulation, s.t. no linked cell will be used.
-         * */
+        * Constructor with no boundary information. Will init simulation, s.t. no linked cell will be used.
+        * @param iow IOWrapper - to write output
+        * @param pc particle container
+        * @param st start time
+        * @param et end time
+        * @param dt delta time
+        * @param eps epsilon : not used actually anymore
+        * @param sig sigma : not used actually anymore
+        * @param of output folder
+        * @param on output file name
+        * @param forceType force calculation type
+        * @param posType position calculation type
+        * @param velType velocity calculation type
+        * */
         explicit Simulation(io::IOWrapper &iow, ParticleContainer &pc, double st, double et, double dt, double eps, double sig,
                             const std::string &of, const std::string &on,
                             force::type forceType = force::stot(default_force_type),
@@ -133,6 +181,9 @@ namespace sim {
 
         /**
          * Constructor that initializes simulation according to configuration object.
+         * @param iow IOWrapper for output
+         * @param pc particle container
+         * @param config Configuration object to load all other information
          * */
         Simulation(io::IOWrapper &iow, ParticleContainer &pc, io::input::Configuration &config) :
                 Simulation(iow, pc, config.get<io::input::startTime>(), config.get<io::input::endTime>(),
@@ -191,8 +242,6 @@ namespace sim {
 
                 iteration++;
                 if (iteration % 10 == 0) {
-                }
-                if (iteration % 100 == 0) {
                     ioWrapper.writeParticlesVTK(particleContainer, outputFolder, outputBaseName, iteration);
                 }
                 if (iteration % 1000 == 0) {

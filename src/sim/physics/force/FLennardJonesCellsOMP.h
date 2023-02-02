@@ -8,7 +8,9 @@
 #include "FLennardJones.h"
 
 namespace sim::physics::force {
-
+    /**
+     * calculate the force for all particles using the Lennard-Jones potential and the linked cell approach and OMP
+     * */
     class FLennardJonesCellsOMP : public ForceFunctorBase {
     private:
         pair_fun_t pairFun;
@@ -23,6 +25,14 @@ namespace sim::physics::force {
         fpair_fun_alt_t getFastForceAltFunction() override;
 
     public:
+        /**
+         * @param st start time
+         * @param et end time
+         * @param dt delta time
+         * @param eps epsilon
+         * @param sig sigma
+         * @param pc particle container
+         * */
         FLennardJonesCellsOMP(double st,
                            double et,
                            double dt,
@@ -33,6 +43,38 @@ namespace sim::physics::force {
             setPairFun();
         }
 
+        /**
+         * Calculates the Lennard Jones Forces using the Linked Cell algorithm.
+         *
+         * There are 4 implementations of this method using the following task models: 1D tasks, 2D color oriented, 2D thread oriented and 3D oriented.
+         * For more information look into the presentation in the branch Jo/presentation
+         *
+         * The 2D thread oriented approach and the 3D approach can both utilize the round robin distribution strategy or the greedy strategy.
+         *
+         * By default the 2D thread oriented approach using the greedy distribution strategy gets chosen.
+         *
+         * The implementation used can be chosen by adding the flags '''-Dthree_dim_tasks=1''', '''-Done_dim_tasks=1''', '''-Dtask_oriented_2d=1''' and
+         * '''-Dround_robin_distr=1''' when running CMake (e.g. cmake -Dthree_dim_tasks=1 -Dround_robin_distr=1 ..)
+         *
+         * \image html speedup_2D_st_comp.png width=1px
+         * \image html speedup_1D_st_comp.png width=1px
+         * \image html speedup_3D_st_comp.png width=1px
+         *
+         * \htmlonly
+         * <div style="display: flex;">
+         *     <div style="flex: 1;">
+         *     <img src="speedup_1D_st_comp.png"/>
+         *     </div>
+         *     <div style="flex: 1;">
+         *         <img src="speedup_2D_st_comp.png"/>
+         *     </div>
+         *      <div style="flex: 1;">
+         *         <img src="speedup_3D_st_comp.png"/>
+         *     </div>
+         * </div>
+         * \endhtmlonly
+         *
+         */
         void operator()() override;
 
         void setParticleContainer(ParticleContainer& pc) override;

@@ -8,13 +8,22 @@
 
 namespace sim::physics::bounds {
     /**
-     * Handles the bound behaviour of the specified side
+     * Creates an outflowing bound on the side S
      * */
     template<sim::physics::bounds::side S>
     class BoundsOutflow : public BoundsFunctorBase<S> {
     public:
         ~BoundsOutflow() override = default;
 
+        /**
+         * @param st start time
+         * @param et end time
+         * @param dt delta time
+         * @param eps epsilon
+         * @param sig sigma
+         * @param pc particle container
+         * @param eOMP enable OMP flag
+         * */
         BoundsOutflow(double st, double et, double dt, double eps, double sig, ParticleContainer &pc, bool eOMP)
                 : BoundsFunctorBase<S>(st, et, dt, eps, sig, pc, eOMP) {}
 

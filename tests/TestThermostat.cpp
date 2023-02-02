@@ -153,7 +153,21 @@ TEST(Thermostat, HeatInit){
     ASSERT_TRUE(std::abs(ts.computeCurrentTemp()-TInit) < TInit*0.0001)<< "Current temp was " << ts.computeCurrentTemp() <<" instead of being approximately " << TInit<< " after initialization with Thermostat"<<std::endl;
 }
 
-TEST(Thermostat, pipeFeature){
+TEST(Thermostat, ignoreNegativeMasses){
+    std::vector<Particle> buf{};
+    buf.emplace_back(Eigen::Vector3d{1.,1.,1.}, Eigen::Vector3d{300.,0.,0.}, -std::numeric_limits<double>::infinity(), 1, 0);
+    buf.emplace_back(Eigen::Vector3d{2.,1.,1.}, Eigen::Vector3d{4.,0.,0.}, 1, 1, 1);
+    std::vector<Particle> bufVec(buf.begin(), buf.end());
+    ParticleContainer pc(bufVec, {10,10,10}, 1, {}, true);
+    Thermostat thermostatPipe(pc, 1, 2, 3, 100,0, true, ThermoMode::pipeMode);
+    Thermostat thermostatNormal(pc, 1, 2, 3, 100,0, true, ThermoMode::pipeMode);
+
+    auto temp = thermostatPipe.computeCurrentTemp();
+    ASSERT_DOUBLE_EQ(temp, (4.*4.)/(3.));
+    ASSERT_DOUBLE_EQ(thermostatNormal.computeCurrentTemp(), (4.*4.)/(3.));
+}
+
+TEST(Thermostat, pipeFeatureAndNegativeMasses){
     Body pipeWall;
     pipeWall.shape = cuboid;
     pipeWall.fixpoint = Eigen::Vector3d{0,0,0};

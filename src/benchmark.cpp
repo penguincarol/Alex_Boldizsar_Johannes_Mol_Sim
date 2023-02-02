@@ -64,7 +64,9 @@ runBenchmarkFile(Configuration& config, std::vector<std::string>& files, io::inp
         iow.getMembranes(membranes);
         configActive.loadIOWArgs(iow.getArgMap());
 
-        ParticleContainer pc {};
+        ParticleContainer pc(buffer,
+                          {config.get<boundingBox_X0>(), config.get<boundingBox_X1>(), config.get<boundingBox_X2>()},
+                          config.get<rCutoff>(), membranes, config.get<enableOMP>());
         sim::Simulation simulation {iow, pc, configActive};
         simulation.runBenchmark(configActive.get<io::input::benchIterationCount>(), file, buffer, membranes,
                                 configActive.get<boundingBox_X0>(),

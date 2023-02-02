@@ -176,7 +176,7 @@ namespace sim {
             io::output::loggers::simulation->info("Starting simulation");
             double current_time = start_time;
             int iteration = config.get<io::input::simLastIteration>();
-            ioWrapper.writeParticlesVTK(particleContainer, outputFolder, outputBaseName, iteration);
+//            ioWrapper.writeParticlesVTK(particleContainer, outputFolder, outputBaseName, iteration);
             // init forces
             calcF();
             // for this loop, we assume: current x, current f and current v are known
@@ -193,9 +193,9 @@ namespace sim {
                 if (iteration % 10 == 0) {
                 }
                 if (iteration % 100 == 0) {
-                    ioWrapper.writeParticlesVTK(particleContainer, outputFolder, outputBaseName, iteration);
                 }
                 if (iteration % 1000 == 0) {
+//                    ioWrapper.writeParticlesVTK(particleContainer, outputFolder, outputBaseName, iteration);
                     io::output::loggers::simulation->info("Progress: {:03.2f}%", current_time / end_time * 100);
                     if(checkpointingEnable) ioWrapper.writeCheckpoint(particleContainer, config, iteration, current_time);
 

@@ -464,7 +464,7 @@ void ParticleContainer::init2DTaskModelSplit(){
     for(auto c = 0; c < numCases; c++){ //pun intended
 
         #ifdef TASK_ROUND_ROBIN
-        constexpr unsigned long roundRobinMolUpdateThreshold = 1'000'000;
+        constexpr unsigned long roundRobinMolUpdateThreshold = 2'000;
         size_t roundRobinAccumulator{0};
         #endif
         size_t nextIndex{0};
@@ -609,7 +609,7 @@ void ParticleContainer::init3DTaskModel() {
         )};
 
         #ifdef TASK_ROUND_ROBIN
-        constexpr unsigned long roundRobinMolUpdateThreshold = 1'000'000;
+        constexpr unsigned long roundRobinMolUpdateThreshold = 2'000;
         size_t roundRobinAccumulator{0};
         #else
         std::vector<size_t> interactions;
@@ -637,6 +637,7 @@ void ParticleContainer::init3DTaskModel() {
                         roundRobinAccumulator = 0;
                     }
                     #else
+                    interactions[nextIndex] += cells[cell1].size()*cells[cell2].size();
                     nextIndex = 0;
                     size_t last_count = interactions[nextIndex];
                     for(size_t i = 1; i < maxThreads; i++){
@@ -680,6 +681,7 @@ void ParticleContainer::init3DTaskModel() {
                         roundRobinAccumulator = 0;
                     }
                     #else
+                    interactions[nextIndex] += cells[cell1].size()*cells[cell2].size();
                     nextIndex = 0;
                     size_t last_count = interactions[nextIndex];
                     for(size_t i = 1; i < maxThreads; i++){

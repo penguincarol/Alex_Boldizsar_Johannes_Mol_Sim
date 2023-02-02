@@ -3,22 +3,33 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{frame}
-	\frametitle{Implementation of Membranes}
+	\frametitle{\LARGE Implementation of Membranes}
 	\large
 	\begin{itemize}
-		\item Membrane is wrapper class around 2d-vector of Particle IDs
+		\item Membrane is wrapper class around 2D-vector of Particle IDs
 		\item Actual Particles still get stored in ParticleContainer
 	\end{itemize}
-\end{frame}
 
-\begin{frame}
-	\frametitle{Implementation of immovable Particles}
+	\vspace{1cm}
+
+	\LARGE
+	Implementation of immovable Particles
 	\large
 	\begin{itemize}
 		\item Set mass of particle to -inf
 		\item refactor code to ignore those particles wherever needed (e.g. Thermostat)
 	\end{itemize}
+	
 \end{frame}
+
+%\begin{frame}
+%	\frametitle{Implementation of immovable Particles}
+%	\large
+%	\begin{itemize}
+%		\item Set mass of particle to -inf
+%		\item refactor code to ignore those particles wherever needed (e.g. Thermostat)
+%	\end{itemize}
+%\end{frame}
 
 \begin{frame}
 	\frametitle{Preparation for Multithreading- Refactoring the Particle Container}
@@ -88,8 +99,8 @@
 	\vspace{-4cm}
 	
 	\begin{itemize}
-		\item Sort particle according to cell index of their respective cell
-		\item Add size of one cacheline between each cell as padding
+		\item<2-> Sort particle according to cell index of their respective cell
+		\item<2-> Add size of one cacheline between each cell as padding
 	\end{itemize}
 
 	\vspace{-4cm}
@@ -107,11 +118,12 @@
 \begin{frame}
 	\frametitle{Defining Terminology}
 	\large
-	Terms necessary to talk about our multithreading approaches efficiently.
+	Terms necessary to talk about our multithreading approaches efficiently
 	\begin{itemize}
-		\item \textbf{Task}: A Task is a pair of cells that should interact with each other. Tasks get represented by pairs of cell indices.
-		\item \textbf{Task Model}: The task model defines the data structure that these tasks are stored in.
-		\item \textbf{Distribution Strategy}: Many task models require splitting up bundles of tasks into buckets. The distribution strategy defines the strategy used for this splitting process.
+		\setlength\itemsep{1em}
+		\item<1-> \textbf{Task}: A Task is a pair of cells that should interact with each other. Tasks get represented by pairs of cell indices.
+		\item<2-> \textbf{Task Model}: The task model defines the data structure that these tasks are stored in.
+		\item<3-> \textbf{Distribution Strategy}: Many task models require splitting up bundles of tasks into buckets. The distribution strategy defines the strategy used for this splitting process.
 	\end{itemize}
 \end{frame}
 
@@ -126,9 +138,10 @@
 	
 	Approaches we looked at:
 	\begin{enumerate}
-		\item Round Robin: Assume that every Cell-Interaction has the same weight and distribute them via Round Robin
-		\item Greedy distribution: give the next job to the package that has the least work so far
-		\item Round Robin Threshold: Give Cell Interactions into one package until the number of interactions surpasses a threshold value (e.g. $10^{4}$ interactions); continue in Round Robin fashion
+		\setlength\itemsep{1em}
+		\item<2-> \textbf{Round Robin}: Assume that every Cell-Interaction has the same weight and distribute them via Round Robin
+		\item<3-> \textbf{Greedy distribution}: give the next job to the package that has the least work so far
+		\item<4-> \textbf{Round Robin Threshold}: Give Cell Interactions into one package until the number of interactions surpasses a threshold value (e.g. $10^{4}$ interactions); continue in Round Robin fashion
 	\end{enumerate}
 \end{frame}
 	
@@ -241,7 +254,6 @@ tasks = {{(0,1), (0,3), (3,6) ...},
 		\item Idea: split up every line into 2 sets of edges to get 26 sets of edges that can be fully parallelized
 		\item Fork and join 26 times
 		\item No reduction required; no race condition in any of the 26 iterations possible
-		\item Forks and joins needed
 	\end{itemize}
 
 \begin{columns}
@@ -376,7 +388,7 @@ tasks = {{(0,1), (0,3), (3,6) ...},
 		\item Split up tasks into 26 fully parallelizable blocks
 		\item Split those blocks into num\_threads jobs; use a distribution strategy to balance workload
 		\item No reduction required
-		\item Forks and joins needed
+		\item 26 forks and joins needed
 	\end{itemize}
 
 \end{frame}
@@ -399,7 +411,7 @@ tasks = {{(0,1), (0,3), (3,6) ...},
 		\hline
 		\textcolor{black}{Simplest approach} & 
 		\textcolor{black}{$+$ Potentially better scheduling than 1D tasks} &
-		\textcolor{black}{$+$ Limit for parallelization corresponds to problem given theoretical limit} &
+		\textcolor{black}{$+$ Limit for parallelization corresponds to theoretical limit given by the problem} &
 		\textcolor{black}{$+$ Potential to get the best out of both "`2D worlds"'}
 		\\ 
 
@@ -419,7 +431,7 @@ tasks = {{(0,1), (0,3), (3,6) ...},
 \end{frame}
 
 \begin{frame}
-	\frametitle{Speedup of the 3D task model}
+	\frametitle{Speedup of the 3D task model (local build)}
 		\begin{figure}
 			\centering
 			\includegraphics[width=0.6\textwidth]{speedup_3D_st_comp}
@@ -432,12 +444,14 @@ tasks = {{(0,1), (0,3), (3,6) ...},
 	\frametitle{What happened?}
 	\begin{figure}
 		\centering
-		\includegraphics[width=\linewidth]{flame_graph_3d_problem}
-		\label{fig:flamegraph3dproblem}
+		%\includegraphics[width=\linewidth]{flame_graph_3d_problem}
+		\includegraphics[width=\linewidth]{3D_multithreading_issue_table}
+		%\label{fig:flamegraph3dproblem}
+		\label{fig:3dmultithreadingissuetable}
 	\end{figure}
-
 	\large
 \begin{itemize}
+	\setlength\itemsep{1em}
 	\item As you can see we only use a fraction of our time actually computing forces
 	\item The majority of time is spent with OMP overhead
 	\item Our conclusion: dividing the workload by $num\_threads\cdot26$ doesn't leave enough tasks in each job	
@@ -445,17 +459,17 @@ tasks = {{(0,1), (0,3), (3,6) ...},
 \end{frame}
 
 \begin{frame}
-	\frametitle{Speedup of the 1D approach}
+	\frametitle{Speedup of the 1D approach (local build)}
 	\begin{figure}
 		\centering
-		\includegraphics[width=0.6\linewidth]{speedup_1D_omp_comp}
+		\includegraphics[width=0.57\linewidth]{speedup_1D_omp_comp}
 		\label{fig:speedup1dompcomp}
 	\end{figure}
 	
 \end{frame}
 
 \begin{frame}
-	\frametitle{Speedups of the 2D approaches}
+	\frametitle{Speedups of the 2D approaches (build on cluster)}
 	\begin{columns}
 		
 	\begin{column}{0.5\linewidth}
@@ -478,14 +492,29 @@ tasks = {{(0,1), (0,3), (3,6) ...},
 \end{frame}
 
 \begin{frame}
+	\frametitle{All approaches in comparison (local build)}
+	
+	\begin{figure}
+		\centering
+		\includegraphics[width=0.55\linewidth]{speedups_all_approaches}
+		%\caption{}
+		\label{fig:speedupsallapproaches}
+	\end{figure}
+	
+	
+\end{frame}
+
+\begin{frame}
 	\frametitle{The price of padding}
 	\vspace{0.8cm}
 	\begin{columns}
 		\begin{column}{0.4\linewidth}
 			\large
 			\begin{itemize}
+				\setlength\itemsep{1em}
 				\item As you can see padding adds a measurable overhead
 				\item Even in cases where we expected false sharing to occur disabling padding gave a performance boost
+				\item $\implies$ no padding became the default option
 			\end{itemize}
 			
 		\end{column}
@@ -503,12 +532,58 @@ tasks = {{(0,1), (0,3), (3,6) ...},
 
 \begin{frame}
 	\frametitle{Comparing distribution strategies}
+	\begin{columns}
+		\begin{column}{0.4\linewidth}
+			\large
+			\begin{itemize}
+				\setlength\itemsep{1em}
+				\item We did not manage to create a realistic scenario where Round Robin was better than the Greedy distribution
+				\item $\implies$ Greedy distribution became the default option
+			\end{itemize}
+			
+		\end{column}
+		\begin{column}{0.6\linewidth}
+			
+		\end{column}
+	\end{columns}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Analyzing the speedup pleateau}
+	\large
+	Observations:
+	\vspace{-0.3cm}
+	\begin{itemize}
+		\item<1-> Behaviour occurs with and without padding
+		\item<2-> Number of threads needed to reach speedup maximum varies from computer to computer
+		\item<3-> Changing the workload per iteration step also changes the speedup maximum
+		\item<4-> The more threads you add the more runtime gets used for OMP overhead methods
+	\end{itemize}
+	\pause
+	\pause
+	\pause
+	\pause
+
+	Conclusion: \\
+	Not checking whether an additional thread has enough workload to be created $\implies$ creating threads where the speedup gets consumed by the OMP overhead
 	
 \end{frame}
 
 \begin{frame}
-	\frametitle{Why does our Speedup reach a plateau?}
+	%TODO: velocity and position omp not in use since it was slower
+	\frametitle{Additional parallelizations}
+	\large
+	Parallelization of:
+	\begin{itemize}
+		\item \textbf{Bounds handling}: Slight performance increase
+		\item \textbf{Velocity calculation}: Performance decrease (only num\_particles operations per iteration)
+		\item \textbf{Position calculation}: Performance decrease (only num\_particles operations per iteration)
+	\end{itemize}
+	with no design decisions worth mentioning.
 	
+	\vspace{0.5cm}
+	
+	$\implies$ no additional parallelization of other code areas with comparably small workloads
 \end{frame}
 
 \begin{frame}
@@ -517,126 +592,55 @@ tasks = {{(0,1), (0,3), (3,6) ...},
 \end{frame}
 
 
-
-
 \begin{frame}
-	\frametitle{Thermostat}
-	\begin{figure}
-		\centering
-		\includegraphics[width=0.55\linewidth]{ThermoComm}
-		%\caption{}
-		\label{fig:thermocomm}
-	\end{figure}
-\end{frame}
-\begin{frame}
-	\frametitle{Adapting ParticleContainer for periodic bounds}
+	\frametitle{Issues, bugs and other timesinks}
 	\large
-	Idea:\\
 	\begin{itemize}
-		\item Provide virtual cells around the actual domain for anyone who needs it
-		\item Existence of additional cells is invisible with old interface
+		\setlength\itemsep{1em}
+		\item[-]<1-> 	Our Computation of position
+		\begin{equation}
+			x_i(t_{n+1}) = x_i(t_n) + \Delta t \cdot v_i(t_n) + (\Delta t)^2 \cdot \frac{F_i(t_{\textcolor{red}{n-1}})}{2m_i}
+		\end{equation}
+		turned out to be the bug with the worst characters changed / time spent ratio.
+		\item[-]<2-> Understanding the vtune-output of the 3D approach took a considerable amount of time. Looking back at it we don't really know why.
+		%\item[-]<3-> Compiling with -O3 flag lead to faulty behaviour in combination with enums.
 	\end{itemize}
-	
-	\begin{columns}
-		\begin{column}{0.6\textwidth}
-			\vspace{-5cm}	
-			\begin{figure}
-				\centering
-				\includegraphics[width=\linewidth]{VectorCoordWrapper}
-				\label{fig:vectorcoordwrapper}
-			\end{figure}
-		\end{column}
-		
-		\begin{column}{0.3\textwidth}
-			\begin{tikzpicture}
-				\foreach \x in {1,...,3}{
-					\foreach \y in {1,...,3}{
-						\draw [draw=black] (\x, \y) rectangle (\x +1 ,\y + 1);
-					}
-				}
-				\foreach \x in {0,...,4}{
-					\filldraw [fill=gray, draw=black] (\x, 0) rectangle (\x +1 ,0 + 1);
-					\filldraw [fill=gray, draw=black] (\x, 4) rectangle (\x+1, 4+1);
-				}
-			
-				\foreach \y in {1,...,3}{
-					\filldraw [fill=gray, draw=black] (0, \y) rectangle (0+1 , \y + 1);
-					\filldraw [fill=gray, draw=black] (4, \y) rectangle (4+1, \y+1);
-				}
-			
-				\draw [below] (4.5,1.5) -- (6.5, 0.8) node[below] {Halo};
-			\end{tikzpicture}
-		\end{column}
-	\end{columns}
-
-
-	
-	
-	
+	\pause
 \end{frame}
 
 \begin{frame}
-\frametitle{Boundary conditions}
-\large
-Idea:
-\vspace{-0.5cm}
-\begin{enumerate}
-	\item Temporarily move all particles next to Boundary of the other side
-	\item Let Neighbouring cells interact
-\end{enumerate} 
+	\PraesentationBildUhrenturm
+	%\PraesentationStartseiteFlaggen
+\end{frame}
 
-%\resizebox{0.5\textwidth }{0.5\textheight }{
-	\begin{tikzpicture}[scale=1.3]
-	%define constants
-	\def\xLargeArrow{4.5}
-	\def\yLargeArrow{1.5}
-	\def\LargeArrowLength{2.5}
-	\def\offSGrid{7.5}
-	\def\arrowStart{0.6}
-	\def\arrowEnd{1.9}
-	
-	\def\scale{1.4}
+%\begin{frame}
+%	\frametitle{The faulty -O3 compilation}
+%	\begin{figure}
+%		\centering
+%		\includegraphics[width=0.6\linewidth]{faulty_O3}
+%		\label{fig:faultyo3}
+%	\end{figure}
+%	\large
+%	\vspace{-0.7cm}
+%	\centering
+%	As you can see the thermoMode is set to pipeMode but he still enters the if-clause	
+%\end{frame}
+
+
+\begin{frame}
+	\frametitle{Choosing a parallelization implementation}
+	\large
+	\begin{enumerate}
+		%\setlength\itemsep{1em}
 		
-	%draw left grid
-	\foreach \y in {0,...,2} {
-		\filldraw [fill=green, draw=black] (0, \y) rectangle (0 + 1 ,\y + 1);
-	}
-	\foreach \x in {1,...,3}{
-		\foreach \y in {0,...,2}{
-			\draw [draw=black] (\x, \y) rectangle (\x +1 ,\y + 1);
-		}
-	}
-	
-	\fill (0.2,1.4) circle[radius=2pt];
-	\fill (2.8,1.4) circle[radius=2pt];
-
-	%arrow in between
-	\draw[->, line width = 1mm] (\xLargeArrow, \yLargeArrow) -- (\xLargeArrow + \LargeArrowLength, \yLargeArrow);
-	
-
-	%draw right grid with left row put to the right
-	\foreach \y in {0,...,2} {
-		\filldraw [fill=green, draw=black] (\offSGrid + 3, \y) rectangle (\offSGrid + 3 + 1 ,\y + 1);
-	}
-	\foreach \x in {0,...,2}{
-		\foreach \y in {0,...,2}{
-			\draw [draw=black] (\offSGrid + \x, \y) rectangle (\offSGrid + \x +1 ,\y + 1);
-		}
-	}
-
-	
-	\fill (\offSGrid + 3 + 0.2,1.4) circle[radius=2pt];
-	\fill (\offSGrid - 1 + 2.8,1.4) circle[radius=2pt];
-	
-	%arrows
-	\draw[-triangle 60] (\offSGrid + 3.5, 1.5) -- (\offSGrid + 2.5, 1.5);
-	\draw[-triangle 60] (\offSGrid + 3.5, 1.5) -- (\offSGrid + 2.5, 2.5);
-	\draw[-triangle 60] (\offSGrid + 3.5, 1.5) -- (\offSGrid + 2.5, 0.5);
-	
-	
-	\end{tikzpicture}
-%}
-
+		\item \texttt{mkdir build}, \texttt{cd build} 
+		\item Pick one: \texttt{cmake ..}, \texttt{cmake -Dround\_robin\_distr=1 ..}, \texttt{cmake -Dtask\_oriented\_2d=1 ..},\\ 
+		\texttt{cmake -Done\_dim\_tasks=1 ..},   \texttt{cmake -Dthree\_dim\_tasks=1 ..},\\ 
+		\texttt{cmake -Dthree\_dim\_tasks=1 -Dround\_robin\_distr=1 ..}
+		
+		\item \texttt{make}
+		\item  \texttt{./MolSim [path to input file]} for normal execution or \\ \texttt{./MolSim [path to input file] -bench file -i [number of iterations]} to use benchmark mode 
+	\end{enumerate}
 \end{frame}
 
 \begin{frame}
@@ -651,149 +655,35 @@ Idea:
 	\end{figure} 
 \end{frame}
 
+
 \begin{frame}
-	\frametitle{The problem}
-	\large
-	\begin{enumerate}
-		\item Outer boxes may not have the expected sidelengths
-		\item Interacting with neighbouring cells $\centernot \implies$ Catching everything in $r_{cutoff}$
-	\end{enumerate}
-	
-			\begin{tikzpicture}[scale=1.3]
-			%define constants
-			\def\xLargeArrow{4.5}
-			\def\yLargeArrow{1.5}
-			\def\LargeArrowLength{2.5}
-			\def\offSGrid{7.5}
-			\def\arrowStart{0.6}
-			\def\arrowEnd{1.9}
-			
-			\def\scale{1.4}
-			
-			%draw left grid
-			\foreach \y in {0,...,2} {
-				\filldraw [fill=green, draw=black] (0, \y) rectangle (0 + 1 ,\y + 1);
-			}
-			\foreach \x in {1,...,2}{
-				\foreach \y in {0,...,2}{
-					\draw [draw=black] (\x, \y) rectangle (\x +1 ,\y + 1);
-				}
-			}
-			\foreach \y in {0,..., 2}{
-				\draw [draw=black] (3, \y) rectangle (3 + 0.5,\y + 1);
-			}
-			
-			\fill (0.2,1.4) circle[radius=2pt];
-			\fill (2.8,1.4) circle[radius=2pt];
-			
-			%arrow in between
-			\draw[->, line width = 1mm] (\xLargeArrow, \yLargeArrow) -- (\xLargeArrow + \LargeArrowLength, \yLargeArrow);
-			
-			
-			%draw right grid with left row put to the right
-			\foreach \y in {0,...,2} {
-				\filldraw [fill=green, draw=black] (\offSGrid + 3 - 0.5, \y) rectangle (\offSGrid + 3 + 1 - 0.5,\y + 1);
-			}
-			\foreach \x in {0,...,1}{
-				\foreach \y in {0,...,2}{
-					\draw [draw=black] (\offSGrid + \x, \y) rectangle (\offSGrid + \x +1 ,\y + 1);
-				}
-			}
-		
-			\foreach \y in {0,..., 2}{
-				\draw [draw=black] (\offSGrid + 2, \y) rectangle (\offSGrid + 2 + 0.5,\y + 1);
-			}
-			
-			
-			\fill (\offSGrid + 3 - 0.5 + 0.2,1.4) circle[radius=2pt];
-			\fill (\offSGrid - 1 + 2.8,1.4) circle[radius=2pt];
-			
-			%arrows
-			\draw[-triangle 60] (\offSGrid + 3.5 - 0.5, 1.5) -- (\offSGrid + 2.5 - 0.25, 1.5);
-			\draw[-triangle 60] (\offSGrid + 3.5 - 0.5, 1.5) -- (\offSGrid + 2.5 - 0.25, 2.5);
-			\draw[-triangle 60] (\offSGrid + 3.5 - 0.5, 1.5) -- (\offSGrid + 2.5 - 0.25, 0.5);
-			
-			
-		\end{tikzpicture}
-	
-	$\implies$ Interact with one more "`Cellblock"' in that direction
+	\frametitle{Additional Graphs}
+	\PraesentationBildUhrenturm
+	%\PraesentationStartseiteFlaggen
 \end{frame}
 
 \begin{frame}
-	\frametitle{Adding Periodic bounds}
-	\large
-	This slide should look very familiar to Assignment 3
-		\begin{figure}
-			\centering
-			\includegraphics[width=0.95\linewidth]{BoundaryMolSim}
-			\label{fig:boundarymolsim}
-		\end{figure}
-\end{frame}
-
-\begin{frame}[fragile]
-	\frametitle{Adding Gravitational Force}
-	%\begin{columns}
-	%	\begin{column}{0.5\textwidth}
-			\begin{figure}
-				\centering
-				\includegraphics[width=0.6\linewidth]{FGravity_added}
-				\label{fig:fgravityadded}
-			\end{figure}
-	%	\end{column}
-	%\begin{column}{0.5\textwidth}
+	\frametitle{Local builds}
+	\vspace{0.8cm}
+	\begin{columns}
+		\begin{column}{0.4\linewidth}
+			\large
+			Since the cluster was very crowded we let some measurements run on a local computer.
 			
-\begin{lstlisting}
-		FLennardJonesGravity::operator()(){
-			forceDelegate->operator()();
-			particleContainer.forAllParticles([](auto& p){
-			p.force[1] += p.m * gGrav;
-			});	}
-\end{lstlisting}
-
-	%\end{column}
-		
-	%\end{columns}
+			Hardware details:
+			
+			\texttt{i7 12700 KF @ 4,7 GHz, 64 GB RAM @ 3200 MT/s}
+		\end{column}
+		\begin{column}{0.6\linewidth}
+			content...
+		\end{column}
+	\end{columns}
 	
+	
+	
+	%\PraesentationStartseiteFlaggen
 \end{frame}
 
-\begin{frame}[fragile]
-	\frametitle{Optimizations 1}
-	\large
-As mentioned in Assignment 3 our ParticleContainer does not contain Particle-structs anymore.\\
-Keeping the old interface lead to the following method:
-\begin{lstlisting}
-void ParticleContainer::forAllParticles(void(*function)(Particle &)) {
-	for (unsigned long index: activeParticles) {
-		Particle p;
-		loadParticle(p, index);
-		function(p);
-		storeParticle(p, index);
-	}
-}
-\end{lstlisting}
-
-$\implies$ rewriting old code where this method got used was a major improvement
-
-\end{frame}
-
-\begin{frame}
-	\frametitle{Optimizations 2}
-	\large
-	
-	\begin{figure}
-		\centering
-		\includegraphics[width=1\linewidth]{profile_preoptimization_just_relevant_part}
-		\label{fig:profilepreoptimizationjustrelevantpart}
-	\end{figure}
-	
-	\begin{itemize}
-		\item Force calculation takes a significant portion of CPU time
-		\item Force between two particles in Force-Functors got represented as lambda expression
-	\end{itemize}
-	
-	$\implies$ Represent force as static function instead
-	
-\end{frame}
 
 \begin{frame}
 	\frametitle{Small Rayleigh-Taylor instability}
@@ -830,56 +720,6 @@ $\implies$ rewriting old code where this method got used was a major improvement
 	\end{figure} 
 \end{frame}
 
-\begin{frame}
-	\frametitle{Serial Benchmarks}
-	\large
-	\begin{itemize}
-		\item As already mentioned building with the Intel compiled didn't work even with major time investments
-		\item The option "`-slow"' lets the code run in the pre-optimized state
-	\end{itemize}
-	
-	\Large
-	\centering
-	\begin{tabular}{lll}
-		Options   & MMU/s Cluster & MMU/s Local\\
-		-slow -O2 & $0.0087$ & $\geq 1/6 \cdot 0.036\  \land \leq 1/2 \cdot 0.036$ \\
-		-O2 	  & $0.0087$ & $0.036$\\
-		-O0 	  & $0.0087$ & $0.036$\\	
-	\end{tabular}
-
-	\large
-	Since these measurements are so close together and significantly smaller than our local measurements, we assume that something went wrong on the cluster.
-
-\end{frame}
-
-\begin{frame}
-	\frametitle{Roadblocks}
-	\large
-	\begin{itemize}
-		\item Compiling and running jobs on the cluster turned out to be a nightmare
-		\item Intel compiler broke us trying to unbreak him
-		\item Searching for bugs that may or may not be there (bouncy particles in Rayleigh-Taylor)
-		\item Searching for bugs that definitely are there (see Boundary conditions)
-		\item Large time investments in order to get tools to run
-	\end{itemize}
-\end{frame}
-
-\begin{frame}
-	\PraesentationBildUhrenturm
-	%\PraesentationStartseiteFlaggen
-\end{frame}
-
-\begin{frame}
-	\frametitle{Recreating Profiling}
-	\large
-	\begin{enumerate}
-		\item \texttt{mkdir build}
-		\item \texttt{cmake ..}
-		\item \texttt{make ProfileMolSim} or \texttt{make CXX\_FLAGS+="-Dslow -std=c++20" ProfileMolSim}
-		\item  \texttt{./ProfileMolSim ../input/[file\_you\_want\_to\_profile]}
-		\item  \texttt{gprof ProfileMolSim gmon.out > profile-data.txt}
-	\end{enumerate}
-\end{frame}
 
 
 %\frame[label=blah]{

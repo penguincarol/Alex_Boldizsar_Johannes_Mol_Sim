@@ -1,17 +1,65 @@
-\frametitle{Optimizations 1}
-	\large
-As mentioned in Assignment 3 our ParticleContainer does not contain Particle-structs anymore.\\
-Keeping the old interface lead to the following method:
-\begin{lstlisting}
-void ParticleContainer::forAllParticles(void(*function)(Particle &)) {
-	for (unsigned long index: activeParticles) {
-		Particle p;
-		loadParticle(p, index);
-		function(p);
-		storeParticle(p, index);
-	}
-}
-\end{lstlisting}
+\frametitle{Approach 3- Color oriented 2D task model}
+	
+	\begin{columns}
+		\begin{column}{0.5\textwidth}
+			\centering
+			
+			\begin{tikzpicture}[scale=1.3]
+				\foreach \i in {0,...,4}{
+					\draw (0,\i) --  (4,\i);
+					\draw (\i, 0) -- (\i,4);
+				}
+				
+				\foreach \y in {0,2}{
+					\foreach \x in {0,...,3}{
+						\draw[blue, dashed, thick](\x + 0.5, \y + 0.7) --(\x + 0.5, \y + 1.3);	
+					}
+				}
+				
+				\foreach \y in {1}{
+					\foreach \x in {0,...,3}{
+						\draw[thick, red, dashed, thick](\x + 0.5, \y + 0.7) --(\x + 0.5, \y + 1.3);	
+					}
+				}
+			\end{tikzpicture}
+		\end{column}
+		
+		\begin{column}{0.5\textwidth}
+			
+			\centering
+			\begin{tikzpicture}[scale=1.3]
+				\foreach \i in {0,...,4}{
+					\draw (0,\i) --  (4,\i);
+					\draw (\i, 0) -- (\i,4);
+				}
+				
+				\foreach \y in {0,2}{
+					\foreach \x in {0,...,2}{
+						\draw[blue, dashed, thick](\x + 0.7, \y + 0.7) --(\x + 1.3, \y + 1.3);	
+					}
+				}
+				
+				\foreach \y in {1}{
+					\foreach \x in {0,...,2}{
+						\draw[red, dashed, thick](\x + 0.7, \y + 0.7) --(\x + 1.3, \y + 1.3);	
+					}
+				}
+				
+				%\foreach \y in {1 ,2, 3, 4}{
+					%	\foreach \x in {0,...,3}{
+						%		\draw[dashed, thick](\x + 0.7, \y + 0.3) --(\x + 1.3, \y - 0.3);	
+						%	}
+					%}
+			\end{tikzpicture}
+		\end{column}
+	\end{columns}
 
-$\implies$ rewriting old code where this method got used was a major improvement
-
+	\begin{lstlisting}
+				tasks = {{vertical blue tasks},
+					{vertial red tasks},
+					{diagonal blue tasks},
+					{diagonal red tasks},
+					{other diagonal blue tasks},
+					...
+				};
+	\end{lstlisting}

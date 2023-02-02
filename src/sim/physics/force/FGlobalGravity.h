@@ -8,7 +8,7 @@
 
 namespace sim::physics::force {
     /**
-     * applies gGrav on all particles
+     * applies the gGrav vector on all particles
      * */
     class FGlobalGravity : public ForceFunctorBase {
     private:
@@ -17,6 +17,12 @@ namespace sim::physics::force {
     public:
         /**
          * the created instance will take ownership of ff and will delete it upon deconstruction.
+         * @param st start time
+         * @param et end time
+         * @param dt delta time
+         * @param eps epsilon
+         * @param sig sigma
+         * @param pc particle container
          * */
         FGlobalGravity(double st,
                        double et,

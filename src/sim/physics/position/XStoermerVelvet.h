@@ -13,6 +13,14 @@ namespace sim::physics::position {
     */
     class XStoermerVelvet : public PhysicsFunctorBase {
     public:
+        /**
+         * @param st start time
+         * @param et end time
+         * @param dt delta time
+         * @param eps epsilon
+         * @param sig sigma
+         * @param pc particle container
+         * */
         XStoermerVelvet(double st,
                         double et,
                         double dt,

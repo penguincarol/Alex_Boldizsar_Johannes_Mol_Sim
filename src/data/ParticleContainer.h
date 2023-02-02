@@ -270,12 +270,6 @@ public:
     };
 
 private:
-    /**
-     * Amount of indices, to be padded with.
-     * Resulting padding size is: padding_count * 3 * 8 in Byte.
-     * E.G. with padding count 6 => padded by 144 Byte
-     * */
-    static constexpr unsigned long padding_count = 6;
     double root6_of_2;
     std::vector<double> force;
     std::vector<double> oldForce;

@@ -7,6 +7,10 @@
 #include "data/ParticleContainer.h"
 
 namespace sim::physics {
+    /**
+     * Base class for all functors.
+     * Provides storage for basic information about the current simulation.
+     * */
     class PhysicsFunctorBase {
     protected:
         const double start_time;
@@ -19,6 +23,14 @@ namespace sim::physics {
     public:
         PhysicsFunctorBase() = delete;
 
+        /**
+         * @param st start time
+         * @param et end time
+         * @param dt delta time
+         * @param eps epsilon
+         * @param sig sigma
+         * @param pc particle container
+         * */
         PhysicsFunctorBase(double st, double et, double dt, double eps, double sig, ParticleContainer& pc) :
                 start_time(st), end_time(et), delta_t(dt), epsilon(eps), sigma(sig), particleContainer(pc) {}
 

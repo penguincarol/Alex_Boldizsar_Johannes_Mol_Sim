@@ -13,6 +13,14 @@ namespace sim::physics::velocity {
     */
     class VStoermerVelvet : public PhysicsFunctorBase {
     public:
+        /**
+         * @param st start time
+         * @param et end time
+         * @param dt delta time
+         * @param eps epsilon
+         * @param sig sigma
+         * @param pc particle container
+         * */
         VStoermerVelvet(double st,
                           double et,
                           double dt,

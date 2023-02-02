@@ -11,6 +11,9 @@
 #include <string>
 #include "Eigen"
 
+/**
+ * Representation of particles for non performance critical regions.
+ * */
 class Particle {
 
 private:

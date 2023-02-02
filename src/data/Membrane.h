@@ -7,6 +7,10 @@
 #include <vector>
 #include <array>
 
+/**
+ * Representation of a Membrane.
+ * It stores its particles as a 2D matrix by storing the particle IDs.
+ * */
 class Membrane {
 private:
     double k;

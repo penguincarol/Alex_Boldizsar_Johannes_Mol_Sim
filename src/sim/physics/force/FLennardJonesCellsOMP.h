@@ -8,7 +8,9 @@
 #include "FLennardJones.h"
 
 namespace sim::physics::force {
-
+    /**
+     * calculate the force for all particles using the Lennard-Jones potential and the linked cell approach and OMP
+     * */
     class FLennardJonesCellsOMP : public ForceFunctorBase {
     private:
         pair_fun_t pairFun;
@@ -23,6 +25,14 @@ namespace sim::physics::force {
         fpair_fun_alt_t getFastForceAltFunction() override;
 
     public:
+        /**
+         * @param st start time
+         * @param et end time
+         * @param dt delta time
+         * @param eps epsilon
+         * @param sig sigma
+         * @param pc particle container
+         * */
         FLennardJonesCellsOMP(double st,
                            double et,
                            double dt,

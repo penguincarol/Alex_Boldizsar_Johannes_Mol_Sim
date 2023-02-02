@@ -8,6 +8,10 @@
 
 
 namespace sim::physics::bounds {
+    /**
+     * Interface for bounds functors.
+     * Provides further functionality for periodic bounds.
+     * */
     template<sim::physics::bounds::side>
     class BoundsFunctorBase : public PhysicsFunctorBase {
     protected:
@@ -17,12 +21,13 @@ namespace sim::physics::bounds {
 
         /**
          * Constructor for utilization by subclasses
-         * @param st
-         * @param et
-         * @param dt
-         * @param eps
-         * @param sig
-         * @param pc
+         * @param st start time
+         * @param et end time
+         * @param dt delta time
+         * @param eps epsilon
+         * @param sig sigma
+         * @param pc particle container
+         * @param eOMP enable OMP flag
          */
         BoundsFunctorBase(double st, double et, double dt, double eps, double sig, ParticleContainer &pc, bool eOMP)
                 : PhysicsFunctorBase(st, et, dt, eps, sig, pc), enableOMP(eOMP) {}

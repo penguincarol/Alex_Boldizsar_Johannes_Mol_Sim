@@ -28,7 +28,7 @@ cmake . -B buildTwoDimGreedy
 cmake . -B buildTwoDimRobin -Dround_robin_distr=1
 cmake . -B buildOneDim -Done_dim_tasks=1
 cmake . -B buildThreeDimGreedy -Dthree_dim_tasks=1
-cmake . -B buildThreeDimRobin -Dround_robin_distr=1
+cmake . -B buildThreeDimRobin -Dthree_dim_tasks=1 -Dround_robin_distr=1
 cmake . -B buildTwoDimColor -Dtask_oriented_2d=1
 
 make -C buildTwoDimGreedy -j 20

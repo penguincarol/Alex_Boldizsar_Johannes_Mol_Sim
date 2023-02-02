@@ -637,6 +637,7 @@ void ParticleContainer::init3DTaskModel() {
                         roundRobinAccumulator = 0;
                     }
                     #else
+                    interactions[nextIndex] += cells[cell1].size()*cells[cell2].size();
                     nextIndex = 0;
                     size_t last_count = interactions[nextIndex];
                     for(size_t i = 1; i < maxThreads; i++){
@@ -680,6 +681,7 @@ void ParticleContainer::init3DTaskModel() {
                         roundRobinAccumulator = 0;
                     }
                     #else
+                    interactions[nextIndex] += cells[cell1].size()*cells[cell2].size();
                     nextIndex = 0;
                     size_t last_count = interactions[nextIndex];
                     for(size_t i = 1; i < maxThreads; i++){

@@ -1,9 +1,9 @@
 \beamer@slide {fig:speedup3dstcomp}{19}
-\beamer@slide {fig:3dmultithreadingissuetable}{20}
-\beamer@slide {fig:speedup1dompcomp}{21}
-\beamer@slide {fig:cluster2dgreedybargraph}{22}
-\beamer@slide {fig:cluster2dcolorbargraph}{22}
-\beamer@slide {fig:speedupsallapproaches}{23}
-\beamer@slide {fig:2dpaddingcomp}{24}
-\beamer@slide {fig:s2drrvsgreedy}{25}
-\beamer@slide {fig:clustermmup2dcomp}{40}
+\beamer@slide {fig:speedup3dompcomp}{21}
+\beamer@slide {fig:speedup1dompcomp}{22}
+\beamer@slide {fig:cluster2dgreedybargraph}{23}
+\beamer@slide {fig:cluster2dcolorbargraph}{23}
+\beamer@slide {fig:taskdimcomp}{24}
+\beamer@slide {fig:2dpaddingcomp}{25}
+\beamer@slide {fig:s2drrvsgreedy}{26}
+\beamer@slide {fig:clustermmup2dcomp}{41}

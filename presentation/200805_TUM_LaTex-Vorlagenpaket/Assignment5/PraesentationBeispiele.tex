@@ -535,14 +535,21 @@ tasks = {{(0,1), (0,3), (3,6) ...},
 	\begin{columns}
 		\begin{column}{0.4\linewidth}
 			\large
+			\vspace{0.6cm}
 			\begin{itemize}
 				\setlength\itemsep{1em}
-				\item We did not manage to create a realistic scenario where Round Robin was better than the Greedy distribution
-				\item $\implies$ Greedy distribution became the default option
+				\item With a good threshold value round robin has a better performance
+				\item We still chose greedy distribution as default option since it doesn't need that type of "` prerun-tuning"'
 			\end{itemize}
 			
 		\end{column}
 		\begin{column}{0.6\linewidth}
+			\begin{figure}
+				\centering
+				\includegraphics[width=0.93\linewidth]{S_2D_rr_vs_greedy}
+				%\caption{}
+				\label{fig:s2drrvsgreedy}
+			\end{figure}
 			
 		\end{column}
 	\end{columns}
@@ -682,6 +689,17 @@ tasks = {{(0,1), (0,3), (3,6) ...},
 	
 	
 	%\PraesentationStartseiteFlaggen
+\end{frame}
+
+\begin{frame}
+	\frametitle{Builds on cluster}
+	\begin{figure}
+		\centering
+		\includegraphics[width=0.55\linewidth]{clusterMmup2DComp}
+		%\caption{}
+		\label{fig:clustermmup2dcomp}
+	\end{figure}
+	
 \end{frame}
 
 

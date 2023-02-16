@@ -48,9 +48,8 @@ void Thermostat::initializeBrownTemp(double TInit){
                             unsigned long count,
                             Kokkos::View<double*>& eps,
                             Kokkos::View<double*>& sig,
-                            std::unordered_map<unsigned long, unsigned long> &id_to_index,
-                            auto&){
-                                for(auto [_,a]: id_to_index){
+                            auto& activeParticles){
+                                for(auto a: activeParticles){
                                     auto brown{maxwellBoltzmannDistributedVelocity(std::sqrt(TInit/m[a]), dims)};
                                     //std::array<double, 3> brown{0.,0.,0.};
                                     v[3*a] += brown[0];

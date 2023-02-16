@@ -7,7 +7,13 @@
 #include "BoundsFunctorBase.h"
 #include "sim/physics/force/ForceHandler.h"
 
+#include <omp.h>
+
 namespace sim::physics::bounds {
+    /**
+     * Creates a periodic bound on the side S.
+     * On the opposing side of S must be also a periodic bound.
+     * */
     template<sim::physics::bounds::side S>
     class BoundsPeriodic : public BoundsFunctorBase<S> {
     private:
@@ -20,15 +26,15 @@ namespace sim::physics::bounds {
 
         /**
          * @brief Creates a periodic bound with the specified parameters
-         * @param st
-         * @param et
-         * @param dt
-         * @param eps
-         * @param sig
-         * @param pc
-         * @param ff
-         * @param mMinor
-         * @param mMajor
+         * @param st start time
+         * @param et end time
+         * @param dt delta time
+         * @param eps epsilon
+         * @param sig sigma
+         * @param pc particle container
+         * @param fh force handler
+         * @param mMinor mirror particles outside of domain along the smaller axis (x0,x1,x2) for which this bound is responsible for
+         * @param mMajor mirror particles outside of domain along the larger axis (x0,x1,x2) for which this bound is responsible for
          */
         BoundsPeriodic(double st, double et, double dt, double eps, double sig, ParticleContainer &pc, force::ForceHandler& fh, bool mMinor, bool mMajor, bool eOMP)
                 : BoundsFunctorBase<S>(st, et, dt, eps, sig, pc, eOMP), forceHandler(fh), mirrorMinor(mMinor), mirrorMajor(mMajor) {}
@@ -73,9 +79,16 @@ namespace sim::physics::bounds {
                 auto retFun = this->forceHandler.getFastForceRetFunction();
                 double* f = force.data();
                 size_t size = force.size();
+                const unsigned long maxThreads{static_cast<unsigned long>(
+                #ifdef _OPENMP
+                    omp_get_max_threads()
+                #else
+                    1
+                #endif
+                )};
 
-                #pragma omp parallel for default(none) shared(tasks, x, t, eps,m,force, sig, size, retFun) reduction(+:f[:size])
-                for(size_t tid = 0; tid < static_cast<size_t>(omp_get_max_threads()); tid++) {
+                #pragma omp parallel for default(none) shared(tasks, x, t, eps,m,force, sig, size, retFun,maxThreads) reduction(+:f[:size])
+                for(size_t tid = 0; tid < maxThreads; tid++) {
                     for(size_t hcId = 0; hcId < tasks[tid].size(); hcId++) {
                         auto hCell = std::get<0>(tasks[tid][hcId][0]);
                         for (size_t pairIndex = 0; pairIndex < tasks[tid][hcId].size(); pairIndex++) {

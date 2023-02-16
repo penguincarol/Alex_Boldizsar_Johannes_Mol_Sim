@@ -21,7 +21,7 @@ namespace sim::physics::force {
                                        unsigned long count,
                                        Kokkos::View<double*> &eps,
                                        Kokkos::View<double*> &sig,
-                                       std::unordered_map<unsigned long, unsigned long> &id_to_index, std::vector<unsigned long>& activeParticles){
+                                       std::vector<unsigned long>& activeParticles){
             for(unsigned long indexI = 0; indexI < activeParticles.size(); indexI++){
                 for(unsigned long indexJ = indexI + 1; indexJ < activeParticles.size(); indexJ++) {
                     this->fpairFun(force, x, eps, sig, m, type, activeParticles[indexI], activeParticles[indexJ]);

@@ -4,6 +4,7 @@
 #include "io/output/Logging.h"
 #include "data/ParticleContainer.h"
 #include "sim/physics/force/FLennardJonesCells.h"
+#include "sim/physics/force/FLennardJonesCellsOMP.h"
 
 #include <Eigen>
 #include <vector>
@@ -22,49 +23,85 @@ ParticleContainer pcWithParticles(std::array<double, 3> p1Coord, std::array<doub
 /**
  * @brief Test if LennardJonesCells lets the right particles interact with each other
  * 
- * 
+ * Testing both FLennardJonesCells and FLennardJonesCellsOMP
  */
 TEST(FLennardJonesCells, operator){
-    spdlog::set_level(static_cast<spdlog::level::level_enum>(6));
-    //get two particle in the same cell
-    auto pc = pcWithParticles({0.5,0.5,0.5}, {1.,1.,1.});
-    pc.forAllParticles([=](Particle& p){p.setEpsilon(1); p.setSigma(1);});
+    for(int i = 0; i < 2; i++) {
+        spdlog::set_level(static_cast<spdlog::level::level_enum>(6));
+        //get two particle in the same cell
+        auto pc = pcWithParticles({0.5, 0.5, 0.5}, {1., 1., 1.});
+        pc.forAllParticles([=](Particle &p) {
+            p.setEpsilon(1);
+            p.setSigma(1);
+        });
 
-    auto func = sim::physics::force::FLennardJonesCells(0, 1, 0.1, 1, 1, pc);
-    func.operator()();
+        auto func = sim::physics::force::FLennardJonesCells(0, 1, 0.1, 1, 1, pc);
+        auto funcP = sim::physics::force::FLennardJonesCellsOMP(0, 1, 0.1, 1, 1, pc);
 
-    //now you should have interacted
-    pc.forAllParticles([&](Particle& p){
-        ASSERT_TRUE(p.getF().norm() != 0);
-    });
+        if(i!=0){
+            func.operator()();
+        }else{
+            funcP.operator()();
+        }
 
-    //make 2 particles in neighbouring cells
-    pc = pcWithParticles({0.5,0.5,0.5}, {1.9,1.,1.});
-    pc.forAllParticles([=](Particle& p){p.setEpsilon(1); p.setSigma(1);});
-    func.operator()();
+        //now you should have interacted
+        pc.forAllParticles([&](Particle &p) {
+            ASSERT_TRUE(p.getF().norm() != 0);
+        });
 
-    //you should interact
-    pc.forAllParticles([&](Particle& p){
-        ASSERT_TRUE(p.getF().norm() != 0);
-    });
+        //make 2 particles in neighbouring cells
+        pc = pcWithParticles({0.5, 0.5, 0.5}, {1.9, 1., 1.});
+        pc.forAllParticles([=](Particle &p) {
+            p.setEpsilon(1);
+            p.setSigma(1);
+        });
 
-    //2 particles in diagonally neighbouring cells
-    pc = pcWithParticles({0.5,0.5,0.5}, {1.9,1.9,1.});
-    pc.forAllParticles([=](Particle& p){p.setEpsilon(1); p.setSigma(1);});
-    func.operator()();
+        if(i!=0){
+            func.operator()();
+        }else{
+            funcP.operator()();
+        }
 
-    //you should interact
-    pc.forAllParticles([&](Particle& p){
-        ASSERT_TRUE(p.getF().norm() != 0);
-    });
+        //you should interact
+        pc.forAllParticles([&](Particle &p) {
+            ASSERT_TRUE(p.getF().norm() != 0);
+        });
 
-    //2 particles in not neighbouring
-    pc = pcWithParticles({0.5,0.5,0.5}, {3.,1.,1.});
-    pc.forAllParticles([=](Particle& p){p.setEpsilon(1); p.setSigma(1);});
-    func.operator()();
+        //2 particles in diagonally neighbouring cells
+        pc = pcWithParticles({0.5, 0.5, 0.5}, {1.9, 1.9, 1.});
+        pc.forAllParticles([=](Particle &p) {
+            p.setEpsilon(1);
+            p.setSigma(1);
+        });
 
-    //you should not interact
-    pc.forAllParticles([&](Particle& p){
-        ASSERT_TRUE(p.getF().norm() == 0.)<< "Two particles in cells that weren't neighbours applied a force of " <<p.getF().norm()<<" to each other";
-    });
+        if(i!=0){
+            func.operator()();
+        }else{
+            funcP.operator()();
+        }
+
+        //you should interact
+        pc.forAllParticles([&](Particle &p) {
+            ASSERT_TRUE(p.getF().norm() != 0);
+        });
+
+        //2 particles in not neighbouring
+        pc = pcWithParticles({0.5, 0.5, 0.5}, {3., 1., 1.});
+        pc.forAllParticles([=](Particle &p) {
+            p.setEpsilon(1);
+            p.setSigma(1);
+        });
+
+        if(i!=0){
+            func.operator()();
+        }else{
+            funcP.operator()();
+        }
+
+        //you should not interact
+        pc.forAllParticles([&](Particle &p) {
+            ASSERT_TRUE(p.getF().norm() == 0.) << "Two particles in cells that weren't neighbours applied a force of "
+                                               << p.getF().norm() << " to each other";
+        });
+    }
 }

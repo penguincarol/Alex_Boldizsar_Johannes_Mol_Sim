@@ -2566,6 +2566,24 @@ Type (const Type_type& x)
   this->Type_.set (x);
 }
 
+const cp_particle_t::Id_type& cp_particle_t::
+Id () const
+{
+  return this->Id_.get ();
+}
+
+cp_particle_t::Id_type& cp_particle_t::
+Id ()
+{
+  return this->Id_.get ();
+}
+
+void cp_particle_t::
+Id (const Id_type& x)
+{
+  this->Id_.set (x);
+}
+
 
 // cp_particle_list_t
 // 
@@ -7286,7 +7304,8 @@ cp_particle_t (const Position_type& Position,
                const Mass_type& Mass,
                const Epsilon_type& Epsilon,
                const Sigma_type& Sigma,
-               const Type_type& Type)
+               const Type_type& Type,
+               const Id_type& Id)
 : ::xml_schema::type (),
   Position_ (Position, this),
   Velocity_ (Velocity, this),
@@ -7295,7 +7314,8 @@ cp_particle_t (const Position_type& Position,
   Mass_ (Mass, this),
   Epsilon_ (Epsilon, this),
   Sigma_ (Sigma, this),
-  Type_ (Type, this)
+  Type_ (Type, this),
+  Id_ (Id, this)
 {
 }
 
@@ -7307,7 +7327,8 @@ cp_particle_t (::std::unique_ptr< Position_type > Position,
                const Mass_type& Mass,
                const Epsilon_type& Epsilon,
                const Sigma_type& Sigma,
-               const Type_type& Type)
+               const Type_type& Type,
+               const Id_type& Id)
 : ::xml_schema::type (),
   Position_ (std::move (Position), this),
   Velocity_ (std::move (Velocity), this),
@@ -7316,7 +7337,8 @@ cp_particle_t (::std::unique_ptr< Position_type > Position,
   Mass_ (Mass, this),
   Epsilon_ (Epsilon, this),
   Sigma_ (Sigma, this),
-  Type_ (Type, this)
+  Type_ (Type, this),
+  Id_ (Id, this)
 {
 }
 
@@ -7332,7 +7354,8 @@ cp_particle_t (const cp_particle_t& x,
   Mass_ (x.Mass_, f, this),
   Epsilon_ (x.Epsilon_, f, this),
   Sigma_ (x.Sigma_, f, this),
-  Type_ (x.Type_, f, this)
+  Type_ (x.Type_, f, this),
+  Id_ (x.Id_, f, this)
 {
 }
 
@@ -7348,7 +7371,8 @@ cp_particle_t (const ::xercesc::DOMElement& e,
   Mass_ (this),
   Epsilon_ (this),
   Sigma_ (this),
-  Type_ (this)
+  Type_ (this),
+  Id_ (this)
 {
   if ((f & ::xml_schema::flags::base) == 0)
   {
@@ -7483,6 +7507,12 @@ parse (::xsd::cxx::xml::dom::parser< char >& p,
       this->Type_.set (Type_traits::create (i, f, this));
       continue;
     }
+
+    if (n.name () == "Id" && n.namespace_ ().empty ())
+    {
+      this->Id_.set (Id_traits::create (i, f, this));
+      continue;
+    }
   }
 
   if (!Mass_.present ())
@@ -7512,6 +7542,13 @@ parse (::xsd::cxx::xml::dom::parser< char >& p,
       "Type",
       "");
   }
+
+  if (!Id_.present ())
+  {
+    throw ::xsd::cxx::tree::expected_attribute< char > (
+      "Id",
+      "");
+  }
 }
 
 cp_particle_t* cp_particle_t::
@@ -7535,6 +7572,7 @@ operator= (const cp_particle_t& x)
     this->Epsilon_ = x.Epsilon_;
     this->Sigma_ = x.Sigma_;
     this->Type_ = x.Type_;
+    this->Id_ = x.Id_;
   }
 
   return *this;
@@ -9928,6 +9966,17 @@ operator<< (::xercesc::DOMElement& e, const cp_particle_t& i)
         e));
 
     a << i.Type ();
+  }
+
+  // Id
+  //
+  {
+    ::xercesc::DOMAttr& a (
+      ::xsd::cxx::xml::dom::create_attribute (
+        "Id",
+        e));
+
+    a << i.Id ();
   }
 }
 

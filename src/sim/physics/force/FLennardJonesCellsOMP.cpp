@@ -7,6 +7,7 @@
 #include "Kokkos_ScatterView.hpp"
 
 #include <iostream>
+#include <omp.h>
 
 namespace sim::physics::force {
     /**
@@ -49,6 +50,9 @@ namespace sim::physics::force {
     }
     static const double rt3_2 = std::pow(2, 1.0 / 3.0);
 
+#ifndef ONE_DIMENSIONAL_TASKS
+#ifndef THREE_DIMENSIONAL_TASKS
+#ifndef TASK_ORIENTED_2D
     void FLennardJonesCellsOMP::operator()() {
         particleContainer.runOnDataCell([&](Kokkos::View<double*> &force,
                                             Kokkos::View<double*> &oldForce,
@@ -59,7 +63,7 @@ namespace sim::physics::force {
                                             unsigned long count,
                                             ParticleContainer::VectorCoordWrapper& cells,
                                             Kokkos::View<double*> &eps,
-                                            Kokkos::View<double*> &sig){
+                                            Kokkos::View<double*> &sig) {
             std::vector<std::pair<int,int>> pairs;
             for(auto& cell: cells) {
                 for(size_t i = 0; i < cell.size(); i++){
@@ -109,30 +113,18 @@ namespace sim::physics::force {
                 access[indexJ*3 + 2] += fac0 * fac1 * d2;
             });
             Kokkos::fence();
-        });
 
-        particleContainer.runOnDataCell([&](Kokkos::View<double*> &force,
-                                            Kokkos::View<double*> &oldForce,
-                                            Kokkos::View<double*> &x,
-                                            Kokkos::View<double*> &v,
-                                            Kokkos::View<double*> &m,
-                                            Kokkos::View<int*> &t,
-                                            unsigned long count,
-                                            ParticleContainer::VectorCoordWrapper &cells,
-                                            Kokkos::View<double*> &eps,
-                                            Kokkos::View<double*> &sig) {
-
-            const std::vector<std::pair<unsigned long, unsigned long>>& alternativeTaskGroups = particleContainer.generateDistinctAlternativeCellNeighbours();
+            const std::vector<std::pair<unsigned long, unsigned long>>& alternativeTaskGroups = particleContainer.generateFlatModel();
             size_t size = alternativeTaskGroups.size();
-            Kokkos::View<int*> indIs = Kokkos::View<int*>("indI", size);
-            Kokkos::View<int*> indJs = Kokkos::View<int*>("indI", size);
+            Kokkos::View<int*> indIs2 = Kokkos::View<int*>("indI", size);
+            Kokkos::View<int*> indJs2 = Kokkos::View<int*>("indI", size);
             for(int i = 0; i < size; i++) {
-                indIs[i] = alternativeTaskGroups[i].first;
-                indJs[i] = alternativeTaskGroups[i].second;
+                indIs2[i] = alternativeTaskGroups[i].first;
+                indJs2[i] = alternativeTaskGroups[i].second;
             }
 
-            Kokkos::Experimental::ScatterView<double*> _f(force);
-            Kokkos::parallel_for("FLJOMPSingle", size, KOKKOS_LAMBDA (const int &i) {
+            Kokkos::Experimental::ScatterView<double*> _ff(force);
+            Kokkos::parallel_for("FLJOMPPair", size, KOKKOS_LAMBDA (const int &i) {
                 int indexI = indIs[i];
                 int indexJ = indJs[i];
                 double sigma, sigma2, sigma6, epsilon, d0, d1, d2, dsqr, l2NInvSquare, fac0, l2NInvPow6, fac1_sum1, fac1;
@@ -155,7 +147,7 @@ namespace sim::physics::force {
                 fac1_sum1 = sigma6 * l2NInvPow6;
                 fac1 = (fac1_sum1) - 2 * (fac1_sum1 * fac1_sum1);
 
-                auto access = _f.access();
+                auto access = _ff.access();
                 access[indexI*3 + 0] -= fac0 * fac1 * d0;
                 access[indexI*3 + 1] -= fac0 * fac1 * d1;
                 access[indexI*3 + 2] -= fac0 * fac1 * d2;
@@ -166,4 +158,7 @@ namespace sim::physics::force {
             Kokkos::fence();
         });
     }
+#endif
+#endif
+#endif
 } // force

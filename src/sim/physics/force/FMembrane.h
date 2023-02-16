@@ -7,7 +7,6 @@
 #include "ForceFunctorBase.h"
 
 namespace sim::physics::force {
-
     /**
      * Simulates the interaction of particles within a membrane (i.e. spring forces)
      * */
@@ -15,6 +14,12 @@ namespace sim::physics::force {
     public:
         /**
          * the created instance will take ownership of ff and will delete it upon deconstruction.
+         * @param st start time
+         * @param et end time
+         * @param dt delta time
+         * @param eps epsilon
+         * @param sig sigma
+         * @param pc particle container
          * */
         FMembrane(double st,
                   double et,
@@ -30,7 +35,7 @@ namespace sim::physics::force {
         * computes the force between the particles p1 and p2 that are in the same membrane caused by the spring between them
         */
         static void addSpringForce(size_t p1i, size_t p1j, size_t p2i, size_t p2j,
-                            Membrane &membrane, Kokkos::View<double*> &force, Kokkos::View<double*> &x, std::unordered_map<unsigned long, unsigned long> &id_to_index);
+                            Membrane &membrane, Kokkos::View<double*> &force, Kokkos::View<double*> &x);
 
         void operator()() override;
 

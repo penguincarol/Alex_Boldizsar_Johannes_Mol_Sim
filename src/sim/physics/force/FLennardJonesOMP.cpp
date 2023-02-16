@@ -17,7 +17,7 @@ namespace sim::physics::force {
                 unsigned long count,
                 Kokkos::View<double*> &eps,
                 Kokkos::View<double*> &sig,
-                std::unordered_map<unsigned long, unsigned long> &id_to_index, auto&_) {
+                auto&_) {
 
             double sigma, epsilon;
             double sigma6;
@@ -27,7 +27,7 @@ namespace sim::physics::force {
             unsigned long endIndex = count * (count + 1) / 2;
             double* f = force.data();
 
-#pragma omp parallel default(none) shared(force, oldForce, x, v, m, count, endIndex, f, sig, eps, id_to_index) private(l2NInvSquare, fac0, l2NInvPow6, fac1_sum1, fac1, d0, d1, d2, indexI, indexJ, sigma, sigma6, epsilon )
+#pragma omp parallel default(none) shared(force, oldForce, x, v, m, count, endIndex, f, sig, eps) private(l2NInvSquare, fac0, l2NInvPow6, fac1_sum1, fac1, d0, d1, d2, indexI, indexJ, sigma, sigma6, epsilon )
             {
 #pragma omp for reduction(+:f[:count*3])
                 for(unsigned long globalIndex = 0; globalIndex < endIndex; globalIndex++){
@@ -38,8 +38,6 @@ namespace sim::physics::force {
                         indexJ = count - indexJ - 1;
                     }
                     if(indexI == indexJ) continue;
-                    indexI = id_to_index[indexI];
-                    indexJ = id_to_index[indexJ];
                     sigma = (sig[indexI] + sig[indexJ]) / 2;
                     sigma6 = sigma * sigma * sigma * sigma * sigma * sigma;
                     epsilon = std::sqrt(eps[indexI] * eps[indexJ]); // TODO this can be cached

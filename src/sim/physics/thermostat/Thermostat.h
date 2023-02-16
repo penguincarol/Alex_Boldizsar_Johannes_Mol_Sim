@@ -44,6 +44,15 @@ public:
      * Therefore in this case THE CURRENT TEMPERATURE IS UNEQUAL TO TInit!
      *
      * This might be confusing but hopefully as close as possible to the intended behaviour.
+     *
+     * @param particleContainer particle container
+     * @param T_t target temperature
+     * @param cT count of iterations between two thermostat actions
+     * @param dimensions dimensionality of the simulation either 2 or 3
+     * @param dT maximal difference of temperature the thermostat can produce in one time step
+     * @param TInit starting temperature of the simulation
+     * @param thermoEnable enable thermostat flag
+     * @param tm thermostat mode either ThermoMode::normalMode for most simulations or ThermoMode::pipeMode for no y-Velocity scaling
      */
     explicit Thermostat(ParticleContainer& particleContainer, double T_t = default_t_target,
                         unsigned int cT = default_n_term, unsigned int dimensions = default_dims,
@@ -57,8 +66,8 @@ public:
             io::output::loggers::simulation->info("Using Thermostat: pipe mode");
             numberFlowingParticles=0;
             pc.runOnActiveData([&](auto&,auto&,auto&,auto&,Kokkos::View<double*> &m,auto&,auto,auto&,auto&,
-                                   std::unordered_map<unsigned long, unsigned long> &id_to_index, auto){
-                for(auto [_,a]: id_to_index){
+                    auto& activeParticles){
+                for(auto a: activeParticles){
                     if(m[a] >= 0) numberFlowingParticles++;
                 }
             });

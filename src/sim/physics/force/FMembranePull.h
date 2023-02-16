@@ -14,6 +14,14 @@ namespace sim::physics::force {
     private:
         double current_time;
     public:
+        /**
+         * @param st start time
+         * @param et end time
+         * @param dt delta time
+         * @param eps epsilon
+         * @param sig sigma
+         * @param pc particle container
+         * */
         FMembranePull(double st,
                      double et,
                      double dt,

@@ -8,7 +8,6 @@
 #include "FGravity.h"
 
 namespace sim::physics::force {
-
     /**
      * Performs gravity interaction between two particles while using the linked cell data structure.
      * */
@@ -23,6 +22,14 @@ namespace sim::physics::force {
         void setPairFun();
 
     public:
+        /**
+         * @param st start time
+         * @param et end time
+         * @param dt delta time
+         * @param eps epsilon
+         * @param sig sigma
+         * @param pc particle container
+         * */
         FGravityCells(double st,
                  double et,
                  double dt,

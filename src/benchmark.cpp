@@ -37,11 +37,11 @@ static int runBenchmarkDefault(Configuration& config, io::input::type t) {
         ParticleContainer pc {};
         io::IOWrapper iow {t};
         sim::Simulation simulation {iow, pc, config};
-        simulation.runBenchmark(config.get<benchIterationCount>(), "default", buffer,
+        simulation.runBenchmark(config.get<benchIterationCount>(), "default", buffer, {},
                                 config.get<boundingBox_X0>(),
                                 config.get<boundingBox_X1>(),
                                 config.get<boundingBox_X2>(),
-                                config.get<rCutoff>());
+                                config.get<rCutoff>(),config.get<io::input::enableOMP>());
 
         buffer_tmp.clear();
         buffer.clear();
@@ -52,21 +52,28 @@ static int runBenchmarkDefault(Configuration& config, io::input::type t) {
 static int
 runBenchmarkFile(Configuration& config, std::vector<std::string>& files, io::input::type t) {
     std::vector<Particle> buffer;
+    std::vector<Membrane> membranes;
 
     for (const auto &file: files) {
+        buffer.clear();
+        membranes.clear();
         Configuration configActive = config;
         auto iow = io::IOWrapper(t, file);
         iow.reload();
         iow.getParticles(buffer);
+        iow.getMembranes(membranes);
         configActive.loadIOWArgs(iow.getArgMap());
 
-        ParticleContainer pc {};
+        ParticleContainer pc(buffer,
+                          {config.get<boundingBox_X0>(), config.get<boundingBox_X1>(), config.get<boundingBox_X2>()},
+                          config.get<rCutoff>(), membranes, config.get<enableOMP>());
         sim::Simulation simulation {iow, pc, configActive};
-        simulation.runBenchmark(configActive.get<io::input::benchIterationCount>(), file, buffer,
-                                config.get<boundingBox_X0>(),
-                                config.get<boundingBox_X1>(),
-                                config.get<boundingBox_X2>(),
-                                config.get<rCutoff>());
+        simulation.runBenchmark(configActive.get<io::input::benchIterationCount>(), file, buffer, membranes,
+                                configActive.get<boundingBox_X0>(),
+                                configActive.get<boundingBox_X1>(),
+                                configActive.get<boundingBox_X2>(),
+                                configActive.get<rCutoff>(),
+                                false);
         buffer.clear();
     }
     return 0;

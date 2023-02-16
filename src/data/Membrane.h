@@ -7,6 +7,10 @@
 #include <vector>
 #include <array>
 
+/**
+ * Representation of a Membrane.
+ * It stores its particles as a 2D matrix by storing the particle IDs.
+ * */
 class Membrane {
 private:
     double k;
@@ -15,10 +19,10 @@ private:
 
     double pullEt;
     std::array<double,3> pullF;
-    std::vector<std::array<size_t,2>> pullIndices;
+    std::vector<std::array<std::size_t,2>> pullIndices;
 
 public:
-    Membrane(double k, double r0, std::vector<std::vector<unsigned long>> &membrNodes, double pullEt = 0, std::array<double,3> pullF = {0}, std::vector<std::array<size_t, 2>> pullInd = {});
+    Membrane(double k, double r0, std::vector<std::vector<unsigned long>> &membrNodes, double pullEt = 0, std::array<double,3> pullF = {0}, std::vector<std::array<std::size_t, 2>> pullInd = {});
 
     /**
      * Helper method that prints out the current membrane node structure
@@ -41,5 +45,5 @@ public:
 
     [[nodiscard]] std::array<double,3> getPullForce() const;
 
-    [[nodiscard]] const std::vector<std::array<size_t,2>>& getPullIndices() const;
+    [[nodiscard]] const std::vector<std::array<std::size_t,2>>& getPullIndices() const;
 };

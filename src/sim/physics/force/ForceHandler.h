@@ -32,6 +32,23 @@ namespace sim::physics::force {
         std::vector<std::shared_ptr<ForceFunctorBase>> secondaryFF;
 
     public:
+        /**
+         * @param t primary force type: either lennard jones or gravity
+         * @param eLC enable linked cell flag
+         * @param eOMP enable OMP flag
+         * @param eGrav enable global gravity flag
+         * @param eMem enable membrane simulation flag
+         * @param eMemPull enable membrane pull flag
+         * @param gG0 global gravity x0 direction
+         * @param gG1 global gravity x1 direction
+         * @param gG2 global gravity x2 direction
+         * @param st start time
+         * @param et end time
+         * @param dt delta time
+         * @param eps epsilon
+         * @param sig sigma
+         * @param pc particle container
+         * */
         ForceHandler(type t, bool eLC, bool eOMP, bool eGrav, bool eMem, bool eMemPull,
                      double gG0, double gG1, double gG2,
                      double st, double et, double dt, double eps, double sig, ParticleContainer &pc) {

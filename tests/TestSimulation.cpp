@@ -76,7 +76,7 @@ TEST(Simulation, calculateXStoermerVelvet) {
 
 
     pc = ParticleContainer(
-            std::vector<Particle>{Particle{Eigen::Vector3d{0, 0, 0}, Eigen::Vector3d{0, 1, 0}, 1.0, 0}});
+            std::vector<Particle>{Particle{Eigen::Vector3d{0, 0, 0}, Eigen::Vector3d{0, 1, 0}, 1.0, 0, 0}});
     ASSERT_GE(pc.size(), 1);
 
     const auto x1_old{pc.getParticle(0).getX()};

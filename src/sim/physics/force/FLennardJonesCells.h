@@ -5,7 +5,7 @@
 
 namespace sim::physics::force {
     /**
-     * calculate the force for all particles using the Lennard-Jones potential
+     * calculate the force for all particles using the Lennard-Jones potential and the linked cell approach
      * */
     class FLennardJonesCells : public ForceFunctorBase {
     private:
@@ -18,6 +18,14 @@ namespace sim::physics::force {
         void setPairFun();
 
     public:
+        /**
+         * @param st start time
+         * @param et end time
+         * @param dt delta time
+         * @param eps epsilon
+         * @param sig sigma
+         * @param pc particle container
+         * */
         FLennardJonesCells(double st,
                       double et,
                       double dt,

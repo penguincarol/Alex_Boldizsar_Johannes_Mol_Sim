@@ -9,10 +9,18 @@
 namespace sim::physics::position {
 
     /**
-    * calculate the position for all particles using the Stoermer Velvet method. fast
+    * calculate the position for all particles using the Stoermer Velvet method using OMP
     */
     class XStoermerVelvetOMP : public PhysicsFunctorBase {
     public:
+        /**
+         * @param st start time
+         * @param et end time
+         * @param dt delta time
+         * @param eps epsilon
+         * @param sig sigma
+         * @param pc particle container
+         * */
         XStoermerVelvetOMP(double st,
                            double et,
                            double dt,

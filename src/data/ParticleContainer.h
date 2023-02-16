@@ -14,6 +14,7 @@
 #include <functional>
 #include <unordered_set>
 #include <iostream>
+#include <omp.h>
 
 /**
  * @brief wrapper class that stores and manages access to the particles
@@ -270,12 +271,6 @@ public:
     };
 
 private:
-    /**
-     * Amount of indices, to be padded with.
-     * Resulting padding size is: padding_count * 3 * 8 in Byte.
-     * E.G. with padding count 6 => padded by 144 Byte
-     * */
-    static constexpr unsigned long padding_count = 6;
     double root6_of_2;
     Kokkos::View<double*> force;
     Kokkos::View<double*> oldForce;
@@ -299,19 +294,7 @@ private:
     double x_1_min;
     double x_0_min;
     double r_cutoff;
-    std::unordered_map<unsigned long, unsigned long> id_to_index;
-    std::unordered_map<unsigned long, unsigned long> index_to_id;
     bool eOMP;
-
-    /**
-     * Swaps the position of the given particles. Addressed using particle IDs. Location will be looked up in id_to_index map.
-     * */
-    void swap(unsigned long id0, unsigned long id1);
-
-    /**
-     * Moves particle at index indexSrc to index indexDst. id is the ID of the particle to be moved.
-     * */
-    void move(unsigned long indexSrc, unsigned indexDst, unsigned long id);
 
     /**
      * Stores a particle from @param p into the internal data at @param index
@@ -359,7 +342,7 @@ private:
     static void
     loadParticle(Particle &p, unsigned long index, Kokkos::View<double*> &force, Kokkos::View<double*> &oldForce,
                  Kokkos::View<double*> &x, Kokkos::View<double*> &v, Kokkos::View<double*> &m,
-                 Kokkos::View<int*> &type, Kokkos::View<double*> &e, Kokkos::View<double*> &s);
+                 Kokkos::View<int*> &type, Kokkos::View<double*> &e, Kokkos::View<double*> &s, unsigned long id);
 
 public:
     /**
@@ -896,7 +879,7 @@ public:
     template<typename F>
     void runOnMembranes(F fun){
         //I actually believe that you need all those parameters. We can still change that if i am wrong
-        fun(membranes, force, x, count, id_to_index);
+        fun(membranes, force, x, count);
     }
 
     /**
@@ -904,7 +887,7 @@ public:
      * */
     template<typename F>
     void runOnActiveData(F fun) {
-        fun(force, oldForce, x, v, m, type, count, eps, sig, id_to_index, activeParticles);
+        fun(force, oldForce, x, v, m, type, count, eps, sig, activeParticles);
     }
 
     /**
@@ -956,7 +939,13 @@ public:
         std::vector<std::vector<std::vector<std::tuple<cell_ptr, cell_ptr, double, double, double>>>> tasks;
         using halo_buf_t = std::vector<std::tuple<cell_ptr, cell_ptr, double, double, double>>;
         std::vector<size_t> interactions;
-        size_t maxThreads = omp_get_max_threads();
+        const unsigned long maxThreads{static_cast<unsigned long>(
+        #ifdef _OPENMP
+            omp_get_max_threads()
+        #else
+            1
+        #endif
+        )};
         tasks.resize(maxThreads);
         interactions.resize(maxThreads);
         auto getMin = [&](){
@@ -1320,14 +1309,39 @@ public:
     void forAllPairsInSameCell(const std::function<void(Particle &p1, Particle &p2)> &function);
 
     /**
-     * Initializes generateDistinctCellNeighbours cache.
+     * Initializes 3D task model. The 3D Task model is a 3D vector of pairs of indices. The pairs of indices represent cells, that are supposed to interact with each other.
+     * The outer most vector hast the size 26.
+     * Each of those 26 vectors of vectors of pairs can be fully parallelized.
+     * Trying to work with on multiple outer vectors at the same time will lead to race conditions.
+     *
+     * One layer deeper there are num_thread entries in the vector. Each thread is supposed to get one entry of this layer. The last layer is just the list of tasks assigned to this thread.
+     * The tasks are supposed to be distributed as evenly as possible (see distribution strategy). Possible strategies are round_robin_threshhold and the a greedy approach.
      * */
-    void initTaskModel();
+    void init3DTaskModel();
 
-    void initAlternativeTaskModel();
+    /**
+     * Initializes 2D task Model.
+     * The 2D task model is a 2D vector of pairs of indices. Each indice represents a cell and the pair represents 2 cells that should interact with each other.
+     *
+     * The outer most vector has the size num_threads. Each thread is supposed to get one entry. It contains all the cell-pairs that this thread is supposed to handle.
+     * Due to potential Race-conditions a reduction is needed!
+     */
+    void init2DTaskModelSplit();
+
+    /**
+     * Initializes 2D task Model.
+     * The 2D task model is a 2D vector of pairs of indices. Each indice represents a cell and the pair represents 2 cells that should interact with each other.
+     *
+     * The outer most vector has the size 26. Inside of each outer vector every task can be done in parallel and in any order without causing race conditions
+     */
+    void init2DTaskModelColor();
+
+
 private:
-    std::vector<std::vector<std::vector<std::pair<unsigned long, unsigned long>>>> taskModelCache;
-    std::vector<std::pair<unsigned long, unsigned long>> alternativeTaskModelCache;
+    std::vector<std::vector<std::vector<std::pair<unsigned long, unsigned long>>>> taskModelCache3D;
+    std::vector<std::vector<std::pair<unsigned long, unsigned long>>> taskModelCache2DSplit;
+    std::vector<std::vector<std::pair<unsigned long, unsigned long>>> taskModelCache2DColor;
+    std::vector<std::pair<unsigned long, unsigned long>> taskModelFlat;
 
 
 public:
@@ -1341,10 +1355,13 @@ public:
      * task group is vector task for one thread -> vector of
      * task is vector of pairs -> pair
      * */
-    const std::vector<std::vector<std::vector<std::pair<unsigned long, unsigned long>>>>& generateDistinctCellNeighbours();
+    const std::vector<std::vector<std::vector<std::pair<unsigned long, unsigned long>>>>& generate3DTaskModel();
 
-    const std::vector<std::pair<unsigned long, unsigned long>>& generateDistinctAlternativeCellNeighbours();
+    const std::vector<std::vector<std::pair<unsigned long, unsigned long>>>& generate2DTaskModelSplitIntoThreads();
 
+    const std::vector<std::vector<std::pair<unsigned long, unsigned long>>>& generate2DTaskModelColoring();
+
+    const std::vector<std::pair<unsigned long, unsigned long>>& generateFlatModel();
 
     /**
      * Performs fun on provided data. All lambda args particle container internal data.

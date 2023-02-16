@@ -16,9 +16,8 @@ namespace sim::physics::velocity {
                                         Kokkos::View<double*> &x, Kokkos::View<double*> &v,
                                         Kokkos::View<double*> &m, Kokkos::View<int*> &type,
                                         unsigned long count, Kokkos::View<double*> &eps, Kokkos::View<double*> &sig,
-                                        std::unordered_map<unsigned long, unsigned long> &id_to_index,
                                         std::vector<unsigned long> &activeParticles){
-            for (auto [_,index] : id_to_index) {
+            for (auto index : activeParticles) {
                 v[3*index + 0] += delta_t * (oldForce[3*index + 0] + force[3*index + 0]) / (2 * m[index]);
                 v[3*index + 1] += delta_t * (oldForce[3*index + 1] + force[3*index + 1]) / (2 * m[index]);
                 v[3*index + 2] += delta_t * (oldForce[3*index + 2] + force[3*index + 2]) / (2 * m[index]);
